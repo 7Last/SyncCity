@@ -12,4 +12,4 @@ class RawData(ABC):
         self.timestamp = timestamp
 
     def __str__(self):
-        return f'{self.__class__.__name__}({self.__dict__})'
+        return f'{self.__class__.__name__} {self.__dict__}'
