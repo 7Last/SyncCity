@@ -13,6 +13,8 @@ def main():
             sensor_id='temperature-sensor-1',
             frequency=timedelta(seconds=1),
             begin_date=datetime(2023, 1, 1, 0, 0, 0),
+            latitude=40.416775,
+            longitude=-3.703790,
             limit=10,
         ),
         # TrafficProducer(

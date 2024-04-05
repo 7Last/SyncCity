@@ -16,8 +16,6 @@ class TrafficProducer(Producer):
             self.timestamp = self.timestamp + self.frequency
             await asyncio.sleep(self.frequency.total_seconds())
 
-            lat, lon, alt = random.choice(list(self._City)).value
-
             probability = _multimodal_normal_gauss_value(
                 x=self.timestamp.hour + self.timestamp.minute / 60,
                 modes=[
@@ -32,9 +30,8 @@ class TrafficProducer(Producer):
                 # vehicles_per_unit=round(100 * 50 * probability),  # between 0 and 50 vehicles pass in 5 minutes
                 vehicles_per_unit=0,
                 avg_speed=random.randrange(5, 50),  # km/h
-                latitude=lat,
-                longitude=lon,
-                altitude=alt,
+                latitude=self.latitude,
+                longitude=self.longitude,
                 sensor_id=self.sensor_id,
                 timestamp=self.timestamp,
             )

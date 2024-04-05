@@ -5,18 +5,9 @@ from datetime import datetime, timedelta
 
 
 class Producer(ABC):
-    class _City(Enum):
-        """
-        Enum with cities and their latitude, longitude and altitude above sea level.
-        Used to simulate sensors located in different cities.
-        """
-        MUNICH = (48.1549958, 11.4594356, 520)
-        INNSBRUCK = (47.2692124, 11.4041024, 580)
-        PADUA = (45.4064349, 11.8767611, 12)
-        MESTRE = (45.4909825, 12.2459022, 3)
-        ZURICH = (47.3768866, 8.541694, 400)
 
-    def __init__(self, sensor_id: str, frequency: timedelta, limit: int = None, begin_date: datetime = None):
+    def __init__(self, sensor_id: str, frequency: timedelta, latitude: float, longitude: float, limit: int = None,
+                 begin_date: datetime = None):
         """
         Producer class that simulates raw data from sensors
         :param sensor_id: sensor identifier
@@ -29,6 +20,8 @@ class Producer(ABC):
         self.sensor_id = sensor_id
         self.frequency = frequency
         self.limit = limit
+        self.latitude = latitude
+        self.longitude = longitude
         self.running = False
         self.timestamp = begin_date or datetime.now()
 

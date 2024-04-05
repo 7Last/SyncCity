@@ -7,8 +7,10 @@ from datetime import datetime, timedelta
 
 class TemperatureProducer(Producer):
 
-    def __init__(self, sensor_id: str, frequency: timedelta, begin_date: datetime = None, limit: int = None):
-        super().__init__(sensor_id=sensor_id, frequency=frequency, begin_date=begin_date, limit=limit)
+    def __init__(self, sensor_id: str, frequency: timedelta, latitude: float, longitude: float,
+                 begin_date: datetime = None, limit: int = None):
+        super().__init__(sensor_id=sensor_id, frequency=frequency, latitude=latitude, longitude=longitude,
+                         begin_date=begin_date, limit=limit)
 
     async def stream(self) -> TemperatureRawData:
         while self.limit != 0 and self.running:
@@ -16,12 +18,10 @@ class TemperatureProducer(Producer):
             self.timestamp = self.timestamp + self.frequency
             await asyncio.sleep(self.frequency.total_seconds())
 
-            lat, lon, alt = random.choice(list(self._City)).value
             yield TemperatureRawData(
                 value=random.uniform(-10, 30),
                 sensor_id=self.sensor_id,
-                latitude=lat,
-                longitude=lon,
-                altitude=alt,
+                latitude=self.latitude,
+                longitude=self.longitude,
                 timestamp=self.timestamp
             )
