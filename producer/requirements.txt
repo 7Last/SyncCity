@@ -1,2 +1,2 @@
-python-dateutil==2.9.0.post0
-six==1.16.0
+aiostream==0.5.2
+typing_extensions==4.11.0

@@ -20,10 +20,8 @@ class Runner:
         for producer in self.producers:
             producer.start()
 
-        combine = stream.merge(
-            *(producer.stream() for producer in self.producers)
-        )
+        combine = stream.merge(*(producer.stream() for producer in self.producers))
+
         async with combine.stream() as streamer:
             async for item in streamer:
                 print(item.sensor_id, item)
-
