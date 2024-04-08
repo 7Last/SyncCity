@@ -1,14 +1,16 @@
-import asyncio
-import random
-from ..models.traffic_raw_data import TrafficRawData
-from .producer import Producer
 from math import e, pi, sqrt
-from datetime import time, timedelta, datetime
+from datetime import time, datetime, timedelta
+import random
+import asyncio
 
+from .producer import Producer
+from ..models.traffic_raw_data import TrafficRawData
 
 class TrafficProducer(Producer):
-    def __init__(self, sensor_id: str, frequency: timedelta, limit: int = None, begin_date: datetime = None):
-        super().__init__(sensor_id=sensor_id, frequency=frequency, limit=limit, begin_date=begin_date)
+    def __init__(self, *, sensor_id: str, frequency: timedelta, limit: int = None,
+                 begin_date: datetime = None) -> None:
+        super().__init__(sensor_id=sensor_id, frequency=frequency, limit=limit,
+                         begin_date=begin_date)
 
     async def stream(self) -> TrafficRawData:
         while self.limit != 0 and self.running:
@@ -37,21 +39,23 @@ class TrafficProducer(Producer):
             )
 
 
-def _multimodal_normal_gauss_value(x: float, modes: list[tuple[float, float]], max_x: float) -> tuple[time, float]:
-    """
-    Returns generates a random x in a range and calculates its corresponding y from a bimodal Gaussian distribution.
+def _multimodal_normal_gauss_value(x: float, modes: list[tuple[float, float]],
+                                   max_x: float) -> tuple[time, float]:
+    """Returns generates a random x in a range and calculates its corresponding y
+    from a bimodal Gaussian distribution.
     :param modes: list of tuples with the mu and sigma values for each mode
     :param x: Value for x to calculate the probability
     :param max_x: Maximum value for x
     :return: Tuple with time and probability
     """
-
     random_factor = random.uniform(0, 0.1)
 
     # add a vertical shift to the distribution
     vertical_shift = 0.3
 
-    density_func = lambda mu, sigma: (1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2)))
+    def density_func(mu: float, sigma: float) -> float:
+        return 1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2))
+
     y = sum([density_func(mu, sigma) for mu, sigma in modes], random_factor) + vertical_shift
 
     return y / max_x

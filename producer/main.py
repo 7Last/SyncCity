@@ -1,13 +1,14 @@
-import logging as log
+from datetime import datetime, timedelta
 import asyncio
+import logging as log
+
 from core.runner import Runner
 from core.producers.temperature_producer import TemperatureProducer
-from datetime import timedelta, datetime
 
 log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s')
 
 
-def main():
+def main() -> None:
     runner = Runner(producers=[
         TemperatureProducer(
             sensor_id='temperature-sensor-1',
