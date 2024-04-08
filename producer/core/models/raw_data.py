@@ -1,6 +1,7 @@
 from abc import ABC
 from datetime import datetime
 
+
 class RawData(ABC):
     def __init__(self,
                  *,

@@ -5,6 +5,7 @@ import asyncio
 from .producer import Producer
 from ..models.temperature_raw_data import TemperatureRawData
 
+
 class TemperatureProducer(Producer):
 
     def __init__(self, *, sensor_id: str, frequency: timedelta,

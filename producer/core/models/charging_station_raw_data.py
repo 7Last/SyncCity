@@ -3,6 +3,7 @@ from datetime import datetime
 
 from raw_data import RawData
 
+
 class ChargingStationRawData(RawData):
     class Status(Enum):
         FREE = 0

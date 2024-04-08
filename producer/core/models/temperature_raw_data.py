@@ -2,6 +2,7 @@ from datetime import datetime
 
 from .raw_data import RawData
 
+
 class TemperatureRawData(RawData):
     def __init__(self,
                  *,

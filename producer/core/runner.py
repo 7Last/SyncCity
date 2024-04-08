@@ -5,6 +5,7 @@ from aiostream import stream
 
 from .producers.producer import Producer
 
+
 class Runner:
 
     def __init__(self, producers: list[Producer]) -> None:

@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from ..models.raw_data import RawData
 
+
 class Producer(ABC):
 
     def __init__(self, *, sensor_id: str, frequency: timedelta, latitude: float,

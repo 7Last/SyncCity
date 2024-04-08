@@ -82,7 +82,8 @@ select = [
 ]
 
 ignore = [
-    "B008"
+    "B008",
+    "B024",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -97,7 +98,6 @@ from-first = true
 no-sections = false
 length-sort = true
 relative-imports-order = "closest-to-furthest"
-lines-after-imports = 1
 
 [format]
 quote-style = "double"
