@@ -3,6 +3,7 @@ import asyncio
 import logging as log
 
 from core.runner import Runner
+from core.producers.traffic_producer import TrafficProducer
 from core.producers.temperature_producer import TemperatureProducer
 
 log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s')
@@ -18,6 +19,14 @@ def main() -> None:
             latitude=40.416775,
             longitude=-3.703790,
             limit=24,
+        ),
+        TrafficProducer(
+            sensor_id='traffic-producer-1',
+            points_spacing=timedelta(minutes=10),
+            generation_delay=timedelta(seconds=2),
+            limit=10,
+            latitude=43.416775,
+            longitude=4.703790,
         ),
     ])
 
