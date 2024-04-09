@@ -6,6 +6,7 @@ on:
       - main
   pull_request:
     types: [opened, reopened, review_requested]
+  workflow_dispatch:
 
 jobs:
   python_lints:
