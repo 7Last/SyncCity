@@ -1,13 +1,10 @@
 name: Pre merge checks
 on:
-  pull_request:
+  push:
     branches:
-      - '*'
-    types:
-      - opened
-      - edited
-      - synchronize
-  workflow_dispatch:
+      - main
+  pull_request:
+    types: [opened, reopened, review_requested]
 
 jobs:
   python_linter:
