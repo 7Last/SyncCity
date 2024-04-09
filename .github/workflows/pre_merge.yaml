@@ -1,19 +1,19 @@
 name: Pre merge checks
+
 on:
   push:
     branches:
       - main
   pull_request:
     types: [opened, reopened, review_requested]
-  workflow_dispatch:
 
 jobs:
-  python_linter:
+  python_lints:
+    name: "Python lint checks"
     runs-on: ubuntu-latest
-
-    env:
-      PYTHON_PROJECT: ./producer
-
+    defaults:
+      run:
+        working-directory: ./producer
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,12 +21,12 @@ jobs:
       - name: Install python
         uses: actions/setup-python@v5
         with:
-            python-version: 3.11
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install -r ${{ env.PYTHON_PROJECT }}/requirements.txt
+          pip3 install -r requirements.txt
 
       - name: Run ruff lint
-        run: ruff check --output-format=github ${{ env.PYTHON_PROJECT }}
+        run: ruff check --output-format=github
