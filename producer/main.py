@@ -10,6 +10,7 @@ log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s
 
 def main() -> None:
     runner = Runner(producers=[
+        # test
         TemperatureProducer(
             sensor_id='temperature-sensor-1',
             points_spacing=timedelta(hours=1),
