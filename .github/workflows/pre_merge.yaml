@@ -13,19 +13,19 @@ jobs:
     env:
       PYTHON_PROJECT: ./producer
 
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install python
-      uses: actions/setup-python@v5
-      with:
-          python-version: 3.11
+      - name: Install python
+        uses: actions/setup-python@v5
+        with:
+            python-version: 3.11
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pip
-        pip3 install -r ${{ env.PYTHON_PROJECT }}/requirements.txt
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r ${{ env.PYTHON_PROJECT }}/requirements.txt
 
-    - name: Run ruff lint
-      run: ruff check --output-format=github ${{ env.PYTHON_PROJECT }}
+      - name: Run ruff lint
+        run: ruff check --output-format=github ${{ env.PYTHON_PROJECT }}
