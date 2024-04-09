@@ -1,7 +1,12 @@
-name: Pre merge
+name: Pre merge checks
 on:
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - '*'
+    types:
+      - opened
+      - edited
+      - synchronize
   workflow_dispatch:
 
 jobs:
