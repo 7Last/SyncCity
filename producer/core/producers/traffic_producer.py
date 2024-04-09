@@ -8,6 +8,7 @@ from ..models.traffic_raw_data import TrafficRawData
 
 
 class TrafficProducer(Producer):
+    _MULTIPLICATIVE_FACTOR = 1000
     def __init__(self, *, latitude: float, longitude: float, sensor_id: str,
                  points_spacing: timedelta, limit: int = None,
                  generation_delay: timedelta = timedelta(seconds=1),
@@ -26,14 +27,14 @@ class TrafficProducer(Producer):
                 x=self.timestamp.hour + self.timestamp.minute / 60,
                 modes=[
                     (8.5, 0.425),  # 8:30 AM
-                    (12.5, 0.38),  # 12:30 PM
+                    (12.5, 1.88),  # 12:30 PM
                     (18, 0.38),  # 6 PM
                 ],
                 max_x=18,
             )
 
             yield TrafficRawData(
-                vehicles_per_unit=round(1000 * probability),
+                vehicles_per_unit=round(self._MULTIPLICATIVE_FACTOR * probability),
                 avg_speed_per_unit=random.randrange(5, 50),  # km/h
                 latitude=self.latitude,
                 longitude=self.longitude,
@@ -51,15 +52,13 @@ def _multimodal_normal_gauss_value(x: float, modes: list[tuple[float, float]],
     :param max_x: Maximum value for x
     :return: Tuple with time and probability
     """
-    random_factor = random.uniform(0, 0.1)
+    random_factor = random.uniform(0, 0.07)
 
     # add a vertical shift to the distribution
-    vertical_shift = 0.3
+    shift = 0.1
 
     def density_func(mu: float, sigma: float) -> float:
         return 1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2))
 
-    y = (sum([density_func(mu, sigma) for mu, sigma in modes], random_factor) +
-         vertical_shift)
-
+    y = sum([density_func(mu, sigma) for mu, sigma in modes], random_factor) + shift
     return y / max_x
