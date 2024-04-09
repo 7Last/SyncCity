@@ -9,16 +9,18 @@ from ..models.traffic_raw_data import TrafficRawData
 
 class TrafficProducer(Producer):
     def __init__(self, *, latitude: float, longitude: float, sensor_id: str,
-                 frequency: timedelta, limit: int = None,
+                 points_spacing: timedelta, limit: int = None,
+                 generation_delay: timedelta = timedelta(seconds=1),
                  begin_date: datetime = None) -> None:
-        super().__init__(sensor_id=sensor_id, frequency=frequency, limit=limit,
-                         begin_date=begin_date, latitude=latitude, longitude=longitude)
+        super().__init__(sensor_id=sensor_id, points_spacing=points_spacing,
+                         generation_delay=generation_delay, limit=limit, begin_date=begin_date,
+                         latitude=latitude, longitude=longitude)
 
     async def stream(self) -> TrafficRawData:
         while self.limit != 0 and self.running:
             self.limit -= 1
             self.timestamp = self.timestamp + self.frequency
-            await asyncio.sleep(self.frequency.total_seconds())
+            await asyncio.sleep(self.delay.total_seconds())
 
             probability = _multimodal_normal_gauss_value(
                 x=self.timestamp.hour + self.timestamp.minute / 60,
