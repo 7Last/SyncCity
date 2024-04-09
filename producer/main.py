@@ -9,7 +9,6 @@ log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s
 
 
 def main() -> None:
-    # test
     runner = Runner(producers=[
         TemperatureProducer(
             sensor_id='temperature-sensor-1',
@@ -20,13 +19,6 @@ def main() -> None:
             longitude=-3.703790,
             limit=24,
         ),
-        # TrafficProducer(
-        #     sensor_id='traffic-producer-1',
-        #     frequency=timedelta(seconds=1),
-        #     limit=10,
-        #     latitude=40.416775,
-        #     longitude=-3.703790,
-        # ),
     ])
 
     log.debug('Starting runner')
