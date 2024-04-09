@@ -13,8 +13,8 @@ class TrafficProducer(Producer):
                  generation_delay: timedelta = timedelta(seconds=1),
                  begin_date: datetime = None) -> None:
         super().__init__(sensor_id=sensor_id, points_spacing=points_spacing,
-                         generation_delay=generation_delay, limit=limit, begin_date=begin_date,
-                         latitude=latitude, longitude=longitude)
+                         generation_delay=generation_delay, limit=limit,
+                         begin_date=begin_date, latitude=latitude, longitude=longitude)
 
     async def stream(self) -> TrafficRawData:
         while self.limit != 0 and self.running:
