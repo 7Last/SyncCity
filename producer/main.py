@@ -9,6 +9,7 @@ log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s
 
 
 def main() -> None:
+    # test
     runner = Runner(producers=[
         TemperatureProducer(
             sensor_id='temperature-sensor-1',
