@@ -7,7 +7,7 @@ from .simulator import Simulator
 from ..models.traffic_raw_data import TrafficRawData
 
 
-class TrafficProducer(Simulator):
+class TrafficSimulator(Simulator):
     _MULTIPLICATIVE_FACTOR = 400
     _MAX_SPEED = 80
 

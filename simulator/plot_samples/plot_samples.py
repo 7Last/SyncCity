@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 import numpy as np
 import matplotlib.pyplot as plt
 
-from producer.core.producers.traffic_producer import _multimodal_normal_gauss_value
-from producer.core.producers.temperature_producer import _sinusoidal_value
+from simulator.core.simulators.traffic_simulator import _multimodal_normal_gauss_value
+from simulator.core.simulators.temperature_simulator import _sinusoidal_value
 
 
 def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, x_label: str,

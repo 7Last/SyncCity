@@ -4,14 +4,14 @@ from datetime import datetime, timedelta
 from ..models.raw_data import RawData
 
 
-class Producer(ABC):
+class Simulator(ABC):
 
     def __init__(self, *, sensor_id: str,
                  points_spacing: timedelta, latitude: float,
                  longitude: float, limit: int = None,
                  generation_delay: timedelta = timedelta(seconds=1),
                  begin_date: datetime = None) -> None:
-        """Producer class that simulates raw data from sensors
+        """Simulator class that simulates raw data from sensors
         :param sensor_id: sensor identifier
         :param generation_delay: time to wait between the generation
         of a point and the next one

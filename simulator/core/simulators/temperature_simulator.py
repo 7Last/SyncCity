@@ -3,11 +3,11 @@ from datetime import datetime, timedelta
 import random
 import asyncio
 
-from .producer import Producer
+from .simulator import Simulator
 from ..models.temperature_raw_data import TemperatureRawData
 
 
-class TemperatureProducer(Producer):
+class TemperatureSimulator(Simulator):
 
     def __init__(self, *, sensor_id: str, points_spacing: timedelta,
                  latitude: float, longitude: float,
