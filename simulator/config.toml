@@ -13,7 +13,6 @@ generation_delay = "PT1S" # 1 second
 begin_date = 2023-01-01T00:00:00
 latitude = 48.1548976
 longitude = 11.2122041
-limit = 24
 
 [sensors.traffic-sensor-1]
 type = "traffic"
@@ -21,4 +20,3 @@ points_spacing = "PT1M" # 1 minute
 generation_delay = "PT2S" # 2 seconds
 latitude = 48.1548976
 longitude = 11.2122041
-limit = 10
