@@ -1,7 +1,8 @@
 from math import e, pi, sqrt
+from typing import Iterable
 from datetime import datetime, timedelta
+import time
 import random
-import asyncio
 
 from .simulator import Simulator
 from ..models.raw_data.traffic_raw_data import TrafficRawData
@@ -19,11 +20,11 @@ class TrafficSimulator(Simulator):
                          generation_delay=generation_delay, limit=limit,
                          begin_date=begin_date, latitude=latitude, longitude=longitude)
 
-    async def stream(self) -> TrafficRawData:
+    def stream(self) -> Iterable[TrafficRawData]:
         while self.limit != 0 and self.running:
             self.limit -= 1
             self.timestamp += self.frequency
-            await asyncio.sleep(self.delay.total_seconds())
+            time.sleep(self.delay.total_seconds())
 
             probability = _multimodal_normal_gauss_value(
                 x=self.timestamp.hour + self.timestamp.minute / 60,

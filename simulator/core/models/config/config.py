@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Iterable
 
 from ..sensor_type import SensorType
 from .sensor_config import SensorConfig
@@ -20,7 +20,7 @@ class Config:
 
         # TODO: add kafka config
 
-    def simulators_generator(self) -> Simulator:
+    def simulators_generator(self) -> Iterable[Simulator]:
         for sensor_id, config in self.sensors.items():
             yield _simulator_factory(sensor_id, config)
 

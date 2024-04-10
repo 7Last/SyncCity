@@ -1,7 +1,7 @@
 import signal
 import logging as log
-
-from aiostream import stream
+import threading
+import concurrent.futures
 
 from .simulators.simulator import Simulator
 
@@ -18,13 +18,17 @@ class Runner:
         for simulator in self.simulators:
             simulator.stop()
 
-    async def run(self) -> None:
-        for simulator in self.simulators:
-            log.debug(f'Starting simulator for sensor {simulator.sensor_id}')
-            simulator.start()
+    @staticmethod
+    def _callback(simulator: Simulator) -> None:
+        simulator.start()
+        log.info(
+            f'Starting {simulator.sensor_id} '
+            f'in thread {threading.current_thread().name}',
+        )
 
-        merged = stream.merge(*(simulator.stream() for simulator in self.simulators))
+        for item in simulator.stream():
+            print(threading.current_thread().name, item.serialize())
 
-        async with merged.stream() as merged_stream:
-            async for item in merged_stream:
-                print(item.serialize())
+    def run(self) -> None:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            executor.map(self._callback, self.simulators)

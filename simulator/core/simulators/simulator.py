@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 
 from ..models.raw_data.raw_data import RawData
+from typing import Iterable
 
 
 class Simulator(ABC):
@@ -42,5 +43,5 @@ class Simulator(ABC):
         self.running = False
 
     @abstractmethod
-    async def stream(self) -> RawData:
+    def stream(self) -> Iterable[RawData]:
         pass

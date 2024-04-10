@@ -1,3 +1,10 @@
+[runner]
+max-workers = 6
+
+## TODO: add kafka configuration
+#[runner.kafka]
+#port = 8000
+
 # Dates and duration are expressed with ISO8601 standard
 [sensors.temperature-sensor-1]
 type = "temperature"
@@ -15,7 +22,3 @@ generation_delay = "PT2S" # 2 seconds
 latitude = 48.1548976
 longitude = 11.2122041
 limit = 10
-
-# TODO: add kafka configuration
-[kafka]
-port = 8000

@@ -1,7 +1,8 @@
 from math import pi, sin
+from typing import Iterable
 from datetime import datetime, timedelta
+import time
 import random
-import asyncio
 
 from .simulator import Simulator
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
@@ -18,11 +19,11 @@ class TemperatureSimulator(Simulator):
                          latitude=latitude, generation_delay=generation_delay,
                          longitude=longitude, begin_date=begin_date, limit=limit)
 
-    async def stream(self) -> TemperatureRawData:
+    def stream(self) -> Iterable[TemperatureRawData]:
         while self.limit != 0 and self.running:
             self.limit -= 1
             self.timestamp += self.frequency
-            await asyncio.sleep(self.delay.total_seconds())
+            time.sleep(self.delay.total_seconds())
 
             yield TemperatureRawData(
                 value=_sinusoidal_value(self.timestamp),
