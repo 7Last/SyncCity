@@ -3,11 +3,11 @@ from datetime import datetime, timedelta
 import random
 import asyncio
 
-from .producer import Producer
+from .simulator import Simulator
 from ..models.traffic_raw_data import TrafficRawData
 
 
-class TrafficProducer(Producer):
+class TrafficProducer(Simulator):
     _MULTIPLICATIVE_FACTOR = 400
     _MAX_SPEED = 80
 
