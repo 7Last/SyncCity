@@ -20,10 +20,11 @@ class Runner:
 
     async def run(self) -> None:
         for simulator in self.simulators:
+            log.debug(f'Starting simulator for sensor {simulator.sensor_id}')
             simulator.start()
 
-        combine = stream.merge(*(simulator.stream() for simulator in self.simulators))
+        merged = stream.merge(*(simulator.stream() for simulator in self.simulators))
 
-        async with combine.stream() as streamer:
-            async for item in streamer:
+        async with merged.stream() as merged_stream:
+            async for item in merged_stream:
                 print(item.sensor_id, item)
