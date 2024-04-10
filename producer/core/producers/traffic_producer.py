@@ -22,7 +22,7 @@ class TrafficProducer(Producer):
     async def stream(self) -> TrafficRawData:
         while self.limit != 0 and self.running:
             self.limit -= 1
-            self.timestamp = self.timestamp + self.frequency
+            self.timestamp += self.frequency
             await asyncio.sleep(self.delay.total_seconds())
 
             probability = _multimodal_normal_gauss_value(

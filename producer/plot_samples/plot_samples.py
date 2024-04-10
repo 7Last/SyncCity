@@ -17,7 +17,7 @@ def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, x_label: str,
         plt.legend(legend)
     plt.title(title)
     plt.grid(True)
-    plt.xticks(np.arange(min(x), max(x) + 1, x_ticks))
+    plt.xticks(np.arange(0, 24, x_ticks))
     plt.show()
 
 
@@ -33,9 +33,9 @@ def traffic() -> None:
     vehicles = [mult_factor * probability for probability in probabilities]
     speed = [max_speed - vehicles_i for vehicles_i in vehicles]
 
-    plot_chart([(x, vehicles)], 'Vehicles per unit', 'Time', 'vehicles per s',
+    plot_chart([(x, vehicles)], 'Vehicles per unit', 'Hours', 'Vehicles per s',
                x_ticks=1)
-    plot_chart([(x, speed)], 'Average Speed', 'Time', 'km/h',
+    plot_chart([(x, speed)], 'Average Speed', 'Hours', 'km/h',
                x_ticks=1)
 
 
