@@ -27,4 +27,4 @@ class Runner:
 
         async with merged.stream() as merged_stream:
             async for item in merged_stream:
-                print(item.sensor_id, item)
+                print(item.serialize())

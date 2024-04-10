@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 
-from ..models.raw_data import RawData
+from ..models.raw_data.raw_data import RawData
 
 
 class Simulator(ABC):

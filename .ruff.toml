@@ -26,6 +26,7 @@ exclude = [
     ".venv",
     "venv",
     ".idea",
+    "plot_samples"
 ]
 
 line-length = 88

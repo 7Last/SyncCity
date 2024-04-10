@@ -7,7 +7,7 @@ from simulator.core.simulators.traffic_simulator import _multimodal_normal_gauss
 from simulator.core.simulators.temperature_simulator import _sinusoidal_value
 
 
-def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, x_label: str,
+def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, *, x_label: str,
                y_label: str, legend: [str] = None, x_ticks: float = 1) -> None:
     for x, y in plots:
         plt.plot(x, y)

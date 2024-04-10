@@ -4,7 +4,7 @@ import random
 import asyncio
 
 from .simulator import Simulator
-from ..models.temperature_raw_data import TemperatureRawData
+from ..models.raw_data.temperature_raw_data import TemperatureRawData
 
 
 class TemperatureSimulator(Simulator):

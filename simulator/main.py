@@ -3,7 +3,7 @@ import asyncio
 import logging as log
 
 from core.runner import Runner
-from core.config.schema import ConfigSchema
+from core.models.config.config import Config
 import toml
 
 log.basicConfig(level=log.INFO, format='[%(asctime)s] %(levelname)s: %(message)s')
@@ -11,7 +11,7 @@ config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.t
 
 
 def main() -> None:
-    schema = ConfigSchema(toml.load(config_path))
+    schema = Config(toml.load(config_path))
     log.debug('Loaded config.toml')
     runner = Runner(simulators=list(schema.simulators_generator()))
     log.debug('Starting runner')

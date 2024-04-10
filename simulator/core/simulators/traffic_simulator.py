@@ -4,7 +4,7 @@ import random
 import asyncio
 
 from .simulator import Simulator
-from ..models.traffic_raw_data import TrafficRawData
+from ..models.raw_data.traffic_raw_data import TrafficRawData
 
 
 class TrafficSimulator(Simulator):
@@ -67,6 +67,5 @@ def _multimodal_normal_gauss_value(x: float, modes: list[tuple[float, float]],
         return 1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2))
 
     y = sum([density_func(mu, sigma) for mu, sigma in modes], random_factor + shift)
-    print(random_factor)
 
     return y / max_x
