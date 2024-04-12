@@ -22,7 +22,8 @@ class TrafficSimulator(Simulator):
 
     def stream(self) -> Iterable[TrafficRawData]:
         while self.limit != 0 and self.running:
-            self.limit -= 1
+            if self.limit is not None:
+                self.limit -= 1
             self.timestamp += self.frequency
             time.sleep(self.delay.total_seconds())
 

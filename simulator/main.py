@@ -13,7 +13,12 @@ def main() -> None:
     config = Config(toml.load(config_path))
     log.debug('Loaded config.toml')
 
-    runner = Runner(simulators=list(config.simulators_generator()))
+    runner = Runner(
+        simulators=list(config.simulators_generator()),
+        bootstrap_server=config.kafka.bootstrap_server,
+        max_block_ms=config.kafka.max_block_ms,
+        topic=config.kafka.topic,
+    )
     log.debug('Starting runner')
     runner.run()
 

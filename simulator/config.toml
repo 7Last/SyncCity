@@ -1,9 +1,12 @@
 [runner]
 max-workers = 6
 
-## TODO: add kafka configuration
-#[runner.kafka]
-#port = 8000
+[kafka]
+max_block_ms = 1000
+topic = "sensors"
+host = "kafka"
+port = 9092
+
 
 # Dates and duration are expressed with ISO8601 standard
 [sensors.temperature-sensor-1]
