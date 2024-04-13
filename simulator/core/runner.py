@@ -2,27 +2,34 @@ import json
 import signal
 import logging as log
 import threading
-import concurrent.futures
+import concurrent.futures as concurrent
 
 from kafka import KafkaProducer
 
 from .simulators.simulator import Simulator
+from .models.config.kafka_config import KafkaConfig
+from .serialization.serializer_visitor import SerializerVisitor
 
 
 class Runner:
 
-    def __init__(self, simulators: list[Simulator], bootstrap_server: str,
-                 max_block_ms: int, topic: str) -> None:
+    def __init__(self, simulators: list[Simulator], kafka_config: KafkaConfig,
+                 max_workers: int) -> None:
+        self.topic = kafka_config.topic
         self.simulators = simulators
-        self.topic = topic
-        self.bootstrap_server = bootstrap_server
-        self.max_block_ms = max_block_ms
+        self.max_workers = max_workers
+        self.serializer = SerializerVisitor()
 
-        self.producer = KafkaProducer(
-            bootstrap_servers=[self.bootstrap_server],
-            value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-            acks=1,
-        )
+        try:
+            self.producer = KafkaProducer(
+                bootstrap_servers=[kafka_config.bootstrap_server],
+                value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+                max_block_ms=kafka_config.max_block_ms,
+                acks=1,
+            )
+        except Exception as e:
+            log.fatal('Error connecting to Kafka', e)
+            raise
 
         signal.signal(signal.SIGINT, self._graceful_shutdown)
         signal.signal(signal.SIGTERM, self._graceful_shutdown)
@@ -41,12 +48,11 @@ class Runner:
         )
 
         for item in simulator.stream():
-            log.debug('Sending on thread', threading.current_thread().name,
-                      item.serialize())
-            self.producer.send(self.topic, value=item.serialize())
+            serialized = item.accept(self.serializer)
+            self.producer.send(self.topic, value=serialized)
             self.producer.flush()
-            log.debug('Sent')
+            log.debug(f'Thread {threading.current_thread().name}: sent {serialized}')
 
     def run(self) -> None:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             executor.map(self._callback, self.simulators)

@@ -15,10 +15,5 @@ class RawData(ABC):
         return f'{self.__class__.__name__} {self.__dict__}'
 
     @abstractmethod
-    def serialize(self) -> Dict:
-        return {
-            "sensor_id": self.sensor_id,
-            "lat": self.latitude,
-            "lon": self.longitude,
-            "timestamp": self.timestamp.isoformat(),
-        }
+    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
+        pass

@@ -2,7 +2,6 @@ from typing import Dict
 from datetime import datetime
 
 from .raw_data import RawData
-from ..sensor_type import SensorType
 
 
 class TrafficRawData(RawData):
@@ -19,10 +18,5 @@ class TrafficRawData(RawData):
         self.vehicles_per_minute = vehicles_per_minute
         self.avg_speed_per_minute = avg_speed_per_minute
 
-    def serialize(self) -> Dict:
-        return {
-            "type": SensorType.TRAFFIC.value,
-            "vehicles_per_minute": self.vehicles_per_minute,
-            "avg_speed_per_minute": self.avg_speed_per_minute,
-            **(super().serialize()),
-        }
+    def serialize(self, visitor) -> Dict[str, any]:
+        return visitor.serialize_traffic_raw_data(self)

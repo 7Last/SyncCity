@@ -1,5 +1,6 @@
 from typing import Dict, Iterable
 
+from .general_config import GeneralConfig
 from .kafka_config import KafkaConfig
 from ..sensor_type import SensorType
 from .sensor_config import SensorConfig
@@ -20,6 +21,7 @@ class Config:
         }
 
         self.kafka = KafkaConfig(config['kafka'])
+        self.general = GeneralConfig(config.get('general', {}))
 
     def simulators_generator(self) -> Iterable[Simulator]:
         for sensor_id, config in self.sensors.items():

@@ -10,17 +10,10 @@ class ChargingStationRawData(RawData):
         CHARGING = 1
         PAUSED = 2
         COMPLETED = 3
-        MALFUNCTION = 4
+        MALFUNCTIONING = 4
 
-    def __init__(self,
-                 *,
-                 status: Status,
-                 latitude: float,
-                 longitude: float,
-                 sensor_id: str,
-                 timestamp: datetime = datetime.now()) -> None:
-        super().__init__(latitude=latitude,
-                         longitude=longitude,
-                         sensor_id=sensor_id,
+    def __init__(self, *, status: Status, latitude: float, longitude: float,
+                 sensor_id: str, timestamp: datetime = datetime.now()) -> None:
+        super().__init__(latitude=latitude, longitude=longitude, sensor_id=sensor_id,
                          timestamp=timestamp)
         self.status = status

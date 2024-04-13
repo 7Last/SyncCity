@@ -2,7 +2,6 @@ from typing import Dict
 from datetime import datetime
 
 from .raw_data import RawData
-from ..sensor_type import SensorType
 
 
 class TemperatureRawData(RawData):
@@ -12,9 +11,5 @@ class TemperatureRawData(RawData):
                          timestamp=timestamp)
         self.value = value
 
-    def serialize(self) -> Dict:
-        return {
-            "type": SensorType.TEMPERATURE.value,
-            "value": self.value,
-            **(super().serialize()),
-        }
+    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
+        return visitor.serialize_temperature_raw_data(self)

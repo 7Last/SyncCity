@@ -1,11 +1,10 @@
-version: '3.8'
-
 networks:
   net:
     driver: bridge
 
 services:
   akhq:
+    container_name: akhq
     image: tchiotludo/akhq
     environment:
       AKHQ_CONFIGURATION: |
