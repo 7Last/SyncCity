@@ -18,6 +18,7 @@ def main() -> None:
     log.debug('Loaded config.toml')
 
     runner = Runner(
+        env=os.environ.get('SENSORS_SIMULATOR_ENV'),
         simulators=list(config.simulators_generator()),
         kafka_config=config.kafka,
         max_workers=config.general.max_workers,

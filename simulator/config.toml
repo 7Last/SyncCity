@@ -5,6 +5,12 @@ log_level = "INFO"
 [kafka]
 max_block_ms = 1000
 topic = "sensors"
+
+[kafka.bootstrap_servers.local] # Configuration for local development
+host = "localhost"
+port = 9094
+
+[kafka.bootstrap_servers.release] # Configuration for docker-compose
 host = "kafka"
 port = 9092
 

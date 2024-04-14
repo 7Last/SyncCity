@@ -13,7 +13,7 @@ from .serialization.serializer_visitor import SerializerVisitor
 
 class Runner:
 
-    def __init__(self, simulators: list[Simulator], kafka_config: KafkaConfig,
+    def __init__(self, *, env: str, simulators: list[Simulator], kafka_config: KafkaConfig,
                  max_workers: int) -> None:
         self.topic = kafka_config.topic
         self.simulators = simulators
@@ -21,8 +21,9 @@ class Runner:
         self.serializer = SerializerVisitor()
 
         try:
+            print('Env:', env, 'bootstrap_servers:', kafka_config[env])
             self.producer = KafkaProducer(
-                bootstrap_servers=[kafka_config.bootstrap_server],
+                bootstrap_servers=[kafka_config[env]],
                 value_serializer=lambda v: json.dumps(v).encode("utf-8"),
                 max_block_ms=kafka_config.max_block_ms,
                 acks=1,
