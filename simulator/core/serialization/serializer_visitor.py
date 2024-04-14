@@ -29,7 +29,7 @@ class SerializerVisitor:
     def serialize_traffic_raw_data(raw_data: TrafficRawData) -> Dict:
         return {
             "type": SensorType.TRAFFIC.value,
-            "vehicles_per_minute": raw_data.vehicles_per_minute,
-            "avg_speed_per_minute": raw_data.avg_speed_per_minute,
+            "vehicles_per_hour": raw_data.vehicles_per_hour,
+            "avg_speed": raw_data.avg_speed,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }

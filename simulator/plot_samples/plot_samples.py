@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from simulator.core.simulators.traffic_simulator import _multimodal_normal_gauss_value
 from simulator.core.simulators.temperature_simulator import _sinusoidal_value
+from simulator.core.simulators.traffic_simulator import _multimodal_gauss_value
 
 
 def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, *, x_label: str,
@@ -23,20 +23,46 @@ def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, *, x_label: s
 
 def traffic() -> None:
     x = np.linspace(0, 24, 1000)
-    modes = [(8.5, 0.425), (12.5, 1.88), (18, 0.38)]
-    max_x = 18
-    max_speed = 80
-    mult_factor = 400
+    modes = [
+        (0, 2.1),
+        (4, 2.2),
+        (13, 3),
+        (21, 3),
+        (24, 3)
+    ]
 
-    probabilities = [_multimodal_normal_gauss_value(x_i, modes=modes, max_x=max_x) for
-                     x_i in x]
-    vehicles = [mult_factor * probability for probability in probabilities]
-    speed = [max_speed - vehicles_i for vehicles_i in vehicles]
+    speed = [
+        100 * _multimodal_gauss_value(x_i, modes=modes)
+        for x_i in x
+    ]
 
-    plot_chart([(x, vehicles)], 'Vehicles per unit', 'Hours', 'Vehicles per s',
-               x_ticks=1)
-    plot_chart([(x, speed)], 'Average Speed', 'Hours', 'km/h',
-               x_ticks=1)
+    plot_chart(
+        plots=[(x, speed)],
+        title='Speed in km/h',
+        x_label='Time',
+        y_label='Speed in km/h',
+        x_ticks=1,
+    )
+
+    modes = [
+        (0, 4),
+        (8.5, 1.8),
+        (13, 2),
+        (17.5, 1.7),
+        (21, 3)
+    ]
+    vehicles = [
+        200 * _multimodal_gauss_value(x_i, modes=modes)
+        for x_i in x
+    ]
+
+    plot_chart(
+        plots=[(x, vehicles)],
+        title='Vehicles per Hour',
+        x_label='Time',
+        y_label='Vehicles per hour',
+        x_ticks=1,
+    )
 
 
 def temperature() -> None:
@@ -44,7 +70,8 @@ def temperature() -> None:
     x = np.linspace(0, 24, 1000)
     y = [round(_sinusoidal_value(timestamp + timedelta(hours=x_i)), 2) for x_i in x]
     formatted = timestamp.strftime('%Y-%m-%d')
-    plot_chart([(x, y)], f'Temperature ({formatted})', 'Hours', 'Celsius', x_ticks=1)
+    plot_chart([(x, y)], f'Temperature ({formatted})', x_label='Time',
+               y_label='Celsius', x_ticks=1)
 
 
 def main():
