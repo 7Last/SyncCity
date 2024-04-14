@@ -1,6 +1,6 @@
 [general]
 max_workers = 6
-log_level = "INFO"
+log_level = "DEBUG"
 
 [kafka]
 max_block_ms = 1000

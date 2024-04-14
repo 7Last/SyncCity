@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import numpy as np
 
-from simulator.core.simulators.temperature_simulator import _sinusoidal_value
-from simulator.core.simulators.traffic_simulator import _multimodal_gauss_value
+from simulator.src.simulators.temperature_simulator import _sinusoidal_value
+from simulator.src.simulators.traffic_simulator import _multimodal_gauss_value
 
 
 def plot_chart(plots: [tuple[np.ndarray, np.ndarray]], title: str, *, x_label: str,
@@ -28,7 +28,7 @@ def traffic() -> None:
         (4, 2.2),
         (13, 3),
         (21, 3),
-        (24, 3)
+        (24, 3),
     ]
 
     speed = [
@@ -49,7 +49,7 @@ def traffic() -> None:
         (8.5, 1.8),
         (13, 2),
         (17.5, 1.7),
-        (21, 3)
+        (21, 3),
     ]
     vehicles = [
         200 * _multimodal_gauss_value(x_i, modes=modes)

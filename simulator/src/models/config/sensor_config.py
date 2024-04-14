@@ -8,7 +8,7 @@ from ..sensor_type import SensorType
 
 
 class SensorConfig:
-    def __init__(self, config: Dict) -> None:
+    def __init__(self, config: Dict[str, any]) -> None:
         """
         Represents the schema for the sensor configuration
         :param config: dictionary with the configuration for a single sensor
@@ -24,7 +24,7 @@ class SensorConfig:
         try:
             self.type = SensorType.from_str(config.get('type'))
         except Exception as e:
-            log.fatal(
+            log.exception(
                 'Invalid points_spacing value. Must be specified following ISO8601',
                 e,
             )
@@ -33,7 +33,7 @@ class SensorConfig:
         try:
             self.points_spacing: timedelta = isodate.parse_duration(points_spacing)
         except Exception as e:
-            log.fatal(
+            log.exception(
                 'Invalid points_spacing value. Must be specified following ISO8601',
                 e,
             )
@@ -42,7 +42,7 @@ class SensorConfig:
         try:
             self.generation_delay: timedelta = isodate.parse_duration(generation_delay)
         except Exception as e:
-            log.fatal(
+            log.exception(
                 'Invalid generation_delay value. Must be specified following ISO8601',
                 e,
             )

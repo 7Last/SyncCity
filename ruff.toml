@@ -83,6 +83,7 @@ select = [
 ]
 
 ignore = [
+    "I001", # isort
     "B008",
     "B024",
 ]
@@ -95,7 +96,7 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [lint.isort]
-from-first = true
+#from-first = true
 no-sections = false
 length-sort = true
 relative-imports-order = "closest-to-furthest"

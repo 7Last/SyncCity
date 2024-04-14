@@ -1,9 +1,10 @@
-import os
 import logging as log
+import os
 
-from core.runner import Runner
-from core.models.config.config import Config
 import toml
+
+from src.models.config.config import Config
+from src.runner import Runner
 
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.toml')
 
