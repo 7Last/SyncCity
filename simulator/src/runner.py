@@ -41,22 +41,21 @@ class Runner:
     def _graceful_shutdown(self, _, __) -> None:  # noqa: ANN001
         log.info('Received shutdown signal, gracefully stopping...')
         for simulator in self.simulators:
-            log.debug(f'Stopping {simulator.sensor_id}')
+            log.debug(f'Stopping {simulator.sensor_name}')
             simulator.stop()
         self.producer.close()
         log.debug('Producer closed, exiting.')
 
     def _callback(self, simulator: Simulator) -> None:
         simulator.start()
-        log.info(
-            f'Starting {simulator.sensor_id} in {threading.current_thread().name}',
-        )
+        thread = threading.current_thread().name
+        log.info(f'Starting {simulator.sensor_name} in {thread}')
 
         for item in simulator.stream():
             serialized = item.accept(self.serializer)
             self.producer.send(self.topic, value=serialized)
             self.producer.flush()
-            log.debug(f'Thread {threading.current_thread().name}: sent {serialized}')
+            log.debug(f'Thread {thread}: sent {serialized}')
 
     def run(self) -> None:
         with concurrent.ThreadPoolExecutor(max_workers=self.max_workers) as executor:

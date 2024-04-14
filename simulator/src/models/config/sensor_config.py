@@ -1,6 +1,7 @@
 from typing import Dict
 from datetime import timedelta
 import logging as log
+from uuid import UUID
 
 import isodate
 
@@ -13,6 +14,7 @@ class SensorConfig:
         Represents the schema for the sensor configuration
         :param config: dictionary with the configuration for a single sensor
         """
+        self.uuid = UUID(config.get('uuid'))
         self.limit = config.get('limit') or None
         self.begin_date = config.get('begin_date') or None
         self.latitude = config.get('latitude')

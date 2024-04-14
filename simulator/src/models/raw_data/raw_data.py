@@ -1,14 +1,15 @@
 from abc import ABC, abstractmethod
 from typing import Dict
 from datetime import datetime
+from uuid import UUID
 
 
 class RawData(ABC):
-    def __init__(self, *, latitude: float, longitude: float, sensor_id: str,
+    def __init__(self, *, latitude: float, longitude: float, sensor_uuid: UUID,
                  timestamp: datetime = datetime.now()) -> None:
         self.latitude = latitude
         self.longitude = longitude
-        self.sensor_id = sensor_id
+        self.sensor_uuid = sensor_uuid
         self.timestamp = timestamp
 
     def __str__(self) -> str:

@@ -1,8 +1,9 @@
+import random
+import time
+from datetime import datetime, timedelta
 from math import pi, sin
 from typing import Iterable
-from datetime import datetime, timedelta
-import time
-import random
+from uuid import UUID
 
 from .simulator import Simulator
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
@@ -10,14 +11,15 @@ from ..models.raw_data.temperature_raw_data import TemperatureRawData
 
 class TemperatureSimulator(Simulator):
 
-    def __init__(self, *, sensor_id: str, points_spacing: timedelta,
-                 latitude: float, longitude: float,
+    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
+                 points_spacing: timedelta, latitude: float, longitude: float,
                  generation_delay: timedelta = timedelta(seconds=1),
                  begin_date: datetime = None,
                  limit: int = None) -> None:
-        super().__init__(sensor_id=sensor_id, points_spacing=points_spacing,
-                         latitude=latitude, generation_delay=generation_delay,
-                         longitude=longitude, begin_date=begin_date, limit=limit)
+        super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
+                         points_spacing=points_spacing, latitude=latitude,
+                         generation_delay=generation_delay, longitude=longitude,
+                         begin_date=begin_date, limit=limit)
 
     def stream(self) -> Iterable[TemperatureRawData]:
         while self.limit != 0 and self.running:
@@ -28,7 +30,7 @@ class TemperatureSimulator(Simulator):
 
             yield TemperatureRawData(
                 value=_sinusoidal_value(self.timestamp),
-                sensor_id=self.sensor_id,
+                sensor_uuid=self.sensor_uuid,
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,

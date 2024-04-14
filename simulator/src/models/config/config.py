@@ -16,26 +16,27 @@ class Config:
         :param config: dictionary with the configuration
         """
         self.sensors: Dict[str, SensorConfig] = {
-            sensor_id: SensorConfig(sensor)
-            for sensor_id, sensor in config['sensors'].items()
+            sensor_name: SensorConfig(sensor)
+            for sensor_name, sensor in config['sensors'].items()
         }
 
         self.kafka = KafkaConfig(config['kafka'])
         self.general = GeneralConfig(config.get('general', {}))
 
     def simulators_generator(self) -> Iterable[Simulator]:
-        for sensor_id, config in self.sensors.items():
-            yield _simulator_factory(sensor_id, config)
+        for sensor_name, config in self.sensors.items():
+            yield _simulator_factory(sensor_name, config)
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
 
 
-def _simulator_factory(sensor_id: str, config: SensorConfig) -> Simulator:
+def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
     match config.type:
         case SensorType.TEMPERATURE:
             return TemperatureSimulator(
-                sensor_id=sensor_id,
+                sensor_name=sensor_name,
+                sensor_uuid=config.uuid,
                 generation_delay=config.generation_delay,
                 points_spacing=config.points_spacing,
                 latitude=config.latitude,
@@ -45,7 +46,8 @@ def _simulator_factory(sensor_id: str, config: SensorConfig) -> Simulator:
             )
         case SensorType.TRAFFIC:
             return TrafficSimulator(
-                sensor_id=sensor_id,
+                sensor_name=sensor_name,
+                sensor_uuid=config.uuid,
                 generation_delay=config.generation_delay,
                 points_spacing=config.points_spacing,
                 latitude=config.latitude,
