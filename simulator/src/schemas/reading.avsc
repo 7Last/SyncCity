@@ -1,5 +1,4 @@
 {
-  "namespace": "example.avro",
   "type": "record",
   "name": "Reading",
   "fields": [

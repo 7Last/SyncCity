@@ -38,10 +38,10 @@ services:
       - net
 
   kafka:
-    container_name: kafka
+    container_name: utils
     image: bitnami/kafka:latest
     volumes:
-      - ./volumes/kafka-data:/var/lib/kafka/data:Z
+      - ./volumes/utils-data:/var/lib/utils/data:Z
     environment:
       - KAFKA_BROKER_ID=0
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -52,12 +52,12 @@ services:
       - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:9094
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://utils:9092,EXTERNAL://localhost:9094
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - ADVERTISED_HOST=localhost
     healthcheck:
-      test: [ "CMD-SHELL", "kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list" ]
+      test: [ "CMD-SHELL", "utils-topics.sh --bootstrap-server 127.0.0.1:9092 --list" ]
       interval: 5s
     ports:
       - '9092:9092'
@@ -70,7 +70,7 @@ services:
   simulator:
     container_name: simulator
     environment:
-      - KAFKA_HOST=kafka
+      - KAFKA_HOST=utils
       - KAFKA_PORT=9092
       - KAFKA_TOPIC=readings
       - KAFKA_MAX_BLOCK_MS=1000
