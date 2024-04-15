@@ -6,6 +6,7 @@ kafka-python==2.0.2
 mccabe==0.7.0
 pip-autoremove==0.10.0
 platformdirs==4.2.0
+python-dotenv==1.0.1
 ruff==0.3.5
 six==1.16.0
 toml==0.10.2

@@ -1,37 +1,25 @@
-from typing import Dict, Iterable
+from typing import Iterable, Dict
 
-from .general_config import GeneralConfig
-from .kafka_config import KafkaConfig
-from ..sensor_type import SensorType
 from .sensor_config import SensorConfig
+from ..sensor_type import SensorType
 from ...simulators.simulator import Simulator
-from ...simulators.traffic_simulator import TrafficSimulator
 from ...simulators.temperature_simulator import TemperatureSimulator
+from ...simulators.traffic_simulator import TrafficSimulator
 
 
-class Config:
-    def __init__(self, config: Dict) -> None:
-        """
-        Represents the schema for the toml configuration file
-        :param config: dictionary with the configuration
-        """
-        self.sensors: Dict[str, SensorConfig] = {
-            sensor_name: SensorConfig(sensor)
-            for sensor_name, sensor in config['sensors'].items()
-        }
-
-        self.kafka = KafkaConfig(config['kafka'])
-        self.general = GeneralConfig(config.get('general', {}))
-
-    def simulators_generator(self) -> Iterable[Simulator]:
-        for sensor_name, config in self.sensors.items():
-            yield _simulator_factory(sensor_name, config)
-
-    def __str__(self) -> str:
-        return f'{self.__class__.__name__} {self.__dict__}'
+def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
+    """
+    Generates the simulators based on the configuration
+    """
+    for sensor_name, config in sensors.items():
+        sensor_config = SensorConfig(config=config)
+        yield _simulator_factory(sensor_name, sensor_config)
 
 
 def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
+    """
+    Factory method to create the simulators based on the configuration
+    """
     match config.type:
         case SensorType.TEMPERATURE:
             return TemperatureSimulator(
@@ -57,3 +45,4 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
             )
         case _:
             raise NotImplementedError(f'No factory for {type}')
+

@@ -69,6 +69,13 @@ services:
 
   simulator:
     container_name: simulator
+    environment:
+      - KAFKA_HOST=kafka
+      - KAFKA_PORT=9092
+      - KAFKA_TOPIC=sensors
+      - KAFKA_MAX_BLOCK_MS=1000
+      - MAX_WORKERS=6
+      - LOG_LEVEL='INFO'
     build:
       context: ./simulator
       dockerfile: Dockerfile

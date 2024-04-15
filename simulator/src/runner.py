@@ -6,29 +6,28 @@ import threading
 
 from kafka import KafkaProducer
 
-from .models.config.kafka_config import KafkaConfig
+from .models.config.env_config import EnvConfig
 from .serialization.serializer_visitor import SerializerVisitor
 from .simulators.simulator import Simulator
 
 
 class Runner:
 
-    def __init__(self, *, env: str, simulators: list[Simulator],
-                 kafka_config: KafkaConfig, max_workers: int) -> None:
-        self.topic = kafka_config.topic
-        self.simulators = simulators
-        self.max_workers = max_workers
+    def __init__(self, *, simulators: list[Simulator], config: EnvConfig) -> None:
         self.serializer = SerializerVisitor()
-        log.debug(f'Running in {env} environment')
+        self.simulators = simulators
+        self.topic = config.kafka_topic
+        self.max_workers = config.max_workers
+
+        bootstrap_server = f'{config.kafka_host}:{config.kafka_port}'
+        log.debug(f'Connecting to Kafka at {bootstrap_server}')
 
         try:
-            bootstrap_servers = kafka_config[env]
-            log.debug(f'Connecting to Kafka at {bootstrap_servers}')
 
             self.producer = KafkaProducer(
-                bootstrap_servers=bootstrap_servers,
+                bootstrap_servers=[bootstrap_server],
                 value_serializer=lambda v: json.dumps(v).encode("utf-8"),
-                max_block_ms=kafka_config.max_block_ms,
+                max_block_ms=config.max_block_ms,
                 acks=1,
             )
         except Exception as e:
@@ -58,5 +57,6 @@ class Runner:
             log.debug(f'Thread {thread}: sent {serialized}')
 
     def run(self) -> None:
+        log.debug('Creating thread pool with %d workers', self.max_workers)
         with concurrent.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             executor.map(self._callback, self.simulators)

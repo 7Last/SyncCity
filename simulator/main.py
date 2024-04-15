@@ -3,27 +3,29 @@ import os
 
 import toml
 
-from src.models.config.config import Config
+from src.models.config.env_config import EnvConfig
+from src.models.config.simulator_factory import simulators_generator
 from src.runner import Runner
 
-config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.toml')
+sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 
 
 def main() -> None:
-    config = Config(toml.load(config_path))
-
+    env_config = EnvConfig()
     log.basicConfig(
-        level=config.general.log_level,
+        level=env_config.log_level,
         format='%(asctime)s %(levelname)s: %(message)s',
     )
-    log.debug('Loaded config.toml')
+    log.debug(f'Loaded configuration from env {env_config}')
+
+    sensors_config = toml.load(sensors_path).get('sensors')
+    log.debug(f'Loaded sensors configuration {sensors_config}')
 
     runner = Runner(
-        env=os.environ.get('SENSORS_SIMULATOR_ENV'),
-        simulators=list(config.simulators_generator()),
-        kafka_config=config.kafka,
-        max_workers=config.general.max_workers,
+        simulators=list(simulators_generator(sensors_config)),
+        config=env_config,
     )
+
     log.debug('Starting runner')
     runner.run()
 
