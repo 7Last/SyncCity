@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
+from typing import Iterable
 from uuid import UUID
 
 from ..models.raw_data.raw_data import RawData
-from typing import Iterable
 
 
 class Simulator(ABC):

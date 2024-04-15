@@ -1,10 +1,9 @@
 from typing import Dict
-import struct
 
-from ..models.sensor_type import SensorType
 from ..models.raw_data.raw_data import RawData
-from ..models.raw_data.traffic_raw_data import TrafficRawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
+from ..models.raw_data.traffic_raw_data import TrafficRawData
+from ..models.sensor_type import SensorType
 
 
 class SerializerVisitor:
