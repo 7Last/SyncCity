@@ -45,4 +45,3 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
             )
         case _:
             raise NotImplementedError(f'No factory for {type}')
-
