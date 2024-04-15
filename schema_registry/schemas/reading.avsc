@@ -1,0 +1,46 @@
+{
+  "namespace": "example.avro",
+  "type": "record",
+  "name": "Reading",
+  "fields": [
+    {
+      "name": "sensor_uuid",
+      "type": "bytes"
+    },
+    {
+      "name": "latitude",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "type": "double"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": {
+        "name": "SensorType",
+        "type": "enum",
+        "symbols": [
+          "TEMPERATURE",
+          "TRAFFIC"
+        ]
+      }
+    },
+    {
+      "name": "value_1",
+      "type": "bytes"
+    },
+    {
+      "name": "value_2",
+      "type": "bytes"
+    },
+    {
+      "name": "value_3",
+      "type": "bytes"
+    }
+  ]
+}

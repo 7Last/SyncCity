@@ -12,8 +12,8 @@ class SerializerVisitor:
     def _serialize_raw_data(raw_data: RawData) -> Dict:
         return {
             "sensor_uuid": str(raw_data.sensor_uuid),
-            "lat": raw_data.latitude,
-            "lon": raw_data.longitude,
+            "latitude": raw_data.latitude,
+            "longitude": raw_data.longitude,
             "timestamp": raw_data.timestamp.isoformat(),
         }
 
