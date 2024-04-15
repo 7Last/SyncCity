@@ -41,10 +41,10 @@ services:
       - net
 
   kafka:
-    container_name: utils
+    container_name: kafka
     image: bitnami/kafka:latest
     volumes:
-      - ./volumes/utils-data:/var/lib/utils/data:Z
+      - ./volumes/kafka-data:/var/lib/kafka/data:Z
     environment:
       - KAFKA_BROKER_ID=0
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
@@ -55,13 +55,13 @@ services:
       - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
       - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:29092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://utils:9092,EXTERNAL://localhost:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
       - ADVERTISED_HOST=localhost
       - KAFKA_CREATE_TOPICS=readings:12:1
     healthcheck:
-      test: [ "CMD-SHELL", "utils-topics.sh --bootstrap-server 127.0.0.1:9092 --list" ]
+      test: [ "CMD-SHELL", "kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list" ]
       interval: 5s
     ports:
       - "9092:9092"
@@ -75,16 +75,18 @@ services:
     container_name: schema_registry
     image: bitnami/schema-registry:latest
     environment:
-#      - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
+      - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
       - SCHEMA_REGISTRY_DEBUG=true
-      - SCHEMA_REGISTRY_KAFKA_BROKERS=PLAINTEXT://utils:9092
-      - SCHEMA_REGISTRY_KAFKA_BOOTSTRAP_SERVERS=utils:9092
-      - SCHEMA_REGISTRY_HOST_NAME=schemaregistry
+      - SCHEMA_REGISTRY_KAFKA_BROKERS=PLAINTEXT://kafka:9092
+      - SCHEMA_REGISTRY_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SCHEMA_REGISTRY_HOST_NAME=schema_registry
       - SCHEMA_REGISTRY_CLIENT_AUTHENTICATION_METHOD=none
       - SCHEMA_REGISTRY_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=none
       - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
     depends_on:
       kafka:
+        condition: service_healthy
+      zookeeper:
         condition: service_healthy
     ports:
       - 8081:8081
