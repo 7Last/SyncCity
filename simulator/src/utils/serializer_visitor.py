@@ -1,9 +1,9 @@
 from typing import Dict
 
-from ..models.sensor_type import SensorType
 from ..models.raw_data.raw_data import RawData
-from ..models.raw_data.traffic_raw_data import TrafficRawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
+from ..models.raw_data.traffic_raw_data import TrafficRawData
+from ..models.sensor_type import SensorType
 
 
 class SerializerVisitor:
@@ -12,8 +12,8 @@ class SerializerVisitor:
     def _serialize_raw_data(raw_data: RawData) -> Dict:
         return {
             "sensor_uuid": str(raw_data.sensor_uuid),
-            "lat": raw_data.latitude,
-            "lon": raw_data.longitude,
+            "latitude": raw_data.latitude,
+            "longitude": raw_data.longitude,
             "timestamp": raw_data.timestamp.isoformat(),
         }
 

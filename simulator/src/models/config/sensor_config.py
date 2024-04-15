@@ -1,6 +1,6 @@
-from typing import Dict
-from datetime import timedelta
 import logging as log
+from datetime import timedelta
+from typing import Dict
 from uuid import UUID
 
 import isodate

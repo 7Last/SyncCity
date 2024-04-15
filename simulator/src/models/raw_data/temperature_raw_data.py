@@ -1,5 +1,5 @@
-from typing import Dict
 from datetime import datetime
+from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData

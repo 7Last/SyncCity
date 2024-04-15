@@ -3,6 +3,7 @@ import os
 
 import toml
 
+from src import load_avro_schemas
 from src.models.config.env_config import EnvConfig
 from src.models.config.simulator_factory import simulators_generator
 from src.runner import Runner
@@ -24,6 +25,7 @@ def main() -> None:
     runner = Runner(
         simulators=list(simulators_generator(sensors_config)),
         config=env_config,
+        schema_by_subject=load_avro_schemas(),
     )
 
     log.debug('Starting runner')

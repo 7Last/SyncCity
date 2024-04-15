@@ -1,0 +1,53 @@
+{
+  "type": "record",
+  "name": "Reading",
+  "fields": [
+    {
+      "name": "sensor_uuid",
+      "type": "string"
+    },
+    {
+      "name": "latitude",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "type": "double"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": {
+        "name": "SensorType",
+        "type": "enum",
+        "symbols": [
+          "temperature",
+          "traffic"
+        ]
+      }
+    },
+    {
+      "name": "value_1",
+      "type": "float"
+    },
+    {
+      "name": "value_2",
+      "default": null,
+      "type": [
+        "null",
+        "float"
+      ]
+    },
+    {
+      "name": "value_3",
+      "default": null,
+      "type": [
+        "null",
+        "float"
+      ]
+    }
+  ]
+}
