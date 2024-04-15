@@ -13,11 +13,14 @@ services:
             sensors-simulator:
               properties:
                 bootstrap.servers: "kafka:9092"
+              schema-registry:
+                url: "http://schema_registry:8081"
     ports:
       - "8080:8080"
     depends_on:
       kafka:
         condition: service_healthy
+
     networks:
       - net
 

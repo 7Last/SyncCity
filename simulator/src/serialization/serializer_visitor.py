@@ -1,4 +1,5 @@
 from typing import Dict
+import struct
 
 from ..models.sensor_type import SensorType
 from ..models.raw_data.raw_data import RawData

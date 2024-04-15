@@ -1,9 +1,12 @@
 import concurrent.futures as concurrent
-import json
+import io
 import logging as log
 import signal
 import threading
+import time
 
+import avro.schema
+from avro.io import DatumWriter
 from kafka import KafkaProducer
 
 from .models.config.env_config import EnvConfig
@@ -19,20 +22,23 @@ class Runner:
         self.topic = config.kafka_topic
         self.max_workers = config.max_workers
 
+        path = './schema_registry/schemas/reading.avsc'
+        schema = avro.schema.parse(open(path).read())
+
         bootstrap_server = f'{config.kafka_host}:{config.kafka_port}'
         log.debug(f'Connecting to Kafka at {bootstrap_server}')
 
         try:
-
-            self.producer = KafkaProducer(
+            self._producer = KafkaProducer(
                 bootstrap_servers=[bootstrap_server],
-                value_serializer=lambda v: json.dumps(v).encode("utf-8"),
                 max_block_ms=config.max_block_ms,
                 acks=1,
             )
+            self._writer = DatumWriter(schema)
+            self._bytes_writer = io.BytesIO()
+            self._encoder = avro.io.BinaryEncoder(self._bytes_writer)
         except Exception as e:
             log.exception('Error while creating KafkaProducer', e)
-            raise
 
         signal.signal(signal.SIGINT, self._graceful_shutdown)
         signal.signal(signal.SIGTERM, self._graceful_shutdown)
@@ -42,7 +48,9 @@ class Runner:
         for simulator in self.simulators:
             log.debug(f'Stopping {simulator.sensor_name}')
             simulator.stop()
-        self.producer.close()
+
+        time.sleep(1.5)  # wait for the simulators to stop
+        self._producer.close()
         log.debug('Producer closed, exiting.')
 
     def _callback(self, simulator: Simulator) -> None:
@@ -51,10 +59,20 @@ class Runner:
         log.info(f'Starting {simulator.sensor_name} in {thread}')
 
         for item in simulator.stream():
-            serialized = item.accept(self.serializer)
-            self.producer.send(self.topic, value=serialized)
-            self.producer.flush()
-            log.debug(f'Thread {thread}: sent {serialized}')
+            json_item = item.accept(self.serializer)
+            try:
+                # convert the item to bytes
+                self._writer.write(json_item, self._encoder)
+                raw_bytes = self._bytes_writer.getvalue()
+
+                schema_id = 1
+                message_with_schema_id = bytearray([0]) + schema_id.to_bytes(4,
+                                                                             'big') + raw_bytes
+
+                self._producer.send(self.topic, message_with_schema_id)
+                log.debug(f'Thread {thread}: sent message to Kafka')
+            except Exception as e:
+                log.exception('Error while sending message to Kafka', e)
 
     def run(self) -> None:
         log.debug('Creating thread pool with %d workers', self.max_workers)
