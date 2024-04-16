@@ -3,28 +3,6 @@ networks:
     driver: bridge
 
 services:
-  akhq:
-    container_name: akhq
-    image: tchiotludo/akhq
-    environment:
-      AKHQ_CONFIGURATION: |
-        akhq:
-          connections:
-            sensors-simulator:
-              properties:
-                bootstrap.servers: "kafka:9092"
-              schema-registry:
-                url: "http://schema_registry:8081"
-    ports:
-      - "8080:8080"
-    depends_on:
-      kafka:
-        condition: service_healthy
-
-    networks:
-      - net
-
-
   zookeeper:
     container_name: zookeeper
     image: zookeeper
@@ -93,6 +71,29 @@ services:
 
     networks:
       - net
+
+  console:
+    container_name: redpanda-console
+    image: docker.redpanda.com/redpandadata/console:v2.4.6
+    networks:
+      - net
+    entrypoint: /bin/sh
+    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+    depends_on:
+      kafka:
+        condition: service_healthy
+      schema_registry:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      CONFIG_FILEPATH: /tmp/config.yml
+      CONSOLE_CONFIG_FILE: |
+        kafka:
+          brokers: ["kafka:9092"]
+          schemaRegistry:
+            enabled: true
+            urls: ["http://schema_registry:8081"]
 
   simulator:
     container_name: simulator
