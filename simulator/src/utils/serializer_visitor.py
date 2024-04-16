@@ -21,7 +21,7 @@ class SerializerVisitor:
     def serialize_temperature_raw_data(raw_data: TemperatureRawData) -> Dict:
         return {
             "type": SensorType.TEMPERATURE.value,
-            "value_1": raw_data.value,
+            "param_1": raw_data.value,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
 
@@ -29,7 +29,7 @@ class SerializerVisitor:
     def serialize_traffic_raw_data(raw_data: TrafficRawData) -> Dict:
         return {
             "type": SensorType.TRAFFIC.value,
-            "value_1": raw_data.vehicles_per_hour,
-            "value_2": raw_data.avg_speed,
+            "param_1": raw_data.vehicles_per_hour,
+            "param_2": raw_data.avg_speed,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }

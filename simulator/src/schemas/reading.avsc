@@ -30,11 +30,11 @@
       }
     },
     {
-      "name": "value_1",
+      "name": "param_1",
       "type": "float"
     },
     {
-      "name": "value_2",
+      "name": "param_2",
       "default": null,
       "type": [
         "null",
@@ -42,7 +42,7 @@
       ]
     },
     {
-      "name": "value_3",
+      "name": "param_3",
       "default": null,
       "type": [
         "null",
