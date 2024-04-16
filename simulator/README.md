@@ -1,45 +1,37 @@
 # Python data simulator
-## Running the simulator in local mode
-Running the simulator in local mode means that only the Kafka stack is running
-inside the docker container. The simulator is running on the host machine.
-This is useful for development and debugging purposes. The corresponding `docker-compose`
-file is `docker-compose.local.yml`.
+## Running the simulator locally
+### Starting the Kafka stack
+```bash
+docker-compose up -d
+```
 
-### Create virtual env
+### Running the simulator
+There are 2 ways to run the simulator:
+1. Inside a docker container. Run:
+```bash
+docker-compose -f ./docker-compose.simulator.yml up -d
+```
+2. Locally (preferred for development).
+- Create a virtual environment:
 ```bash
 python -m venv ./simulator/.venv
 ```
 
-### Activate virtual env
-On Linux/MacOs:
+- Activate the virtual environment; for Linux and macOS:
 ```bash
 source ./simulator/.venv/bin/activate
 ```
+- Activate the virtual environment; for Windows:
+```bash
+.\simulator\.venv\Scripts\activate
+```
 
-### Install requirements
+- Install the requirements:
 ```bash
 pip3 install -r ./simulator/requirements.txt
 ```
 
-### Start the Kafka stack
-```bash
-docker-compose -f ./docker-compose.local.yml up -d
-```
-
-### Run the script
+- Run the simulator:
 ```bash
 python3 ./simulator/main.py
 ```
-
-## Running the simulator in release mode
-Running the simulator in release mode means that the simulator is running inside
-the docker container. The corresponding `docker-compose` file is `docker-compose.release.yml`.
-
-There is no need to create a virtual environment or install requirements in this case,
-as it is all handled by the Dockerfile.
-
-### Start the whole stack
-```bash
-docker-compose -f ./docker-compose.release.yml up -d
-```
-

@@ -1,11 +1,9 @@
 import concurrent.futures as concurrent
-import io
 import logging as log
 import threading
 import time
 from typing import Dict
 
-from avro.io import DatumWriter, BinaryEncoder
 from avro.schema import Schema
 from kafka import KafkaProducer
 
@@ -24,7 +22,6 @@ class Runner:
         schema_id, schema = schema_by_subject[self._SUBJECT]
 
         self.simulators = simulators
-        self.topic = config.kafka_topic
         self.max_workers = config.max_workers
 
         bootstrap_server = f'{config.kafka_host}:{config.kafka_port}'
@@ -50,8 +47,8 @@ class Runner:
             json_item = item.accept(self.serializer)
             try:
                 value = self._avro_converter.encode(json_item)
-                key = bytes(json_item['type'], 'utf-8')
-                self._producer.send(self.topic, key=key, value=value)
+                item_type = json_item['type']
+                self._producer.send(item_type, value=value)
                 self._producer.flush()
                 log.info(f'Thread {thread}: sent {json_item} to Kafka')
             except Exception as e:
