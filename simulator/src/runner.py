@@ -50,7 +50,8 @@ class Runner:
             json_item = item.accept(self.serializer)
             try:
                 value = self._avro_converter.encode(json_item)
-                self._producer.send(self.topic, value=value)
+                key = bytes(json_item['type'], 'utf-8')
+                self._producer.send(self.topic, key=key, value=value)
                 self._producer.flush()
                 log.info(f'Thread {thread}: sent {json_item} to Kafka')
             except Exception as e:
