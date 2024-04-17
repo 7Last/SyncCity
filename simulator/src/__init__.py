@@ -31,7 +31,9 @@ def _create_all_schemas(schema_registry_url: str, path: str) -> (
 
 def _create_subject(schema_registry_url: str, subject: str, payload: Dict) -> int:
     url = f"{schema_registry_url}/subjects/{subject}/versions"
-    response = requests.post(url, data=json.dumps(payload))
+    log.info(f"Creating schema {subject} at {url}")
+    headers = {"Content-Type": "application/vnd.schemaregistry.v1+json"}
+    response = requests.post(url, data=json.dumps(payload), headers=headers)
 
     if response.status_code != 200:
         raise Exception(f"Error creating schema {subject}: {response.json()}")

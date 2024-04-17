@@ -2,20 +2,20 @@ services:
   simulator:
     container_name: simulator
     environment:
-      - KAFKA_HOST=kafka
+      - KAFKA_HOST=redpanda
       - KAFKA_PORT=9092
       - KAFKA_MAX_BLOCK_MS=1000
       - MAX_WORKERS=6
       - LOG_LEVEL=INFO
-      - SCHEMA_REGISTRY_URL=http://schema_registry:8081
+      - SCHEMA_REGISTRY_URL=http://redpanda:8081
       - SCHEMAS_PATH=schemas
     build:
       context: ./simulator
       dockerfile: Dockerfile
     depends_on:
-      kafka:
+      redpanda:
         condition: service_healthy
     volumes:
       - ./sensors.toml:/simulator/sensors.toml
     networks:
-      - net
+      - redpanda_network

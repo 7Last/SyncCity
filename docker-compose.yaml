@@ -1,97 +1,59 @@
 networks:
-  net:
+  redpanda_network:
     driver: bridge
 
 services:
-  zookeeper:
-    container_name: zookeeper
-    image: zookeeper
+  redpanda:
+    container_name: redpanda
+    command:
+      - redpanda
+      - start
+      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+      # Address the broker advertises to clients that connect to the Kafka API.
+      # Use the internal addresses to connect to the Redpanda brokers'
+      # from inside the same Docker network.
+      # Use the external addresses to connect to the Redpanda brokers'
+      # from outside the Docker network.
+      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+      # Address the broker advertises to clients that connect to the HTTP Proxy.
+      - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
+      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+      # Redpanda brokers use the RPC API to communicate with each other internally.
+      - --rpc-addr redpanda:33145
+      - --advertise-rpc-addr redpanda:33145
+      # Mode dev-container uses well-known configuration properties for development in containers.
+      - --mode dev-container
+      # Tells Seastar (the framework Redpanda uses under the hood) to use 1 core on the system.
+      - --smp 1
+      - --default-log-level=info
+    image: docker.redpanda.com/redpandadata/redpanda:v23.3.11
     volumes:
-      - ./volumes/zookeeper-data:/var/lib/zookeeper/data:Z
-      - ./volumes/zookeeper-log:/var/lib/zookeeper/log:Z
-    environment:
-      ZOOKEEPER_CLIENT_PORT: '2181'
-      ZOOKEEPER_ADMIN_ENABLE_SERVER: 'false'
-    healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "2181" ]
-    ports:
-      - "2181:2181"
+      - ./redpanda:/var/lib/redpanda/data
     networks:
-      - net
-
-  kafka:
-    container_name: kafka
-    image: bitnami/kafka:latest
-    volumes:
-      - ./volumes/kafka-data:/var/lib/kafka/data:Z
-    environment:
-      - KAFKA_BROKER_ID=0
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_COMPRESSION_TYPE='gzip'
-      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
-      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
-      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:29092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      - ADVERTISED_HOST=localhost
-    healthcheck:
-      test: [ "CMD-SHELL", "kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list" ]
-      interval: 5s
+      - redpanda_network
     ports:
-      - "9092:9092"
-      - "29092:29092"
-    depends_on:
-      - zookeeper
-    networks:
-      - net
-
-  schema_registry:
-    container_name: schema_registry
-    image: bitnami/schema-registry:latest
-    healthcheck:
-      test: [ "CMD", "nc", "-z", "localhost", "8081" ]
-    environment:
-      - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
-      - SCHEMA_REGISTRY_KAFKA_BROKERS=PLAINTEXT://kafka:9092
-      - SCHEMA_REGISTRY_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - SCHEMA_REGISTRY_HOST_NAME=schema_registry
-      - SCHEMA_REGISTRY_CLIENT_AUTHENTICATION_METHOD=none
-      - SCHEMA_REGISTRY_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM=none
-      - SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081
-    depends_on:
-      kafka:
-        condition: service_healthy
-      zookeeper:
-        condition: service_healthy
-    ports:
-      - 8081:8081
-
-    networks:
-      - net
-
+      - 18081:18081
+      - 18082:18082
+      - 19092:19092
+      - 19644:9644
   redpanda_console:
     container_name: redpanda_console
     image: docker.redpanda.com/redpandadata/console:v2.4.6
     networks:
-      - net
+      - redpanda_network
     entrypoint: /bin/sh
     command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
-    depends_on:
-      kafka:
-        condition: service_healthy
-      schema_registry:
-        condition: service_healthy
     ports:
       - 8080:8080
+    depends_on:
+      - redpanda
     environment:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
         kafka:
-          brokers: ["kafka:9092"]
+          brokers: ["redpanda:9092"]
           schemaRegistry:
             enabled: true
-            urls: ["http://schema_registry:8081"]
+            urls: ["http://redpanda:8081"]
 
