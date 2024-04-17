@@ -36,7 +36,6 @@ services:
       - 18081:18081
       - 18082:18082
       - 19092:19092
-      - 19644:9644
   redpanda_console:
     container_name: redpanda_console
     image: docker.redpanda.com/redpandadata/console:v2.4.6
@@ -56,8 +55,4 @@ services:
           schemaRegistry:
             enabled: true
             urls: ["http://redpanda:8081"]
-        redpanda:
-          adminApi:
-            enabled: true
-            urls: ["http://redpanda:9644"]
 
