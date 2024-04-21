@@ -5,13 +5,14 @@ from avro.io import DatumWriter, BinaryEncoder
 
 from ..models.raw_data.raw_data import RawData
 from .serializer_strategy import SerializerStrategy
-from .. import load_avro_schemas
+from . import load_avro_schemas
 
 
 class AvroSerializer(SerializerStrategy):
     def __init__(self) -> None:
         super().__init__()
         self._schemas_by_subject = load_avro_schemas()
+        print(self._schemas_by_subject)
 
     def serialize(self, data: RawData) -> bytes:
         # json encode the data
@@ -24,11 +25,7 @@ class AvroSerializer(SerializerStrategy):
         encoder = BinaryEncoder(bytes_writer)
         writer.write(json_item, encoder)
         raw_bytes = bytes_writer.getvalue()
-        #
-        # # clean the bytes writer
-        # bytes_writer.truncate(0)
-        # bytes_writer.seek(0)
-        #
+
         # prepend the magic byte and schema id to the raw bytes
         return self._schema_bytes_identifier(schema_id) + raw_bytes
 

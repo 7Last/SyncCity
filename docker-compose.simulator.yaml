@@ -1,3 +1,6 @@
+networks:
+  redpanda_network:
+    driver: bridge
 services:
   simulator:
     container_name: simulator
@@ -8,14 +11,11 @@ services:
       - MAX_WORKERS=6
       - LOG_LEVEL=INFO
       - SCHEMA_REGISTRY_URL=http://redpanda:8081
-      - SCHEMAS_PATH=schemas
+      - SCHEMAS_PATH=/simulator/src/schemas
     build:
       context: ./simulator
       dockerfile: Dockerfile
-    depends_on:
-      redpanda:
-        condition: service_healthy
     volumes:
-      - ./sensors.toml:/simulator/sensors.toml
+      - ./simulator/sensors.toml:/simulator/sensors.toml
     networks:
       - redpanda_network
