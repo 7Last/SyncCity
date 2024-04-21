@@ -23,6 +23,11 @@
         "errors.log.enable": false,
         "errors.log.include.messages": false,
         "errors.deadletterqueue.context.headers.enable": false,
-        "errors.tolerance": "none"
+        "errors.tolerance": "none",
+        "transforms": "TimestampConverter",
+        "transforms.TimestampConverter.type": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+        "transforms.TimestampConverter.format": "yyyy-MM-dd'T'HH:mm:ss",
+        "transforms.TimestampConverter.field": "timestamp",
+        "transforms.TimestampConverter.target.type": "Timestamp"
     }
 }
