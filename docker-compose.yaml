@@ -72,7 +72,7 @@ services:
     image: docker.redpanda.com/redpandadata/connectors:latest
     volumes:
       - ./connectors/plugins:/opt/kafka/connect-plugins
-      - ./connectors/configs/clickhouse.json:/clickhouse.json
+#      - ./connectors/configs/clickhouse.json:/clickhouse.json
     hostname: connect
     ports:
       - "8083:8083"
@@ -80,8 +80,8 @@ services:
        - redpanda
     networks:
       - redpanda_network
-    command: | 
-      bash -c "./launch.sh && curl \"localhost:8083/connectors\" -H 'Content-Type: application/json' --data-raw -d @/clickhouse.json"
+#    command: |
+#      bash -c "./launch.sh && curl \"localhost:8083/connectors\" -H 'Content-Type: application/json' --data-raw -d @/clickhouse.json"
     environment:
       CONNECT_CONFIGURATION: |
         key.converter=java.lang.String
@@ -100,13 +100,7 @@ services:
       CONNECT_GC_LOG_ENABLED: "false"
       CONNECT_HEAP_OPTS: -Xms1G -Xmx1G
       CONNECT_METRICS_ENABLED: "false"
-      # CONNECT_SASL_MECHANISM: "scram-sha-256"
-      # CONNECT_SASL_USERNAME: "connect-user"
-      # CONNECT_SASL_PASSWORD_FILE: "redpanda-password/password"
       CONNECT_TLS_ENABLED: "false"
-      # CONNECT_TRUSTED_CERTS: "user-secret/ca.crt"
-      # CONNECT_TLS_AUTH_CERT: "user-secret/client.crt"
-      # CONNECT_TLS_AUTH_KEY: "user-secret/client.key"
       CONNECT_PLUGIN_PATH: "/opt/kafka/connect-plugins"
 
   clickhouse:
