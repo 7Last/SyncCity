@@ -13,7 +13,7 @@ class AvroConverter:
         self._encoder = BinaryEncoder(self._bytes_writer)
         self._schema_bytes_identifier = self._schema_bytes_identifier(schema_id)
 
-    def encode(self, json_item: Dict[str, any]):
+    def encode(self, json_item: Dict[str, any]) -> bytes:
         self._writer.write(json_item, self._encoder)
         raw_bytes = self._bytes_writer.getvalue()
 
@@ -25,10 +25,10 @@ class AvroConverter:
         return self._schema_bytes_identifier + raw_bytes
 
     @staticmethod
-    def _schema_bytes_identifier(schema_id) -> bytes:
+    def _schema_bytes_identifier(schema_id: int) -> bytes:
         magic_byte = bytearray([0])
         return magic_byte + schema_id.to_bytes(4, 'big')
 
-    def decode(self):
+    def decode(self) -> None:
         # TODO: implement this method
         pass

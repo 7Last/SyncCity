@@ -1,2 +1,5 @@
 .env
 sensors.toml
+example.py
+consumer.py
+test
