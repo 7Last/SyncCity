@@ -9,9 +9,9 @@ from avro.schema import Schema, parse
 from dotenv import load_dotenv
 
 
-def _create_all_schemas(schema_registry_url: str, path: str) -> (
-        Dict)[str, tuple[int, Schema]]:
-    ids_by_subject = {}
+def _create_all_schemas(schema_registry_url: str, path: str) -> Dict[
+    str, tuple[int, Schema]]:
+    schemas = {}
     for schema_file in glob.glob(f"{path}/*.avsc"):
         name = os.path.basename(schema_file).replace(".avsc", "")
         schema = open(schema_file, encoding='utf-8').read()  # noqa: SIM115
@@ -22,11 +22,10 @@ def _create_all_schemas(schema_registry_url: str, path: str) -> (
         except Exception as e:
             raise Exception(f"Error parsing schema {name}") from e
 
-        ids_by_subject[name] = (
-            _create_subject(schema_registry_url, name, payload),
-            parsed,
-        )
-    return ids_by_subject
+        schema_id = _create_subject(schema_registry_url, name, payload)
+        schemas[name] = (schema_id, parsed)
+
+    return schemas
 
 
 def _create_subject(schema_registry_url: str, subject: str, payload: Dict) -> int:

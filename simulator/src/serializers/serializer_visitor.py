@@ -3,7 +3,6 @@ from typing import Dict
 from ..models.raw_data.raw_data import RawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
-from ..models.sensor_type import SensorType
 
 
 class SerializerVisitor:
@@ -20,7 +19,6 @@ class SerializerVisitor:
     @staticmethod
     def serialize_temperature_raw_data(raw_data: TemperatureRawData) -> Dict:
         return {
-            "type": SensorType.TEMPERATURE.value,
             "value": raw_data.value,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
@@ -28,7 +26,6 @@ class SerializerVisitor:
     @staticmethod
     def serialize_traffic_raw_data(raw_data: TrafficRawData) -> Dict:
         return {
-            "type": SensorType.TRAFFIC.value,
             "vehicles_per_hour": raw_data.vehicles_per_hour,
             "avg_speed": raw_data.avg_speed,
             **(SerializerVisitor._serialize_raw_data(raw_data)),

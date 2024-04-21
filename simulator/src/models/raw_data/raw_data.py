@@ -18,3 +18,12 @@ class RawData(ABC):
     @abstractmethod
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         pass
+
+    @property
+    @abstractmethod
+    def topic(self) -> str:
+        pass
+
+    @property
+    def subject(self) -> str:
+        return f'{self.topic}-value'

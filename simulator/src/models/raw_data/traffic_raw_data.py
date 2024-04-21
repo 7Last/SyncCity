@@ -21,3 +21,7 @@ class TrafficRawData(RawData):
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.serialize_traffic_raw_data(self)
+
+    @property
+    def topic(self) -> str:
+        return "traffic"

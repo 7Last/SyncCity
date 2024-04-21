@@ -20,5 +20,9 @@ class EnvConfig:
             raise ValueError(f'{key} is not set')
         return val
 
+    @property
+    def bootstrap_server(self) -> str:
+        return f'{self.kafka_host}:{self.kafka_port}'
+
     def __str__(self) -> str:
         return f'{self.__dict__}'

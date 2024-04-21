@@ -9,7 +9,7 @@ from ...simulators.traffic_simulator import TrafficSimulator
 
 def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
     """
-    Generates the simulators based on the configuration
+    Generates the _simulators based on the configuration
     """
     for sensor_name, config in sensors.items():
         sensor_config = SensorConfig(config=config)
@@ -18,7 +18,7 @@ def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
 
 def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
     """
-    Factory method to create the simulators based on the configuration
+    Factory method to create the _simulators based on the configuration
     """
     match config.type:
         case SensorType.TEMPERATURE:
