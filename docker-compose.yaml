@@ -26,7 +26,8 @@ services:
       - --mode dev-container
       # Tells Seastar (the framework Redpanda uses under the hood) to use 1 core on the system.
       - --smp 1
-      - --default-log-level=info
+      - --overprovisioned
+      - --default-log-level=warn
     image: docker.redpanda.com/redpandadata/redpanda:v23.3.11
     volumes:
       - ./volumes/redpanda:/var/lib/redpanda/data
@@ -36,6 +37,7 @@ services:
       - 18081:18081
       - 18082:18082
       - 19092:19092
+      - 19644:9644
   redpanda_console:
     container_name: redpanda_console
     image: docker.redpanda.com/redpandadata/console:v2.4.6
@@ -55,4 +57,78 @@ services:
           schemaRegistry:
             enabled: true
             urls: ["http://redpanda:8081"]
+        redpanda:
+          adminApi:
+            enabled: true
+            urls: ["http://redpanda:9644"]
+        connect:
+          enabled: true
+          clusters:
+            - name: local-connect-cluster
+              url: http://connect:8083
 
+  connect:
+    container_name: connect
+    image: docker.redpanda.com/redpandadata/connectors:latest
+    volumes:
+      - ./connectors/plugins:/opt/kafka/connect-plugins
+      - ./connectors/configs/clickhouse.json:/clickhouse.json
+    hostname: connect
+    ports:
+      - "8083:8083"
+    depends_on:
+       - redpanda
+    networks:
+      - redpanda_network
+    command: | 
+      bash -c "./launch.sh && curl \"localhost:8083/connectors\" -H 'Content-Type: application/json' --data-raw -d @/clickhouse.json"
+    environment:
+      CONNECT_CONFIGURATION: |
+        key.converter=java.lang.String
+        value.converter=java.lang.String
+        plugin.path=/opt/kafka/connect-plugins
+        value.converter=io.confluent.connect.avro.AvroConverter
+        value.converter.schema.registry.url=http://redpanda:8081
+        group.id=connectors-group
+        offset.storage.topic=_connectors_offsets
+        config.storage.topic=_connectors_configs
+        status.storage.topic=_connectors_status
+        config.storage.replication.factor=-1
+        offset.storage.replication.factor=-1
+        status.storage.replication.factor=-1
+      CONNECT_BOOTSTRAP_SERVERS: "redpanda:9092"
+      CONNECT_GC_LOG_ENABLED: "false"
+      CONNECT_HEAP_OPTS: -Xms1G -Xmx1G
+      CONNECT_METRICS_ENABLED: "false"
+      # CONNECT_SASL_MECHANISM: "scram-sha-256"
+      # CONNECT_SASL_USERNAME: "connect-user"
+      # CONNECT_SASL_PASSWORD_FILE: "redpanda-password/password"
+      CONNECT_TLS_ENABLED: "false"
+      # CONNECT_TRUSTED_CERTS: "user-secret/ca.crt"
+      # CONNECT_TLS_AUTH_CERT: "user-secret/client.crt"
+      # CONNECT_TLS_AUTH_KEY: "user-secret/client.key"
+      CONNECT_PLUGIN_PATH: "/opt/kafka/connect-plugins"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24-alpine
+    hostname: clickhouse
+    container_name: clickhouse
+    ports:
+      - "8123:8123"
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      interval: 5s
+      timeout: 1m
+      retries: 12
+    environment:
+      CLICKHOUSE_DB: sensors
+      CLICKHOUSE_USER: admin
+      CLICKHOUSE_PASSWORD: admin
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    volumes:
+      - ./clickhouse/timezone.xml:/etc/clickhouse-server/config.d/timezone.xml
+      - ./clickhouse/init:/docker-entrypoint-initdb.d
+    depends_on:
+      - redpanda
+    networks:
+      - redpanda_network

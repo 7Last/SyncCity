@@ -21,7 +21,7 @@ class SerializerVisitor:
     def serialize_temperature_raw_data(raw_data: TemperatureRawData) -> Dict:
         return {
             "type": SensorType.TEMPERATURE.value,
-            "param_1": raw_data.value,
+            "value": raw_data.value,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
 

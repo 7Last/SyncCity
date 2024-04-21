@@ -14,7 +14,7 @@ from .utils.serializer_visitor import SerializerVisitor
 
 
 class Runner:
-    _SUBJECT = 'reading'
+    _SUBJECT = 'temperature-value'
 
     def __init__(self, *, simulators: list[Simulator], config: EnvConfig,
                  schema_by_subject: Dict[str, tuple[int, Schema]]) -> None:
@@ -46,8 +46,10 @@ class Runner:
         for item in simulator.stream():
             json_item = item.accept(self.serializer)
             try:
-                value = self._avro_converter.encode(json_item)
                 item_type = json_item['type']
+                # remove type from the message
+                del json_item['type']
+                value = self._avro_converter.encode(json_item)
                 self._producer.send(item_type, value=value)
                 self._producer.flush()
                 log.info(f'Thread {thread}: sent {json_item} to Kafka')
