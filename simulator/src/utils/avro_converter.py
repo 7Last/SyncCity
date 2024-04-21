@@ -29,6 +29,6 @@ class AvroConverter:
         magic_byte = bytearray([0])
         return magic_byte + schema_id.to_bytes(4, 'big')
 
-    def decode(self):
+    def decode(self) -> None:
         # TODO: implement this method
         pass
