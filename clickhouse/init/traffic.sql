@@ -5,6 +5,6 @@ CREATE TABLE sensors.traffic
     latitude          Float64,
     longitude         Float64,
     vehicles_per_hour Float32,
-    avg_speed         Float32,
+    avg_speed         Float32
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
