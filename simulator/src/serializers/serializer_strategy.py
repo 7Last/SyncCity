@@ -11,7 +11,3 @@ class SerializerStrategy(ABC):
     @abstractmethod
     def serialize(self, data: RawData) -> any:
         pass
-
-    @abstractmethod
-    def deserialize(self, data: bytes) -> any:
-        pass
