@@ -3,3 +3,4 @@
 ./logs/
 /.venv_samples/
 /volumes/
+**/__pycache__/**
