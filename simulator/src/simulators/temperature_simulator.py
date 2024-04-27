@@ -38,22 +38,19 @@ class TemperatureSimulator(Simulator):
 
 
 def _sinusoidal_value(timestamp: datetime) -> float:
-    season_coefficient = 0
-    thermal_excursion = 0
-    match timestamp.month:
-        case 1 | 2 | 12:  # winter
-            season_coefficient = 5
-            thermal_excursion = 10
-        case 3 | 4 | 5:  # spring
-            season_coefficient = 10
-            thermal_excursion = 15
-        case 6 | 7 | 8:  # summer
-            season_coefficient = 22
-            thermal_excursion = 20
-        case 9 | 10 | 11:  # autumn
-            season_coefficient = 7
-            thermal_excursion = 15
+    seasonal_coeff = _seasonal_coefficient(timestamp)
+    thermal_excursion = _thermal_excursion(timestamp)
 
-    x = timestamp.hour + timestamp.minute / 60
-    noise = random.uniform(0, 0.4)
-    return thermal_excursion * sin(x * pi / 24) + season_coefficient + noise
+    hour = timestamp.hour + timestamp.minute / 60
+    noise = random.uniform(-2, 2)
+    return thermal_excursion * sin(hour * pi / 24) + seasonal_coeff + noise
+
+
+def _seasonal_coefficient(timestamp: datetime) -> float:
+    x = timestamp.month + (timestamp.day - 1) / 30
+    return 13 * sin(x * pi / 12 - 1 / 4) + 3
+
+
+def _thermal_excursion(timestamp: datetime) -> float:
+    x = timestamp.month + (timestamp.day - 1) / 30
+    return 8 * (sin(x * pi / 12 - (pi - 3) / 2) + 1)
