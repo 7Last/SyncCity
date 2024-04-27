@@ -67,7 +67,7 @@ services:
     ports:
       - "8083:8083"
     depends_on:
-       - redpanda
+      - redpanda
     networks:
       - redpanda_network
     environment:
@@ -112,5 +112,24 @@ services:
       - ./clickhouse/init:/docker-entrypoint-initdb.d
     depends_on:
       - redpanda
+    networks:
+      - redpanda_network
+
+  grafana:
+    image: grafana/grafana-oss:10.3.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards_config:/etc/grafana/dashboards_config
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+    environment:
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource, vertamedia-clickhouse-datasource
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+    depends_on:
+      - clickhouse
     networks:
       - redpanda_network

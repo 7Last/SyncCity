@@ -1,0 +1,19 @@
+apiVersion: 1
+datasources:
+  - name: vertamedia-clickhouse-datasource
+    type: vertamedia-clickhouse-datasource
+    url: http://clickhouse:8123
+    basicAuth: true
+    basicAuthUser: "admin"
+    editable: true
+
+    jsonData:
+      database: sensors
+      port: 8123
+      server: localhost
+      username: admin
+      tlsSkipVerify: false
+    secureJsonData:
+      basicAuthPassword: "admin"
+
+    isDefault: true
