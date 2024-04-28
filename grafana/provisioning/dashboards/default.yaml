@@ -6,5 +6,5 @@ providers:
     updateIntervalSeconds: 5
     allowUiUpdates: true
     options:
-      path: grafana/dashboards_config
+      path: /var/lib/grafana/dashboards
       foldersFromFilesStructure: true

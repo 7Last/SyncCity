@@ -124,7 +124,7 @@ services:
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/dashboards_config:/etc/grafana/dashboards_config
+      - ./grafana/dashboards_config:/var/lib/grafana/dashboards
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource, vertamedia-clickhouse-datasource
