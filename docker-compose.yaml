@@ -127,8 +127,7 @@ services:
       - ./grafana/dashboards_config:/var/lib/grafana/dashboards
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource, vertamedia-clickhouse-datasource
-      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+      GF_INSTALL_PLUGINS: vertamedia-clickhouse-datasource
     depends_on:
       - clickhouse
     networks:

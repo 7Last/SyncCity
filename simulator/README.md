@@ -23,7 +23,7 @@ docker-compose -f ./docker-compose.simulator.yaml up -d
 - Create a virtual environment:
 
 ```bash
-python -m venv ./simulator/.venv
+python3 -m venv ./simulator/.venv
 ```
 
 - Activate the virtual environment; for Linux and macOS:

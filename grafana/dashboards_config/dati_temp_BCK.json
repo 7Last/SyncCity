@@ -81,10 +81,10 @@
         "layers": [
           {
             "config": {
-              "showLegend": false,
+              "showLegend": true,
               "style": {
                 "color": {
-                  "fixed": "dark-red"
+                  "fixed": "dark-green"
                 },
                 "opacity": 0.4,
                 "rotation": {
@@ -94,12 +94,12 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 10,
+                  "fixed": 5,
                   "max": 15,
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/star.svg",
+                  "fixed": "img/icons/marker/circle.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
@@ -116,12 +116,12 @@
               }
             },
             "location": {
-              "latitude": "longitude",
+              "latitude": "lat",
               "longitude": "longitude",
               "mode": "coords"
             },
             "name": "Layer 1",
-            "tooltip": false,
+            "tooltip": true,
             "type": "markers"
           }
         ],
@@ -130,10 +130,10 @@
         },
         "view": {
           "allLayers": true,
-          "id": "coords",
+          "id": "zero",
           "lat": 0,
           "lon": 0,
-          "zoom": 3
+          "zoom": 1
         }
       },
       "pluginVersion": "10.3.0",
@@ -150,15 +150,15 @@
           "format": "time_series",
           "formattedQuery": "SELECT \n      latitude,\n      longitude\nFROM sensors.temperature\n\n",
           "intervalFactor": 1,
-          "query": "SELECT \n      latitude,\n      longitude\nFROM sensors.traffic\n",
-          "rawQuery": "SELECT \n      latitude,\n      longitude\nFROM sensors.traffic",
+          "query": "SELECT \n      longitude AS lon,\n      latitude  AS lat\nFROM sensors.traffic\n\n",
+          "rawQuery": "SELECT \n      longitude AS lon,\n      latitude  AS lat\nFROM sensors.traffic",
           "refId": "A",
           "round": "0s",
           "skip_comments": true,
-          "table": "traff1c"
+          "table": "temperature"
         }
       ],
-      "title": "Higher traffic area",
+      "title": "Panel Title",
       "type": "geomap"
     },
     {
@@ -200,7 +200,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -212,12 +212,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
@@ -275,7 +271,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -345,7 +341,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -357,12 +353,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 40
-              },
-              {
                 "color": "red",
-                "value": 60
+                "value": 80
               }
             ]
           },
@@ -382,7 +374,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -441,7 +433,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "fieldMinMax": false,
@@ -454,35 +446,15 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
           "unit": "none",
           "unitScale": true
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "monthly_mean_temperature"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -500,7 +472,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -564,7 +536,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -576,12 +548,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 40
-              },
-              {
                 "color": "red",
-                "value": 60
+                "value": 80
               }
             ]
           },
@@ -605,7 +573,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -668,7 +636,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -680,12 +648,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
@@ -709,7 +673,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -756,13 +720,13 @@
     "list": []
   },
   "time": {
-    "from": "now-2y",
-    "to": "now"
+    "from": "2023-01-01T00:00:00.000Z",
+    "to": "2023-11-08T11:00:00.000Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "TEST",
   "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
