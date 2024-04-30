@@ -2,10 +2,7 @@ apiVersion: 1
 datasources:
   - name: grafana-clickhouse-datasource
     type: grafana-clickhouse-datasource
-    url: http://clickhouse:8123
-    basicAuth: true
-    basicAuthUser: "admin"
-    editable: true
+    editable: false
 
     jsonData:
       database: sensors
@@ -15,6 +12,6 @@ datasources:
       tlsSkipVerify: false
       protocol: http
     secureJsonData:
-      basicAuthPassword: "admin"
+      password: "admin"
 
     isDefault: true
