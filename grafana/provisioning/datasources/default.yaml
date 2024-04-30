@@ -10,9 +10,10 @@ datasources:
     jsonData:
       database: sensors
       port: 8123
-      server: localhost
+      server: clickhouse
       username: admin
       tlsSkipVerify: false
+      protocol: http 
     secureJsonData:
       basicAuthPassword: "admin"
 
