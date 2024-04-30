@@ -127,7 +127,7 @@ services:
       - ./grafana/dashboards_config:/var/lib/grafana/dashboards
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-      GF_INSTALL_PLUGINS: vertamedia-clickhouse-datasource
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
     depends_on:
       - clickhouse
     networks:
