@@ -13,7 +13,7 @@ datasources:
       server: clickhouse
       username: admin
       tlsSkipVerify: false
-      protocol: http 
+      protocol: http
     secureJsonData:
       basicAuthPassword: "admin"
 

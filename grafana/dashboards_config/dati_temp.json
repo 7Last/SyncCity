@@ -81,10 +81,10 @@
         "layers": [
           {
             "config": {
-              "showLegend": false,
+              "showLegend": true,
               "style": {
                 "color": {
-                  "fixed": "dark-red"
+                  "fixed": "dark-green"
                 },
                 "opacity": 0.4,
                 "rotation": {
@@ -94,12 +94,12 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 10,
+                  "fixed": 5,
                   "max": 15,
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/star.svg",
+                  "fixed": "img/icons/marker/circle.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
@@ -116,12 +116,12 @@
               }
             },
             "location": {
-              "latitude": "longitude",
+              "latitude": "lat",
               "longitude": "longitude",
               "mode": "coords"
             },
             "name": "Layer 1",
-            "tooltip": false,
+            "tooltip": true,
             "type": "markers"
           }
         ],
@@ -130,10 +130,10 @@
         },
         "view": {
           "allLayers": true,
-          "id": "coords",
+          "id": "zero",
           "lat": 0,
           "lon": 0,
-          "zoom": 3
+          "zoom": 1
         }
       },
       "pluginVersion": "10.3.0",
@@ -150,21 +150,21 @@
           "format": "time_series",
           "formattedQuery": "SELECT \n      latitude,\n      longitude\nFROM sensors.temperature\n\n",
           "intervalFactor": 1,
-          "query": "SELECT \n      latitude,\n      longitude\nFROM sensors.traffic\n",
-          "rawQuery": "SELECT \n      latitude,\n      longitude\nFROM sensors.traffic",
+          "query": "SELECT \n      longitude AS lon,\n      latitude  AS lat\nFROM sensors.traffic\n\n",
+          "rawQuery": "SELECT \n      longitude AS lon,\n      latitude  AS lat\nFROM sensors.traffic",
           "refId": "A",
           "round": "0s",
           "skip_comments": true,
-          "table": "traff1c"
+          "table": "temperature"
         }
       ],
-      "title": "Higher traffic area",
+      "title": "Panel Title",
       "type": "geomap"
     },
     {
       "datasource": {
-        "type": "vertamedia-clickhouse-datasource",
-        "uid": "PBB98D3AAE97FB2CD"
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
       },
       "fieldConfig": {
         "defaults": {
@@ -200,7 +200,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -212,56 +212,14 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
           "unitScale": true
         },
-        "overrides": [
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": ["Temperature"],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Temperature"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -269,13 +227,13 @@
         "x": 0,
         "y": 9
       },
-      "id": 2,
+      "id": 7,
       "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -284,23 +242,50 @@
       },
       "targets": [
         {
-          "database": "sensors",
-          "datasource": {
-            "type": "vertamedia-clickhouse-datasource",
-            "uid": "PBB98D3AAE97FB2CD"
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "value",
+                "type": "Float32"
+              },
+              {
+                "custom": false,
+                "name": "timestamp",
+                "type": "DateTime64(3)"
+              }
+            ],
+            "database": "sensors",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [],
+            "queryType": "table",
+            "table": "temperature"
           },
-          "dateTimeType": "DATETIME64",
-          "editorMode": "builder",
-          "extrapolate": true,
-          "format": "time_series",
-          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
-          "intervalFactor": 1,
-          "query": "SELECT timestamp as time, value as Temperature FROM sensors.temperature",
-          "rawQuery": "SELECT timestamp as time, value as Temperature FROM sensors.temperature",
-          "refId": "A",
-          "round": "0s",
-          "skip_comments": true,
-          "table": "traffic"
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "builder",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.6",
+          "queryType": "table",
+          "rawSql": "SELECT value, timestamp FROM \"sensors\".\"temperature\" LIMIT 1000",
+          "refId": "A"
         }
       ],
       "title": "Temperature",
@@ -345,7 +330,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -357,12 +342,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 40
-              },
-              {
                 "color": "red",
-                "value": 60
+                "value": 80
               }
             ]
           },
@@ -382,7 +363,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -441,7 +422,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "fieldMinMax": false,
@@ -454,35 +435,15 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
           "unit": "none",
           "unitScale": true
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "monthly_mean_temperature"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -500,7 +461,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -564,7 +525,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -576,12 +537,8 @@
                 "value": null
               },
               {
-                "color": "#EAB839",
-                "value": 40
-              },
-              {
                 "color": "red",
-                "value": 60
+                "value": 80
               }
             ]
           },
@@ -605,7 +562,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -668,7 +625,7 @@
               "type": "linear"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -676,16 +633,11 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 10
+                "color": "green"
               },
               {
                 "color": "red",
-                "value": 15
+                "value": 80
               }
             ]
           },
@@ -709,7 +661,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "auto",
         "showValue": "auto",
@@ -749,20 +701,20 @@
       "type": "barchart"
     }
   ],
-  "refresh": false,
+  "refresh": "auto",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-2y",
-    "to": "now"
+    "from": "2024-01-01T08:00:00.000Z",
+    "to": "2024-11-29T08:00:00.000Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "TEST",
   "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-  "version": 1,
+  "version": 5,
   "weekStart": ""
 }
