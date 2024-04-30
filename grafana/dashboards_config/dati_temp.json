@@ -85,7 +85,7 @@
                 "color": {
                   "fixed": "dark-red"
                 },
-                "opacity": 0.4,
+                "opacity": 1,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -114,10 +114,61 @@
                 }
               }
             },
+            "filterData": {
+              "id": "byRefId",
+              "options": "A"
+            },
             "location": {
               "mode": "auto"
             },
-            "name": "Layer 1",
+            "name": "Temperature",
+            "tooltip": true,
+            "type": "markers"
+          },
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "fixed": "dark-green"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "fixed": 5,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "B"
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Traffic",
             "tooltip": true,
             "type": "markers"
           }
@@ -127,9 +178,9 @@
         },
         "view": {
           "allLayers": true,
-          "id": "zero",
-          "lat": 0,
-          "lon": 0,
+          "id": "europe",
+          "lat": 46,
+          "lon": 14,
           "zoom": 3
         }
       },
@@ -154,8 +205,31 @@
           },
           "pluginVersion": "4.0.6",
           "queryType": "table",
-          "rawSql": "SELECT \n      latitude,\n      longitude\nFROM sensors.traffic\n",
+          "rawSql": "SELECT DISTINCT\n      latitude,\n      longitude\nFROM sensors.temperature\n",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.6",
+          "queryType": "table",
+          "rawSql": "SELECT DISTINCT\n      latitude,\n      longitude\nFROM sensors.traffic",
+          "refId": "B"
         }
       ],
       "title": "Location",
@@ -813,8 +887,8 @@
     "list": []
   },
   "time": {
-    "from": "2023-01-01T01:00:00.000Z",
-    "to": "2023-02-11T15:00:00.000Z"
+    "from": "2024-04-30T19:29:38.000Z",
+    "to": "2024-04-30T23:11:38.000Z"
   },
   "timepicker": {},
   "timezone": "",

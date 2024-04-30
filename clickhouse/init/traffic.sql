@@ -38,3 +38,16 @@ GROUP BY (timestamp1m, sensor_uuid, latitude, longitude);
 -- ------------------------
 --      END AGGREGATE
 -- ------------------------
+
+-- -------------------------------------------------------
+--VISTA CHE RESTITUISCE LAT E LON ALLA TABELLA MAP
+-- -------------------------------------------------------
+CREATE MATERIALIZED VIEW sensors.map1_mv
+    TO sensors.map
+AS
+SELECT DISTINCT
+    sensor_uuid,
+    latitude,
+    longitude
+FROM sensors.traffic
+GROUP BY (sensor_uuid, latitude, longitude);
