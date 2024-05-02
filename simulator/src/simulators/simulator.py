@@ -16,7 +16,6 @@ class Simulator(ABC):
         :param generation_delay: time to wait between the generation
         of a point and the next one
         :param points_spacing: how spaced in time are the data points
-        :param points_spacing: how spaced in time are the data points
         :param limit: maximum number of values to generate
         :param begin_date: Date to start generating data, if None, now is assumed
         """

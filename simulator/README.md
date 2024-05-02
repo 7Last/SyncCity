@@ -1,4 +1,7 @@
-# Python data simulator
+# Python sensor simulator
+This document provides only instructions on how to run the simulator.
+For more documentation on the simulator, refer to the [./docs](./docs/) folder.
+
 Two profiles are provided in the `docker-compose.yaml` file:
 - `local`: for local test and debug purposes. Runs the Kafka stack in `docker` containers,
 but does not build the `simulator` image, which is expected to be run manually;
