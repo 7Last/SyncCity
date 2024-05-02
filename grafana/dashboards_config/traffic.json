@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -348,7 +348,7 @@
           "refId": "A"
         }
       ],
-      "title": "Media velocità",
+      "title": "Average Speed",
       "type": "gauge"
     }
   ],

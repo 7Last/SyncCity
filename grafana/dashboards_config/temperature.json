@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -99,7 +99,7 @@
                   "min": 2
                 },
                 "symbol": {
-                  "fixed": "img/icons/marker/star.svg",
+                  "fixed": "img/icons/marker/circle.svg",
                   "mode": "fixed"
                 },
                 "symbolAlign": {
@@ -123,53 +123,6 @@
               "mode": "auto"
             },
             "name": "Temperature",
-            "tooltip": true,
-            "type": "markers"
-          },
-          {
-            "config": {
-              "showLegend": true,
-              "style": {
-                "color": {
-                  "fixed": "dark-green"
-                },
-                "opacity": 1,
-                "rotation": {
-                  "fixed": 0,
-                  "max": 360,
-                  "min": -360,
-                  "mode": "mod"
-                },
-                "size": {
-                  "fixed": 5,
-                  "max": 15,
-                  "min": 2
-                },
-                "symbol": {
-                  "fixed": "img/icons/marker/circle.svg",
-                  "mode": "fixed"
-                },
-                "symbolAlign": {
-                  "horizontal": "center",
-                  "vertical": "center"
-                },
-                "textConfig": {
-                  "fontSize": 12,
-                  "offsetX": 0,
-                  "offsetY": 0,
-                  "textAlign": "center",
-                  "textBaseline": "middle"
-                }
-              }
-            },
-            "filterData": {
-              "id": "byRefId",
-              "options": "B"
-            },
-            "location": {
-              "mode": "auto"
-            },
-            "name": "Traffic",
             "tooltip": true,
             "type": "markers"
           }
@@ -208,29 +161,6 @@
           "queryType": "table",
           "rawSql": "SELECT DISTINCT\n      latitude,\n      longitude\nFROM sensors.temperature\n",
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.6",
-          "queryType": "table",
-          "rawSql": "SELECT DISTINCT\n      latitude,\n      longitude\nFROM sensors.traffic",
-          "refId": "B"
         }
       ],
       "title": "Location",
