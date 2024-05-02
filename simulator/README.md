@@ -1,17 +1,10 @@
 # Python data simulator
-## Running the simulator locally
-### Starting the Kafka stack
-```bash
-docker-compose up -d
-```
+Two profiles are provided in the `docker-compose.yaml` file:
+- `local`: for local test and debug purposes. Runs the Kafka stack in `docker` containers,
+but does not build the `simulator` image, which is expected to be run manually;
+- `release`: builds also the `simulator` image, which is then run in the same network as the Kafka stack.
 
-### Running the simulator
-There are 2 ways to run the simulator:
-1. Inside a docker container. Run:
-```bash
-docker-compose -f ./docker-compose.simulator.yml up -d
-```
-2. Locally (preferred for development).
+## Running with `local` profile
 - Create a virtual environment:
 ```bash
 python -m venv ./simulator/.venv
@@ -34,4 +27,9 @@ pip3 install -r ./simulator/requirements.txt
 - Run the simulator:
 ```bash
 python3 ./simulator/main.py
+```
+
+## Running with `release` profile
+```bash
+docker-compose up -d
 ```
