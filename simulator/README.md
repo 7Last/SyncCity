@@ -1,25 +1,18 @@
-# Python data simulator
+# Python sensor simulator
+This document provides only instructions on how to run the simulator.
+For more documentation on the simulator, refer to the [./docs](./docs/) folder.
 
-## Running the simulator locally
+Two profiles are provided in the `docker-compose.yaml` file:
+- `local`: for local test and debug purposes. Runs the Kafka stack in `docker` containers,
+but does not build the `simulator` image, which is expected to be run manually;
+- `release`: builds also the `simulator` image, which is then run in the same network as the Kafka stack.
 
-### Starting the Kafka stack
-
+## Running with `local` profile
+Running the Kafka stack:
 ```bash
-docker-compose up -d
+docker-compose --profile local up -d
 ```
-
-### Running the simulator
-
-There are 2 ways to run the simulator:
-
-1. Inside a docker container. Run:
-
-```bash
-docker-compose -f ./docker-compose.simulator.yaml up -d
-```
-
-2. Locally (preferred for development).
-
+Running the simulator:
 - Create a virtual environment:
 
 ```bash
@@ -48,4 +41,9 @@ pip3 install -r ./simulator/requirements.txt
 
 ```bash
 python3 ./simulator/main.py
+```
+
+## Running with `release` profile
+```bash
+docker-compose --profile release up -d
 ```
