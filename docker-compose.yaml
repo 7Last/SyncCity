@@ -62,7 +62,6 @@ services:
             - name: local-connect-cluster
               url: http://connect:8083
 
-
   connect:
     container_name: connect
     image: docker.redpanda.com/redpandadata/connectors:latest
@@ -141,7 +140,6 @@ services:
       - redpanda_network
     profiles: ["release"]
 
-
   grafana:
     image: grafana/grafana-oss:10.3.0
     container_name: grafana
@@ -156,9 +154,9 @@ services:
     environment:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
       # PER PERMETTERE LA VISIONE SENZA ESSERE LOGGATI#
-      # GF_AUTH_ORG_ROLE: viewer
-      # GF_AUTH_ANONYMOUS_ENABLED: true
-      # GF_AUTH_DISABLE_LOGIN_FORM: true
+      GF_AUTH_ORG_ROLE: viewer
+      GF_AUTH_ANONYMOUS_ENABLED: true
+      GF_AUTH_DISABLE_LOGIN_FORM: true
       #################################################
     depends_on:
       - clickhouse
