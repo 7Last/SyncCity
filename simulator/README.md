@@ -8,6 +8,11 @@ but does not build the `simulator` image, which is expected to be run manually;
 - `release`: builds also the `simulator` image, which is then run in the same network as the Kafka stack.
 
 ## Running with `local` profile
+Running the Kafka stack:
+```bash
+docker-compose --profile local up -d
+```
+Running the simulator:
 - Create a virtual environment:
 ```bash
 python -m venv ./simulator/.venv
@@ -34,5 +39,5 @@ python3 ./simulator/main.py
 
 ## Running with `release` profile
 ```bash
-docker-compose up -d
+docker-compose --profile release up -d
 ```
