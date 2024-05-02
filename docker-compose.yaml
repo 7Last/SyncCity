@@ -29,6 +29,8 @@ services:
       - 18082:18082
       - 19092:19092
       - 19644:9644
+    profiles: ["local", "release"]
+
   redpanda_console:
     container_name: redpanda_console
     image: docker.redpanda.com/redpandadata/console:v2.4.6
@@ -40,6 +42,8 @@ services:
       - 8080:8080
     depends_on:
       - redpanda
+    profiles: ["local", "release"]
+
     environment:
       CONFIG_FILEPATH: /tmp/config.yml
       CONSOLE_CONFIG_FILE: |
@@ -58,6 +62,7 @@ services:
             - name: local-connect-cluster
               url: http://connect:8083
 
+
   connect:
     container_name: connect
     image: docker.redpanda.com/redpandadata/connectors:latest
@@ -70,6 +75,7 @@ services:
       - redpanda
     networks:
       - redpanda_network
+    profiles: ["local", "release"]
     environment:
       CONNECT_CONFIGURATION: |
         key.converter=java.lang.String
@@ -114,6 +120,27 @@ services:
       - redpanda
     networks:
       - redpanda_network
+    profiles: ["local", "release"]
+
+  simulator:
+    container_name: simulator
+    environment:
+      - KAFKA_HOST=redpanda
+      - KAFKA_PORT=9092
+      - KAFKA_MAX_BLOCK_MS=1000
+      - MAX_WORKERS=6
+      - LOG_LEVEL=INFO
+      - SCHEMA_REGISTRY_URL=http://redpanda:8081
+      - SCHEMAS_PATH=/simulator/src/schemas
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    volumes:
+      - ./simulator/sensors.toml:/simulator/sensors.toml
+    networks:
+      - redpanda_network
+    profiles: ["release"]
+
 
   grafana:
     image: grafana/grafana-oss:10.3.0
@@ -137,3 +164,4 @@ services:
       - clickhouse
     networks:
       - redpanda_network
+    profiles: ["release"]
