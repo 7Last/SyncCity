@@ -15,13 +15,3 @@ points_spacing = "PT1M" # 1 minute
 generation_delay = "PT2S" # 2 seconds
 latitude = 48.1548976
 longitude = 11.2122041
-
-
-#[sensors.humidity-sensor-1]
-#uuid = "27d1ec68-79f3-440a-854d-8e0d70e50431"
-#type = "humidity"
-#points_spacing = "PT1S" # 1 minute
-#generation_delay = "PT2S" # 2 seconds
-#begin_date = 2023-01-01T00:00:00
-#latitude = 48.1548976
-#longitude = 11.2122041
