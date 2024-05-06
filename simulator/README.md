@@ -14,25 +14,31 @@ docker-compose --profile local up -d
 ```
 Running the simulator:
 - Create a virtual environment:
+
 ```bash
-python -m venv ./simulator/.venv
+python3 -m venv ./simulator/.venv
 ```
 
 - Activate the virtual environment; for Linux and macOS:
+
 ```bash
 source ./simulator/.venv/bin/activate
 ```
+
 - Activate the virtual environment; for Windows:
+
 ```bash
 .\simulator\.venv\Scripts\activate
 ```
 
 - Install the requirements:
+
 ```bash
 pip3 install -r ./simulator/requirements.txt
 ```
 
 - Run the simulator:
+
 ```bash
 python3 ./simulator/main.py
 ```

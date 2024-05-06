@@ -1,0 +1,17 @@
+apiVersion: 1
+datasources:
+  - name: grafana-clickhouse-datasource
+    type: grafana-clickhouse-datasource
+    editable: false
+
+    jsonData:
+      database: sensors
+      port: 8123
+      server: clickhouse
+      username: admin
+      tlsSkipVerify: false
+      protocol: http
+    secureJsonData:
+      password: "admin"
+
+    isDefault: true
