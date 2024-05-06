@@ -153,13 +153,11 @@ services:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
-      # PER PERMETTERE LA VISIONE SENZA ESSERE LOGGATI#
-      GF_AUTH_ORG_ROLE: viewer
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_DISABLE_LOGIN_FORM: true
-      #################################################
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
     depends_on:
       - clickhouse
     networks:
       - redpanda_network
-    profiles: ["release"]
+    profiles: ["local", "release"]
