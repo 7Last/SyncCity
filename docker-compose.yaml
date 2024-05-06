@@ -113,8 +113,12 @@ services:
       CLICKHOUSE_PASSWORD: admin
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
-      - ./clickhouse/timezone.xml:/etc/clickhouse-server/config.d/timezone.xml
-      - ./clickhouse/init:/docker-entrypoint-initdb.d
+      - type: bind
+        source: ./clickhouse/timezone.xml
+        target: /etc/clickhouse-server/config.d/timezone.xml
+      - type: bind
+        source: ./clickhouse/init
+        target: /docker-entrypoint-initdb.d
     depends_on:
       - redpanda
     networks:

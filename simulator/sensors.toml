@@ -12,6 +12,7 @@ uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
 points_spacing = "PT1S" # 1 hour
 generation_delay = "PT1S" # 1 second
+begin_date = 2023-01-01T00:00:00
 latitude = 45.4224876
 longitude = 11.9233274
 
