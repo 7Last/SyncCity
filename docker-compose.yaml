@@ -113,8 +113,12 @@ services:
       CLICKHOUSE_PASSWORD: admin
       CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
     volumes:
-      - ./clickhouse/timezone.xml:/etc/clickhouse-server/config.d/timezone.xml
-      - ./clickhouse/init:/docker-entrypoint-initdb.d
+      - type: bind
+        source: ./clickhouse/timezone.xml
+        target: /etc/clickhouse-server/config.d/timezone.xml
+      - type: bind
+        source: ./clickhouse/init
+        target: /docker-entrypoint-initdb.d
     depends_on:
       - redpanda
     networks:
@@ -153,13 +157,11 @@ services:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
-      # PER PERMETTERE LA VISIONE SENZA ESSERE LOGGATI#
-      GF_AUTH_ORG_ROLE: viewer
       GF_AUTH_ANONYMOUS_ENABLED: true
       GF_AUTH_DISABLE_LOGIN_FORM: true
-      #################################################
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
     depends_on:
       - clickhouse
     networks:
       - redpanda_network
-    profiles: ["release"]
+    profiles: ["local", "release"]

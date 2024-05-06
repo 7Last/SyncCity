@@ -1,371 +1,533 @@
 {
-  "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
-  },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": 4,
-  "links": [],
-  "liveNow": false,
-  "panels": [
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "dashed+area"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              },
-              {
-                "color": "dark-yellow",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 80
-              }
-            ]
-          },
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 6,
-        "y": 0
-      },
-      "id": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.6",
-          "queryType": "table",
-          "rawSql": "SELECT \n  timestamp as time, \n  vehicles_per_hour as Vehicles \nFROM sensors.traffic",
-          "refId": "A"
-        }
-      ],
-      "title": "Vehicles",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              },
-              {
-                "color": "dark-yellow",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 80
-              }
-            ]
-          },
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 8
-      },
-      "id": 2,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "builderOptions": {
-            "aggregates": [],
-            "columns": [
-              {
-                "custom": false,
-                "name": "timestamp1m",
-                "type": "DateTime64(3)"
-              },
-              {
-                "custom": false,
-                "name": "avg_vehicles_per_hour",
-                "type": "Float32"
-              }
-            ],
-            "database": "sensors",
-            "filters": [],
-            "groupBy": [],
-            "limit": 1000,
-            "meta": {},
-            "mode": "list",
-            "orderBy": [],
-            "queryType": "table",
-            "table": "traff1c"
-          },
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 0,
-          "meta": {
-            "builderOptions": {
-              "aggregates": [],
-              "columns": [
-                {
-                  "custom": false,
-                  "name": "timestamp1m",
-                  "type": "DateTime64(3)"
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
                 },
-                {
-                  "custom": false,
-                  "name": "avg_vehicles_per_hour",
-                  "type": "Float32"
-                }
-              ],
-              "database": "sensors",
-              "filters": [],
-              "groupBy": [],
-              "limit": 1000,
-              "meta": {},
-              "mode": "list",
-              "orderBy": [],
-              "queryType": "table",
-              "table": "traff1c"
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
             }
-          },
-          "pluginVersion": "4.0.6",
-          "queryType": "timeseries",
-          "rawSql": "SELECT  avg_vehicles_per_hour as Average FROM \"sensors\".\"traff1c\" LIMIT 1000",
-          "refId": "A"
-        }
-      ],
-      "title": "Vehicles per months",
-      "type": "gauge"
+        ]
     },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-green",
-                "value": null
-              },
-              {
-                "color": "dark-orange",
-                "value": 30
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              }
-            ]
-          },
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 3,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 3,
+    "links": [],
+    "liveNow": false,
+    "panels": [
         {
-          "builderOptions": {
-            "aggregates": [],
-            "columns": [
-              {
-                "custom": false,
-                "name": "avg_speed",
-                "type": "Float32"
-              }
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 9,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 4,
+            "options": {
+                "basemap": {
+                    "config": {},
+                    "name": "Layer 0",
+                    "type": "default"
+                },
+                "controls": {
+                    "mouseWheelZoom": true,
+                    "showAttribution": true,
+                    "showDebug": false,
+                    "showMeasure": false,
+                    "showScale": false,
+                    "showZoom": true
+                },
+                "layers": [
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "dark-green"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Traffic",
+                        "tooltip": true,
+                        "type": "markers"
+                    }
+                ],
+                "tooltip": {
+                    "mode": "details"
+                },
+                "view": {
+                    "allLayers": true,
+                    "id": "europe",
+                    "lat": 46,
+                    "lon": 14,
+                    "zoom": 5
+                }
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.6",
+                    "queryType": "table",
+                    "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nGROUP BY sensor_name, latitude, longitude\n",
+                    "refId": "Traffic"
+                }
             ],
-            "database": "sensors",
-            "filters": [],
-            "groupBy": [],
-            "limit": 1000,
-            "meta": {},
-            "mode": "list",
-            "orderBy": [],
-            "queryType": "table",
-            "table": "traff1c"
-          },
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "builder",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.6",
-          "queryType": "table",
-          "rawSql": "SELECT avg_speed FROM \"sensors\".\"traff1c\" LIMIT 1000",
-          "refId": "A"
+            "title": "Location",
+            "transformations": [
+                {
+                    "id": "convertFieldType",
+                    "options": {
+                        "conversions": [
+                            {
+                                "destinationType": "string",
+                                "targetField": "latitude"
+                            },
+                            {
+                                "destinationType": "string",
+                                "targetField": "longitude"
+                            }
+                        ],
+                        "fields": {}
+                    }
+                }
+            ],
+            "type": "geomap"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "dark-green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-yellow",
+                                "value": 60
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 9
+            },
+            "id": 2,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "builderOptions": {
+                        "aggregates": [],
+                        "columns": [
+                            {
+                                "custom": false,
+                                "name": "timestamp1m",
+                                "type": "DateTime64(3)"
+                            },
+                            {
+                                "custom": false,
+                                "name": "avg_vehicles_per_hour",
+                                "type": "Float32"
+                            }
+                        ],
+                        "database": "sensors",
+                        "filters": [],
+                        "groupBy": [],
+                        "limit": 1000,
+                        "meta": {},
+                        "mode": "list",
+                        "orderBy": [],
+                        "queryType": "table",
+                        "table": "traff1c"
+                    },
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 0,
+                    "meta": {
+                        "builderOptions": {
+                            "aggregates": [],
+                            "columns": [
+                                {
+                                    "custom": false,
+                                    "name": "timestamp1m",
+                                    "type": "DateTime64(3)"
+                                },
+                                {
+                                    "custom": false,
+                                    "name": "avg_vehicles_per_hour",
+                                    "type": "Float32"
+                                }
+                            ],
+                            "database": "sensors",
+                            "filters": [],
+                            "groupBy": [],
+                            "limit": 1000,
+                            "meta": {},
+                            "mode": "list",
+                            "orderBy": [],
+                            "queryType": "table",
+                            "table": "traff1c"
+                        }
+                    },
+                    "pluginVersion": "4.0.6",
+                    "queryType": "timeseries",
+                    "rawSql": "SELECT  avg_vehicles_per_hour as Average FROM \"sensors\".\"traff1c\" LIMIT 1000",
+                    "refId": "A"
+                }
+            ],
+            "title": "Vehicles per months",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "dashed+area"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "dark-green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-yellow",
+                                "value": 60
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 9
+            },
+            "id": 1,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.6",
+                    "queryType": "table",
+                    "rawSql": "SELECT \n  timestamp as time, \n  vehicles_per_hour as Vehicles \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+                    "refId": "A"
+                }
+            ],
+            "title": "Vehicles",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "dark-green",
+                                "value": null
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 30
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 17
+            },
+            "id": 3,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "builderOptions": {
+                        "aggregates": [],
+                        "columns": [
+                            {
+                                "custom": false,
+                                "name": "avg_speed",
+                                "type": "Float32"
+                            }
+                        ],
+                        "database": "sensors",
+                        "filters": [],
+                        "groupBy": [],
+                        "limit": 1000,
+                        "meta": {},
+                        "mode": "list",
+                        "orderBy": [],
+                        "queryType": "table",
+                        "table": "traff1c"
+                    },
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "builder",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.6",
+                    "queryType": "table",
+                    "rawSql": "SELECT avg_speed FROM \"sensors\".\"traff1c\" LIMIT 1000",
+                    "refId": "A"
+                }
+            ],
+            "title": "Average Speed",
+            "type": "gauge"
         }
-      ],
-      "title": "Average Speed",
-      "type": "gauge"
-    }
-  ],
-  "refresh": "5s",
-  "schemaVersion": 39,
-  "tags": [],
-  "templating": {
-    "list": []
-  },
-  "time": {
-    "from": "now-2y",
-    "to": "now"
-  },
-  "timepicker": {},
-  "timezone": "",
-  "title": "Traffic",
-  "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 1,
-  "weekStart": ""
+    ],
+    "refresh": "5s",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now/d",
+        "to": "now/d"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Traffic",
+    "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
+    "version": 4,
+    "weekStart": ""
 }

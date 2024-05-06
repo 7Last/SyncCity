@@ -7,6 +7,10 @@
       "type": "string"
     },
     {
+      "name": "sensor_name",
+      "type": "string"
+    },
+    {
       "name": "latitude",
       "type": "double"
     },

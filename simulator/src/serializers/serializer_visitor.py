@@ -10,6 +10,7 @@ class SerializerVisitor:
     @staticmethod
     def _serialize_raw_data(raw_data: RawData) -> Dict:
         return {
+            "sensor_name": raw_data.sensor_name,
             "sensor_uuid": str(raw_data.sensor_uuid),
             "latitude": raw_data.latitude,
             "longitude": raw_data.longitude,

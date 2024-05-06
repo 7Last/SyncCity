@@ -2,16 +2,24 @@
 [sensors.temperature-sensor-1]
 uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT1H" # 1 hour
+points_spacing = "PT1S" # 1 hour
+generation_delay = "PT1S" # 1 second
+latitude = 45.4018782
+longitude = 11.7769644
+
+[sensors.temperature-sensor-2]
+uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
+type = "temperature"
+points_spacing = "PT1S" # 1 hour
 generation_delay = "PT1S" # 1 second
 begin_date = 2023-01-01T00:00:00
-latitude = 48.1548976
-longitude = 11.2122041
+latitude = 45.4224876
+longitude = 11.9233274
 
 [sensors.traffic-sensor-1]
 uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
 type = "traffic"
-points_spacing = "PT1M" # 1 minute
+points_spacing = "PT1S" # 1 minute
 generation_delay = "PT2S" # 2 seconds
-latitude = 48.1548976
-longitude = 11.2122041
+latitude = 45.4673877
+longitude = 12.1943587
