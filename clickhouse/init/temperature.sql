@@ -1,6 +1,7 @@
 CREATE TABLE sensors.temperature
 (
     sensor_uuid UUID,
+    sensor_name String,
     timestamp   DateTime64,
     value       Float32,
     latitude    Float64,
@@ -8,12 +9,10 @@ CREATE TABLE sensors.temperature
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
 
--- --------------------------
---      START AGGREGATE 
--- --------------------------
 CREATE TABLE sensors.temperatures1m
 (
     sensor_uuid         UUID,
+    sensor_name String,
     timestamp1m         DATETIME64,
     avgTemperature      Float32,
     latitude            Float64,
@@ -28,26 +27,11 @@ CREATE MATERIALIZED VIEW sensors.temperatures1m_mv
 AS
 SELECT 
     sensor_uuid,
+    sensor_name,
     toStartOfMinute(timestamp) AS timestamp1m,
     avg(value) as avgTemperature,
     latitude,
     longitude,
     now() AS insertion_timestamp
 FROM sensors.temperature
-GROUP BY (sensor_uuid, timestamp1m, latitude, longitude);
--- ------------------------
---      END AGGREGATE
--- ------------------------
-
--- -------------------------------------------------------
---VISTA CHE RESTITUISCE LAT E LON ALLA TABELLA MAP
--- -------------------------------------------------------
-CREATE MATERIALIZED VIEW sensors.map_mv
-    TO sensors.map
-AS
-SELECT DISTINCT
-    sensor_uuid,
-    latitude,
-    longitude
-FROM sensors.temperature
-GROUP BY (sensor_uuid, latitude, longitude);
+GROUP BY (sensor_uuid, sensor_name, timestamp1m, latitude, longitude);

@@ -31,6 +31,7 @@ class TemperatureSimulator(Simulator):
             yield TemperatureRawData(
                 value=_sinusoidal_value(self.timestamp),
                 sensor_uuid=self.sensor_uuid,
+                sensor_name=self.sensor_name,
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,

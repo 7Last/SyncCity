@@ -59,6 +59,7 @@ class TrafficSimulator(Simulator):
                 longitude=self.longitude,
                 timestamp=self.timestamp,
                 sensor_uuid=self.sensor_uuid,
+                sensor_name=self.sensor_name,
             )
 
 
