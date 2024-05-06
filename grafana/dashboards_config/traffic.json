@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 4,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -328,7 +328,7 @@
                             "viz": false
                         },
                         "insertNulls": false,
-                        "lineInterpolation": "linear",
+                        "lineInterpolation": "smooth",
                         "lineWidth": 1,
                         "pointSize": 5,
                         "scaleDistribution": {
@@ -514,20 +514,20 @@
             "type": "gauge"
         }
     ],
-    "refresh": "5s",
+    "refresh": false,
     "schemaVersion": 39,
     "tags": [],
     "templating": {
         "list": []
     },
     "time": {
-        "from": "now/d",
-        "to": "now/d"
+        "from": "2024-05-06T22:14:07.850Z",
+        "to": "2024-05-06T22:27:52.115Z"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Traffic",
     "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 4,
+    "version": 2,
     "weekStart": ""
 }

@@ -212,7 +212,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
+                    "rawSql": "SELECT sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperature\nwhere sensor_name like '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
                     "refId": "Temp"
                 },
                 {
@@ -235,7 +235,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
+                    "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nwhere sensor_name like '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
                     "refId": "Traffic"
                 }
             ],
@@ -267,14 +267,19 @@
     "templating": {
         "list": [
             {
+                "allValue": "%",
                 "current": {
                     "selected": true,
-                    "text": "traffic-sensor-1",
-                    "value": "traffic-sensor-1"
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "datasource": {
+                    "type": "grafana-clickhouse-datasource",
+                    "uid": "P5CECDC4694398594"
                 },
                 "definition": "SELECT sensor_name\nFROM sensors.temperature\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic",
                 "hide": 0,
-                "includeAll": false,
+                "includeAll": true,
                 "label": "Sensor name",
                 "multi": false,
                 "name": "sensor_name",
