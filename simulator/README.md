@@ -12,6 +12,16 @@ Running the Kafka stack:
 ```bash
 docker-compose --profile local up -d
 ```
+
+Give all permissions to the `./volumes/` folder that has been created:
+```bash
+chmod -R 777 ./volumes
+```
+then **run all containers that are turned off** and then run:
+```bash
+curl "localhost:8083/connectors/" -H 'Content-Type: application/json' -d @./connectors/configs/clickhouse.json
+```
+
 Running the simulator:
 - Create a virtual environment:
 
