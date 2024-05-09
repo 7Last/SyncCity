@@ -42,6 +42,7 @@ services:
       - 8080:8080
     depends_on:
       - redpanda
+    restart: on-failure
     profiles: ["local", "release"]
 
     environment:
@@ -138,6 +139,9 @@ services:
     build:
       context: ./simulator
       dockerfile: Dockerfile
+    depends_on:
+      - redpanda
+    restart: on-failure
     volumes:
       - ./simulator/sensors.toml:/simulator/sensors.toml
     networks:

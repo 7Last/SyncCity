@@ -714,7 +714,7 @@
             "type": "gauge"
         }
     ],
-    "refresh": "",
+    "refresh": "true",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -746,8 +746,8 @@
         ]
     },
     "time": {
-        "from": "2024-05-06T22:14:50.835Z",
-        "to": "2024-05-06T22:28:23.837Z"
+        "from": "now-6h",
+        "to": "now+6h"
     },
     "timepicker": {},
     "timezone": "",

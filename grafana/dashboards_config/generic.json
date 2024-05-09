@@ -261,7 +261,7 @@
             "type": "geomap"
         }
     ],
-    "refresh": "",
+    "refresh": "true",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -295,7 +295,7 @@
     },
     "time": {
         "from": "now-6h",
-        "to": "now"
+        "to": "now+6h"
     },
     "timepicker": {},
     "timezone": "",
