@@ -23,8 +23,20 @@
       "type": "string"
     },
     {
-      "name": "riempimento_iniziale",
+      "name": "starting_filling",
       "type": "int"
+    },
+    {
+      "name": "max_filling",
+      "type": "float"
+    },
+    {
+      "name": "min_filling",
+      "type": "float"
+    },
+    {
+      "name": "filling_speed",
+      "type": "float"
     }
   ]
 }
