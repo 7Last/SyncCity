@@ -3,6 +3,7 @@ from typing import Dict
 from ..models.raw_data.raw_data import RawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
+from ..models.raw_data.ecological_island_raw_data import EcologicalIslandRawData
 
 
 class SerializerVisitor:
@@ -29,5 +30,12 @@ class SerializerVisitor:
         return {
             "vehicles_per_hour": raw_data.vehicles_per_hour,
             "avg_speed": raw_data.avg_speed,
+            **(SerializerVisitor._serialize_raw_data(raw_data)),
+        }
+    
+    @staticmethod
+    def serialize_ecological_island_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
+        return {
+            "riempimento_iniziale": raw_data.riempimento_iniziale,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }

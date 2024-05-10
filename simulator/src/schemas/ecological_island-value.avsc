@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Traffic",
+  "name": "Ecological Island",
   "fields": [
     {
       "name": "sensor_uuid",
@@ -23,12 +23,8 @@
       "type": "string"
     },
     {
-      "name": "vehicles_per_hour",
-      "type": "float"
-    },
-    {
-      "name": "avg_speed",
-      "type": "float"
+      "name": "riempimento_iniziale",
+      "type": "int"
     }
   ]
 }
