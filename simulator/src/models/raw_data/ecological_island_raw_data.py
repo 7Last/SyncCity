@@ -12,13 +12,14 @@ class EcologicalIslandRawData(RawData):
     __filling_speed = 2.5
     '''
 
-    def __init__(self, *, starting_filling: int, max_filling: float, min_filling: float, filling_speed: float, latitude: float, longitude: float,
+    def __init__(self, *, starting_filling: int, max_filling: float, min_filling: float, filling_speed: float, filling_value: float, latitude: float, longitude: float,
                  sensor_uuid: UUID, sensor_name: str, timestamp: datetime = datetime.now()) -> None:
         """
         :param starting_filling: initial filling percentage of the ecological island
         :param max_filling: maximum filling percentage of the ecological island
         :param min_filling: minimum filling percentage of the ecological island
-        :param filling_speed: filling speed in percentage per hour (?)
+        :param filling_speed: filling speed in percentage per hour (?)\
+        :param filling_value: filling value in percentage
         """
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
@@ -27,6 +28,7 @@ class EcologicalIslandRawData(RawData):
         self.max_filling = max_filling
         self.min_filling = min_filling
         self.filling_speed = filling_speed
+        self.filling_value = filling_value
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.serialize_ecological_island_raw_data(self)

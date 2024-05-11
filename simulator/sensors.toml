@@ -23,3 +23,11 @@ points_spacing = "PT1S" # 1 minute
 generation_delay = "PT2S" # 2 seconds
 latitude = 45.4673877
 longitude = 12.1943587
+
+[sensors.ecological-island-sensor-1]
+uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
+type = "ecological_island"
+points_spacing = "PT1S" # 1 minute
+generation_delay = "PT2S" # 2 seconds
+latitude = 45.4876568
+longitude = 12.3456787
