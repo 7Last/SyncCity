@@ -63,7 +63,7 @@ def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
     return visitor.serialize_<new_sensor_type>(self)
 ```
 
-## Step 5: Implement the `Simulator` for the new sensor type
+## Step 6: Implement the `Simulator` for the new sensor type
 In the [src/simulators](../src/simulators) folder implement a new `Simulator`.
 The `NewSensorTypeSimulator` class must extend `Simulator` and implement the `stream()`
 method.
@@ -74,21 +74,21 @@ and change the `yield` statement to return a new instance of `NewSensorTypeRawDa
 If any support method is needed to generate the realistic values for the simulated
 measurement, create a **private** function on the bottom of the file.
 
-## Step 6: Edit ClickHouse connector config
+## Step 7: Edit ClickHouse connector config
 In the [connectors/configs/clickhouse.json](../../connectors/configs/clickhouse.json)
 file add `<new_sensor_type>` to the list of `topics` in `config` and in the `topics2TableMap`.
 
-## Step 7: Create ClickHouse Table
+## Step 8: Create ClickHouse Table
 Create the table for the new topic in the [clickhouse/init](../../clickhouse/init) 
 folder. The file should be called `<new_sensor_type>.sql`.
 The table should be called `<new_sensor_type>`.
 In this file define also the materialized views for `<new_sensor_type>`.
 
-## Step 8: Add the new sensor type to the simulator factory
+## Step 9: Add the new sensor type to the simulator factory
 In the [src/models/config/simulator_factory.py](../src/models/config/simulator_factory.py) file,
 add a new `match` case for the new sensor type in the `_simulator_factory` method.
 
-## Step 9: Create sensors in the configuration
+## Step 10: Create sensors in the configuration
 In the [sensors.toml](../sensors.toml) file, create sensors of the new type.
 You can create as many sensors as you wish, each of them is totally independent
 and will be run in a separate thread.
@@ -108,5 +108,5 @@ Default: 1s.
 - `begin_date` (optional): date from which timestamps of raw data start. Default: now
 - `latitude` and `longitude`
 - 
-## Step 10: Define Grafana dashboards for the new sensor type
+## Step 11: Define Grafana dashboards for the new sensor type
 
