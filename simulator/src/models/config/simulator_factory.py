@@ -43,5 +43,3 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
                 begin_date=config.begin_date,
                 limit=config.limit,
             )
-        case _:
-            raise NotImplementedError(f'No factory for {type}')

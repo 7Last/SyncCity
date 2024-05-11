@@ -20,3 +20,11 @@ class TemperatureRawData(RawData):
     @property
     def topic(self) -> str:
         return "temperature"
+
+    def __eq__(self, other: any) -> bool:
+        if not isinstance(other, TemperatureRawData):
+            return False
+        return self.value == other.value and super().__eq__(other)
+
+    def __hash__(self) -> int:
+        return hash((self.value, super().__hash__()))
