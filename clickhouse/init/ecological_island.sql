@@ -33,7 +33,7 @@ CREATE TABLE sensors.ecological_island1M
     longitude            Float64,
     avg_filling_value    Float32
 ) ENGINE = MergeTree()
-      ORDER BY (sensor_uuid, timestamp1m);
+      ORDER BY (sensor_uuid, timestamp1M);
 
 CREATE MATERIALIZED VIEW sensors.ecological_island1m_mv
     TO sensors.ecological_island1m

@@ -44,7 +44,7 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
                 begin_date=config.begin_date,
                 limit=config.limit,
             )
-        case SensorType.ECOLOGICALISLAND:
+        case SensorType.ECOLOGICAL_ISLAND:
             return EcologicalIslandSimulator(
                 sensor_name=sensor_name,
                 sensor_uuid=config.uuid,
