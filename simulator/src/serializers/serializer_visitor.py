@@ -34,7 +34,7 @@ class SerializerVisitor:
         }
     
     @staticmethod
-    def serialize_ecologicalIsland_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
+    def serialize_ecological_island_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
         return {
             "starting_filling": raw_data.starting_filling,
             "max_filling": raw_data.max_filling,
