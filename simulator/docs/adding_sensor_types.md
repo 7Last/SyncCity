@@ -21,10 +21,6 @@ From now on, the string which is returned from the `topic()` method will be call
 
 More info about the `accept` method will be provided later.
 
-> The system does not define a limit on the number of measurements that a sensor
-can send, however to keep the simulation realistic it is advised to avoid
-sending more than 3 measurements.
-
 ## Step 2: Add a value to the `SensorType` enum
 Add the new type to the `SensorType` enum in the [src/models/sensor_type.py](../src/models/sensor_type.py)
 file.
@@ -34,7 +30,7 @@ Create a new file in [src/schemas](../src/schemas). The file should be named as 
 `<new_sensor_type>-value.avsc`, where `<new_sensor_type>` must be replaced with the sensor type
 which is being created.
 
-Keep `sensor_uuid`, `timestamp`, `latitude` and `longitude` fields exactly the same as in
+Keep `sensor_uuid`, `sensor_name`, `timestamp`, `latitude` and `longitude` fields exactly the same as in
 the `.avsc` files which are already defined.
 
 **NOTE**:
