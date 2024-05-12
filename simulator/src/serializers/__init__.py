@@ -34,7 +34,30 @@ def _create_subject(schema_registry_url: str, subject: str, payload: Dict) -> in
     headers = {"Content-Type": "application/vnd.schemaregistry.v1+json"}
     response = requests.post(url, data=json.dumps(payload), headers=headers)
 
-    if response.status_code != 200:
+    if response.status_code == 409:
+        log.info(f"Schema {subject} already exists, overwriting")
+        delete_url = f"{schema_registry_url}/subjects/{subject}"
+        response = requests.delete(
+            f"{delete_url}?permanent=false",
+            headers=headers,
+        )
+        if response.status_code != 200:
+            raise Exception(f"Error deleting schema {subject}: {response.json()}")
+        log.info(f"Schema {subject} soft deleted successfully")
+
+        response = requests.delete(
+            f"{delete_url}?permanent=true",
+            headers=headers,
+        )
+
+        if response.status_code != 200:
+            raise Exception(f"Error deleting schema {subject}: {response.json()}")
+
+        # create the new schema
+        response = requests.post(url, data=json.dumps(payload), headers=headers)
+        if response.status_code != 200:
+            raise Exception(f"Error creating schema {subject}: {response.json()}")
+    elif response.status_code != 200:
         raise Exception(f"Error creating schema {subject}: {response.json()}")
 
     schema_id = response.json()["id"]
