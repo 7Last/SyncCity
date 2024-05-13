@@ -27,7 +27,8 @@ longitude = 12.1943587
 [sensors.ecological-island-sensor-1]
 uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
 type = "ecological_island"
-points_spacing = "PT1S" # 1 minute
-generation_delay = "PT2S" # 2 seconds
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+begin_date = 2023-01-01T00:00:00
 latitude = 45.4876568
 longitude = 12.3456787

@@ -33,7 +33,12 @@ class EcologicalIslandSimulator(Simulator):
                 max_filling=100,
                 min_filling=0,
                 filling_speed=1,
-                filling_value=_filling_value(self.timestamp, max_filling=100, min_filling=0, starting_filling=10, filling_speed=1),
+                filling_value=_filling_value(self.timestamp,
+                                             max_filling=100,
+                                             min_filling=0,
+                                             starting_filling=10,
+                                             filling_speed=1
+                                             ),
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,
@@ -41,9 +46,7 @@ class EcologicalIslandSimulator(Simulator):
                 sensor_name=self.sensor_name,
             )
 
+
 def _filling_value(timestamp: datetime, max_filling, min_filling, starting_filling, filling_speed) -> float:
-    new_filling = starting_filling + filling_speed * (timestamp.day % 100)
-    new_filling = new_filling if new_filling < max_filling else max_filling - new_filling
-    if new_filling < min_filling:
-        new_filling = min_filling
-    return new_filling
+    t = timestamp.timestamp()
+    return (t / 86400 % 100) * filling_speed
