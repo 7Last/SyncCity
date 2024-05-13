@@ -3,13 +3,13 @@ import logging as log
 import threading
 import time
 
-from .producers.producer_strategy import ProducerStrategy
+from .producers.kafka_producer import KafkaProducer
 from .simulators.simulator import Simulator
 
 
 class Runner:
     def __init__(self, *, simulators: list[Simulator], max_workers: int,
-                 producer: ProducerStrategy) -> None:
+                 producer: KafkaProducer) -> None:
         self._max_workers = max_workers
         self._simulators = simulators
         self._producer = producer

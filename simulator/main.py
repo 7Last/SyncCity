@@ -7,7 +7,7 @@ from src.producers.kafka_producer import KafkaProducer
 from src.models.config.env_config import EnvConfig
 from src.models.config.simulator_factory import simulators_generator
 from src.runner import Runner
-from src.serializers.avro_serializer import AvroSerializer
+from src.serializers.json_serializer import JSONSerializer
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 
@@ -28,7 +28,7 @@ def main() -> None:
     producer = KafkaProducer(
         bootstrap_servers=[env_config.bootstrap_server],
         max_block_ms=env_config.max_block_ms,
-        serializer=AvroSerializer(),
+        serializer=JSONSerializer(),
         acks=1,
     )
 

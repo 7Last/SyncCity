@@ -1,3 +1,8 @@
+CREATE TABLE sensors.traffic_kafka
+(
+    data String
+) ENGINE = Kafka('redpanda:9092', 'traffic', 'ch_group_1', 'JSONAsString');
+
 CREATE TABLE sensors.traffic
 (
     sensor_uuid UUID,
@@ -9,6 +14,16 @@ CREATE TABLE sensors.traffic
     avg_speed   Float32
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
+
+CREATE MATERIALIZED VIEW sensors.traffic_topic_mv TO sensors.traffic as
+SELECT JSONExtractString(data, 'sensor_name')                AS sensor_name,
+       toUUID(JSONExtractString(data, 'sensor_uuid'))        AS sensor_uuid,
+       toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
+       JSONExtractFloat(data, 'vehicles_per_hour')           AS vehicles_per_hour,
+       JSONExtractFloat(data, 'avg_speed')                   AS avg_speed,
+       JSONExtractFloat(data, 'latitude')                    AS latitude,
+       JSONExtractFloat(data, 'longitude')                   AS longitude
+FROM sensors.traffic_kafka;
 
 -- Real-time data
 CREATE TABLE sensors.traffic_realtime
