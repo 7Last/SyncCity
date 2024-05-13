@@ -5,7 +5,7 @@ CREATE TABLE sensors.ecological_island
     timestamp         DateTime64,
     latitude          Float64,
     longitude         Float64,
-    starting_filling  Float32,
+    starting_filling  Int32,
     max_filling       Float32,
     min_filling       Float32,
     filling_speed     Float32,
@@ -19,7 +19,7 @@ CREATE TABLE sensors.ecological_island1m
     sensor_name          String,
     timestamp1m          DATETIME64,
     latitude             Float64,
-    longitude            Float64,
+    longitude            Float64
     --???
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp1m);
