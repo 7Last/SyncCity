@@ -192,6 +192,317 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "semi-dark-blue",
+                                "value": null
+                            },
+                            {
+                                "color": "#ffffff",
+                                "value": 5
+                            },
+                            {
+                                "color": "red",
+                                "value": 30
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "avg_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "avg_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "noValue",
+                                "value": "No data"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "#ffffff",
+                                    "mode": "fixed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 8
+            },
+            "id": 9,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.7",
+                    "queryType": "table",
+                    "rawSql": "SELECT avg(value) as avg_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
+                    "refId": "Real time temp"
+                }
+            ],
+            "title": "Real time",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unit": "short",
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "monthly_mean_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "month_n"
+                        },
+                        "properties": [
+                            {
+                                "id": "mappings",
+                                "value": [
+                                    {
+                                        "options": {
+                                            "1": {
+                                                "index": 0,
+                                                "text": "Jan"
+                                            },
+                                            "2": {
+                                                "index": 1,
+                                                "text": "Feb"
+                                            },
+                                            "3": {
+                                                "index": 2,
+                                                "text": "Mar"
+                                            },
+                                            "4": {
+                                                "index": 3,
+                                                "text": "Apr"
+                                            },
+                                            "5": {
+                                                "index": 4,
+                                                "text": "May"
+                                            },
+                                            "6": {
+                                                "index": 5,
+                                                "text": "Jun"
+                                            },
+                                            "7": {
+                                                "index": 6,
+                                                "text": "Jul"
+                                            },
+                                            "8": {
+                                                "index": 7,
+                                                "text": "Aug"
+                                            },
+                                            "9": {
+                                                "index": 8,
+                                                "text": "Set"
+                                            },
+                                            "10": {
+                                                "index": 9,
+                                                "text": "Oct"
+                                            },
+                                            "11": {
+                                                "index": 10,
+                                                "text": "Nov"
+                                            },
+                                            "12": {
+                                                "index": 11,
+                                                "text": "Dec"
+                                            }
+                                        },
+                                        "type": "value"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 8
+            },
+            "id": 4,
+            "options": {
+                "barRadius": 0.01,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "right",
+                    "showLegend": false
+                },
+                "orientation": "auto",
+                "showValue": "always",
+                "stacking": "none",
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                },
+                "xField": "month_n",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "vertamedia-clickhouse-datasource",
+                        "uid": "PBB98D3AAE97FB2CD"
+                    },
+                    "dateTimeType": "DATETIME",
+                    "editorMode": "builder",
+                    "editorType": "sql",
+                    "extrapolate": true,
+                    "format": 1,
+                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
+                    "intervalFactor": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.7",
+                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
+                    "queryType": "table",
+                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
+                    "rawSql": "SELECT\n    toMonth(timestamp) as month_n,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp >= $__fromTime and timestamp <= $__toTime\nGROUP BY month_n",
+                    "refId": "A",
+                    "round": "0s",
+                    "skip_comments": true
+                }
+            ],
+            "title": "Monthly average",
+            "transformations": [],
+            "type": "barchart"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
                         "mode": "palette-classic"
                     },
                     "custom": {
@@ -224,7 +535,7 @@
                             "mode": "none"
                         },
                         "thresholdsStyle": {
-                            "mode": "dashed+area"
+                            "mode": "area"
                         }
                     },
                     "mappings": [],
@@ -232,16 +543,16 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green",
+                                "color": "semi-dark-blue",
                                 "value": null
                             },
                             {
-                                "color": "#EAB839",
+                                "color": "#ffffff",
                                 "value": 5
                             },
                             {
                                 "color": "red",
-                                "value": 35
+                                "value": 30
                             }
                         ]
                     },
@@ -257,9 +568,21 @@
                             {
                                 "id": "color",
                                 "value": {
-                                    "fixedColor": "orange",
+                                    "fixedColor": "text",
                                     "mode": "fixed"
                                 }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "value"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
                             }
                         ]
                     }
@@ -269,7 +592,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 8
+                "y": 16
             },
             "id": 7,
             "options": {
@@ -350,7 +673,7 @@
                     "refId": "A"
                 }
             ],
-            "title": "Temperature time series",
+            "title": "Time series",
             "transformations": [],
             "type": "timeseries"
         },
@@ -362,194 +685,103 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "palette-classic"
+                        "mode": "thresholds"
                     },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "fillOpacity": 80,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineWidth": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "off"
-                        }
-                    },
+                    "fieldMinMax": false,
                     "mappings": [],
                     "thresholds": {
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green",
+                                "color": "semi-dark-blue",
                                 "value": null
                             },
                             {
+                                "color": "#ffffff",
+                                "value": 5
+                            },
+                            {
                                 "color": "red",
-                                "value": 80
+                                "value": 30
                             }
                         ]
                     },
-                    "unit": "short",
                     "unitScale": true
                 },
-                "overrides": []
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byType",
+                            "options": "number"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "min_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Min. temperature"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "avg_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Avg. temperature"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "max_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Max. temperature"
+                            }
+                        ]
+                    }
+                ]
             },
             "gridPos": {
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 8
-            },
-            "id": 4,
-            "options": {
-                "barRadius": 0.025,
-                "barWidth": 0.97,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "right",
-                    "showLegend": true
-                },
-                "orientation": "auto",
-                "showValue": "always",
-                "stacking": "none",
-                "tooltip": {
-                    "mode": "single",
-                    "sort": "none"
-                },
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
-            },
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "vertamedia-clickhouse-datasource",
-                        "uid": "PBB98D3AAE97FB2CD"
-                    },
-                    "dateTimeType": "DATETIME",
-                    "editorMode": "builder",
-                    "editorType": "sql",
-                    "extrapolate": true,
-                    "format": 1,
-                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
-                    "intervalFactor": 1,
-                    "meta": {
-                        "builderOptions": {
-                            "columns": [],
-                            "database": "",
-                            "limit": 1000,
-                            "mode": "list",
-                            "queryType": "table",
-                            "table": ""
-                        }
-                    },
-                    "pluginVersion": "4.0.6",
-                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
-                    "queryType": "table",
-                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
-                    "rawSql": "SELECT\n    dateName('month', timestamp) as month_name,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp >= toStartOfYear(now())\nGROUP BY month_name",
-                    "refId": "A",
-                    "round": "0s",
-                    "skip_comments": true
-                }
-            ],
-            "title": "Monthly average temperature (last year)",
-            "type": "barchart"
-        },
-        {
-            "datasource": {
-                "type": "grafana-clickhouse-datasource",
-                "uid": "P5CECDC4694398594"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "palette-classic"
-                    },
-                    "custom": {
-                        "axisBorderShow": false,
-                        "axisCenteredZero": false,
-                        "axisColorMode": "text",
-                        "axisLabel": "",
-                        "axisPlacement": "auto",
-                        "fillOpacity": 80,
-                        "gradientMode": "none",
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        },
-                        "lineWidth": 1,
-                        "scaleDistribution": {
-                            "type": "linear"
-                        },
-                        "thresholdsStyle": {
-                            "mode": "dashed+area"
-                        }
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "#EAB839",
-                                "value": 10
-                            },
-                            {
-                                "color": "red",
-                                "value": 15
-                            }
-                        ]
-                    },
-                    "unitScale": true
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
                 "y": 16
             },
             "id": 3,
             "options": {
-                "barRadius": 0,
-                "barWidth": 0.32,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                    "calcs": [],
-                    "displayMode": "list",
-                    "placement": "bottom",
-                    "showLegend": true
-                },
+                "minVizHeight": 75,
+                "minVizWidth": 75,
                 "orientation": "auto",
-                "showValue": "auto",
-                "stacking": "none",
-                "tooltip": {
-                    "mode": "single",
-                    "sort": "none"
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
                 },
-                "xField": "date",
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 100
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
             },
+            "pluginVersion": "10.3.0",
             "targets": [
                 {
                     "database": "sensors",
@@ -576,141 +808,19 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.6",
+                    "pluginVersion": "4.0.7",
                     "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date\n",
                     "queryType": "table",
                     "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
-                    "rawSql": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\nGROUP BY date\nORDER BY date\n",
+                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true,
                     "table": "temperature"
                 }
             ],
-            "title": "Daily mean temperature",
+            "title": "Min, max and average",
             "transformations": [],
-            "type": "barchart"
-        },
-        {
-            "datasource": {
-                "type": "grafana-clickhouse-datasource",
-                "uid": "P5CECDC4694398594"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "dark-green",
-                                "value": null
-                            },
-                            {
-                                "color": "dark-orange",
-                                "value": 10
-                            },
-                            {
-                                "color": "dark-red",
-                                "value": 20
-                            }
-                        ]
-                    },
-                    "unitScale": true
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 16
-            },
-            "id": 9,
-            "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
-            },
-            "pluginVersion": "10.3.0",
-            "targets": [
-                {
-                    "builderOptions": {
-                        "aggregates": [],
-                        "columns": [
-                            {
-                                "custom": false,
-                                "name": "avgTemperature",
-                                "type": "Float32"
-                            }
-                        ],
-                        "database": "sensors",
-                        "filters": [],
-                        "groupBy": [],
-                        "limit": 1000,
-                        "meta": {},
-                        "mode": "list",
-                        "orderBy": [
-                            {
-                                "dir": "ASC",
-                                "name": "avgTemperature"
-                            }
-                        ],
-                        "queryType": "table",
-                        "table": "temperatures1m"
-                    },
-                    "datasource": {
-                        "type": "grafana-clickhouse-datasource",
-                        "uid": "P5CECDC4694398594"
-                    },
-                    "editorType": "sql",
-                    "format": 1,
-                    "meta": {
-                        "builderOptions": {
-                            "aggregates": [],
-                            "columns": [
-                                {
-                                    "custom": false,
-                                    "name": "avgTemperature",
-                                    "type": "Float32"
-                                }
-                            ],
-                            "database": "sensors",
-                            "filters": [],
-                            "groupBy": [],
-                            "limit": 1000,
-                            "meta": {},
-                            "mode": "list",
-                            "orderBy": [
-                                {
-                                    "dir": "ASC",
-                                    "name": "avgTemperature"
-                                }
-                            ],
-                            "queryType": "table",
-                            "table": "temperatures1m"
-                        }
-                    },
-                    "pluginVersion": "4.0.6",
-                    "queryType": "table",
-                    "rawSql": "SELECT avgTemperature \nFROM sensors.temperatures1m\nWHERE timestamp1m  >= $__fromTime \nAND timestamp1m <= $__toTime \nand sensor_name = '${sensor_name}'\n",
-                    "refId": "A"
-                }
-            ],
-            "title": "Average temperature per minute",
             "type": "gauge"
         }
     ],
@@ -721,9 +831,9 @@
         "list": [
             {
                 "current": {
-                    "selected": false,
-                    "text": "temperature-sensor-1",
-                    "value": "temperature-sensor-1"
+                    "selected": true,
+                    "text": "temperature-sensor-2",
+                    "value": "temperature-sensor-2"
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
@@ -746,13 +856,13 @@
         ]
     },
     "time": {
-        "from": "2024-05-06T22:14:50.835Z",
-        "to": "2024-05-06T22:28:23.837Z"
+        "from": "2024-05-12T17:31:33.359Z",
+        "to": "2024-05-15T19:16:56.441Z"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Temperature",
     "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-    "version": 20,
+    "version": 16,
     "weekStart": ""
 }
