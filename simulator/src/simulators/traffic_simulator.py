@@ -69,7 +69,7 @@ def _multimodal_gauss_value(x: float, modes: list[tuple[float, float]]) -> float
     :param modes: list of tuples with the mu and sigma values for each mode
     :param x: Value for x to calculate the probability
     """
-    random_factor = random.uniform(0, 0.01)
+    random_factor = random.uniform(0, 0.1)
 
     # add a vertical shift to the distribution
     shift = 0.1

@@ -161,9 +161,9 @@ services:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
       GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
-      GF_AUTH_ANONYMOUS_ENABLED: true
-      GF_AUTH_DISABLE_LOGIN_FORM: true
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
+#      GF_AUTH_ANONYMOUS_ENABLED: true
+#      GF_AUTH_DISABLE_LOGIN_FORM: true
+#      GF_AUTH_ANONYMOUS_ORG_ROLE: Editor
     depends_on:
       clickhouse:
         condition: service_healthy
