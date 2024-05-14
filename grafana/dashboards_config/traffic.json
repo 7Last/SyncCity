@@ -376,7 +376,7 @@
                     "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
-                    "showLegend": true
+                    "showLegend": false
                 },
                 "orientation": "auto",
                 "showValue": "always",
@@ -385,9 +385,9 @@
                     "mode": "multi",
                     "sort": "none"
                 },
-                "xField": "hour",
+                "xField": "timestamp",
                 "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
+                "xTickLabelSpacing": 100
             },
             "pluginVersion": "10.3.0",
             "targets": [
@@ -450,7 +450,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "timeseries",
-                    "rawSql": "SELECT toHour(timestamp) hour, avg(vehicles) as vehicles\nFROM sensors.vehicles_hourly\nWHERE sensor_name = '${sensor_name}'\ngroup by hour",
+                    "rawSql": "select timestamp, vehicles\nfrom sensors.vehicles_hourly\nwhere (insertion_timestamp, timestamp) in (select max(insertion_timestamp), timestamp\n                                      from sensors.vehicles_hourly\n                                      where sensor_name = '${sensor_name}'\n                                      group by timestamp)\n  --and date >= $__fromTime and date <= $__toTime\n",
                     "refId": "A"
                 }
             ],
@@ -711,8 +711,8 @@
         ]
     },
     "time": {
-        "from": "now-1h",
-        "to": "now+1h"
+        "from": "now/d",
+        "to": "now/d"
     },
     "timepicker": {},
     "timezone": "",
