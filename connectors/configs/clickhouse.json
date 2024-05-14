@@ -18,7 +18,7 @@
         "ssl": false,
         "exactlyOnce": false,
         "suppressTableExistenceException": false,
-        "topic2TableMap": "temperature=temperature,traffic=traffic,ecological_island=ecological_island",
+        "topic2TableMap": "temperature=temperatures,traffic=traffic,ecological_island=ecological_island",
         "customInsertFormat": false,
         "enableDbTopicSplit": false,
         "errors.log.enable": false,
