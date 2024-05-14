@@ -1,3 +1,4 @@
+from datetime import UTC
 from typing import Dict
 
 from ..models.raw_data.raw_data import RawData
@@ -14,7 +15,7 @@ class SerializerVisitor:
             "sensor_uuid": str(raw_data.sensor_uuid),
             "latitude": raw_data.latitude,
             "longitude": raw_data.longitude,
-            "timestamp": raw_data.timestamp.isoformat(),
+            "timestamp": raw_data.timestamp.astimezone(tz=UTC).isoformat(),
         }
 
     @staticmethod

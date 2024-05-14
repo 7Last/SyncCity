@@ -12,9 +12,8 @@
 [sensors.temperature-sensor-2]
 uuid = "aa44c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT3H" # 1 minute
-generation_delay = "PT1S" # 1 second
-begin_date = 2024-05-14T10:00:00
+points_spacing = "PT1H" # 1 minute
+generation_delay = "PT5S" # 1 second
 latitude = 45.4018782
 longitude = 11.7769644
 limit = 44640
