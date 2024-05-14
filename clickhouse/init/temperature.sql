@@ -30,19 +30,19 @@ GROUP BY sensor_name;
 CREATE TABLE sensors.temperatures_monthly
 (
     sensor_name         String,
-    month               UInt16,
+    date                Datetime64,
     avg_temperature     Float32,
     insertion_timestamp DateTime64 DEFAULT now()
 ) ENGINE = MergeTree()
-      ORDER BY (month);
+      ORDER BY (sensor_name, date);
 
 CREATE MATERIALIZED VIEW sensors.temperatures_monthly_mv
     TO sensors.temperatures_monthly AS
 SELECT sensor_name,
-       toMonth(timestamp) AS month,
-       avg(value)         AS avg_temperature
+       toStartOfMonth(timestamp) AS date,
+       avg(value)                AS avg_temperature
 FROM sensors.temperatures
-GROUP BY sensor_name, month;
+GROUP BY sensor_name, date;
 
 -- Daily temperatures
 CREATE TABLE sensors.temperatures_daily
@@ -57,7 +57,7 @@ CREATE TABLE sensors.temperatures_daily
 CREATE MATERIALIZED VIEW sensors.temperatures_daily_mv
     TO sensors.temperatures_daily AS
 SELECT sensor_name,
-       toDate(timestamp) AS date,
-       avg(value)        AS avg_temperature
+       toStartOfDay(timestamp) AS date,
+       avg(value)              AS avg_temperature
 FROM sensors.temperatures
 GROUP BY sensor_name, date;
