@@ -23,14 +23,6 @@
       "type": "string"
     },
     {
-      "name": "starting_filling",
-      "type": "int"
-    },
-    {
-      "name": "filling_speed",
-      "type": "float"
-    },
-    {
       "name": "filling_value",
       "type": "float"
     }

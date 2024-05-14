@@ -1,7 +1,6 @@
 import random
 import time
 from datetime import datetime, timedelta
-from math import e, pi, sqrt
 from typing import Iterable
 from uuid import UUID
 
@@ -24,15 +23,10 @@ class EcologicalIslandSimulator(Simulator):
 
     def stream(self) -> Iterable[EcologicalIslandRawData]:
         while self.limit != 0 and self.running:
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
+            self.last_value = self._filling_value()
 
             yield EcologicalIslandRawData(
-                starting_filling=10,
-                filling_speed=_filling_speed(),
-                filling_value=self._filling_value(filling_speed=_filling_speed()),
+                filling_value=self.last_value,
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,
@@ -40,16 +34,12 @@ class EcologicalIslandSimulator(Simulator):
                 sensor_name=self.sensor_name,
             )
 
-    def get_last_value(self) -> float:
-        return self.last_value
+            if self.limit is not None:
+                self.limit -= 1
+            self.timestamp += self.frequency
+            time.sleep(self.delay.total_seconds())
 
-    def _filling_value(self, filling_speed) -> float:
-        filling = EcologicalIslandSimulator.get_last_value(self) + filling_speed
-        if filling > 100:
-            filling = 0
-        self.last_value = filling
-        return filling
-
-
-def _filling_speed() -> float:
-    return random.uniform(0, 5)
+    def _filling_value(self) -> float:
+        increment = random.gauss(3, 1.5)
+        filling = self.last_value + increment
+        return 0 if filling > 100 else filling

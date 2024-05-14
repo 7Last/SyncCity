@@ -44,7 +44,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -226,7 +227,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-green"
+                "color": "dark-green",
+                "value": null
               },
               {
                 "color": "dark-yellow",
@@ -297,11 +299,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT \n  timestamp as time, \n  filling_value \nFROM sensors.ecological_island\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "rawSql": "SELECT \n  timestamp as time, \n  filling_value \nFROM sensors.ecological_island\nwhere timestamp  >= $__fromTime AND timestamp <= $__toTime \nand sensor_name = '${sensor_name}'",
           "refId": "A"
         }
       ],
-      "title": "history of filling and discharge",
+      "title": "History of filling and discharge",
       "type": "timeseries"
     },
     {
@@ -319,7 +321,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -333,7 +336,20 @@
           },
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "filling_value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "%"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -343,11 +359,9 @@
       },
       "id": 5,
       "options": {
-        "displayMode": "lcd",
-        "maxVizHeight": 300,
-        "minVizHeight": 16,
-        "minVizWidth": 8,
-        "namePlacement": "auto",
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
@@ -356,9 +370,9 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "10.3.0",
       "targets": [
@@ -381,15 +395,15 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT \r\n  timestamp as time, \r\n  filling_value \r\nFROM sensors.ecological_island\r\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "rawSql": "SELECT filling_value \r\nFROM sensors.ecological_island\r\nwhere timestamp >= subtractMinutes(now(), 5) and timestamp <= now()\r\norder by timestamp desc\r\nlimit 1",
           "refId": "A"
         }
       ],
-      "title": "Actual filling",
-      "type": "bargauge"
+      "title": "Real time filling",
+      "type": "stat"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -421,13 +435,13 @@
     ]
   },
   "time": {
-    "from": "now-2y",
-    "to": "now"
+    "from": "2024-05-14T22:05:37.739Z",
+    "to": "2024-05-14T22:09:57.026Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Ecological_island",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
