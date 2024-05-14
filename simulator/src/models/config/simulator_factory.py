@@ -5,6 +5,7 @@ from ..sensor_type import SensorType
 from ...simulators.simulator import Simulator
 from ...simulators.temperature_simulator import TemperatureSimulator
 from ...simulators.traffic_simulator import TrafficSimulator
+from ...simulators.ecological_island_simulator import EcologicalIslandSimulator
 
 
 def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
@@ -34,6 +35,17 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
             )
         case SensorType.TRAFFIC:
             return TrafficSimulator(
+                sensor_name=sensor_name,
+                sensor_uuid=config.uuid,
+                generation_delay=config.generation_delay,
+                points_spacing=config.points_spacing,
+                latitude=config.latitude,
+                longitude=config.longitude,
+                begin_date=config.begin_date,
+                limit=config.limit,
+            )
+        case SensorType.ECOLOGICAL_ISLAND:
+            return EcologicalIslandSimulator(
                 sensor_name=sensor_name,
                 sensor_uuid=config.uuid,
                 generation_delay=config.generation_delay,
