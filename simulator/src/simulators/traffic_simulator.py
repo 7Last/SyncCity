@@ -53,7 +53,7 @@ class TrafficSimulator(Simulator):
             )
 
             yield TrafficRawData(
-                vehicles_per_hour=vehicles,
+                vehicles=int(vehicles),
                 avg_speed=speed,
                 latitude=self.latitude,
                 longitude=self.longitude,

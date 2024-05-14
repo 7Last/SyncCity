@@ -212,7 +212,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperature\nwhere sensor_name like '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
+                    "rawSql": "SELECT sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperatures\nwhere sensor_name like '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n",
                     "refId": "Temp"
                 },
                 {
@@ -277,14 +277,14 @@
                     "type": "grafana-clickhouse-datasource",
                     "uid": "P5CECDC4694398594"
                 },
-                "definition": "SELECT sensor_name\nFROM sensors.temperature\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic",
+                "definition": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Sensor name",
                 "multi": false,
                 "name": "sensor_name",
                 "options": [],
-                "query": "SELECT sensor_name\nFROM sensors.temperature\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic",
+                "query": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,

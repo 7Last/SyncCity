@@ -1,25 +1,30 @@
 # Dates and duration are expressed with ISO8601 standard
-[sensors.temperature-sensor-1]
-uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-points_spacing = "PT1S" # 1 hour
-generation_delay = "PT1S" # 1 second
-latitude = 45.4018782
-longitude = 11.7769644
+#[sensors.temperature-sensor-1]
+#uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
+#type = "temperature"
+#points_spacing = "PT8H" # 8 hours
+#generation_delay = "PT0.01S" # 1 second
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4018782
+#longitude = 11.7769644
+#limit = 1095
 
-[sensors.temperature-sensor-2]
-uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-points_spacing = "PT1S" # 1 hour
-generation_delay = "PT1S" # 1 second
-begin_date = 2023-01-01T00:00:00
-latitude = 45.4224876
-longitude = 11.9233274
+#[sensors.temperature-sensor-2]
+#uuid = "aa44c389-8fa9-40eb-9b5c-1deaf2383c99"
+#type = "temperature"
+#points_spacing = "PT1M" # 1 minute
+#generation_delay = "PT0.01S" # 1 second
+#begin_date = 2024-05-14T10:00:00
+#latitude = 45.4018782
+#longitude = 11.7769644
+#limit = 44640
 
 [sensors.traffic-sensor-1]
-uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
+uuid = "cc44c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "traffic"
-points_spacing = "PT1S" # 1 minute
-generation_delay = "PT2S" # 2 seconds
-latitude = 45.4673877
-longitude = 12.1943587
+points_spacing = "PT1M" # 1 minute
+generation_delay = "PT0.01S" # 1 second
+begin_date = 2024-05-14T13:00:00
+latitude = 45.4018782
+longitude = 11.7769644
+limit = 44640

@@ -27,7 +27,7 @@ class SerializerVisitor:
     @staticmethod
     def serialize_traffic_raw_data(raw_data: TrafficRawData) -> Dict:
         return {
-            "vehicles_per_hour": raw_data.vehicles_per_hour,
+            "vehicles": raw_data.vehicles,
             "avg_speed": raw_data.avg_speed,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }

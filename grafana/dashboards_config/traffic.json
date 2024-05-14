@@ -210,7 +210,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Speed avg_speed"
+                            "options": "speed"
                         },
                         "properties": [
                             {
@@ -234,7 +234,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Vehicles vehicles"
+                            "options": "vehicles"
                         },
                         "properties": [
                             {
@@ -300,31 +300,8 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT avg(avg_speed) as avg_speed\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
+                    "rawSql": "SELECT vehicles, speed\nFROM sensors.traffic_realtime\nWHERE sensor_name = '${sensor_name}'\nORDER BY insertion_timestamp\nLIMIT 1\n",
                     "refId": "Speed"
-                },
-                {
-                    "datasource": {
-                        "type": "grafana-clickhouse-datasource",
-                        "uid": "P5CECDC4694398594"
-                    },
-                    "editorType": "sql",
-                    "format": 1,
-                    "hide": false,
-                    "meta": {
-                        "builderOptions": {
-                            "columns": [],
-                            "database": "",
-                            "limit": 1000,
-                            "mode": "list",
-                            "queryType": "table",
-                            "table": ""
-                        }
-                    },
-                    "pluginVersion": "4.0.7",
-                    "queryType": "table",
-                    "rawSql": "SELECT avg(vehicles_per_hour) as vehicles\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
-                    "refId": "Vehicles"
                 }
             ],
             "title": "Real time",
@@ -425,7 +402,7 @@
                             },
                             {
                                 "custom": false,
-                                "name": "avg_vehicles_per_hour",
+                                "name": "avg_vehicles",
                                 "type": "Float32"
                             }
                         ],
@@ -456,7 +433,7 @@
                                 },
                                 {
                                     "custom": false,
-                                    "name": "avg_vehicles_per_hour",
+                                    "name": "avg_vehicles",
                                     "type": "Float32"
                                 }
                             ],
@@ -473,7 +450,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "timeseries",
-                    "rawSql": "SELECT toHour(timestamp) as hour, avg(vehicles_per_hour)\nfrom sensors.traffic\nwhere sensor_name = '${sensor_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by hour",
+                    "rawSql": "SELECT toHour(timestamp) hour, avg(vehicles) as vehicles\nFROM sensors.vehicles_hourly\nWHERE sensor_name = '${sensor_name}'\ngroup by hour",
                     "refId": "A"
                 }
             ],
@@ -694,7 +671,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT \n  timestamp as time, \n  vehicles_per_hour as Vehicles \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+                    "rawSql": "SELECT \n  timestamp as time, \n  vehicles as Vehicles \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
                     "refId": "A"
                 }
             ],
@@ -741,6 +718,6 @@
     "timezone": "",
     "title": "Traffic",
     "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 9,
+    "version": 1,
     "weekStart": ""
 }

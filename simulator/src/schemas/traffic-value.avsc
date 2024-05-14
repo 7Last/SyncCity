@@ -23,8 +23,8 @@
       "type": "string"
     },
     {
-      "name": "vehicles_per_hour",
-      "type": "float"
+      "name": "vehicles",
+      "type": "int"
     },
     {
       "name": "avg_speed",

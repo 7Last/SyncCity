@@ -159,7 +159,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperature\nWHERE sensor_name = '${sensor_name}'\n",
+                    "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperatures\nWHERE sensor_name = '${sensor_name}'\n",
                     "refId": "Temperature"
                 }
             ],
@@ -292,7 +292,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT avg(value) as avg_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
+                    "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = '${sensor_name}'\n",
                     "refId": "Real time temp"
                 }
             ],
@@ -469,7 +469,7 @@
                     "editorType": "sql",
                     "extrapolate": true,
                     "format": 1,
-                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
+                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
                     "intervalFactor": 1,
                     "meta": {
                         "builderOptions": {
@@ -482,10 +482,10 @@
                         }
                     },
                     "pluginVersion": "4.0.7",
-                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
+                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
                     "queryType": "table",
-                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
-                    "rawSql": "SELECT\n    toMonth(timestamp) as month_n,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp >= $__fromTime and timestamp <= $__toTime\nGROUP BY month_n",
+                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+                    "rawSql": "SELECT\n    toMonth(timestamp) as month_n,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and timestamp >= $__fromTime and timestamp <= $__toTime\nGROUP BY month_n",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true
@@ -669,7 +669,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT value, timestamp\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and\ntimestamp  >= $__fromTime AND timestamp <= $__toTime ",
+                    "rawSql": "SELECT value, timestamp\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and\ntimestamp  >= $__fromTime AND timestamp <= $__toTime ",
                     "refId": "A"
                 }
             ],
@@ -809,10 +809,10 @@
                         }
                     },
                     "pluginVersion": "4.0.7",
-                    "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date\n",
+                    "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date\n",
                     "queryType": "table",
-                    "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
-                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
+                    "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true,
@@ -831,7 +831,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "temperature-sensor-2",
                     "value": "temperature-sensor-2"
                 },
@@ -839,14 +839,14 @@
                     "type": "grafana-clickhouse-datasource",
                     "uid": "P5CECDC4694398594"
                 },
-                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperature",
+                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Sensor name",
                 "multi": false,
                 "name": "sensor_name",
                 "options": [],
-                "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperature",
+                "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
@@ -863,6 +863,6 @@
     "timezone": "",
     "title": "Temperature",
     "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-    "version": 16,
+    "version": 1,
     "weekStart": ""
 }
