@@ -58,12 +58,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 4,
+      "id": 8,
       "options": {
         "basemap": {
           "config": {},
@@ -84,7 +84,7 @@
               "showLegend": true,
               "style": {
                 "color": {
-                  "fixed": "dark-green"
+                  "fixed": "dark-red"
                 },
                 "opacity": 1,
                 "rotation": {
@@ -94,7 +94,7 @@
                   "mode": "mod"
                 },
                 "size": {
-                  "fixed": 5,
+                  "fixed": 8,
                   "max": 15,
                   "min": 2
                 },
@@ -105,6 +105,10 @@
                 "symbolAlign": {
                   "horizontal": "center",
                   "vertical": "center"
+                },
+                "text": {
+                  "fixed": "",
+                  "mode": "field"
                 },
                 "textConfig": {
                   "fontSize": 12,
@@ -118,7 +122,7 @@
             "location": {
               "mode": "auto"
             },
-            "name": "Traffic",
+            "name": "Temperature",
             "tooltip": true,
             "type": "markers"
           }
@@ -155,8 +159,8 @@
           },
           "pluginVersion": "4.0.6",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nGROUP BY sensor_name, latitude, longitude\n",
-          "refId": "Traffic"
+          "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperatures\nWHERE sensor_name = '${sensor_name}'\n",
+          "refId": "Temperature"
         }
       ],
       "title": "Location",
@@ -195,12 +199,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "semi-dark-blue",
                 "value": null
               },
               {
+                "color": "#ffffff",
+                "value": 5
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 30
               }
             ]
           },
@@ -210,63 +218,47 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "speed"
+              "options": "avg_temperature"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": "velocitykmh"
-              },
-              {
-                "id": "displayName",
-                "value": "Avg. speed"
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 100
+                "value": "celsius"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "vehicles"
+              "options": "avg_temperature"
             },
             "properties": [
               {
-                "id": "decimals",
-                "value": 0
+                "id": "noValue",
+                "value": "No data"
               },
               {
-                "id": "displayName",
-                "value": "N. vehicles"
-              },
-              {
-                "id": "min",
-                "value": 0
-              },
-              {
-                "id": "max",
-                "value": 100
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ffffff",
+                  "mode": "fixed"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 13,
+        "w": 6,
         "x": 0,
-        "y": 9
+        "y": 8
       },
-      "id": 6,
+      "id": 9,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -275,9 +267,9 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "10.3.0",
       "targets": [
@@ -300,168 +292,12 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT vehicles, speed\nFROM sensors.traffic_realtime\nWHERE sensor_name = '${sensor_name}'\nORDER BY insertion_timestamp\nLIMIT 1\n",
-          "refId": "Speed"
+          "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = '${sensor_name}'\n",
+          "refId": "Real time temp"
         }
       ],
       "title": "Real time",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "Vehicles",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "dark-yellow",
-                "value": 60
-              },
-              {
-                "color": "dark-red",
-                "value": 80
-              }
-            ]
-          },
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 9
-      },
-      "id": 2,
-      "options": {
-        "barRadius": 0.01,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "orientation": "auto",
-        "showValue": "always",
-        "stacking": "none",
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xField": "hour",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "builderOptions": {
-            "aggregates": [],
-            "columns": [
-              {
-                "custom": false,
-                "name": "timestamp1m",
-                "type": "DateTime64(3)"
-              },
-              {
-                "custom": false,
-                "name": "avg_vehicles",
-                "type": "Float32"
-              }
-            ],
-            "database": "sensors",
-            "filters": [],
-            "groupBy": [],
-            "limit": 1000,
-            "meta": {},
-            "mode": "list",
-            "orderBy": [],
-            "queryType": "table",
-            "table": "traff1c"
-          },
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 0,
-          "meta": {
-            "builderOptions": {
-              "aggregates": [],
-              "columns": [
-                {
-                  "custom": false,
-                  "name": "timestamp1m",
-                  "type": "DateTime64(3)"
-                },
-                {
-                  "custom": false,
-                  "name": "avg_vehicles",
-                  "type": "Float32"
-                }
-              ],
-              "database": "sensors",
-              "filters": [],
-              "groupBy": [],
-              "limit": 1000,
-              "meta": {},
-              "mode": "list",
-              "orderBy": [],
-              "queryType": "table",
-              "table": "traff1c"
-            }
-          },
-          "pluginVersion": "4.0.7",
-          "queryType": "timeseries",
-          "rawSql": "select toHour(timestamp) as hour, avg(vehicles)\nfrom sensors.vehicles_hourly\nwhere (insertion_timestamp, timestamp) in (select max(insertion_timestamp), timestamp\n                                      from sensors.vehicles_hourly\n                                      where sensor_name = '${sensor_name}'\n                                      group by timestamp)\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by hour\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Avg vehicles per hour",
-      "transformations": [
-        {
-          "id": "formatTime",
-          "options": {}
-        }
-      ],
-      "type": "barchart"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -477,117 +313,7 @@
             "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "dashed+area"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
-                "color": "red",
-                "value": 70
-              }
-            ]
-          },
-          "unit": "velocitykmh",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 17
-      },
-      "id": 5,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.7",
-          "queryType": "table",
-          "rawSql": "SELECT \n  timestamp as time, \n  avg_speed as Speed \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
-          "refId": "A"
-        }
-      ],
-      "title": "Avg speed",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
+            "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -613,7 +339,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed+area"
+              "mode": "area"
             }
           },
           "mappings": [],
@@ -621,33 +347,63 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-green",
+                "color": "semi-dark-blue",
                 "value": null
               },
               {
-                "color": "dark-yellow",
-                "value": 60
+                "color": "#ffffff",
+                "value": 5
               },
               {
-                "color": "dark-red",
-                "value": 80
+                "color": "red",
+                "value": 30
               }
             ]
           },
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 17
+        "h": 13,
+        "w": 18,
+        "x": 6,
+        "y": 8
       },
-      "id": 1,
+      "id": 7,
       "options": {
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "last"
+          ],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -656,6 +412,328 @@
           "mode": "single",
           "sort": "none"
         }
+      },
+      "targets": [
+        {
+          "builderOptions": {
+            "aggregates": [],
+            "columns": [
+              {
+                "custom": false,
+                "name": "value",
+                "type": "Float32"
+              },
+              {
+                "custom": false,
+                "name": "timestamp",
+                "type": "DateTime64(3)"
+              }
+            ],
+            "database": "sensors",
+            "filters": [],
+            "groupBy": [],
+            "limit": 1000,
+            "meta": {},
+            "mode": "list",
+            "orderBy": [],
+            "queryType": "table",
+            "table": "temperature"
+          },
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "aggregates": [],
+              "columns": [
+                {
+                  "custom": false,
+                  "name": "value",
+                  "type": "Float32"
+                },
+                {
+                  "custom": false,
+                  "name": "timestamp",
+                  "type": "DateTime64(3)"
+                }
+              ],
+              "database": "sensors",
+              "filters": [],
+              "groupBy": [],
+              "limit": 1000,
+              "meta": {},
+              "mode": "list",
+              "orderBy": [],
+              "queryType": "table",
+              "table": "temperature"
+            }
+          },
+          "pluginVersion": "4.0.6",
+          "queryType": "table",
+          "rawSql": "SELECT value, timestamp\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and\ntimestamp  >= $__fromTime AND timestamp <= $__toTime ",
+          "refId": "A"
+        }
+      ],
+      "title": "Time series",
+      "transformations": [],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "#ffffff",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 4,
+      "options": {
+        "barRadius": 0.01,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "date",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "PBB98D3AAE97FB2CD"
+          },
+          "dateTimeType": "DATETIME",
+          "editorMode": "builder",
+          "editorType": "sql",
+          "extrapolate": true,
+          "format": 1,
+          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+          "intervalFactor": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "queryType": "table",
+          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_monthly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_monthly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\norder by date;\n",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true
+        }
+      ],
+      "title": "Monthly average",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM",
+            "timeField": "date",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "#ffffff",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ffffff",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 10,
+      "options": {
+        "barRadius": 0.01,
+        "barWidth": 0.97,
+        "fullHighlight": true,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "auto",
+        "showValue": "always",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xField": "date",
+        "xTickLabelRotation": -90,
+        "xTickLabelSpacing": 100
       },
       "targets": [
         {
@@ -677,37 +755,194 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT \n  timestamp as time, \n  vehicles as Vehicles \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\norder by date;\n",
           "refId": "A"
         }
       ],
-      "title": "Vehicles",
-      "type": "timeseries"
+      "title": "Daily average",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "YYYY-MM-DD",
+            "timeField": "date",
+            "timezone": "browser",
+            "useTimezone": true
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "#ffffff",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "min_temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Min. temperature"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Avg. temperature"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "max_temperature"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Max. temperature"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 3,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "database": "sensors",
+          "datasource": {
+            "type": "vertamedia-clickhouse-datasource",
+            "uid": "PBB98D3AAE97FB2CD"
+          },
+          "dateColDataType": " ",
+          "dateTimeColDataType": "timestamp",
+          "dateTimeType": "DATETIME64",
+          "editorMode": "builder",
+          "editorType": "sql",
+          "extrapolate": true,
+          "format": 1,
+          "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+          "intervalFactor": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date\n",
+          "queryType": "table",
+          "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+          "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
+          "refId": "A",
+          "round": "0s",
+          "skip_comments": true,
+          "table": "temperature"
+        }
+      ],
+      "title": "Min, max and average",
+      "transformations": [],
+      "type": "gauge"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "traffic-sensor-1",
-          "value": "traffic-sensor-1"
+          "selected": true,
+          "text": "temperature-sensor-2",
+          "value": "temperature-sensor-2"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.traffic",
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
         "hide": 0,
         "includeAll": false,
         "label": "Sensor name",
         "multi": false,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT DISTINCT sensor_name\nFROM sensors.traffic",
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -717,13 +952,13 @@
     ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "2024-05-27T08:27:03.886Z",
+    "to": "2024-07-18T00:09:25.204Z"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Traffic",
-  "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
+  "title": "Temperature",
+  "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
   "version": 1,
   "weekStart": ""
 }
