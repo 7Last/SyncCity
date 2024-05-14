@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Temperature",
+  "name": "Traffic",
   "fields": [
     {
       "name": "sensor_uuid",
