@@ -6,8 +6,6 @@ CREATE TABLE sensors.ecological_island
     latitude          Float64,
     longitude         Float64,
     starting_filling  Int32,
-    max_filling       Float32,
-    min_filling       Float32,
     filling_speed     Float32,
     filling_value     Float32
 ) ENGINE = MergeTree()

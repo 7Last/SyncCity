@@ -27,14 +27,6 @@
       "type": "int"
     },
     {
-      "name": "max_filling",
-      "type": "float"
-    },
-    {
-      "name": "min_filling",
-      "type": "float"
-    },
-    {
       "name": "filling_speed",
       "type": "float"
     },

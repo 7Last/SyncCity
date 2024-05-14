@@ -20,6 +20,7 @@ class EcologicalIslandSimulator(Simulator):
                          points_spacing=points_spacing,
                          generation_delay=generation_delay, limit=limit,
                          begin_date=begin_date, latitude=latitude, longitude=longitude)
+        self.last_value = 0
 
     def stream(self) -> Iterable[EcologicalIslandRawData]:
         while self.limit != 0 and self.running:
@@ -30,15 +31,8 @@ class EcologicalIslandSimulator(Simulator):
 
             yield EcologicalIslandRawData(
                 starting_filling=10,
-                max_filling=100,
-                min_filling=0,
-                filling_speed=1,
-                filling_value=_filling_value(self.timestamp,
-                                             max_filling=100,
-                                             min_filling=0,
-                                             starting_filling=10,
-                                             filling_speed=1
-                                             ),
+                filling_speed=_filling_speed(),
+                filling_value=self._filling_value(filling_speed=_filling_speed()),
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,
@@ -46,7 +40,16 @@ class EcologicalIslandSimulator(Simulator):
                 sensor_name=self.sensor_name,
             )
 
+    def get_last_value(self) -> float:
+        return self.last_value
 
-def _filling_value(timestamp: datetime, max_filling, min_filling, starting_filling, filling_speed) -> float:
-    t = timestamp.timestamp()
-    return (t / 86400 % 100) * filling_speed
+    def _filling_value(self, filling_speed) -> float:
+        filling = EcologicalIslandSimulator.get_last_value(self) + filling_speed
+        if filling > 100:
+            filling = 0
+        self.last_value = filling
+        return filling
+
+
+def _filling_speed() -> float:
+    return random.uniform(0, 5)

@@ -37,8 +37,6 @@ class SerializerVisitor:
     def serialize_ecological_island_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
         return {
             "starting_filling": raw_data.starting_filling,
-            "max_filling": raw_data.max_filling,
-            "min_filling": raw_data.min_filling,
             "filling_speed": raw_data.filling_speed,
             "filling_value": raw_data.filling_value,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
