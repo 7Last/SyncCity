@@ -25,11 +25,6 @@ class TrafficSimulator(Simulator):
 
     def stream(self) -> Iterable[TrafficRawData]:
         while self.limit != 0 and self.running:
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
-
             speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
                 x=self.timestamp.hour + self.timestamp.minute / 60,
                 modes=[
@@ -61,6 +56,11 @@ class TrafficSimulator(Simulator):
                 sensor_uuid=self.sensor_uuid,
                 sensor_name=self.sensor_name,
             )
+
+            if self.limit is not None:
+                self.limit -= 1
+            self.timestamp += self.frequency
+            time.sleep(self.delay.total_seconds())
 
 
 def _multimodal_gauss_value(x: float, modes: list[tuple[float, float]]) -> float:

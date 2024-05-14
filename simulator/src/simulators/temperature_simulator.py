@@ -23,11 +23,6 @@ class TemperatureSimulator(Simulator):
 
     def stream(self) -> Iterable[TemperatureRawData]:
         while self.limit != 0 and self.running:
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
-
             yield TemperatureRawData(
                 value=_sinusoidal_value(self.timestamp),
                 sensor_uuid=self.sensor_uuid,
@@ -36,6 +31,11 @@ class TemperatureSimulator(Simulator):
                 longitude=self.longitude,
                 timestamp=self.timestamp,
             )
+
+            if self.limit is not None:
+                self.limit -= 1
+            self.timestamp += self.frequency
+            time.sleep(self.delay.total_seconds())
 
 
 def _sinusoidal_value(timestamp: datetime) -> float:

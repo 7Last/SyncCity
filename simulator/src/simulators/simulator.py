@@ -1,3 +1,4 @@
+import zoneinfo
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from typing import Iterable
@@ -31,7 +32,8 @@ class Simulator(ABC):
         self.longitude = longitude
         self.running = False
         self.delay = generation_delay
-        self.timestamp = begin_date or datetime.now()
+        rome = zoneinfo.ZoneInfo('Europe/Rome')
+        self.timestamp = begin_date or datetime.now(tz=rome)
 
     def start(self) -> None:
         self.running = True
