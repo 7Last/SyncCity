@@ -195,7 +195,178 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "dark-green",
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Speed avg_speed"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "velocitykmh"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Avg. speed"
+                            },
+                            {
+                                "id": "min",
+                                "value": 0
+                            },
+                            {
+                                "id": "max",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Vehicles vehicles"
+                        },
+                        "properties": [
+                            {
+                                "id": "decimals",
+                                "value": 0
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "N. vehicles"
+                            },
+                            {
+                                "id": "min",
+                                "value": 0
+                            },
+                            {
+                                "id": "max",
+                                "value": 100
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 9
+            },
+            "id": 6,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.7",
+                    "queryType": "table",
+                    "rawSql": "SELECT avg(avg_speed) as avg_speed\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
+                    "refId": "Speed"
+                },
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "hide": false,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.7",
+                    "queryType": "table",
+                    "rawSql": "SELECT avg(vehicles_per_hour) as vehicles\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}' and\n    (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())\n",
+                    "refId": "Vehicles"
+                }
+            ],
+            "title": "Real time",
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "Vehicles",
+                        "axisPlacement": "auto",
+                        "fillOpacity": 80,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineWidth": 1,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
                                 "value": null
                             },
                             {
@@ -215,24 +386,31 @@
             "gridPos": {
                 "h": 8,
                 "w": 12,
-                "x": 0,
+                "x": 12,
                 "y": 9
             },
             "id": 2,
             "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
+                "barRadius": 0.01,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
                 },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
+                "orientation": "auto",
+                "showValue": "always",
+                "stacking": "none",
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                },
+                "xField": "hour",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
             },
             "pluginVersion": "10.3.0",
             "targets": [
@@ -293,14 +471,125 @@
                             "table": "traff1c"
                         }
                     },
-                    "pluginVersion": "4.0.6",
+                    "pluginVersion": "4.0.7",
                     "queryType": "timeseries",
-                    "rawSql": "SELECT  avg_vehicles_per_hour as Average FROM \"sensors\".\"traff1c\" LIMIT 1000",
+                    "rawSql": "SELECT toHour(timestamp) as hour, avg(vehicles_per_hour)\nfrom sensors.traffic\nwhere sensor_name = '${sensor_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by hour",
                     "refId": "A"
                 }
             ],
-            "title": "Vehicles per months",
-            "type": "gauge"
+            "title": "Avg vehicles per hour",
+            "type": "barchart"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "dashed+area"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": 10
+                            },
+                            {
+                                "color": "red",
+                                "value": 70
+                            }
+                        ]
+                    },
+                    "unit": "velocitykmh",
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 17
+            },
+            "id": 5,
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.7",
+                    "queryType": "table",
+                    "rawSql": "SELECT \n  timestamp as time, \n  avg_speed as Speed \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
+                    "refId": "A"
+                }
+            ],
+            "title": "Avg speed",
+            "type": "timeseries"
         },
         {
             "datasource": {
@@ -370,7 +659,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 9
+                "y": 17
             },
             "id": 1,
             "options": {
@@ -403,7 +692,7 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.6",
+                    "pluginVersion": "4.0.7",
                     "queryType": "table",
                     "rawSql": "SELECT \n  timestamp as time, \n  vehicles_per_hour as Vehicles \nFROM sensors.traffic\nwhere ( timestamp  >= $__fromTime AND timestamp <= $__toTime );",
                     "refId": "A"
@@ -411,123 +700,47 @@
             ],
             "title": "Vehicles",
             "type": "timeseries"
-        },
-        {
-            "datasource": {
-                "type": "grafana-clickhouse-datasource",
-                "uid": "P5CECDC4694398594"
-            },
-            "fieldConfig": {
-                "defaults": {
-                    "color": {
-                        "mode": "thresholds"
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "dark-green",
-                                "value": null
-                            },
-                            {
-                                "color": "dark-orange",
-                                "value": 30
-                            },
-                            {
-                                "color": "dark-red",
-                                "value": 50
-                            }
-                        ]
-                    },
-                    "unitScale": true
-                },
-                "overrides": []
-            },
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 17
-            },
-            "id": 3,
-            "options": {
-                "minVizHeight": 75,
-                "minVizWidth": 75,
-                "orientation": "auto",
-                "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
-                    "fields": "",
-                    "values": false
-                },
-                "showThresholdLabels": false,
-                "showThresholdMarkers": true,
-                "sizing": "auto"
-            },
-            "pluginVersion": "10.3.0",
-            "targets": [
-                {
-                    "builderOptions": {
-                        "aggregates": [],
-                        "columns": [
-                            {
-                                "custom": false,
-                                "name": "avg_speed",
-                                "type": "Float32"
-                            }
-                        ],
-                        "database": "sensors",
-                        "filters": [],
-                        "groupBy": [],
-                        "limit": 1000,
-                        "meta": {},
-                        "mode": "list",
-                        "orderBy": [],
-                        "queryType": "table",
-                        "table": "traff1c"
-                    },
-                    "datasource": {
-                        "type": "grafana-clickhouse-datasource",
-                        "uid": "P5CECDC4694398594"
-                    },
-                    "editorType": "builder",
-                    "format": 1,
-                    "meta": {
-                        "builderOptions": {
-                            "columns": [],
-                            "database": "",
-                            "limit": 1000,
-                            "mode": "list",
-                            "queryType": "table",
-                            "table": ""
-                        }
-                    },
-                    "pluginVersion": "4.0.6",
-                    "queryType": "table",
-                    "rawSql": "SELECT avg_speed FROM \"sensors\".\"traff1c\" LIMIT 1000",
-                    "refId": "A"
-                }
-            ],
-            "title": "Average Speed",
-            "type": "gauge"
         }
     ],
-    "refresh": true,
+    "refresh": "",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
-        "list": []
+        "list": [
+            {
+                "current": {
+                    "selected": false,
+                    "text": "traffic-sensor-1",
+                    "value": "traffic-sensor-1"
+                },
+                "datasource": {
+                    "type": "grafana-clickhouse-datasource",
+                    "uid": "P5CECDC4694398594"
+                },
+                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.traffic",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Sensor name",
+                "multi": false,
+                "name": "sensor_name",
+                "options": [],
+                "query": "SELECT DISTINCT sensor_name\nFROM sensors.traffic",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "type": "query"
+            }
+        ]
     },
     "time": {
-        "from": "now-6h",
-        "to": "now+6h"
+        "from": "now-1h",
+        "to": "now+1h"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Traffic",
     "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 2,
+    "version": 9,
     "weekStart": ""
 }
