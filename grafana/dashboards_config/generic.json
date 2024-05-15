@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -231,11 +231,12 @@
         },
         "view": {
           "allLayers": true,
-          "id": "europe",
+          "id": "fit",
           "lat": 46,
           "lon": 14,
+          "padding": 5,
           "shared": false,
-          "zoom": 5
+          "zoom": 9
         }
       },
       "pluginVersion": "10.3.0",
@@ -366,7 +367,7 @@
       {
         "allValue": "%",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -374,18 +375,18 @@
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic\nunion distinct\nSELECT sensor_name\nfrom sensors.ecological_island\nORDER BY sensor_name",
+        "definition": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic\nunion distinct\nSELECT sensor_name\nfrom sensors.ecological_island",
         "hide": 0,
         "includeAll": true,
         "label": "Sensor name",
         "multi": false,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic\nunion distinct\nSELECT sensor_name\nfrom sensors.ecological_island\nORDER BY sensor_name",
+        "query": "SELECT sensor_name\nFROM sensors.temperatures\nunion distinct\nSELECT sensor_name\nfrom sensors.traffic\nunion distinct\nSELECT sensor_name\nfrom sensors.ecological_island",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 1,
+        "sort": 0,
         "type": "query"
       }
     ]
@@ -398,6 +399,6 @@
   "timezone": "",
   "title": "Generic",
   "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

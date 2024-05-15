@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -128,10 +128,10 @@
         },
         "view": {
           "allLayers": true,
-          "id": "europe",
+          "id": "fit",
           "lat": 46,
           "lon": 14,
-          "zoom": 5
+          "zoom": 9
         }
       },
       "pluginVersion": "10.3.0",
@@ -605,8 +605,8 @@
       {
         "current": {
           "selected": false,
-          "text": "ecological-island-sensor-5",
-          "value": "ecological-island-sensor-5"
+          "text": "ecological-island-sensor-1",
+          "value": "ecological-island-sensor-1"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -629,13 +629,13 @@
     ]
   },
   "time": {
-    "from": "2024-05-17T22:00:00.000Z",
-    "to": "2024-05-25T21:59:59.000Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Ecological_island",
+  "title": "Ecological Island",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

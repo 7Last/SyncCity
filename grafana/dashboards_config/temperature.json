@@ -132,10 +132,10 @@
         },
         "view": {
           "allLayers": true,
-          "id": "europe",
+          "id": "fit",
           "lat": 46,
           "lon": 14,
-          "zoom": 5
+          "zoom": 9
         }
       },
       "pluginVersion": "10.3.0",
@@ -212,6 +212,7 @@
               }
             ]
           },
+          "unit": "celsius",
           "unitScale": true
         },
         "overrides": [
@@ -249,8 +250,8 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 6,
+        "h": 10,
+        "w": 5,
         "x": 0,
         "y": 8
       },
@@ -292,7 +293,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = '${sensor_name}'\n",
+          "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = 'temperature-sensor-1'\norder by insertion_timestamp desc\nlimit 1\n",
           "refId": "Real time temp"
         }
       ],
@@ -393,9 +394,9 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 18,
-        "x": 6,
+        "h": 10,
+        "w": 19,
+        "x": 5,
         "y": 8
       },
       "id": 7,
@@ -551,7 +552,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 18
       },
       "id": 4,
       "options": {
@@ -708,7 +709,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 18
       },
       "id": 10,
       "options": {
@@ -799,21 +800,10 @@
               }
             ]
           },
+          "unit": "celsius",
           "unitScale": true
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byType",
-              "options": "number"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -856,7 +846,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 32
+        "y": 29
       },
       "id": 3,
       "options": {
@@ -925,8 +915,8 @@
       {
         "current": {
           "selected": false,
-          "text": "temperature-sensor-2",
-          "value": "temperature-sensor-2"
+          "text": "temperature-sensor-1",
+          "value": "temperature-sensor-1"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
