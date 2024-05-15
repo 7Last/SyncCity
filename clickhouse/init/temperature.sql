@@ -14,7 +14,7 @@ CREATE TABLE sensors.temperatures_realtime
 (
     sensor_name         String,
     value               Float32,
-    insertion_timestamp DateTime64 DEFAULT now()
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name);
 
@@ -32,7 +32,7 @@ CREATE TABLE sensors.temperatures_monthly
     sensor_name         String,
     date                Datetime64,
     avg_temperature     Float32,
-    insertion_timestamp DateTime64 DEFAULT now()
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 
@@ -50,7 +50,7 @@ CREATE TABLE sensors.temperatures_daily
     sensor_name         String,
     date                Date,
     avg_temperature     Float32,
-    insertion_timestamp DateTime64 DEFAULT now()
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 

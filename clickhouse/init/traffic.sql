@@ -16,7 +16,7 @@ CREATE TABLE sensors.traffic_realtime
     sensor_name         String,
     vehicles            Int32,
     speed               Float32,
-    insertion_timestamp DateTime64 DEFAULT now()
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name);
 
@@ -35,7 +35,7 @@ CREATE TABLE sensors.vehicles_hourly
     sensor_name         String,
     timestamp           DateTime64,
     vehicles            Int32,
-    insertion_timestamp DateTime64 DEFAULT now()
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, timestamp);
 
