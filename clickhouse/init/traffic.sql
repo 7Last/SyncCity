@@ -10,6 +10,26 @@ CREATE TABLE sensors.traffic
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
 
+-- 5m traffic
+CREATE TABLE sensors.traffic_5m
+(
+    sensor_name         String,
+    date           DateTime64,
+    vehicles            Int32,
+    speed               Float32,
+    insertion_timestamp DateTime64(6) default now64()
+) ENGINE = MergeTree()
+      ORDER BY (sensor_name, date);
+
+CREATE MATERIALIZED VIEW sensors.traffic_5m_mv TO sensors.traffic_5m
+AS
+SELECT sensor_name,
+       toStartOfFiveMinute(timestamp) as date,
+       avg(vehicles)                  as vehicles,
+       avg(avg_speed)                 as speed
+FROM sensors.traffic
+GROUP BY sensor_name, date;
+
 -- Real-time data
 CREATE TABLE sensors.traffic_realtime
 (

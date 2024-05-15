@@ -472,9 +472,9 @@
               "table": "temperature"
             }
           },
-          "pluginVersion": "4.0.6",
+          "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT value, timestamp\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and\ntimestamp  >= $__fromTime AND timestamp <= $__toTime ",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.temperatures_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\n and sensor_name = '${sensor_name}'\norder by date;",
           "refId": "A"
         }
       ],
@@ -518,7 +518,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
@@ -605,18 +606,18 @@
           "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
           "queryType": "table",
           "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_monthly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_monthly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_weekly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_weekly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
           "refId": "A",
           "round": "0s",
           "skip_comments": true
         }
       ],
-      "title": "Monthly average",
+      "title": "Weekly average",
       "transformations": [
         {
           "id": "formatTime",
           "options": {
-            "outputFormat": "YYYY-MM",
+            "outputFormat": "Wo",
             "timeField": "date",
             "useTimezone": true
           }
@@ -661,7 +662,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
@@ -788,7 +790,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
@@ -907,7 +910,7 @@
       "type": "gauge"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -946,6 +949,6 @@
   "timezone": "",
   "title": "Temperature",
   "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
