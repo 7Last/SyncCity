@@ -395,7 +395,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT filling_value \r\nFROM sensors.ecological_island\r\nwhere timestamp >= subtractMinutes(now(), 5) and timestamp <= now()\r\norder by timestamp desc\r\nlimit 1",
+          "rawSql": "SELECT filling_value \r\nFROM sensors.ecological_island\r\nWHERE timestamp <= now()\r\nORDER BY timestamp DESC\r\nLIMIT 1",
           "refId": "A"
         }
       ],
