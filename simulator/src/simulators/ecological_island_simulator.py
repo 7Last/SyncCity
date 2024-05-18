@@ -1,7 +1,7 @@
 import random
 import time
 from datetime import datetime, timedelta
-from typing import Iterable
+from typing import Iterable, List, Tuple
 from uuid import UUID
 
 from .simulator import Simulator
@@ -19,13 +19,20 @@ class EcologicalIslandSimulator(Simulator):
                          points_spacing=points_spacing,
                          generation_delay=generation_delay, limit=limit,
                          begin_date=begin_date, latitude=latitude, longitude=longitude)
-        # parameters setted to generate a single value per hour
-        self.last_value = random.uniform(0, 50)  # Initial value
-        self.fill_rate = 1  # Adjusted average fill rate per hour
-        self.noise_level = 1  # Adjusted noise level per hour
-        self.hours_per_week = 7 * 24  # Total hours in a week
-        self.emptying_hours = [2 * 24 + 8, 5 * 24 + 8]  # Emptying on Wednesday 08:00 and Saturday 08:00
-        self.call_count = 0  # To count the number of times _filling_value is called
+        # last value
+        self.last_value = random.uniform(0, 30)
+        # previous value's timestamp
+        self.prev_timestamp = self.timestamp
+        # filling rate
+        self.fill_rate = 0
+        # emptying days and hours per week
+        self.emptying_hours = self._generate_emptying_hours()
+        # noise rate
+        self.noise_limit = random.uniform(-5, 5)
+        # chance for partial emptying
+        self.partial_emptying_chance = random.uniform(0.0, 0.15)
+        # max percentage of value to leave after partial emptying
+        self.partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
     def stream(self) -> Iterable[EcologicalIslandRawData]:
         while self.limit != 0 and self.running:
@@ -45,34 +52,51 @@ class EcologicalIslandSimulator(Simulator):
             self.timestamp += self.frequency
             time.sleep(self.delay.total_seconds())
 
-#    def _filling_value(self) -> float:
-#        increment = random.gauss(3, 1.5)
-#        filling = self.last_value + increment
-#        return 0 if filling > 100 else filling
+    def _calculate_fill_rate(self):
+        time_passed = self.timestamp - self.prev_timestamp
+        fill_rate_per_hour = random.uniform(0.8, 1.2) # 1.0416666666672
+        fill_rate_per_second = fill_rate_per_hour / 3600
+        self.fill_rate = fill_rate_per_second * time_passed.total_seconds()
 
+    def _generate_emptying_hours(self) -> List[Tuple[int, int]]:
+        # Possible emptying schedules with hours between 4 AM and 8 AM
+        def random_hour():
+            return random.randint(4, 8)  # Hours between 4 and 8 AM
+
+        schedules = [
+            [(0, random_hour()), (4, random_hour())],  # Monday, Friday
+            [(1, random_hour()), (5, random_hour())],  # Tuesday, Saturday
+            [(0, random_hour()), (2, random_hour()), (5, random_hour())],  # Monday, Wednesday, Saturday
+            [(0, random_hour()), (3, random_hour()), (5, random_hour())]  # Monday, Thursday, Saturday
+        ]
+        return random.choice(schedules)
+    
     def _filling_value(self) -> float:
-        self.call_count += 1
-        previous_value = self.last_value
+        # update fill rate
+        self._calculate_fill_rate()
 
-        # Check if it's time to empty the island
-        current_hour = self.call_count % self.hours_per_week
-        if current_hour in self.emptying_hours:
-            if random.random() < 0.1:  # 10% chance for partial emptying
-                self.last_value *= random.uniform(0.0, 0.3)  # leave up to 30% of current value
+        # update previuos timestamp
+        self.prev_timestamp = self.timestamp
+
+        # check if it is time to empty
+        if (self.timestamp.weekday(), self.timestamp.hour) in self.emptying_hours:
+            if random.random() < self.partial_emptying_chance:  # 10% chance for partial emptying
+                self.last_value *= random.uniform(0.0, self.partial_emptying_max_percentage)  # leave up to 30% of current value
             else:
                 self.last_value = 0.0  # complete emptying
             return self.last_value
+
+        # calculate new value
+        new_value = self.last_value + self.fill_rate
+
+        # adding some noise
+        noise = random.uniform(-self.noise_limit, self.noise_limit)
+        new_value = max(self.last_value, new_value + noise)
+
+        # check value over 100
+        new_value = min(new_value, 100.0)
+
+        # update last value
+        self.last_value = new_value
         
-        # Simulate filling
-        increment = self.fill_rate * random.uniform(0.5, 1.5)
-        
-        # Add noise
-        noise = self.noise_level * random.uniform(-1, 1)
-        
-        # Update last value
-        self.last_value += increment + noise
-        
-        # Ensure the value stays within 0 to 100 range
-        self.last_value = max(0, min(self.last_value, 100))
-        
-        return max(previous_value, self.last_value)
+        return new_value

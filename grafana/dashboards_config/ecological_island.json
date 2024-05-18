@@ -395,12 +395,206 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT filling_value \r\nFROM sensors.ecological_island\r\nWHERE timestamp <= now()\r\nORDER BY timestamp DESC\r\nLIMIT 1",
+          "rawSql": "SELECT filling_value\r\nFROM sensors.ecological_island\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
           "refId": "A"
         }
       ],
       "title": "Real time filling",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "This panel shows the cumulative hours that the ecological island has reached its full capacity, rendering it unusable, over a selected period of time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": -2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "h",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 7,
+        "x": 0,
+        "y": 17
+      },
+      "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "SELECT count(*)\nFROM sensors.ecological_island\nWHERE sensor_name = '${sensor_name}' AND filling_value = 100 AND timestamp  >= $__fromTime AND timestamp <= $__toTime",
+          "refId": "A"
+        }
+      ],
+      "title": "maximum saturation hours",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "This panel shows the percentage distribution of filling values for the sensor, categorized into three ranges: less than 50% (Low level), from 50% to 80% (Moderate level), more than 80% (High level).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 7,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "colorByField": "range",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "orientation": "horizontal",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n\n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n\n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+          "refId": "A"
+        }
+      ],
+      "title": "filling level percentages by range",
+      "type": "barchart"
     }
   ],
   "refresh": false,
@@ -410,38 +604,38 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "ecological-island-sensor-1",
-          "value": "ecological-island-sensor-1"
+          "selected": true,
+          "text": "ecological-island-sensor-5",
+          "value": "ecological-island-sensor-5"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island",
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island\nORDER BY sensor_name",
         "hide": 0,
         "includeAll": false,
         "label": "Sensor name",
         "multi": false,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island",
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island\nORDER BY sensor_name",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2024-05-14T22:05:37.739Z",
-    "to": "2024-05-14T22:09:57.026Z"
+    "from": "2024-05-17T22:00:00.000Z",
+    "to": "2024-05-25T21:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Ecological_island",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
