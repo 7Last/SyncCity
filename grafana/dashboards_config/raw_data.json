@@ -23,6 +23,19 @@
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "panels": [],
+      "title": "Sensors",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
         "uid": "P5CECDC4694398594"
@@ -62,7 +75,7 @@
         "h": 12,
         "w": 20,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 1,
       "options": {
@@ -260,7 +273,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'temperature'\nand sensor_name in (${sensor_name})\nand type in (${sensor_type})",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'temperature'\nand type in (${sensor_type})",
           "refId": "Temp"
         },
         {
@@ -283,7 +296,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'traffic'\nand sensor_name in (${sensor_name})\nand type in (${sensor_type})",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'traffic'\nand type in (${sensor_type})",
           "refId": "Traffic"
         },
         {
@@ -306,7 +319,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'ecological_island'\nand sensor_name in (${sensor_name})\nand type in (${sensor_type})",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'ecological_island'\nand type in (${sensor_type})",
           "refId": "Eco Islands"
         }
       ],
@@ -340,7 +353,7 @@
         "h": 12,
         "w": 4,
         "x": 20,
-        "y": 0
+        "y": 1
       },
       "id": 2,
       "options": {
@@ -449,7 +462,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 12
+        "y": 13
       },
       "id": 3,
       "options": {
@@ -544,7 +557,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 12
+        "y": 13
       },
       "id": 4,
       "options": {
@@ -592,48 +605,382 @@
       ],
       "title": "Sensors by type",
       "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 12,
+      "panels": [],
+      "title": "Raw data",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sensor_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sensor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Value"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "id": 10,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "SELECT sensor_name, value, timestamp\nFROM sensors.temperatures\norder by timestamp desc",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperature",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sensor_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sensor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_speed"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Value"
+              },
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 11,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "SELECT sensor_name, avg_speed, vehicles, timestamp\nFROM sensors.traffic\norder by timestamp desc",
+          "refId": "A"
+        }
+      ],
+      "title": "Traffic",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sensor_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Sensor"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "filling_value"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "displayName",
+                "value": "Value"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.ecological_island\norder by timestamp desc",
+          "refId": "A"
+        }
+      ],
+      "title": "Eco Islands",
+      "type": "table"
     }
   ],
-  "refresh": "5s",
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": "%",
-        "current": {
-          "selected": true,
-          "text": [
-            "traffic-sensor-1"
-          ],
-          "value": [
-            "traffic-sensor-1"
-          ]
-        },
-        "datasource": {
-          "type": "grafana-clickhouse-datasource",
-          "uid": "P5CECDC4694398594"
-        },
-        "definition": "select distinct sensor_name from sensors",
-        "hide": 0,
-        "includeAll": false,
-        "label": "Sensor name",
-        "multi": true,
-        "name": "sensor_name",
-        "options": [],
-        "query": "select distinct sensor_name from sensors",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
         "allValue": "*",
         "current": {
-          "selected": true,
-          "text": [],
-          "value": []
+          "selected": false,
+          "text": [
+            "ecological_island",
+            "traffic",
+            "temperature"
+          ],
+          "value": [
+            "ecological_island",
+            "traffic",
+            "temperature"
+          ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -650,19 +997,45 @@
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": "temperature-sensor-2",
+          "value": "temperature-sensor-2"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
+        },
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE type in ($sensor_type)",
+        "description": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Sensor",
+        "multi": false,
+        "name": "sensor_name",
+        "options": [],
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE type in ($sensor_type)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "2024-05-18T17:12:26.079Z",
+    "to": "2024-05-18T19:12:26.079Z"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Generic",
+  "title": "Raw Data",
   "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-  "version": 9,
+  "version": 11,
   "weekStart": ""
 }
