@@ -1,10 +1,10 @@
-import logging as log
 import json
+import logging as log
 
 import kafka
 
-from ..models.raw_data.raw_data import RawData
-from ..serializers.json_serializer import JSONSerializer
+from .json_serializer import JSONSerializer
+from .models.raw_data.raw_data import RawData
 
 
 class KafkaProducer():

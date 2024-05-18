@@ -14,13 +14,13 @@ CREATE TABLE sensors.temperatures
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
 
-CREATE MATERIALIZED VIEW sensors.temperature_topic_mv TO sensors.temperature as
-SELECT JSONExtractString(data, 'sensor_name')                AS sensor_name,
-       toUUID(JSONExtractString(data, 'sensor_uuid'))        AS sensor_uuid,
-       toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
-       JSONExtractFloat(data, 'value')                       AS value,
-       JSONExtractFloat(data, 'latitude')                    AS latitude,
-       JSONExtractFloat(data, 'longitude')                   AS longitude
+CREATE MATERIALIZED VIEW sensors.temperature_topic_mv TO sensors.temperatures as
+SELECT JSONExtractString(data, 'sensor_name')                             AS sensor_name,
+       toUUID(JSONExtractString(data, 'sensor_uuid'))                     AS sensor_uuid,
+       parseDateTime64BestEffort(JSONExtractString(data, 'timestamp')) AS timestamp,
+       JSONExtractFloat(data, 'value')                                    AS value,
+       JSONExtractFloat(data, 'latitude')                                 AS latitude,
+       JSONExtractFloat(data, 'longitude')                                AS longitude
 FROM sensors.temperature_kafka;
 
 -- Real-time

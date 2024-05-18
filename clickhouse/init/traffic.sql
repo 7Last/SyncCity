@@ -18,8 +18,8 @@ CREATE TABLE sensors.traffic
 CREATE MATERIALIZED VIEW sensors.traffic_topic_mv TO sensors.traffic as
 SELECT JSONExtractString(data, 'sensor_name')                AS sensor_name,
        toUUID(JSONExtractString(data, 'sensor_uuid'))        AS sensor_uuid,
-       toDateTime64(JSONExtractString(data, 'timestamp'), 0) AS timestamp,
-       JSONExtractFloat(data, 'vehicles_per_hour')           AS vehicles_per_hour,
+       parseDateTime64BestEffort(JSONExtractString(data, 'timestamp')) AS timestamp,
+       JSONExtractFloat(data, 'vehicles')                    AS vehicles,
        JSONExtractFloat(data, 'avg_speed')                   AS avg_speed,
        JSONExtractFloat(data, 'latitude')                    AS latitude,
        JSONExtractFloat(data, 'longitude')                   AS longitude

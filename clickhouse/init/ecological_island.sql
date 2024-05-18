@@ -1,3 +1,8 @@
+CREATE TABLE sensors.ecological_island_kafka
+(
+    data String
+) ENGINE = Kafka('redpanda:9092', 'ecological_island', 'ch_group_1', 'JSONAsString');
+
 CREATE TABLE sensors.ecological_island
 (
     sensor_uuid       UUID,
@@ -8,6 +13,15 @@ CREATE TABLE sensors.ecological_island
     filling_value     Float32
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
+
+CREATE MATERIALIZED VIEW sensors.ecological_island_topic_mv TO sensors.ecological_island as
+SELECT JSONExtractString(data, 'sensor_name')                          AS sensor_name,
+       toUUID(JSONExtractString(data, 'sensor_uuid'))                  AS sensor_uuid,
+       parseDateTime64BestEffort(JSONExtractString(data, 'timestamp')) AS timestamp,
+       JSONExtractFloat(data, 'filling_value')                         AS filling_value,
+       JSONExtractFloat(data, 'latitude')                              AS latitude,
+       JSONExtractFloat(data, 'longitude')                             AS longitude
+FROM sensors.ecological_island_kafka;
 
 -- prev_value
 /*

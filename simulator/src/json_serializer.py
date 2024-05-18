@@ -1,8 +1,9 @@
 from typing import Dict
 
-from ..models.raw_data.raw_data import RawData
-from ..models.raw_data.temperature_raw_data import TemperatureRawData
-from ..models.raw_data.traffic_raw_data import TrafficRawData
+from .models.raw_data.ecological_island_raw_data import EcologicalIslandRawData
+from .models.raw_data.raw_data import RawData
+from .models.raw_data.temperature_raw_data import TemperatureRawData
+from .models.raw_data.traffic_raw_data import TrafficRawData
 
 
 class JSONSerializer:
@@ -27,7 +28,14 @@ class JSONSerializer:
     @staticmethod
     def serialize_traffic_raw_data(raw_data: TrafficRawData) -> Dict:
         return {
-            "vehicles_per_hour": raw_data.vehicles_per_hour,
+            "vehicles": raw_data.vehicles,
             "avg_speed": raw_data.avg_speed,
+            **(JSONSerializer._serialize_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def serialize_ecological_island_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
+        return {
+            "filling_value": raw_data.filling_value,
             **(JSONSerializer._serialize_raw_data(raw_data)),
         }

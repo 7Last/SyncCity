@@ -3,7 +3,7 @@ import logging as log
 import threading
 import time
 
-from .producers.kafka_producer import KafkaProducer
+from .kafka_producer import KafkaProducer
 from .simulators.simulator import Simulator
 
 
