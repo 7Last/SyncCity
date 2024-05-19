@@ -293,7 +293,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = 'temperature-sensor-1'\norder by insertion_timestamp desc\nlimit 1\n",
+          "rawSql": "with latest_by_sensor as (select sensor_name,\n                                 max(insertion_timestamp) as latest_timestamp\n                          from sensors.temperatures_realtime\n                          where match(sensor_name, '^(${sensor_name:pipe})$')\n                          group by sensor_name)\nSELECT avg(value)\nFROM sensors.temperatures_realtime\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\n  and (sensor_name, insertion_timestamp) in\n      (select sensor_name, latest_timestamp from latest_by_sensor)\n",
           "refId": "Real time temp"
         }
       ],
@@ -478,7 +478,7 @@
           "refId": "A"
         }
       ],
-      "title": "Time series",
+      "title": "Time series (every 5m)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -795,11 +795,11 @@
               },
               {
                 "color": "#ffffff",
-                "value": 5
+                "value": 10
               },
               {
                 "color": "red",
-                "value": 30
+                "value": 40
               }
             ]
           },
@@ -910,7 +910,7 @@
       "type": "gauge"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {

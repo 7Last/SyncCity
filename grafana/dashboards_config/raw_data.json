@@ -229,7 +229,7 @@
             },
             "filterData": {
               "id": "byRefId",
-              "options": "Eco Islands"
+              "options": "Eco island"
             },
             "location": {
               "mode": "auto"
@@ -273,7 +273,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'temperature'\nand type in (${sensor_type})",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'temperature'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "Temp"
         },
         {
@@ -296,7 +296,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'traffic'\nand type in (${sensor_type})",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'traffic'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "Traffic"
         },
         {
@@ -319,8 +319,8 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'ecological_island'\nand type in (${sensor_type})",
-          "refId": "Eco Islands"
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'ecological_island'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "Eco island"
         }
       ],
       "title": "Location",
@@ -498,7 +498,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select sensor_name, type, max(last_message) as last_message\nfrom sensors\nwhere type in (${sensor_type})\ngroup by sensor_name, type\norder by sensor_name",
+          "rawSql": "select sensor_name, type, max(last_message) as last_message\nfrom sensors\nwhere match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')\ngroup by sensor_name, type\norder by sensor_name",
           "refId": "A"
         }
       ],
@@ -599,7 +599,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "with sensors_by_type as (\n    select sensor_name, type, max(last_message) as last_message\n    from sensors\n    group by sensor_name, type\n)\nselect type, count(sensor_name) as count\nfrom sensors_by_type\nwhere type in (${sensor_type})\ngroup by type",
+          "rawSql": "with sensors_by_type as (\n    select sensor_name, type, max(last_message) as last_message\n    from sensors\n    group by sensor_name, type\n)\nselect type, count(sensor_name) as count\nfrom sensors_by_type\nwhere match(type, '^(${sensor_type:pipe})$')\ngroup by type",
           "refId": "A"
         }
       ],
@@ -726,12 +726,127 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name, value, timestamp\nFROM sensors.temperatures\norder by timestamp desc",
+          "rawSql": "SELECT sensor_name, value, timestamp\nFROM sensors.temperatures\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
           "refId": "A"
         }
       ],
-      "title": "Temperature",
+      "title": "Temperatures table",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "select value, timestamp, sensor_name\nfrom sensors.temperatures\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperature time series",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -800,10 +915,10 @@
         ]
       },
       "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 12,
-        "y": 21
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 31
       },
       "id": 11,
       "options": {
@@ -840,12 +955,242 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name, avg_speed, vehicles, timestamp\nFROM sensors.traffic\norder by timestamp desc",
+          "rawSql": "SELECT sensor_name, avg_speed, vehicles, timestamp\nFROM sensors.traffic\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
           "refId": "A"
         }
       ],
       "title": "Traffic",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "select vehicles as \"N. vehicles\", timestamp, sensor_name\nfrom sensors.traffic\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "A"
+        }
+      ],
+      "title": "N. vehicles time series",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "select avg_speed as \"Avg. speed\", timestamp, sensor_name\nfrom sensors.traffic\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "A"
+        }
+      ],
+      "title": "Speed time series",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -917,7 +1262,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 31
+        "y": 52
       },
       "id": 13,
       "options": {
@@ -954,31 +1299,155 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.ecological_island\norder by timestamp desc",
+          "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
           "refId": "A"
         }
       ],
       "title": "Eco Islands",
       "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Filling % ecological-island-sensor-1"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 52
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "select filling_value as \"Filling %\", timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "A"
+        }
+      ],
+      "title": "Filling time series",
+      "transformations": [
+        {
+          "id": "prepareTimeSeries",
+          "options": {
+            "format": "multi"
+          }
+        }
+      ],
+      "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
-        "allValue": "*",
+        "allValue": ".*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "ecological_island",
-            "traffic",
             "temperature"
           ],
           "value": [
-            "ecological_island",
-            "traffic",
             "temperature"
           ]
         },
@@ -988,7 +1457,7 @@
         },
         "definition": "SELECT DISTINCT type FROM sensors;",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Sensor type",
         "multi": true,
         "name": "sensor_type",
@@ -1003,23 +1472,27 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
-          "text": "temperature-sensor-2",
-          "value": "temperature-sensor-2"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE type in ($sensor_type)",
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE match(type, '^(${sensor_type:pipe})$')",
         "description": "",
         "hide": 0,
         "includeAll": true,
         "label": "Sensor",
-        "multi": false,
+        "multi": true,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE type in ($sensor_type)",
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors\nWHERE match(type, '^(${sensor_type:pipe})$')",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1029,13 +1502,13 @@
     ]
   },
   "time": {
-    "from": "2024-05-18T17:12:26.079Z",
-    "to": "2024-05-18T19:12:26.079Z"
+    "from": "now/w",
+    "to": "now/w"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Raw Data",
   "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-  "version": 11,
+  "version": 2,
   "weekStart": ""
 }

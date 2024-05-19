@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 5,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -679,7 +679,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -711,8 +711,8 @@
     ]
   },
   "time": {
-    "from": "2024-05-15T16:10:26.575Z",
-    "to": "2024-05-15T17:50:45.852Z"
+    "from": "now/M",
+    "to": "now/M"
   },
   "timepicker": {},
   "timezone": "",
