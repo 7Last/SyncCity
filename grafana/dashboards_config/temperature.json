@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -493,7 +493,7 @@
             "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
+            "axisBorderShow": true,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -557,7 +557,7 @@
       },
       "id": 4,
       "options": {
-        "barRadius": 0.01,
+        "barRadius": 0.05,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
@@ -576,7 +576,7 @@
         },
         "xField": "date",
         "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        "xTickLabelSpacing": 100
       },
       "pluginVersion": "10.3.0",
       "targets": [
@@ -606,13 +606,13 @@
           "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
           "queryType": "table",
           "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_weekly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_weekly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_weekly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_weekly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 10;",
           "refId": "A",
           "round": "0s",
           "skip_comments": true
         }
       ],
-      "title": "Weekly average",
+      "title": "Weekly average (last 10 weeks)",
       "transformations": [
         {
           "id": "formatTime",
@@ -756,11 +756,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 30;",
           "refId": "A"
         }
       ],
-      "title": "Daily average",
+      "title": "Daily average (last 30 days)",
       "transformations": [
         {
           "id": "formatTime",
@@ -917,9 +917,9 @@
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "temperature-sensor-1",
-          "value": "temperature-sensor-1"
+          "selected": true,
+          "text": "temperature-sensor-2",
+          "value": "temperature-sensor-2"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",

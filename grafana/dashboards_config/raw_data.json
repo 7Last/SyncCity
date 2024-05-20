@@ -1419,7 +1419,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select filling_value as \"Filling %\", timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "rawSql": "select filling_value as Filling, timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "A"
         }
       ],
@@ -1435,7 +1435,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -1502,13 +1502,13 @@
     ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "2024-05-20T15:37:59.655Z",
+    "to": "2024-05-20T16:13:49.588Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Raw Data",
   "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

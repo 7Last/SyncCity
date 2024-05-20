@@ -26,7 +26,7 @@ class EcologicalIslandSimulator(Simulator):
         # filling rate
         self.fill_rate = 0
         # emptying days and hours per week
-        self.emptying_hours = self._generate_emptying_hours()
+        self.emptying_hours = _generate_emptying_hours()
         # noise rate
         self.noise_limit = random.uniform(-5, 5)
         # chance for partial emptying
