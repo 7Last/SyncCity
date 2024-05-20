@@ -92,7 +92,7 @@ class EcologicalIslandSimulator(Simulator):
         return new_value
 
 
-def _generate_emptying_hours(self) -> List[Tuple[int, int]]:
+def _generate_emptying_hours() -> List[Tuple[int, int]]:
     # Possible emptying schedules with hours between 4 AM and 8 AM
     def random_hour() -> int:
         return random.randint(4, 8)  # Hours between 4 and 8 AM
