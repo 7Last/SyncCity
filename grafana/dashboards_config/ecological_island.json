@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -439,7 +439,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 7,
+        "w": 10,
         "x": 0,
         "y": 17
       },
@@ -541,8 +541,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
-        "x": 12,
+        "w": 14,
+        "x": 10,
         "y": 17
       },
       "id": 7,
@@ -597,14 +597,14 @@
       "type": "barchart"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "ecological-island-sensor-5",
           "value": "ecological-island-sensor-5"
         },
@@ -636,6 +636,6 @@
   "timezone": "",
   "title": "Ecological_island",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 6,
+  "version": 2,
   "weekStart": ""
 }
