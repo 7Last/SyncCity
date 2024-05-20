@@ -84,8 +84,11 @@ class EcologicalIslandSimulator(Simulator):
 
         # check if it is time to empty
         if (self.timestamp.weekday(), self.timestamp.hour) in self.emptying_hours:
-            if random.random() < self.partial_emptying_chance:  # 10% chance for partial emptying
-                self.last_value *= random.uniform(0.0, self.partial_emptying_max_percentage)  # leave up to 30% of current value
+            # 10% chance for partial emptying
+            if random.random() < self.partial_emptying_chance:
+                # leave up to 30% of current value
+                self.last_value *= random.uniform(
+                    0.0, self.partial_emptying_max_percentage)
             else:
                 self.last_value = 0.0  # complete emptying
             return self.last_value
@@ -102,5 +105,5 @@ class EcologicalIslandSimulator(Simulator):
 
         # update last value
         self.last_value = new_value
-        
+
         return new_value
