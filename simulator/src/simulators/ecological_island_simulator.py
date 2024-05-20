@@ -58,11 +58,6 @@ class EcologicalIslandSimulator(Simulator):
         fill_rate_per_second = fill_rate_per_hour / 3600
         self.fill_rate = fill_rate_per_second * time_passed.total_seconds()
 
-    def _generate_emptying_hours(self) -> List[Tuple[int, int]]:
-        # Possible emptying schedules with hours between 4 AM and 8 AM
-        def random_hour() -> int:
-            return random.randint(4, 8)  # Hours between 4 and 8 AM
-
         schedules = [
             # Monday, Friday
             [(0, random_hour()), (4, random_hour())],
@@ -107,3 +102,8 @@ class EcologicalIslandSimulator(Simulator):
         self.last_value = new_value
 
         return new_value
+
+def _generate_emptying_hours(self) -> List[Tuple[int, int]]:
+    # Possible emptying schedules with hours between 4 AM and 8 AM
+    def random_hour() -> int:
+        return random.randint(4, 8)  # Hours between 4 and 8 AM
