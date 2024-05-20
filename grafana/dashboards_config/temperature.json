@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -517,8 +517,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue",
-                "value": null
+                "color": "semi-dark-blue"
               },
               {
                 "color": "#ffffff",
@@ -661,8 +660,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue",
-                "value": null
+                "color": "semi-dark-blue"
               },
               {
                 "color": "#ffffff",
@@ -789,8 +787,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue",
-                "value": null
+                "color": "semi-dark-blue"
               },
               {
                 "color": "#ffffff",
@@ -935,18 +932,18 @@
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
         "hide": 0,
         "includeAll": false,
         "label": "Sensor name",
         "multi": false,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures",
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       }
     ]
@@ -959,6 +956,6 @@
   "timezone": "",
   "title": "Temperature",
   "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

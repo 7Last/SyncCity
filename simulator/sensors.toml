@@ -2,7 +2,7 @@
 [sensors.temperature-sensor-1]
 uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT1S" # 1 hour
+points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4018782
 longitude = 11.7769644
@@ -10,7 +10,7 @@ longitude = 11.7769644
 [sensors.temperature-sensor-2]
 uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT1S" # 1 hour
+points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4224876
 longitude = 11.9233274
@@ -18,9 +18,17 @@ longitude = 11.9233274
 [sensors.traffic-sensor-1]
 uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
 type = "traffic"
-points_spacing = "PT1S" # 1 minute
-generation_delay = "PT1S" # 2 seconds
+points_spacing = "PT1M" # 1 minute
+generation_delay = "PT2S" # 2 seconds
 latitude = 45.4673877
+longitude = 12.1943587
+
+[sensors.traffic-sensor-2]
+uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
+type = "traffic"
+points_spacing = "PT1M" # 1 minute
+generation_delay = "PT2S" # 2 seconds
+latitude = 45.4010669
 longitude = 12.1943587
 
 [sensors.ecological-island-sensor-1]
@@ -28,5 +36,37 @@ uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
 type = "ecological_island"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
-latitude = 45.4876568
-longitude = 12.3456787
+latitude = 45.4113102
+longitude = 11.88880725672
+
+[sensors.ecological-island-sensor-2]
+uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
+type = "ecological_island"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+latitude = 45.4344957
+longitude = 12.3264484
+
+[sensors.ecological-island-sensor-3]
+uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
+type = "ecological_island"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+latitude = 45.4067383
+longitude = 11.87739398715
+
+[sensors.ecological-island-sensor-4]
+uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
+type = "ecological_island"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+latitude = 45.41306475
+longitude = 11.8728663
+
+[sensors.ecological-island-sensor-5]
+uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
+type = "ecological_island"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+latitude = 45.5458673
+longitude = 11.5484712
