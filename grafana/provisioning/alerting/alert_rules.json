@@ -1,0 +1,103 @@
+{
+  "apiVersion": 1,
+  "groups": [
+    {
+      "orgId": 1,
+      "name": "Thresholds",
+      "folder": "alerting",
+      "interval": "10m",
+      "rules": [
+        {
+          "uid": "f4282dac-ba68-4598-9304-ff1276b4658a",
+          "title": "temperature",
+          "condition": "Threshold",
+          "data": [
+            {
+              "refId": "Temperature",
+              "queryType": "table",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "P5CECDC4694398594",
+              "model": {
+                "editorType": "sql",
+                "format": 1,
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "meta": {
+                  "builderOptions": {
+                    "columns": [],
+                    "database": "",
+                    "limit": 1000,
+                    "mode": "list",
+                    "queryType": "table",
+                    "table": ""
+                  }
+                },
+                "pluginVersion": "4.0.7",
+                "queryType": "table",
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp \u003e= subtractMinutes(now(), 45) and timestamp \u003c= now()\ngroup by sensor_name",
+                "refId": "Temperature"
+              }
+            },
+            {
+              "refId": "Threshold",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [
+                        40
+                      ],
+                      "type": "gt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": [
+                        "C"
+                      ]
+                    },
+                    "reducer": {
+                      "params": [],
+                      "type": "last"
+                    },
+                    "type": "query"
+                  }
+                ],
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "Temperature",
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "refId": "Threshold",
+                "type": "threshold"
+              }
+            }
+          ],
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "for": "30m",
+          "annotations": {
+            "description": "",
+            "runbook_url": "",
+            "summary": "Temperature threshold exceeded"
+          },
+          "labels": {
+            "": ""
+          },
+          "isPaused": false
+        }
+      ]
+    }
+  ]
+}
