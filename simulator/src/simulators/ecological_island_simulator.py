@@ -1,5 +1,4 @@
 import random
-import time
 from datetime import datetime, timedelta
 from typing import Iterable, List, Tuple
 from uuid import UUID
@@ -50,7 +49,7 @@ class EcologicalIslandSimulator(Simulator):
             if self.limit is not None:
                 self.limit -= 1
             self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
+            self._event.wait(self.delay.total_seconds())
 
     def _calculate_fill_rate(self) -> None:
         time_passed = self.timestamp - self.prev_timestamp

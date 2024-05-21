@@ -3,11 +3,11 @@ import os
 
 import toml
 
+from src.json_serializer import JSONSerializer
 from src.kafka_producer import KafkaProducer
 from src.models.config.env_config import EnvConfig
 from src.models.config.simulator_factory import simulators_generator
 from src.runner import Runner
-from src.json_serializer import JSONSerializer
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 

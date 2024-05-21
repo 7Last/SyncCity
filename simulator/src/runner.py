@@ -1,7 +1,6 @@
 import concurrent.futures as concurrent
 import logging as log
 import threading
-import time
 
 from .kafka_producer import KafkaProducer
 from .simulators.simulator import Simulator
@@ -39,6 +38,5 @@ class Runner:
         except Exception as e:
             log.exception('Error while running simulator', e)
         finally:
-            time.sleep(2)
             self._producer.close()
-            log.debug('ProducerStrategy closed, exiting.')
+            log.debug('Producer closed, exiting.')

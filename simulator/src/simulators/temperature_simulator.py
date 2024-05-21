@@ -1,5 +1,4 @@
 import random
-import time
 from datetime import datetime, timedelta
 from math import pi, sin
 from typing import Iterable
@@ -35,7 +34,7 @@ class TemperatureSimulator(Simulator):
             if self.limit is not None:
                 self.limit -= 1
             self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
+            self._event.wait(self.delay.total_seconds())
 
 
 def _sinusoidal_value(timestamp: datetime) -> float:

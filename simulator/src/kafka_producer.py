@@ -26,4 +26,4 @@ class KafkaProducer():
         self._producer.flush()
 
     def close(self) -> None:
-        self._producer.close()
+        self._producer.close(timeout=2)
