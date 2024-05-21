@@ -1,15 +1,14 @@
 import concurrent.futures as concurrent
 import logging as log
 import threading
-import time
 
-from .producers.producer_strategy import ProducerStrategy
+from .kafka_producer import KafkaProducer
 from .simulators.simulator import Simulator
 
 
 class Runner:
     def __init__(self, *, simulators: list[Simulator], max_workers: int,
-                 producer: ProducerStrategy) -> None:
+                 producer: KafkaProducer) -> None:
         self._max_workers = max_workers
         self._simulators = simulators
         self._producer = producer
@@ -39,6 +38,5 @@ class Runner:
         except Exception as e:
             log.exception('Error while running simulator', e)
         finally:
-            time.sleep(2)
             self._producer.close()
-            log.debug('ProducerStrategy closed, exiting.')
+            log.debug('Producer closed, exiting.')

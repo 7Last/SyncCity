@@ -1,8 +1,10 @@
+import threading
 import zoneinfo
 from abc import ABC, abstractmethod
 from datetime import datetime, timedelta
 from typing import Iterable
 from uuid import UUID
+import logging as log
 
 from ..models.raw_data.raw_data import RawData
 
@@ -34,11 +36,14 @@ class Simulator(ABC):
         self.delay = generation_delay
         rome = zoneinfo.ZoneInfo('Europe/Rome')
         self.timestamp = begin_date or datetime.now(tz=rome)
+        self._event = threading.Event()
 
     def start(self) -> None:
         self.running = True
 
     def stop(self) -> None:
+        self._event.set()
+        log.debug(f'Emitted event to {self.sensor_name}')
         self.running = False
 
     @abstractmethod

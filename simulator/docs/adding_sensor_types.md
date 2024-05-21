@@ -42,7 +42,7 @@ the `.avsc` files which are already defined.
 > stored in ClickHouse
 
 ## Step 4: Implement the method in the `SerializerVisitor` class
-In the file [src/serializers/serializer_visitor.py](../src/serializers/serializer_visitor.py)
+In the file [src/serializers/serializer_visitor.py](../src/json_serializer.py)
 implement a new public method to serialize the new sensor type.
 
 > The method should be called `serialize_<new_sensor_type>`.

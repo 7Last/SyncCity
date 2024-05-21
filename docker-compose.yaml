@@ -12,7 +12,6 @@ services:
       - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
       - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
       - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
-      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
       - --rpc-addr redpanda:33145
       - --advertise-rpc-addr redpanda:33145
       - --mode dev-container
@@ -25,7 +24,6 @@ services:
     networks:
       - redpanda_network
     ports:
-      - 18081:18081
       - 18082:18082
       - 19092:19092
       - 19644:9644
@@ -50,52 +48,10 @@ services:
       CONSOLE_CONFIG_FILE: |
         kafka:
           brokers: ["redpanda:9092"]
-          schemaRegistry:
-            enabled: true
-            urls: ["http://redpanda:8081"]
         redpanda:
           adminApi:
             enabled: true
             urls: ["http://redpanda:9644"]
-        connect:
-          enabled: true
-          clusters:
-            - name: local-connect-cluster
-              url: http://connect:8083
-
-  connect:
-    container_name: connect
-    image: docker.redpanda.com/redpandadata/connectors:latest
-    volumes:
-      - ./connectors/plugins:/opt/kafka/connect-plugins
-    hostname: connect
-    ports:
-      - "8083:8083"
-    depends_on:
-      - redpanda
-    networks:
-      - redpanda_network
-    profiles: ["local", "release"]
-    environment:
-      CONNECT_CONFIGURATION: |
-        key.converter=java.lang.String
-        value.converter=java.lang.String
-        plugin.path=/opt/kafka/connect-plugins
-        value.converter=io.confluent.connect.avro.AvroConverter
-        value.converter.schema.registry.url=http://redpanda:8081
-        group.id=connectors-group
-        offset.storage.topic=_connectors_offsets
-        config.storage.topic=_connectors_configs
-        status.storage.topic=_connectors_status
-        config.storage.replication.factor=-1
-        offset.storage.replication.factor=-1
-        status.storage.replication.factor=-1
-      CONNECT_BOOTSTRAP_SERVERS: "redpanda:9092"
-      CONNECT_GC_LOG_ENABLED: "false"
-      CONNECT_HEAP_OPTS: -Xms1G -Xmx1G
-      CONNECT_METRICS_ENABLED: "false"
-      CONNECT_TLS_ENABLED: "false"
-      CONNECT_PLUGIN_PATH: "/opt/kafka/connect-plugins"
 
   clickhouse:
     image: clickhouse/clickhouse-server:24-alpine
