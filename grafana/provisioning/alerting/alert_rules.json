@@ -3,133 +3,67 @@
   "groups": [
     {
       "orgId": 1,
-      "name": "Temperature",
+      "name": "Thresholds",
       "folder": "alerting",
-      "interval": "5m",
+      "interval": "10m",
       "rules": [
         {
-          "uid": "c141837c-6cff-4b5f-b0b9-0d45f1ba4d07",
-          "title": "Average temperature",
-          "condition": "C",
+          "uid": "f4282dac-ba68-4598-9304-ff1276b4658a",
+          "title": "temperature",
+          "condition": "Threshold",
           "data": [
             {
-              "refId": "A",
+              "refId": "Temperature",
               "queryType": "table",
               "relativeTimeRange": {
-                "from": 42017997,
-                "to": 38428797
+                "from": 600,
+                "to": 0
               },
               "datasourceUid": "P5CECDC4694398594",
               "model": {
-                "builderOptions": {
-                  "aggregates": [],
-                  "columns": [
-                    {
-                      "custom": false,
-                      "name": "avgTemperature",
-                      "type": "Float32"
-                    },
-                    {
-                      "custom": false,
-                      "name": "timestamp1m",
-                      "type": "DateTime64(3)"
-                    }
-                  ],
-                  "database": "sensors",
-                  "filters": [
-                    {
-                      "condition": "AND",
-                      "filterType": "custom",
-                      "key": "avgTemperature",
-                      "operator": "IS NOT NULL",
-                      "type": "Float32"
-                    }
-                  ],
-                  "groupBy": [],
-                  "limit": 1000,
-                  "meta": {},
-                  "mode": "list",
-                  "orderBy": [
-                    {
-                      "dir": "ASC",
-                      "name": "avgTemperature"
-                    }
-                  ],
-                  "queryType": "table",
-                  "table": "temperatures1m"
-                },
-                "datasource": {
-                  "type": "grafana-clickhouse-datasource",
-                  "uid": "P5CECDC4694398594"
-                },
                 "editorType": "sql",
                 "format": 1,
                 "intervalMs": 1000,
                 "maxDataPoints": 43200,
                 "meta": {
                   "builderOptions": {
-                    "aggregates": [],
-                    "columns": [
-                      {
-                        "custom": false,
-                        "name": "avgTemperature",
-                        "type": "Float32"
-                      },
-                      {
-                        "custom": false,
-                        "name": "timestamp1m",
-                        "type": "DateTime64(3)"
-                      }
-                    ],
-                    "database": "sensors",
-                    "filters": [
-                      {
-                        "condition": "AND",
-                        "filterType": "custom",
-                        "key": "avgTemperature",
-                        "operator": "IS NOT NULL",
-                        "type": "Float32"
-                      }
-                    ],
-                    "groupBy": [],
+                    "columns": [],
+                    "database": "",
                     "limit": 1000,
-                    "meta": {},
                     "mode": "list",
-                    "orderBy": [
-                      {
-                        "dir": "ASC",
-                        "name": "avgTemperature"
-                      }
-                    ],
                     "queryType": "table",
-                    "table": "temperatures1m"
+                    "table": ""
                   }
                 },
-                "pluginVersion": "4.0.6",
+                "pluginVersion": "4.0.7",
                 "queryType": "table",
-                "rawSql": "SELECT avgTemperature, timestamp1m as time FROM \"sensors\".\"temperatures1m\" WHERE ( avgTemperature > 15 ) ORDER BY avgTemperature ASC LIMIT 1000",
-                "refId": "A"
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp \u003e= subtractMinutes(now(), 45) and timestamp \u003c= now()\ngroup by sensor_name",
+                "refId": "Temperature"
               }
             },
             {
-              "refId": "B",
+              "refId": "Threshold",
               "relativeTimeRange": {
-                "from": 42017997,
-                "to": 38428797
+                "from": 600,
+                "to": 0
               },
               "datasourceUid": "__expr__",
               "model": {
                 "conditions": [
                   {
                     "evaluator": {
-                      "params": [],
+                      "params": [
+                        40
+                      ],
                       "type": "gt"
                     },
                     "operator": {
                       "type": "and"
                     },
                     "query": {
-                      "params": ["B"]
+                      "params": [
+                        "C"
+                      ]
                     },
                     "reducer": {
                       "params": [],
@@ -142,64 +76,21 @@
                   "type": "__expr__",
                   "uid": "__expr__"
                 },
-                "expression": "A",
+                "expression": "Temperature",
                 "intervalMs": 1000,
                 "maxDataPoints": 43200,
-                "reducer": "last",
-                "refId": "B",
-                "type": "reduce"
-              }
-            },
-            {
-              "refId": "C",
-              "relativeTimeRange": {
-                "from": 42017997,
-                "to": 38428797
-              },
-              "datasourceUid": "__expr__",
-              "model": {
-                "conditions": [
-                  {
-                    "evaluator": {
-                      "params": [15],
-                      "type": "gt"
-                    },
-                    "operator": {
-                      "type": "and"
-                    },
-                    "query": {
-                      "params": ["C"]
-                    },
-                    "reducer": {
-                      "params": [],
-                      "type": "last"
-                    },
-                    "type": "query"
-                  }
-                ],
-                "datasource": {
-                  "type": "__expr__",
-                  "uid": "__expr__"
-                },
-                "expression": "B",
-                "intervalMs": 1000,
-                "maxDataPoints": 43200,
-                "refId": "C",
+                "refId": "Threshold",
                 "type": "threshold"
               }
             }
           ],
-          "dasboardUid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-          "panelId": 9,
           "noDataState": "NoData",
           "execErrState": "Error",
-          "for": "5m",
+          "for": "30m",
           "annotations": {
-            "__dashboardUid__": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-            "__panelId__": "9",
             "description": "",
             "runbook_url": "",
-            "summary": ""
+            "summary": "Temperature threshold exceeded"
           },
           "labels": {
             "": ""

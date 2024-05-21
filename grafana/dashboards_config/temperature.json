@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -132,10 +132,10 @@
         },
         "view": {
           "allLayers": true,
-          "id": "europe",
+          "id": "fit",
           "lat": 46,
           "lon": 14,
-          "zoom": 5
+          "zoom": 9
         }
       },
       "pluginVersion": "10.3.0",
@@ -212,6 +212,7 @@
               }
             ]
           },
+          "unit": "celsius",
           "unitScale": true
         },
         "overrides": [
@@ -249,8 +250,8 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 6,
+        "h": 10,
+        "w": 5,
         "x": 0,
         "y": 8
       },
@@ -292,7 +293,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT value\nFROM sensors.temperatures_realtime\nwhere sensor_name = '${sensor_name}'\n",
+          "rawSql": "with latest_by_sensor as (select sensor_name,\n                                 max(insertion_timestamp) as latest_timestamp\n                          from sensors.temperatures_realtime\n                          where match(sensor_name, '^(${sensor_name:pipe})$')\n                          group by sensor_name)\nSELECT avg(value)\nFROM sensors.temperatures_realtime\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\n  and (sensor_name, insertion_timestamp) in\n      (select sensor_name, latest_timestamp from latest_by_sensor)\n",
           "refId": "Real time temp"
         }
       ],
@@ -393,9 +394,9 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 18,
-        "x": 6,
+        "h": 10,
+        "w": 19,
+        "x": 5,
         "y": 8
       },
       "id": 7,
@@ -471,13 +472,13 @@
               "table": "temperature"
             }
           },
-          "pluginVersion": "4.0.6",
+          "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT value, timestamp\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and\ntimestamp  >= $__fromTime AND timestamp <= $__toTime ",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.temperatures_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\n and sensor_name = '${sensor_name}'\norder by date;",
           "refId": "A"
         }
       ],
-      "title": "Time series",
+      "title": "Time series (every 5m)",
       "transformations": [],
       "type": "timeseries"
     },
@@ -492,7 +493,7 @@
             "mode": "thresholds"
           },
           "custom": {
-            "axisBorderShow": false,
+            "axisBorderShow": true,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -517,7 +518,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
@@ -551,11 +553,11 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 18
       },
       "id": 4,
       "options": {
-        "barRadius": 0.01,
+        "barRadius": 0.05,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
@@ -574,7 +576,7 @@
         },
         "xField": "date",
         "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
+        "xTickLabelSpacing": 100
       },
       "pluginVersion": "10.3.0",
       "targets": [
@@ -604,18 +606,18 @@
           "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
           "queryType": "table",
           "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_monthly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_monthly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_weekly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_weekly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 10;",
           "refId": "A",
           "round": "0s",
           "skip_comments": true
         }
       ],
-      "title": "Monthly average",
+      "title": "Weekly average (last 10 weeks)",
       "transformations": [
         {
           "id": "formatTime",
           "options": {
-            "outputFormat": "YYYY-MM",
+            "outputFormat": "Wo",
             "timeField": "date",
             "useTimezone": true
           }
@@ -660,7 +662,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
@@ -708,7 +711,7 @@
         "h": 11,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 18
       },
       "id": 10,
       "options": {
@@ -753,11 +756,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;\n",
+          "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 30;",
           "refId": "A"
         }
       ],
-      "title": "Daily average",
+      "title": "Daily average (last 30 days)",
       "transformations": [
         {
           "id": "formatTime",
@@ -787,33 +790,23 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue"
+                "color": "semi-dark-blue",
+                "value": null
               },
               {
                 "color": "#ffffff",
-                "value": 5
+                "value": 10
               },
               {
                 "color": "red",
-                "value": 30
+                "value": 40
               }
             ]
           },
+          "unit": "celsius",
           "unitScale": true
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byType",
-              "options": "number"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byName",
@@ -856,7 +849,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 32
+        "y": 29
       },
       "id": 3,
       "options": {
@@ -924,7 +917,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "temperature-sensor-2",
           "value": "temperature-sensor-2"
         },
@@ -956,6 +949,6 @@
   "timezone": "",
   "title": "Temperature",
   "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
