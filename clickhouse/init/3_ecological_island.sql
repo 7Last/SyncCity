@@ -5,12 +5,12 @@ CREATE TABLE sensors.ecological_island_kafka
 
 CREATE TABLE sensors.ecological_island
 (
-    sensor_uuid       UUID,
-    sensor_name       String,
-    timestamp         DateTime64,
-    latitude          Float64,
-    longitude         Float64,
-    filling_value     Float32
+    sensor_uuid   UUID,
+    sensor_name   String,
+    timestamp     DateTime64,
+    latitude      Float64,
+    longitude     Float64,
+    filling_value Float32
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
 
@@ -23,31 +23,19 @@ SELECT JSONExtractString(data, 'sensor_name')                          AS sensor
        JSONExtractFloat(data, 'longitude')                             AS longitude
 FROM sensors.ecological_island_kafka;
 
--- prev_value
-/*
-CREATE TABLE sensors.ecological_island_prev_value
+CREATE TABLE sensors.ecological_island_5m
 (
-    sensor_uuid       UUID,
     sensor_name         String,
-    timestamp         DateTime64,
-    insertion_timestamp DateTime64(6) default now64(),
-    filling_value     Float32,
-    prev_value        Nullable(Float32)
+    date                DateTime64,
+    avg_filling_value   Float32,
+    insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
-      ORDER BY (sensor_uuid, timestamp);
+      ORDER BY (sensor_name, date);
 
-CREATE MATERIALIZED VIEW sensors.ecological_island_prev_value_mv
-    TO sensors.ecological_island_prev_value AS
-SELECT
-    ecological_island.sensor_uuid,
-    ecological_island.sensor_name,
-    ecological_island.timestamp,
-    ecological_island.filling_value,
-    prev.filling_value AS prev_value
-FROM sensors.ecological_island
-JOIN sensors.ecological_island AS prev
-ON ecological_island.sensor_uuid = prev.sensor_uuid
-WHERE prev.timestamp < ecological_island.timestamp
-ORDER BY prev.timestamp DESC
-LIMIT 1;
-*/
+CREATE MATERIALIZED VIEW sensors.ecological_island_5m_mv
+    TO sensors.ecological_island_5m AS
+SELECT sensor_name,
+       toStartOfFiveMinutes(timestamp) AS date,
+       avg(filling_value)              AS avg_filling_value
+from sensors.ecological_island
+GROUP BY sensor_name, date;

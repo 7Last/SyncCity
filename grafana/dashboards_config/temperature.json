@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -192,122 +192,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-blue",
-                "value": null
-              },
-              {
-                "color": "#ffffff",
-                "value": 5
-              },
-              {
-                "color": "red",
-                "value": 30
-              }
-            ]
-          },
-          "unit": "celsius",
-          "unitScale": true
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg_temperature"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "avg_temperature"
-            },
-            "properties": [
-              {
-                "id": "noValue",
-                "value": "No data"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#ffffff",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 5,
-        "x": 0,
-        "y": 8
-      },
-      "id": 9,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.7",
-          "queryType": "table",
-          "rawSql": "with latest_by_sensor as (select sensor_name,\n                                 max(insertion_timestamp) as latest_timestamp\n                          from sensors.temperatures_realtime\n                          where match(sensor_name, '^(${sensor_name:pipe})$')\n                          group by sensor_name)\nSELECT avg(value)\nFROM sensors.temperatures_realtime\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\n  and (sensor_name, insertion_timestamp) in\n      (select sensor_name, latest_timestamp from latest_by_sensor)\n",
-          "refId": "Real time temp"
-        }
-      ],
-      "title": "Real time",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "palette-classic"
           },
           "custom": {
@@ -396,7 +280,7 @@
       "gridPos": {
         "h": 10,
         "w": 19,
-        "x": 5,
+        "x": 0,
         "y": 8
       },
       "id": 7,
@@ -481,6 +365,122 @@
       "title": "Time series (every 5m)",
       "transformations": [],
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-blue",
+                "value": null
+              },
+              {
+                "color": "#ffffff",
+                "value": 5
+              },
+              {
+                "color": "red",
+                "value": 30
+              }
+            ]
+          },
+          "unit": "celsius",
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "avg_temperature"
+            },
+            "properties": [
+              {
+                "id": "noValue",
+                "value": "No data"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ffffff",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 19,
+        "y": 8
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "with latest_by_sensor as (select sensor_name,\n                                 max(insertion_timestamp) as latest_timestamp\n                          from sensors.temperatures_realtime\n                          where match(sensor_name, '^(${sensor_name:pipe})$')\n                          group by sensor_name)\nSELECT avg(value)\nFROM sensors.temperatures_realtime\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\n  and (sensor_name, insertion_timestamp) in\n      (select sensor_name, latest_timestamp from latest_by_sensor)\n",
+          "refId": "Real time temp"
+        }
+      ],
+      "title": "Real time",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -918,8 +918,8 @@
       {
         "current": {
           "selected": true,
-          "text": "temperature-sensor-2",
-          "value": "temperature-sensor-2"
+          "text": "prato-della-valle",
+          "value": "prato-della-valle"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",

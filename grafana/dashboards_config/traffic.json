@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -450,11 +450,21 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "timeseries",
-          "rawSql": "select timestamp, vehicles\nfrom sensors.vehicles_hourly\nwhere (insertion_timestamp, timestamp) in (select max(insertion_timestamp), timestamp\n                                      from sensors.vehicles_hourly\n                                      where sensor_name = '${sensor_name}'\n                                      group by timestamp)\n  --and date >= $__fromTime and date <= $__toTime\n",
+          "rawSql": "select timestamp, vehicles\nfrom sensors.vehicles_hourly\nwhere (insertion_timestamp, timestamp) in (select max(insertion_timestamp), timestamp\n                                      from sensors.vehicles_hourly\n                                      where sensor_name = '${sensor_name}'\n                                      group by timestamp)\nand timestamp >= $__fromTime and timestamp <= $__toTime\n",
           "refId": "A"
         }
       ],
       "title": "Avg vehicles per hour",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {
+            "outputFormat": "HH:mm",
+            "timeField": "timestamp",
+            "useTimezone": true
+          }
+        }
+      ],
       "type": "barchart"
     },
     {
@@ -687,8 +697,8 @@
       {
         "current": {
           "selected": false,
-          "text": "traffic-sensor-1",
-          "value": "traffic-sensor-1"
+          "text": "mirano-fossa",
+          "value": "mirano-fossa"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -718,6 +728,6 @@
   "timezone": "",
   "title": "Traffic",
   "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }

@@ -261,8 +261,8 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 10,
+        "w": 19,
         "x": 0,
         "y": 9
       },
@@ -299,7 +299,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT \n  timestamp as time, \n  filling_value \nFROM sensors.ecological_island\nwhere timestamp  >= $__fromTime AND timestamp <= $__toTime \nand sensor_name = '${sensor_name}'",
+          "rawSql": "select date, avg_filling_value\nfrom sensors.ecological_island_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.ecological_island_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;",
           "refId": "A"
         }
       ],
@@ -352,9 +352,9 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
+        "h": 10,
+        "w": 5,
+        "x": 19,
         "y": 9
       },
       "id": 5,
@@ -413,10 +413,11 @@
           "color": {
             "mode": "thresholds"
           },
+          "fieldMinMax": false,
           "mappings": [],
-          "max": -2,
+          "noValue": "0 hours",
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
@@ -424,26 +425,125 @@
               },
               {
                 "color": "#EAB839",
-                "value": 20
+                "value": 50
               },
               {
                 "color": "red",
-                "value": 30
+                "value": 90
               }
             ]
           },
-          "unit": "h",
+          "unit": "s",
           "unitScale": true
         },
         "overrides": []
       },
       "gridPos": {
         "h": 8,
-        "w": 10,
+        "w": 5,
         "x": 0,
-        "y": 17
+        "y": 19
       },
       "id": 6,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.7",
+          "queryType": "table",
+          "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling_value, 1, NULL)) as next_filling_value,\n           if(next_filling_value == 100 and filling_value == 100, 1, 0) as saturated\n    FROM sensors.ecological_island\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total saturation",
+      "transformations": [
+        {
+          "id": "formatTime",
+          "options": {}
+        }
+      ],
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "Average percentage of filling at the moment of discharge. A low percentage indicates that, on average, the eco-island is emptied too often and viceversa.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "index": 0,
+                  "text": "No data"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 50
+              },
+              {
+                "color": "green",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 5,
+        "y": 19
+      },
+      "id": 8,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
@@ -480,11 +580,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT count(*)\nFROM sensors.ecological_island\nWHERE sensor_name = '${sensor_name}' AND filling_value = 100 AND timestamp  >= $__fromTime AND timestamp <= $__toTime",
+          "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling_value, -1, NULL)) AS previous_filling_value)\nFROM sensors.ecological_island\nwhere filling_value < previous_filling_value\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
           "refId": "A"
         }
       ],
-      "title": "maximum saturation hours",
+      "title": "Avg. filling % on discharge (efficiency)",
       "type": "gauge"
     },
     {
@@ -543,7 +643,7 @@
         "h": 8,
         "w": 14,
         "x": 10,
-        "y": 17
+        "y": 19
       },
       "id": 7,
       "options": {
@@ -589,11 +689,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n\n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n\n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n\n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
           "refId": "A"
         }
       ],
-      "title": "filling level percentages by range",
+      "title": "Filling level percentages by range",
       "type": "barchart"
     }
   ],
@@ -604,9 +704,10 @@
     "list": [
       {
         "current": {
+          "isNone": true,
           "selected": false,
-          "text": "ecological-island-sensor-1",
-          "value": "ecological-island-sensor-1"
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -629,7 +730,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
