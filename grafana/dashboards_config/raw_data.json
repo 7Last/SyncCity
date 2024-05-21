@@ -1419,7 +1419,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select filling_value as Filling, timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "rawSql": "select filling_value as Filling, timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
           "refId": "A"
         }
       ],
@@ -1435,7 +1435,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -1445,10 +1445,10 @@
         "current": {
           "selected": true,
           "text": [
-            "temperature"
+            "All"
           ],
           "value": [
-            "temperature"
+            "$__all"
           ]
         },
         "datasource": {
@@ -1502,8 +1502,8 @@
     ]
   },
   "time": {
-    "from": "2024-05-20T15:37:59.655Z",
-    "to": "2024-05-20T16:13:49.588Z"
+    "from": "now/w",
+    "to": "now/w"
   },
   "timepicker": {},
   "timezone": "",
