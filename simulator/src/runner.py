@@ -7,9 +7,7 @@ from .simulators.simulator import Simulator
 
 
 class Runner:
-    def __init__(self, *, simulators: list[Simulator], max_workers: int,
-                 producer: KafkaProducer) -> None:
-        self._max_workers = max_workers
+    def __init__(self, *, simulators: list[Simulator], producer: KafkaProducer) -> None:
         self._simulators = simulators
         self._producer = producer
 
@@ -26,9 +24,7 @@ class Runner:
 
     def run(self) -> None:
         try:
-            log.debug('Creating thread pool with %d workers', self._max_workers)
-            with concurrent.ThreadPoolExecutor(
-                    max_workers=self._max_workers) as executor:
+            with concurrent.ThreadPoolExecutor() as executor:
                 executor.map(self._callback, self._simulators)
         except KeyboardInterrupt:
             log.info('Received shutdown signal, gracefully stopping...')

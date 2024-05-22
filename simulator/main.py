@@ -35,7 +35,6 @@ def main() -> None:
     runner = Runner(
         simulators=list(simulators_generator(sensors_config)),
         producer=producer,
-        max_workers=env_config.max_workers,
     )
 
     log.debug('Starting runner')

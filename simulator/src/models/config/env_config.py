@@ -10,7 +10,6 @@ class EnvConfig:
         self.kafka_host = self._get_or_throw('KAFKA_HOST')
         self.kafka_port = self._get_or_throw('KAFKA_PORT')
         self.log_level = self._get_or_throw('LOG_LEVEL')
-        self.max_workers = int(os.environ.get('MAX_WORKERS', 1))
         self.max_block_ms = int(os.environ.get('MAX_BLOCK_MS', 1000))
 
     @staticmethod
