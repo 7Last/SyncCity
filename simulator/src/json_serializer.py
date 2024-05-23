@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .models.raw_data.recycling_point_raw_data import RecyclingPointRawData 
+from .models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from .models.raw_data.raw_data import RawData
 from .models.raw_data.temperature_raw_data import TemperatureRawData
 from .models.raw_data.traffic_raw_data import TrafficRawData
