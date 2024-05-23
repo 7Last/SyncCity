@@ -41,7 +41,7 @@ longitude = 12.1736561
 
 [sensors.dipartimento-tullio-levi-civita]
 uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
-type = "ecological_island"
+type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4113102
@@ -49,7 +49,7 @@ longitude = 11.88880725672
 
 [sensors.campus-ca-foscari]
 uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
-type = "ecological_island"
+type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4344957
@@ -57,7 +57,7 @@ longitude = 12.3264484
 
 [sensors.unipd-via-s-francesco]
 uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
-type = "ecological_island"
+type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4067383
@@ -65,7 +65,7 @@ longitude = 11.87739398715
 
 [sensors.unipd-beato-pellegrino]
 uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
-type = "ecological_island"
+type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.4137767
@@ -73,7 +73,7 @@ longitude = 11.8669841
 
 [sensors.unipd-ponte-s-michele]
 uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
-type = "ecological_island"
+type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S" # 1 second
 latitude = 45.5458673

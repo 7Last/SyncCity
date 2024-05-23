@@ -5,7 +5,7 @@ from uuid import UUID
 from .raw_data import RawData
 
 
-class EcologicalIslandRawData(RawData):
+class RecyclingPointRawData(RawData):
 
     def __init__(self, *, filling_value: float, latitude: float,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
@@ -19,8 +19,8 @@ class EcologicalIslandRawData(RawData):
         self.filling_value = filling_value
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_ecological_island_raw_data(self)
+        return visitor.serialize_recycling_point_raw_data(self)
 
     @property
     def topic(self) -> str:
-        return "ecological_island"
+        return "recycling_point"

@@ -4,7 +4,7 @@ from enum import Enum
 class SensorType(Enum):
     TEMPERATURE = "temperature"
     TRAFFIC = "traffic"
-    ECOLOGICAL_ISLAND = "ecological_island"
+    RECYCLING_POINT = "recycling_point"
 
     @staticmethod
     def from_str(key: str):  # noqa: ANN205

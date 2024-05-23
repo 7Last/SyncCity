@@ -1,6 +1,6 @@
 from typing import Dict
 
-from .models.raw_data.ecological_island_raw_data import EcologicalIslandRawData
+from .models.raw_data.recycling_point_raw_data import RecyclingPointRawData 
 from .models.raw_data.raw_data import RawData
 from .models.raw_data.temperature_raw_data import TemperatureRawData
 from .models.raw_data.traffic_raw_data import TrafficRawData
@@ -34,7 +34,7 @@ class JSONSerializer:
         }
 
     @staticmethod
-    def serialize_ecological_island_raw_data(raw_data: EcologicalIslandRawData) -> Dict:
+    def serialize_recycling_point_raw_data(raw_data: RecyclingPointRawData) -> Dict:
         return {
             "filling_value": raw_data.filling_value,
             **(JSONSerializer._serialize_raw_data(raw_data)),

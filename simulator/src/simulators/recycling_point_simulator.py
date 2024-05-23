@@ -4,10 +4,10 @@ from typing import Iterable, List, Tuple
 from uuid import UUID
 
 from .simulator import Simulator
-from ..models.raw_data.ecological_island_raw_data import EcologicalIslandRawData
+from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 
 
-class EcologicalIslandSimulator(Simulator):
+class RecyclingPointSimulator(Simulator):
 
     def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
                  latitude: float, longitude: float,
@@ -33,11 +33,11 @@ class EcologicalIslandSimulator(Simulator):
         # max percentage of value to leave after partial emptying
         self.partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
-    def stream(self) -> Iterable[EcologicalIslandRawData]:
+    def stream(self) -> Iterable[RecyclingPointRawData]:
         while self.limit != 0 and self.running:
             self.last_value = self._filling_value()
 
-            yield EcologicalIslandRawData(
+            yield RecyclingPointRawData(
                 filling_value=self.last_value,
                 latitude=self.latitude,
                 longitude=self.longitude,
