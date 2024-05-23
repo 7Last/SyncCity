@@ -39,14 +39,6 @@ generation_delay = "PT2S" # 2 seconds
 latitude = 45.4675237
 longitude = 12.1736561
 
-[sensors.mirano-fossa]
-uuid = "825c555d-a57e-4ce0-bc88-40f2a37bcbd8"
-type = "traffic"
-points_spacing = "PT1M" # 1 minute
-generation_delay = "PT2S" # 2 seconds
-latitute = 45.4934307
-longitude = 12.1333501
-
 [sensors.dipartimento-tullio-levi-civita]
 uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
 type = "ecological_island"

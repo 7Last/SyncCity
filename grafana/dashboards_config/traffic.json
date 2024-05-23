@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 5,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -153,9 +153,9 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.6",
+          "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nGROUP BY sensor_name, latitude, longitude\n",
+          "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n\n",
           "refId": "Traffic"
         }
       ],
@@ -575,7 +575,7 @@
           "refId": "A"
         }
       ],
-      "title": "Avg speed",
+      "title": "Avg speed (every 5m)",
       "type": "timeseries"
     },
     {
@@ -685,7 +685,7 @@
           "refId": "A"
         }
       ],
-      "title": "Vehicles",
+      "title": "Vehicles (every 5m)",
       "type": "timeseries"
     }
   ],
