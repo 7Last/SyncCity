@@ -621,6 +621,7 @@
             }
           },
           "mappings": [],
+          "max": 100,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -637,7 +638,38 @@
           "unit": "percent",
           "unitScale": true
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "range"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "High level": {
+                        "index": 2,
+                        "text": "High level (>80%)"
+                      },
+                      "Low level": {
+                        "index": 0,
+                        "text": "Low level (<50%)"
+                      },
+                      "Moderate level": {
+                        "index": 1,
+                        "text": "Moderate level (50-80%)"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -689,7 +721,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n\n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
           "refId": "A"
         }
       ],
@@ -704,10 +736,9 @@
     "list": [
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "campus-ca-foscari",
+          "value": "campus-ca-foscari"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",

@@ -833,7 +833,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select value, timestamp, sensor_name\nfrom sensors.temperatures\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "rawSql": "select avg_temperature as \"Temperature\", date, sensor_name\nfrom sensors.temperatures_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "A"
         }
       ],
@@ -1062,7 +1062,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select vehicles as \"N. vehicles\", timestamp, sensor_name\nfrom sensors.traffic\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "rawSql": "select vehicles as \"N. vehicles\", date, sensor_name\nfrom sensors.traffic_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "A"
         }
       ],
@@ -1177,7 +1177,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select avg_speed as \"Avg. speed\", timestamp, sensor_name\nfrom sensors.traffic\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
+          "rawSql": "select speed as \"Avg. speed\", date, sensor_name\nfrom sensors.traffic_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
           "refId": "A"
         }
       ],
@@ -1419,7 +1419,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select filling_value as Filling, timestamp, sensor_name\nfrom sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+          "rawSql": "select avg_filling_value as Filling, date, sensor_name\nfrom sensors.ecological_island_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
           "refId": "A"
         }
       ],
@@ -1435,7 +1435,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -1502,8 +1502,8 @@
     ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "2024-05-23T05:36:44.404Z",
+    "to": "2024-05-23T19:55:14.536Z"
   },
   "timepicker": {},
   "timezone": "",
