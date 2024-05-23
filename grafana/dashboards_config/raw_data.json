@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -229,12 +229,12 @@
             },
             "filterData": {
               "id": "byRefId",
-              "options": "Rec point"
+              "options": "Recycling Point"
             },
             "location": {
               "mode": "auto"
             },
-            "name": "Rec Point",
+            "name": "Recycling Point",
             "tooltip": true,
             "type": "markers"
           }
@@ -320,7 +320,7 @@
           "pluginVersion": "4.0.7",
           "queryType": "table",
           "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'recycling_point'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
-          "refId": "Rec point"
+          "refId": "Recycling Point"
         }
       ],
       "title": "Location",

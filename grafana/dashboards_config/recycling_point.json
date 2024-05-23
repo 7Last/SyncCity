@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -118,7 +118,7 @@
             "location": {
               "mode": "auto"
             },
-            "name": "Recycling point",
+            "name": "Recycling Point",
             "tooltip": true,
             "type": "markers"
           }
@@ -768,6 +768,6 @@
   "timezone": "",
   "title": "Recycling Point",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
