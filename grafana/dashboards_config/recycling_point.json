@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -118,7 +118,7 @@
             "location": {
               "mode": "auto"
             },
-            "name": "Ecological island",
+            "name": "Recycling Point",
             "tooltip": true,
             "type": "markers"
           }
@@ -155,7 +155,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name,\n       'Ecological island' as type,\n       latitude,\n       longitude\nFROM sensors.ecological_island\nGROUP BY sensor_name, latitude, longitude\n\n\n",
+          "rawSql": "SELECT sensor_name,\n       'Recycling Point' as type,\n       latitude,\n       longitude\nFROM sensors.recycling_point\nGROUP BY sensor_name, latitude, longitude\n\n\n",
           "refId": "Traffic"
         }
       ],
@@ -299,7 +299,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select date, avg_filling_value\nfrom sensors.ecological_island_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.ecological_island_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;",
+          "rawSql": "select date, avg_filling_value\nfrom sensors.recycling_point_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.recycling_point_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;",
           "refId": "A"
         }
       ],
@@ -395,7 +395,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT filling_value\r\nFROM sensors.ecological_island\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
+          "rawSql": "SELECT filling_value\r\nFROM sensors.recycling_point\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
           "refId": "A"
         }
       ],
@@ -407,7 +407,7 @@
         "type": "grafana-clickhouse-datasource",
         "uid": "P5CECDC4694398594"
       },
-      "description": "This panel shows the cumulative hours that the ecological island has reached its full capacity, rendering it unusable, over a selected period of time.",
+      "description": "This panel shows the cumulative hours that the recycling point has reached its full capacity, rendering it unusable, over a selected period of time.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -479,7 +479,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling_value, 1, NULL)) as next_filling_value,\n           if(next_filling_value == 100 and filling_value == 100, 1, 0) as saturated\n    FROM sensors.ecological_island\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
+          "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling_value, 1, NULL)) as next_filling_value,\n           if(next_filling_value == 100 and filling_value == 100, 1, 0) as saturated\n    FROM sensors.recycling_point\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
           "refId": "A"
         }
       ],
@@ -580,7 +580,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling_value, -1, NULL)) AS previous_filling_value)\nFROM sensors.ecological_island\nwhere filling_value < previous_filling_value\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
+          "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling_value, -1, NULL)) AS previous_filling_value)\nFROM sensors.recycling_point\nwhere filling_value < previous_filling_value\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
           "refId": "A"
         }
       ],
@@ -721,7 +721,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.ecological_island\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+          "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
           "refId": "A"
         }
       ],
@@ -744,14 +744,14 @@
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island\nORDER BY sensor_name",
+        "definition": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
         "hide": 0,
         "includeAll": false,
         "label": "Sensor name",
         "multi": false,
         "name": "sensor_name",
         "options": [],
-        "query": "SELECT DISTINCT sensor_name\nFROM sensors.ecological_island\nORDER BY sensor_name",
+        "query": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -766,8 +766,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Ecological Island",
+  "title": "Recycling Point",
   "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

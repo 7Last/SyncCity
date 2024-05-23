@@ -229,12 +229,12 @@
             },
             "filterData": {
               "id": "byRefId",
-              "options": "Eco island"
+              "options": "Recycling Point"
             },
             "location": {
               "mode": "auto"
             },
-            "name": "Eco Island",
+            "name": "Recycling Point",
             "tooltip": true,
             "type": "markers"
           }
@@ -319,8 +319,8 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'ecological_island'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
-          "refId": "Eco island"
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'recycling_point'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "Recycling Point"
         }
       ],
       "title": "Location",
@@ -643,8 +643,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -780,8 +779,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -872,8 +870,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1009,8 +1006,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1124,8 +1120,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1216,8 +1211,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1299,11 +1293,11 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.ecological_island\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
+          "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.recycling_point\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
           "refId": "A"
         }
       ],
-      "title": "Eco Islands",
+      "title": "Recycling points",
       "type": "table"
     },
     {
@@ -1353,8 +1347,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1368,7 +1361,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Filling % ecological-island-sensor-1"
+              "options": "Filling % recycling-point-sensor-1"
             },
             "properties": [
               {
@@ -1419,7 +1412,7 @@
           },
           "pluginVersion": "4.0.7",
           "queryType": "table",
-          "rawSql": "select avg_filling_value as Filling, date, sensor_name\nfrom sensors.ecological_island_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+          "rawSql": "select avg_filling_value as Filling, date, sensor_name\nfrom sensors.recycling_point_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
           "refId": "A"
         }
       ],
@@ -1435,7 +1428,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -1509,6 +1502,6 @@
   "timezone": "",
   "title": "Raw Data",
   "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

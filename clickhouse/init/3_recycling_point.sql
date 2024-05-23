@@ -1,9 +1,9 @@
-CREATE TABLE sensors.ecological_island_kafka
+CREATE TABLE sensors.recycling_point_kafka
 (
     data String
-) ENGINE = Kafka('redpanda:9092', 'ecological_island', 'ch_group_1', 'JSONAsString');
+) ENGINE = Kafka('redpanda:9092', 'recycling_point', 'ch_group_1', 'JSONAsString');
 
-CREATE TABLE sensors.ecological_island
+CREATE TABLE sensors.recycling_point
 (
     sensor_uuid   UUID,
     sensor_name   String,
@@ -14,16 +14,16 @@ CREATE TABLE sensors.ecological_island
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
 
-CREATE MATERIALIZED VIEW sensors.ecological_island_topic_mv TO sensors.ecological_island as
+CREATE MATERIALIZED VIEW sensors.recycling_point_topic_mv TO sensors.recycling_point as
 SELECT JSONExtractString(data, 'sensor_name')                          AS sensor_name,
        toUUID(JSONExtractString(data, 'sensor_uuid'))                  AS sensor_uuid,
        parseDateTime64BestEffort(JSONExtractString(data, 'timestamp')) AS timestamp,
        JSONExtractFloat(data, 'filling_value')                         AS filling_value,
        JSONExtractFloat(data, 'latitude')                              AS latitude,
        JSONExtractFloat(data, 'longitude')                             AS longitude
-FROM sensors.ecological_island_kafka;
+FROM sensors.recycling_point_kafka;
 
-CREATE TABLE sensors.ecological_island_5m
+CREATE TABLE sensors.recycling_point_5m
 (
     sensor_name         String,
     date                DateTime64,
@@ -32,10 +32,10 @@ CREATE TABLE sensors.ecological_island_5m
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 
-CREATE MATERIALIZED VIEW sensors.ecological_island_5m_mv
-    TO sensors.ecological_island_5m AS
+CREATE MATERIALIZED VIEW sensors.recycling_point_5m_mv
+    TO sensors.recycling_point_5m AS
 SELECT sensor_name,
        toStartOfFiveMinutes(timestamp) AS date,
        avg(filling_value)              AS avg_filling_value
-from sensors.ecological_island
+from sensors.recycling_point
 GROUP BY sensor_name, date;
