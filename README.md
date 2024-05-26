@@ -1,6 +1,5 @@
 # Running locally
 This document provides instructions on how to run the project locally.
-For more documentation on the simulator, refer to the [./simulator/docs](./simulator/docs) folder.
 
 Two profiles are provided in the `docker-compose.yaml` file:
 - `local`: for local test and debug purposes. Runs the Kafka stack in `docker` containers,
