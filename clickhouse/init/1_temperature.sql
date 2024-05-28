@@ -41,23 +41,6 @@ SELECT sensor_name,
 FROM sensors.temperatures
 GROUP BY sensor_name, date;
 
--- Real-time
-CREATE TABLE sensors.temperatures_realtime
-(
-    sensor_name         String,
-    value               Float32,
-    insertion_timestamp DateTime64(6) default now64()
-) ENGINE = MergeTree()
-      ORDER BY (sensor_name);
-
-CREATE MATERIALIZED VIEW sensors.temperatures_realtime_mv
-    TO sensors.temperatures_realtime AS
-SELECT sensor_name,
-       avg(value) AS value
-FROM sensors.temperatures
-WHERE (timestamp >= subtractMinutes(now(), 5) and timestamp <= now())
-GROUP BY sensor_name;
-
 -- Weekly temperatures
 CREATE TABLE sensors.temperatures_weekly
 (
