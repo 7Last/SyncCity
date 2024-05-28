@@ -52,3 +52,4 @@ python3 ./simulator/main.py
 ```bash
 docker-compose --profile release up -d
 ```
+
