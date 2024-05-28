@@ -37,7 +37,7 @@
                 },
                 "pluginVersion": "4.0.7",
                 "queryType": "table",
-                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp \u003e= subtractMinutes(now(), 45) and timestamp \u003c= now()\ngroup by sensor_name",
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp >= subtractMinutes(now(), 45) and timestamp <= now()\ngroup by sensor_name",
                 "refId": "Temperature"
               }
             },
@@ -84,10 +84,14 @@
               }
             }
           ],
+          "dasboardUid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
+          "panelId": 7,
           "noDataState": "NoData",
           "execErrState": "Error",
           "for": "30m",
           "annotations": {
+            "__dashboardUid__": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
+            "__panelId__": "7",
             "description": "",
             "runbook_url": "",
             "summary": "Temperature threshold exceeded"
