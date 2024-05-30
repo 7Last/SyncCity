@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 4,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -155,7 +155,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name,\n       'Recycling Point' as type,\n       latitude,\n       longitude\nFROM sensors.recycling_point\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude",
+                    "rawSql": "SELECT sensor_name,\n       'Recycling Point' as type,\n       latitude,\n       longitude\nFROM sensors.recycling_points\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude",
                     "refId": "Traffic"
                 }
             ],
@@ -246,7 +246,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "avg_filling_value"
+                            "options": "avg_filling"
                         },
                         "properties": [
                             {
@@ -307,7 +307,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "select date, avg_filling_value\nfrom sensors.recycling_point_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.recycling_point_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date;",
+                    "rawSql": "select timestamp, filling\nfrom sensors.recycling_points\nwhere timestamp >= $__fromTime and timestamp <= $__toTime\nand sensor_name = '${sensor_name}'\norder by timestamp;",
                     "refId": "A"
                 }
             ],
@@ -348,7 +348,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "filling_value"
+                            "options": "filling"
                         },
                         "properties": [
                             {
@@ -403,7 +403,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT filling_value\r\nFROM sensors.recycling_point\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
+                    "rawSql": "SELECT filling\r\nFROM sensors.recycling_points\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
                     "refId": "A"
                 }
             ],
@@ -487,7 +487,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling_value, 1, NULL)) as next_filling_value,\n           if(next_filling_value == 100 and filling_value == 100, 1, 0) as saturated\n    FROM sensors.recycling_point\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
+                    "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling, 1, NULL)) as next_filling,\n           if(next_filling == 100 and filling == 100, 1, 0) as saturated\n    FROM sensors.recycling_points\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
                     "refId": "A"
                 }
             ],
@@ -583,7 +583,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling_value, -1, NULL)) AS previous_filling_value)\nFROM sensors.recycling_point\nwhere filling_value < previous_filling_value\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
+                    "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling, -1, NULL)) AS previous_filling)\nFROM sensors.recycling_points\nwhere filling < previous_filling\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
                     "refId": "A"
                 }
             ],
@@ -724,7 +724,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 50 AND filling_value <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling_value\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling_value > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+                    "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling\n    FROM sensors.recycling_points\n    WHERE sensor_name = '${sensor_name}' AND filling <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling\n    FROM sensors.recycling_points\n    WHERE sensor_name = '${sensor_name}' AND filling > 50 AND filling <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling\n    FROM sensors.recycling_points\n    WHERE sensor_name = '${sensor_name}' AND filling > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.recycling_points\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
                     "refId": "A"
                 }
             ],
@@ -739,22 +739,23 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
-                    "text": "campus-ca-foscari",
-                    "value": "campus-ca-foscari"
+                    "isNone": true,
+                    "selected": false,
+                    "text": "None",
+                    "value": ""
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
                     "uid": "P5CECDC4694398594"
                 },
-                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
+                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_points\nORDER BY sensor_name",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Sensor name",
                 "multi": false,
                 "name": "sensor_name",
                 "options": [],
-                "query": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
+                "query": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_points\nORDER BY sensor_name",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
@@ -771,6 +772,6 @@
     "timezone": "",
     "title": "Recycling Point",
     "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 2,
+    "version": 3,
     "weekStart": ""
 }

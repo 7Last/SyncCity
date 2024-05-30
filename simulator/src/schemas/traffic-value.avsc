@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "Traffic",
+  "fields": [
+    {
+      "name": "sensor_uuid",
+      "type": "string"
+    },
+    {
+      "name": "sensor_name",
+      "type": "string"
+    },
+    {
+      "name": "latitude",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "type": "double"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "vehicles",
+      "type": "int"
+    },
+    {
+      "name": "avg_speed",
+      "type": "float"
+    }
+  ]
+}

@@ -27,11 +27,11 @@ select sensor_name,
        longitude
 from sensors.traffic;
 
-create materialized view recycling_point_sensor_mv to sensors
+create materialized view recycling_points_sensor_mv to sensors
 as
 select sensor_name,
-       'recycling_point' as type,
+       'recycling_points' as type,
        timestamp           as last_message,
        latitude,
        longitude
-from sensors.recycling_point;
+from sensors.recycling_points;

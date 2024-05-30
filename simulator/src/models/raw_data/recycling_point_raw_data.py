@@ -7,16 +7,16 @@ from .raw_data import RawData
 
 class RecyclingPointRawData(RawData):
 
-    def __init__(self, *, filling_value: float, latitude: float,
+    def __init__(self, *, filling: float, latitude: float,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now()) -> None:
         """
-        :param filling_value: filling value in percentage
+        :param filling: filling value in percentage
         """
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp)
-        self.filling_value = filling_value
+        self.filling = filling
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.serialize_recycling_point_raw_data(self)
