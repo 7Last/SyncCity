@@ -24,29 +24,28 @@ class SensorConfig:
         points_spacing = config.get('points_spacing')
 
         try:
+            if not config.get('type'):
+                raise Exception('type must not be empty')
             self.type = SensorType.from_str(config.get('type'))
-        except Exception as e:
+        except Exception:
             log.exception(
-                'Invalid points_spacing value. Must be specified following ISO8601',
-                e,
+                'Type must not be empty and must match one of SensorType values',
             )
             raise
 
         try:
             self.points_spacing: timedelta = isodate.parse_duration(points_spacing)
-        except Exception as e:
+        except isodate.isoerror.ISO8601Error:
             log.exception(
                 'Invalid points_spacing value. Must be specified following ISO8601',
-                e,
             )
             raise
 
         try:
             self.generation_delay: timedelta = isodate.parse_duration(generation_delay)
-        except Exception as e:
+        except isodate.isoerror.ISO8601Error:
             log.exception(
                 'Invalid generation_delay value. Must be specified following ISO8601',
-                e,
             )
             raise
 

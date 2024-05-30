@@ -24,3 +24,11 @@ class RecyclingPointRawData(RawData):
     @property
     def topic(self) -> str:
         return "recycling_point"
+
+    def __eq__(self, other: any) -> bool:
+        if not isinstance(other, RecyclingPointRawData):
+            return False
+        return super().__eq__(other) and self.filling == other.filling
+
+    def __hash__(self) -> int:
+        return hash((super().__hash__(), self.filling))
