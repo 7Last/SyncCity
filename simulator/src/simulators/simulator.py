@@ -49,3 +49,30 @@ class Simulator(ABC):
     @abstractmethod
     def stream(self) -> Iterable[RawData]:
         pass
+
+    def __eq__(self, other: any) -> bool:
+        if not isinstance(other, Simulator):
+            return False
+
+        return self.sensor_name == other.sensor_name and \
+            self.sensor_uuid == other.sensor_uuid and \
+            self.frequency == other.frequency and \
+            self.limit == other.limit and \
+            self.latitude == other.latitude and \
+            self.longitude == other.longitude and \
+            self.running == other.running and \
+            self.delay == other.delay and \
+            self.timestamp == other.timestamp
+
+    def __hash__(self) -> int:
+        return hash((
+            self.sensor_name,
+            self.sensor_uuid,
+            self.frequency,
+            self.limit,
+            self.latitude,
+            self.longitude,
+            self.running,
+            self.delay,
+            self.timestamp,
+        ))

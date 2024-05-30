@@ -2,12 +2,13 @@ import concurrent.futures as concurrent
 import logging as log
 import threading
 
-from .kafka_producer import KafkaProducer
+from .producers.producer_strategy import ProducerStrategy
 from .simulators.simulator import Simulator
 
 
 class Runner:
-    def __init__(self, *, simulators: list[Simulator], producer: KafkaProducer) -> None:
+    def __init__(self, *, simulators: list[Simulator], producer: ProducerStrategy)\
+            -> None:
         self._simulators = simulators
         self._producer = producer
 
@@ -24,6 +25,7 @@ class Runner:
 
     def run(self) -> None:
         try:
+            log.debug("Creating thread pool with %d workers", len(self._simulators))
             with concurrent.ThreadPoolExecutor() as executor:
                 executor.map(self._callback, self._simulators)
         except KeyboardInterrupt:
@@ -35,4 +37,4 @@ class Runner:
             log.exception('Error while running simulator', e)
         finally:
             self._producer.close()
-            log.debug('Producer closed, exiting.')
+            log.debug('ProducerStrategy closed, exiting.')

@@ -319,7 +319,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'recycling_point'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'recycling_points'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
                     "refId": "Recycling Point"
                 }
             ],
@@ -1241,7 +1241,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "filling_value"
+                            "options": "filling"
                         },
                         "properties": [
                             {
@@ -1297,7 +1297,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name, filling_value, timestamp\nFROM sensors.recycling_point\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
+                    "rawSql": "SELECT sensor_name, filling, timestamp\nFROM sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
                     "refId": "A"
                 }
             ],
@@ -1416,7 +1416,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "select avg_filling_value as Filling, date, sensor_name\nfrom sensors.recycling_point_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+                    "rawSql": "select avg_filling as Filling, date, sensor_name\nfrom sensors.recycling_points_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
                     "refId": "A"
                 }
             ],

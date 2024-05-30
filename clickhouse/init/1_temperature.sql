@@ -1,8 +1,3 @@
-CREATE TABLE sensors.temperature_kafka
-(
-    data String
-) ENGINE = Kafka('redpanda:9092', 'temperature', 'ch_group_1', 'JSONAsString');
-
 CREATE TABLE sensors.temperatures
 (
     sensor_uuid UUID,
@@ -13,15 +8,6 @@ CREATE TABLE sensors.temperatures
     longitude   Float64
 ) ENGINE = MergeTree()
       ORDER BY (sensor_uuid, timestamp);
-
-CREATE MATERIALIZED VIEW sensors.temperature_topic_mv TO sensors.temperatures as
-SELECT JSONExtractString(data, 'sensor_name')                             AS sensor_name,
-       toUUID(JSONExtractString(data, 'sensor_uuid'))                     AS sensor_uuid,
-       parseDateTime64BestEffort(JSONExtractString(data, 'timestamp')) AS timestamp,
-       JSONExtractFloat(data, 'value')                                    AS value,
-       JSONExtractFloat(data, 'latitude')                                 AS latitude,
-       JSONExtractFloat(data, 'longitude')                                AS longitude
-FROM sensors.temperature_kafka;
 
 -- 5m averages
 CREATE TABLE sensors.temperatures_5m

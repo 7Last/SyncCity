@@ -35,10 +35,10 @@ class RecyclingPointSimulator(Simulator):
 
     def stream(self) -> Iterable[RecyclingPointRawData]:
         while self.limit != 0 and self.running:
-            self.last_value = self._filling_value()
+            self.last_value = self._filling()
 
             yield RecyclingPointRawData(
-                filling_value=self.last_value,
+                filling=self.last_value,
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,
@@ -57,7 +57,7 @@ class RecyclingPointSimulator(Simulator):
         fill_rate_per_second = fill_rate_per_hour / 3600
         self.fill_rate = fill_rate_per_second * time_passed.total_seconds()
 
-    def _filling_value(self) -> float:
+    def _filling(self) -> float:
         # update fill rate
         self._calculate_fill_rate()
 

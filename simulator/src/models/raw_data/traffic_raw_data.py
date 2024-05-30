@@ -26,3 +26,13 @@ class TrafficRawData(RawData):
     @property
     def topic(self) -> str:
         return "traffic"
+
+    def __eq__(self, other: any) -> bool:
+        if not isinstance(other, TrafficRawData):
+            return False
+        return (super().__eq__(other) and
+                self.vehicles == other.vehicles and
+                self.avg_speed == other.avg_speed)
+
+    def __hash__(self) -> int:
+        return hash((super().__hash__(), self.vehicles, self.avg_speed))
