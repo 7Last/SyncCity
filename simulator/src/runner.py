@@ -7,7 +7,8 @@ from .simulators.simulator import Simulator
 
 
 class Runner:
-    def __init__(self, *, simulators: list[Simulator], producer: ProducerStrategy) -> None:
+    def __init__(self, *, simulators: list[Simulator], producer: ProducerStrategy)\
+            -> None:
         self._simulators = simulators
         self._producer = producer
 

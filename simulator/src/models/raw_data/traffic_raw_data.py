@@ -33,3 +33,6 @@ class TrafficRawData(RawData):
         return (super().__eq__(other) and
                 self.vehicles == other.vehicles and
                 self.avg_speed == other.avg_speed)
+
+    def __hash__(self) -> int:
+        return hash((super().__hash__(), self.vehicles, self.avg_speed))

@@ -16,4 +16,5 @@ class TestSensorType(unittest.TestCase):
     def test_from_str(self) -> None:
         self.assertEqual(SensorType.from_str("temperature"), SensorType.TEMPERATURE)
         self.assertEqual(SensorType.from_str("TRAFFIC"), SensorType.TRAFFIC)
-        self.assertEqual(SensorType.from_str("recycling_point"), SensorType.RECYCLING_POINT)
+        self.assertEqual(SensorType.from_str("recycling_point"),
+                         SensorType.RECYCLING_POINT)
