@@ -500,7 +500,7 @@
                 "type": "grafana-clickhouse-datasource",
                 "uid": "P5CECDC4694398594"
             },
-            "description": "Average percentage of filling at the moment of discharge. A low percentage indicates that, on average, the eco-island is emptied too often and viceversa.",
+            "description": "Index from 0 to 10 which represent how efficient is the discharge of the selected recycling point. The longer the recycling point stays full without being emptied, the lower the index is and viceversa.",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -518,24 +518,30 @@
                             "type": "special"
                         }
                     ],
+                    "max": 10,
+                    "min": 0,
                     "thresholds": {
-                        "mode": "absolute",
+                        "mode": "percentage",
                         "steps": [
                             {
                                 "color": "red",
                                 "value": null
                             },
                             {
-                                "color": "#EAB839",
+                                "color": "dark-orange",
+                                "value": 25
+                            },
+                            {
+                                "color": "yellow",
                                 "value": 50
                             },
                             {
                                 "color": "green",
-                                "value": 85
+                                "value": 75
                             }
                         ]
                     },
-                    "unit": "percent",
+                    "unit": "none",
                     "unitScale": true
                 },
                 "overrides": []
@@ -552,9 +558,7 @@
                 "minVizWidth": 75,
                 "orientation": "auto",
                 "reduceOptions": {
-                    "calcs": [
-                        "lastNotNull"
-                    ],
+                    "calcs": [],
                     "fields": "",
                     "values": false
                 },
@@ -581,13 +585,46 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL,\n          neighbor(filling, -1, NULL)) AS previous_filling)\nFROM sensors.recycling_points\nwhere filling < previous_filling\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
-                    "refId": "A"
+                    "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL, neighbor(filling, -1, NULL)) AS previous_filling) as avg_filling\nFROM sensors.recycling_points\nwhere filling < previous_filling\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
+                    "refId": "Avg filling on discharge"
                 }
             ],
-            "title": "Avg. filling % on discharge (efficiency)",
+            "title": "Discharge Efficiency Index (DEI)",
+            "transformations": [
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "efficiency",
+                        "binary": {
+                            "left": "avg_filling",
+                            "operator": "/",
+                            "right": "10"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true
+                    }
+                },
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "efficiency_index",
+                        "mode": "unary",
+                        "reduce": {
+                            "reducer": "sum"
+                        },
+                        "replaceFields": true,
+                        "unary": {
+                            "fieldName": "efficiency",
+                            "operator": "floor"
+                        }
+                    }
+                }
+            ],
             "type": "gauge"
         },
         {
@@ -739,10 +776,9 @@
         "list": [
             {
                 "current": {
-                    "isNone": true,
-                    "selected": false,
-                    "text": "None",
-                    "value": ""
+                    "selected": true,
+                    "text": "unipd-beato-pellegrino",
+                    "value": "unipd-beato-pellegrino"
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
@@ -772,6 +808,6 @@
     "timezone": "",
     "title": "Recycling Point",
     "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 3,
+    "version": 4,
     "weekStart": ""
 }

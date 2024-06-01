@@ -874,7 +874,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1010,7 +1011,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1124,7 +1126,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1215,7 +1218,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1351,7 +1355,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1414,9 +1419,9 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "select avg_filling as Filling, date, sensor_name\nfrom sensors.recycling_points_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+                    "rawSql": "select filling as Filling, timestamp, sensor_name\nfrom sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
                     "refId": "A"
                 }
             ],
@@ -1506,6 +1511,6 @@
     "timezone": "",
     "title": "Raw Data",
     "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-    "version": 12,
+    "version": 1,
     "weekStart": ""
 }
