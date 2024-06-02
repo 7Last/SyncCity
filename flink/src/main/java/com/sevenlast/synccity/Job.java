@@ -1,40 +1,19 @@
 package com.sevenlast.synccity;
 
-import com.twitter.chill.java.UnmodifiableCollectionSerializer;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.generic.GenericRecordBuilder;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.AggregateFunction;
-import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.connector.base.DeliveryGuarantee;
-import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
-import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
-import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroSerializationSchema;
-import org.apache.flink.streaming.api.TimeCharacteristic;
-import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
-import org.apache.flink.streaming.api.windowing.assigners.TumblingProcessingTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.api.windowing.triggers.ContinuousProcessingTimeTrigger;
-import org.apache.flink.streaming.api.windowing.triggers.EventTimeTrigger;
-import org.apache.flink.streaming.api.windowing.triggers.ProcessingTimeTrigger;
-import org.apache.flink.streaming.util.serialization.KeyedSerializationSchema;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,9 +25,6 @@ public class Job {
         var schemaRegistryUrl = "http://localhost:18081";
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
-        Class<?> unmodColl = Class.forName("java.util.Collections$UnmodifiableCollection");
-        env.getConfig().addDefaultKryoSerializer(unmodColl, UnmodifiableCollectionSerializer.class);
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
 
         var client = new CachedSchemaRegistryClient(schemaRegistryUrl, 20);
@@ -77,16 +53,17 @@ public class Job {
         var metadataOut = client.getLatestSchemaMetadata("temperature-out-value");
         var schemaOut = new Schema.Parser().parse(metadataOut.getSchema());
 
-        var serializer = ConfluentRegistryAvroSerializationSchema.forGeneric(
-                "temperature-out-value",
-                schemaOut,
-                schemaRegistryUrl
-        );
+//        var serializer = ConfluentRegistryAvroSerializationSchema.forGeneric(
+//                "temperature-out-value",
+//                schemaOut,
+//                schemaRegistryUrl
+//        );
 
         var aggregatedStream = sourceStream
                 .keyBy(record -> record.get("sensor_name"))
-                .window(TumblingEventTimeWindows.of(Time.minutes(1)))
-                .trigger(EventTimeTrigger.create())
+                .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+//                .trigger(ContinuousProcessingTimeTrigger.of(Time.minutes(1)))
+//                .evictor(TimeEvictor.of(Time.minutes(1)))
                 .aggregate(new Average(schemaOut));
 
 //        var sink = KafkaSink.<GenericRecord>builder()
@@ -161,13 +138,11 @@ public class Job {
                 acc.sensorName = record.get("sensor_name").toString();
             }
 
-            if (acc.timestamp == null) {
-                // Assuming the record has a field "timestamp" with the event timestamp
-                var recordTimestamp = record.get("timestamp").toString();
-                var zonedDateTime = ZonedDateTime.parse(recordTimestamp);
-                var windowStart = zonedDateTime.withSecond(0).withNano(0);
-                acc.timestamp = windowStart;
-            }
+            // Assuming the record has a field "timestamp" with the event timestamp
+            var recordTimestamp = record.get("timestamp").toString();
+            var zonedDateTime = ZonedDateTime.parse(recordTimestamp);
+            var windowStart = zonedDateTime.withSecond(0).withNano(0);
+            acc.timestamp = windowStart;
             var value = (Float) record.get("value");
             acc.sum += value;
             acc.count++;
