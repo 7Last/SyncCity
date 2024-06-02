@@ -1,70 +1,40 @@
 package com.sevenlast.synccity;
 
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
-import org.apache.flink.formats.avro.registry.confluent.ConfluentSchemaRegistryCoder;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 
 import java.util.Properties;
-import java.util.UUID;
 
 public class Job {
     public static void main(String[] args) throws Exception {
         var kafkaBroker = "localhost:19092";
+        var topic = "temperature";
+        var schemaRegistryUrl = "http://localhost:18081";
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-        var kafkaProps = new Properties();
-        kafkaProps.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBroker);
-        kafkaProps.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumer_test");
+        var props = new Properties();
+        props.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBroker);
+        props.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "consumer_test");
 
-        var topic = "temperature";
+        var client = new CachedSchemaRegistryClient(schemaRegistryUrl, 20);
+        var metadata = client.getLatestSchemaMetadata(topic + "-value");
+        var schemaParser = new Schema.Parser();
 
-        // create schema from string
-        var schema = Schema.parse("{\n" +
-                "    \"type\": \"record\",\n" +
-                "    \"name\": \"Temperature\",\n" +
-                "    \"fields\": [\n" +
-                "        {\n" +
-                "            \"name\": \"sensor_uuid\",\n" +
-                "            \"type\": \"string\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\": \"sensor_name\",\n" +
-                "            \"type\": \"string\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\": \"latitude\",\n" +
-                "            \"type\": \"double\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\": \"longitude\",\n" +
-                "            \"type\": \"double\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\": \"timestamp\",\n" +
-                "            \"type\": \"string\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"name\": \"value\",\n" +
-                "            \"type\": \"float\"\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}");
-
-        var deserializer = ConfluentRegistryAvroDeserializationSchema.forGeneric(schema, "http://localhost:18081");
+        var deserializer = ConfluentRegistryAvroDeserializationSchema.forGeneric(
+                schemaParser.parse(metadata.getSchema()), schemaRegistryUrl);
 
         var kafkaConsumer = KafkaSource.<GenericRecord>builder()
                 .setBootstrapServers(kafkaBroker)
                 .setTopics(topic)
                 .setGroupId("consumer_test")
-                .setProperties(kafkaProps)
+                .setProperties(props)
                 .setValueOnlyDeserializer(deserializer)
                 .build();
 
