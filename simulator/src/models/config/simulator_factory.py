@@ -2,6 +2,7 @@ from typing import Iterable, Dict
 
 from .sensor_config import SensorConfig
 from ..sensor_type import SensorType
+from ...simulators.air_quality_simulator import AirQualitySimulator
 from ...simulators.simulator import Simulator
 from ...simulators.temperature_simulator import TemperatureSimulator
 from ...simulators.traffic_simulator import TrafficSimulator
@@ -46,6 +47,17 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
             )
         case SensorType.RECYCLING_POINT:
             return RecyclingPointSimulator(
+                sensor_name=sensor_name,
+                sensor_uuid=config.uuid,
+                generation_delay=config.generation_delay,
+                points_spacing=config.points_spacing,
+                latitude=config.latitude,
+                longitude=config.longitude,
+                begin_date=config.begin_date,
+                limit=config.limit,
+            )
+        case SensorType.AIR_QUALITY:
+            return AirQualitySimulator(
                 sensor_name=sensor_name,
                 sensor_uuid=config.uuid,
                 generation_delay=config.generation_delay,

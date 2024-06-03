@@ -111,6 +111,6 @@ docstring-code-format = true
 docstring-code-line-length = "dynamic"
 
 [lint.pylint]
-max-args = 10
+max-args = 11
 max-positional-args = 3
 max-returns = 4
