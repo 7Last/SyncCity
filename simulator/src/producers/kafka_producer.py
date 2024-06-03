@@ -21,6 +21,7 @@ class KafkaProducer(ProducerStrategy):
     def produce(self, data: RawData) -> None:
         serialized = self._serializer.serialize(data)
         log.info(f'Producing data to topic {data.topic}: {data}')
+        # TODO: send the timestamp and callback
         self._producer.send(data.topic, value=serialized)
         self._producer.flush()
 
