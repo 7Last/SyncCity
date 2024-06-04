@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 3,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -44,7 +44,7 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "thresholds"
+                        "mode": "fixed"
                     },
                     "custom": {
                         "hideFrom": {
@@ -60,10 +60,6 @@
                             {
                                 "color": "green",
                                 "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
                             }
                         ]
                     },
@@ -237,6 +233,53 @@
                         "name": "Recycling Point",
                         "tooltip": true,
                         "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "purple"
+                                },
+                                "opacity": 0.4,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Air Quality"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Air Quality",
+                        "tooltip": true,
+                        "type": "markers"
                     }
                 ],
                 "tooltip": {
@@ -317,10 +360,33 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
                     "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'recycling_points'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
                     "refId": "Recycling Point"
+                },
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "hide": false,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'air_quality'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+                    "refId": "Air Quality"
                 }
             ],
             "title": "Location",
@@ -874,7 +940,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1010,7 +1077,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1124,7 +1192,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1215,7 +1284,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1351,7 +1421,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             },
                             {
                                 "color": "red",
@@ -1414,9 +1485,9 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "select avg_filling as Filling, date, sensor_name\nfrom sensors.recycling_points_5m\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+                    "rawSql": "select filling as Filling, timestamp, sensor_name\nfrom sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
                     "refId": "A"
                 }
             ],
@@ -1430,9 +1501,213 @@
                 }
             ],
             "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": true,
+                        "inspect": false,
+                        "minWidth": 100
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "sensor_name"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Sensor"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Sensor"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 223
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "pm25"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 100
+                            },
+                            {
+                                "id": "unit",
+                                "value": "conμgm3"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "pm10"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 100
+                            },
+                            {
+                                "id": "unit",
+                                "value": "conμgm3"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "no2"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 100
+                            },
+                            {
+                                "id": "unit",
+                                "value": "conμgm3"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "timestamp"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 200
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "o3"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 100
+                            },
+                            {
+                                "id": "unit",
+                                "value": "conμgm3"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "so2"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width",
+                                "value": 100
+                            },
+                            {
+                                "id": "unit",
+                                "value": "conμgm3"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 12,
+                "x": 0,
+                "y": 67
+            },
+            "id": 18,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "SELECT sensor_name, timestamp, pm25, pm10, no2, o3, so2\nFROM sensors.air_quality\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
+                    "refId": "A"
+                }
+            ],
+            "title": "Air quality",
+            "type": "table"
         }
     ],
-    "refresh": "15s",
+    "refresh": "5s",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -1442,10 +1717,10 @@
                 "current": {
                     "selected": true,
                     "text": [
-                        "All"
+                        "air_quality"
                     ],
                     "value": [
-                        "$__all"
+                        "air_quality"
                     ]
                 },
                 "datasource": {
@@ -1499,13 +1774,13 @@
         ]
     },
     "time": {
-        "from": "now-24h",
+        "from": "now-5m",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Raw Data",
     "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-    "version": 12,
+    "version": 3,
     "weekStart": ""
 }

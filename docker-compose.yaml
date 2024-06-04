@@ -175,3 +175,49 @@ services:
     networks:
       - redpanda_network
     profiles: ["local", "release"]
+
+  flink-jobmanager:
+    image: flink:1.18.1-java17
+      # add job jar with arguments
+    # command: standalone-job --job-classname com.sevenlast.synccity.Job --job-jar /opt/flink/jars/flink-job.jar "redpanda:9092" "sensors"
+    command: jobmanager
+    container_name: jobmanager
+    ports:
+      - "9001:8081" 
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        jobmanager.rpc.port: 6123
+        jobmanager.heap.size: 1024m
+        taskmanager.heap.size: 1024m
+        parallelism.default: 1
+        # set web ui port
+    volumes:
+      - type: bind
+        source: ./flink-job.jar
+        target: /opt/flink/jars/flink-job.jar
+    networks:
+      - redpanda_network
+
+  flink-taskmanager:
+    image: flink:1.18.1-java17
+    command: taskmanager
+    container_name: taskmanager
+    ports:
+      - "6121:6121"
+    depends_on:
+      - flink-jobmanager
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      FLINK_TM_NUMBER_OF_TASK_SLOTS: 1  # Adjust as needed
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: flink-jobmanager
+        jobmanager.rpc.port: 6123
+        taskmanager.heap.size: 1024m
+    volumes:
+      - type: bind
+        source: ./flink-job.jar
+        target: /opt/flink/jars/flink-job.jar
+    networks:
+      - redpanda_network
