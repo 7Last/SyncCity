@@ -9,41 +9,48 @@ import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.json.JsonDeserializationSchema;
-import org.apache.flink.formats.json.JsonSerializationSchema;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class Job {
     public static void main(String[] args) throws Exception {
-        String broker = args[0];
-        String topic = args[1];
-//        String broker = "localhost:19092";
-//        String topic = "sensors";
+
+        var appEnv = System.getProperty("app.env", "local");
+        var configLoader = new ConfigLoader(appEnv);
+
+        var broker = configLoader.getProperty("kafka.bootstrap.servers");
+        var topic = configLoader.getProperty("flink.source.topic");
+        var groupId = configLoader.getProperty("kafka.group.id");
+        var sourceName = configLoader.getProperty("flink.source.name");
+        var sinkTopic = configLoader.getProperty("flink.sink.topic");
+        var jobName = configLoader.getProperty("flink.job.name");
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
-        env.getConfig().setAutoWatermarkInterval(1000L);
+        long watermarkInterval = Long.parseLong(configLoader.getProperty("flink.watermark-interval"));
+        env.getConfig().setAutoWatermarkInterval(watermarkInterval);
 
         JsonDeserializationSchema<SensorData> jsonFormat = new JsonDeserializationSchema<>(SensorData.class);
         var source = KafkaSource.<SensorData>builder()
                 .setStartingOffsets(OffsetsInitializer.latest())
                 .setBootstrapServers(broker)
                 .setTopics(topic)
-                .setGroupId("consumer_test")
+                .setGroupId(groupId)
                 .setValueOnlyDeserializer(jsonFormat)
                 .build();
 
         var watermark = WatermarkStrategy.<SensorData>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> event.datetime.toInstant(ZoneOffset.UTC).toEpochMilli());
 
-        var aggregated = env.fromSource(source, watermark, "Kafka Source")
+        var aggregated = env.fromSource(source, watermark, sourceName)
                 .keyBy(data -> data.name)
                 .window(TumblingEventTimeWindows.of(Time.minutes(10)))
                 .aggregate(new Average())
@@ -52,14 +59,14 @@ public class Job {
         var sink = KafkaSink.<String>builder()
                 .setBootstrapServers(broker)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-                        .setTopic("aggregated")
+                        .setTopic(sinkTopic)
                         .setValueSerializationSchema(new SimpleStringSchema())
                         .build()
                 )
                 .build();
 
         aggregated.sinkTo(sink);
-        env.execute("Kafka Consumer Example");
+        env.execute(jobName);
     }
 
     public static class SensorData {
