@@ -48,8 +48,8 @@ class RecyclingPointSimulator(Simulator):
 
             if self.limit is not None:
                 self.limit -= 1
-            self.timestamp += self.frequency
-            self._event.wait(self.delay.total_seconds())
+            self.timestamp += self.points_spacing
+            self._event.wait(self.generation_delay.total_seconds())
 
     def _calculate_fill_rate(self) -> None:
         time_passed = self.timestamp - self.prev_timestamp
@@ -90,6 +90,8 @@ class RecyclingPointSimulator(Simulator):
 
         return new_value
 
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__} {self.__dict__}'
 
 def _generate_emptying_hours() -> List[Tuple[int, int]]:
     # Possible emptying schedules with hours between 4 AM and 8 AM

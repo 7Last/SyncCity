@@ -12,7 +12,7 @@ class TestSensorConfig(unittest.TestCase):
         config = SensorConfig({
             "uuid": "00000000-0000-0000-0000-000000000000",
             "limit": 10,
-            "begin_date": "2024-01-01T00:00:00",
+            "begin_date": datetime(2024, 1, 1, 0, 0, 0),
             "latitude": 0.0,
             "longitude": 0.0,
             "type": "TRAFFIC",
