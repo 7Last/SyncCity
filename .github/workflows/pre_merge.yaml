@@ -33,3 +33,11 @@ jobs:
         run: |
           python3 -m pip install coverage
           coverage run --source="./simulator/src" -m unittest discover -s ./simulator/test -v
+          coverage xml
+
+      - name: Get Cover 
+          uses: orgoro/coverage@v3.1
+          with:
+            coverageFile: ./coverage.xml
+            token: ${{ secrets.TOKEN }}
+            thresholdAll: 0.8
