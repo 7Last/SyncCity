@@ -10,9 +10,6 @@ on:
 jobs:
   python_lints:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./simulator
     steps:
       - uses: actions/checkout@v4
 
