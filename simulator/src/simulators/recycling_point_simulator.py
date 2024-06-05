@@ -93,6 +93,7 @@ class RecyclingPointSimulator(Simulator):
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
 
+
 def _generate_emptying_hours() -> List[Tuple[int, int]]:
     # Possible emptying schedules with hours between 4 AM and 8 AM
     def random_hour() -> int:
