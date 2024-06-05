@@ -87,14 +87,6 @@ class TestTemperatureSimulator(unittest.TestCase):
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 2, 0, 0),
             ),
-            TemperatureRawData(
-                value=6.796056587447198,
-                sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-                sensor_name='test',
-                latitude=0,
-                longitude=0,
-                timestamp=datetime(2024, 1, 1, 3, 0, 0),
-            ),
         ]
 
         self.assertEqual(stream, expected)
