@@ -24,7 +24,7 @@ class TemperatureRawData(RawData):
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, TemperatureRawData):
             return False
-        return super().__eq__(other) and self.value == other.value
+        return self.value == other.value and super().__eq__(other)
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.value))
+        return hash((self.value, super().__hash__()))

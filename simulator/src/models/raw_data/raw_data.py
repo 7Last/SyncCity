@@ -29,13 +29,20 @@ class RawData(ABC):
     def subject(self) -> str:
         return f'{self.topic}-value'
 
-    def __eq__(self, other: 'RawData') -> bool:
-        return (self.sensor_name == other.sensor_name and
-                self.latitude == other.latitude
-                and self.longitude == other.longitude
-                and self.sensor_uuid == other.sensor_uuid
-                and self.timestamp == other.timestamp)
+    def __eq__(self, other: any) -> bool:
+        if not isinstance(other, RawData):
+            return False
+        return self.sensor_name == other.sensor_name and \
+            self.latitude == other.latitude and \
+            self.longitude == other.longitude and \
+            self.sensor_uuid == other.sensor_uuid and \
+            self.timestamp == other.timestamp
 
     def __hash__(self) -> int:
-        return hash((self.sensor_name, self.latitude, self.longitude,
-                     self.sensor_uuid, self.timestamp))
+        return hash((
+            self.sensor_name,
+            self.latitude,
+            self.longitude,
+            self.sensor_uuid,
+            self.timestamp,
+        ))

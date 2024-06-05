@@ -16,7 +16,7 @@ class SensorConfig:
         """
         self.uuid = UUID(config.get('uuid'))
         self.limit = config.get('limit') or None
-        self.begin_date = config.get('begin_date') or None
+        self.begin_date = isodate.parse_datetime(config.get('begin_date')) or None
         self.latitude = config.get('latitude')
         self.longitude = config.get('longitude')
 
