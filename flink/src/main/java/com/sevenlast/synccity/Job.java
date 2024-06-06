@@ -3,6 +3,7 @@ package com.sevenlast.synccity;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -48,8 +49,8 @@ public class Job {
         var aggregated = env.fromSource(source, watermark, sourceName)
                 .keyBy(SensorData::getName)
                 .window(TumblingEventTimeWindows.of(Time.minutes(10)))
-                .aggregate(new Average.Aggregator())
-                .map(Average.Result::toString);
+                .apply(new AverageWindowFunction())
+                .map(Tuple3::toString);
 
         var sink = KafkaSink.<String>builder()
                 .setBootstrapServers(broker)
