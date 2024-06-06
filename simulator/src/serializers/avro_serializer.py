@@ -1,8 +1,8 @@
 import io
 import json
+import logging as log
 import os
 from typing import Dict
-import logging as log
 
 import requests
 from avro.io import DatumWriter, BinaryEncoder
@@ -40,6 +40,7 @@ class AvroSerializer(SerializerStrategy):
     def _schema_bytes_identifier(schema_id: int) -> bytes:
         magic_byte = bytearray([0])
         return magic_byte + schema_id.to_bytes(4, 'big')
+
 
 def _create_all_schemas(schema_registry_url: str, path: str) -> (
         Dict)[str, tuple[int, Schema]]:
