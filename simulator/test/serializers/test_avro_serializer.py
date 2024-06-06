@@ -25,9 +25,10 @@ class TestAvroSerializer(unittest.TestCase):
         clear=True,
     )
     def test_load_avro_schema_missing_schema_path(self) -> None:
-        with self.assertRaisesRegex(Exception,
-                                    "SCHEMAS_PATH environment variable must be set",
-                                    ):
+        with self.assertRaisesRegex(
+                Exception,
+                "SCHEMAS_PATH environment variable must be set",
+        ):
             AvroSerializer()
 
     @unittest.skip  # TODO: implement when overwriting schemas is removed
