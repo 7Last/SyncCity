@@ -6,7 +6,6 @@ from uuid import UUID
 
 from avro.schema import parse
 
-from simulator.src.models.raw_data.raw_data import RawData
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
 from simulator.src.serializers.avro_serializer import AvroSerializer
 
@@ -102,4 +101,3 @@ class TestAvroSerializer(unittest.TestCase):
         raw_bytes = b'H123e4567-e89b-12d3-a456-426614174000\x16sensor_name\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0022023-12-31T23:00:00+00:00\x00\x00\x00\x00'  # noqa: E501
         expected = magic_byte + schema_id_bytes + raw_bytes
         self.assertEqual(serialized, expected)
-
