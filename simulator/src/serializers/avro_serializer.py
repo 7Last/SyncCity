@@ -25,7 +25,7 @@ class AvroSerializer(SerializerStrategy):
 
         # TODO: optimize to avoid creating objects every time
         # avro encode the json data
-        schema_id, schema = self._schemas_by_subject[data.subject]
+        schema_id, schema = self._schemas_by_subject[data.subject()]
         writer = DatumWriter(schema)
         bytes_writer = io.BytesIO()
         encoder = BinaryEncoder(bytes_writer)

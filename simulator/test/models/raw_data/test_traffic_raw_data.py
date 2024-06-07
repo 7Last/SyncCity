@@ -34,4 +34,4 @@ class TestTrafficRawData(unittest.TestCase):
             avg_speed=0,
         )
 
-        self.assertEqual(data.subject, "traffic-value")
+        self.assertEqual(data.subject(), "traffic-value")

@@ -25,7 +25,6 @@ class RawData(ABC):
     def topic(self) -> str:
         pass
 
-    @property
     def subject(self) -> str:
         return f'{self.topic}-value'
 

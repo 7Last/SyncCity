@@ -32,4 +32,4 @@ class TestRecyclingPointRawData(unittest.TestCase):
             filling=0,
         )
 
-        self.assertEqual(data.subject, "recycling_point-value")
+        self.assertEqual(data.subject(), "recycling_point-value")
