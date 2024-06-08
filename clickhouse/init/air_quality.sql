@@ -1,6 +1,7 @@
 CREATE TABLE sensors.air_quality
 (
     sensor_uuid UUID,
+    sensor_name String,
     timestamp   DateTime64,
     latitude    Float64,
     longitude   Float64,
