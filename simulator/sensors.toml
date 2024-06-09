@@ -89,15 +89,6 @@ begin_date = 2024-05-29T08:00:00
 latitude = 45.5458673
 longitude = 11.5484712
 
-[sensors.bologna-giardini-margherita]
-uuid = "44d1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT24H" # 24 hours
-generation_delay = "PT0.01S" # 0.5 seconds
-begin_date = 2023-01-01T00:00:00
-latitude = 44.483628
-longitude = 11.355035
-
 [sensors.cadoneghe]
 uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
 type = "air_quality"
@@ -129,3 +120,11 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.4249376
 longitude = 11.7714498
+
+[sensors.unipd-tito-livio]
+uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4034159
+longitude = 11.8756551
