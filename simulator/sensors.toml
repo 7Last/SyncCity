@@ -88,3 +88,43 @@ generation_delay = "PT1S" # 1 second
 begin_date = 2024-05-29T08:00:00
 latitude = 45.5458673
 longitude = 11.5484712
+
+[sensors.cadoneghe]
+uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4490747
+longitude = 11.9038461
+
+[sensors.abano-terme-centro]
+uuid = "4fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.3591562
+longitude = 11.7510624
+
+[sensors.legnaro]
+uuid = "5ed1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.3378992
+longitude = 11.9248366
+
+[sensors.rubano]
+uuid = "6fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4249376
+longitude = 11.7714498
+
+[sensors.unipd-tito-livio]
+uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4034159
+longitude = 11.8756551

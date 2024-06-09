@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "name": "AirQuality",
+  "fields": [
+    {
+      "name": "sensor_uuid",
+      "type": "string"
+    },
+    {
+      "name": "sensor_name",
+      "type": "string"
+    },
+    {
+      "name": "latitude",
+      "type": "double"
+    },
+    {
+      "name": "longitude",
+      "type": "double"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "pm25",
+      "type": [
+        "null",
+        "float"
+      ]
+    },
+    {
+      "name": "pm10",
+      "type": [
+        "null",
+        "float"
+      ]
+    },
+    {
+      "name": "so2",
+      "type": [
+        "null",
+        "float"
+      ]
+    },
+    {
+      "name": "no2",
+      "type": [
+        "null",
+        "float"
+      ]
+    },
+    {
+      "name": "o3",
+      "type": [
+        "null",
+        "float"
+      ]
+    }
+  ]
+}
