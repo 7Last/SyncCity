@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 4,
+    "id": 6,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -178,6 +178,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "geomap"
         },
         {
@@ -312,6 +313,7 @@
                 }
             ],
             "title": "History of filling and discharge",
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -408,6 +410,7 @@
                 }
             ],
             "title": "Real time filling",
+            "transparent": true,
             "type": "stat"
         },
         {
@@ -493,6 +496,7 @@
             ],
             "title": "Total saturation",
             "transformations": [],
+            "transparent": true,
             "type": "gauge"
         },
         {
@@ -625,6 +629,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "gauge"
         },
         {
@@ -766,6 +771,7 @@
                 }
             ],
             "title": "Filling level percentages by range",
+            "transparent": true,
             "type": "barchart"
         }
     ],
@@ -776,7 +782,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "unipd-beato-pellegrino",
                     "value": "unipd-beato-pellegrino"
                 },
@@ -808,6 +814,6 @@
     "timezone": "",
     "title": "Recycling Point",
     "uid": "c5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-    "version": 4,
+    "version": 2,
     "weekStart": ""
 }

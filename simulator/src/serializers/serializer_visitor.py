@@ -1,6 +1,6 @@
-from datetime import UTC
 from typing import Dict
 
+from ..models.raw_data.air_quality_raw_data import AirQualityRawData
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from ..models.raw_data.raw_data import RawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
@@ -16,7 +16,7 @@ class SerializerVisitor:
             "sensor_uuid": str(raw_data.sensor_uuid),
             "latitude": raw_data.latitude,
             "longitude": raw_data.longitude,
-            "timestamp": raw_data.timestamp.astimezone(tz=UTC).isoformat(),
+            "timestamp": raw_data.timestamp.isoformat(),
         }
 
     @staticmethod
@@ -31,6 +31,17 @@ class SerializerVisitor:
         return {
             "vehicles": raw_data.vehicles,
             "avg_speed": raw_data.avg_speed,
+            **(SerializerVisitor._serialize_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def serialize_air_quality_raw_data(raw_data: AirQualityRawData) -> Dict:
+        return {
+            "pm25": raw_data.pm25,
+            "pm10": raw_data.pm10,
+            "no2": raw_data.no2,
+            "o3": raw_data.o3,
+            "so2": raw_data.so2,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
 
