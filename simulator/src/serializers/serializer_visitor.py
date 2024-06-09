@@ -1,4 +1,3 @@
-from datetime import UTC
 from typing import Dict
 
 from ..models.raw_data.air_quality_raw_data import AirQualityRawData
