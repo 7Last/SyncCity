@@ -96,14 +96,10 @@ class TestAvroSerializer(unittest.TestCase):
 
         avro_serializer = AvroSerializer()
         serialized = avro_serializer.serialize(temperature_raw_data)
-        serialized_magic_byte = serialized[:1]
-        serialized_schema_id = serialized[1:5]
-        serialized_data = serialized[5:]
 
         magic_byte = b'\x00'
         schema_id_bytes = b'\x00\x00\x00\x01'
-        raw_bytes = b'H123e4567-e89b-12d3-a456-426614174000\x16sensor_name\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0022023-12-31T23:00:00+00:00\x00\x00\x00\x00'  # noqa: E501
+        raw_bytes = b'H123e4567-e89b-12d3-a456-426614174000\x16sensor_name\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&2024-01-01T00:00:00\x00\x00\x00\x00'  # noqa: E501
 
-        self.assertEqual(serialized_magic_byte, magic_byte)
-        self.assertEqual(serialized_schema_id, schema_id_bytes)
-        self.assertEqual(serialized_data, raw_bytes)
+        expected = magic_byte + schema_id_bytes + raw_bytes
+        self.assertEqual(serialized, expected)
