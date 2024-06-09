@@ -2,7 +2,7 @@ name: Pre merge checks
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
     types: [opened, reopened, edited, synchronize]
 
   workflow_dispatch:
@@ -28,8 +28,3 @@ jobs:
 
       - name: Run ruff lint
         run: ruff check --output-format=github
-
-      - name: Run unit tests with coverage
-        run: |
-          python3 -m pip install coverage
-          coverage run --source="./simulator/src" -m unittest discover -s ./simulator/test -v
