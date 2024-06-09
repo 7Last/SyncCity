@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 3,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -1393,19 +1393,42 @@
                 "type": "grafana-clickhouse-datasource",
                 "uid": "P5CECDC4694398594"
             },
-            "description": "",
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "thresholds"
+                        "mode": "palette-classic"
                     },
                     "custom": {
-                        "align": "left",
-                        "cellOptions": {
-                            "type": "auto"
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
                         },
-                        "filterable": true,
-                        "inspect": false
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
                     },
                     "mappings": [],
                     "thresholds": {
@@ -1427,52 +1450,35 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "sensor_name"
-                        },
-                        "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Sensor"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "filling"
+                            "options": "Avg. filling"
                         },
                         "properties": [
                             {
                                 "id": "unit",
                                 "value": "percent"
-                            },
-                            {
-                                "id": "displayName",
-                                "value": "Value"
                             }
                         ]
                     }
                 ]
             },
             "gridPos": {
-                "h": 11,
+                "h": 12,
                 "w": 12,
                 "x": 12,
                 "y": 56
             },
             "id": 18,
             "options": {
-                "cellHeight": "sm",
-                "footer": {
-                    "countRows": false,
-                    "enablePagination": true,
-                    "fields": "",
-                    "reducer": [
-                        "sum"
-                    ],
-                    "show": false
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
                 },
-                "showHeader": true
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
             },
             "pluginVersion": "10.3.0",
             "targets": [
@@ -1493,15 +1499,23 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name, filling, timestamp\nFROM sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
+                    "rawSql": "select filling as \"Avg. filling\", timestamp, sensor_name\nfrom sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
                     "refId": "A"
                 }
             ],
-            "title": "Recycling points",
+            "title": "Recycling points time series",
+            "transformations": [
+                {
+                    "id": "prepareTimeSeries",
+                    "options": {
+                        "format": "multi"
+                    }
+                }
+            ],
             "transparent": true,
-            "type": "table"
+            "type": "timeseries"
         },
         {
             "datasource": {
@@ -1552,10 +1566,10 @@
                 ]
             },
             "gridPos": {
-                "h": 9,
+                "h": 11,
                 "w": 24,
                 "x": 0,
-                "y": 67
+                "y": 68
             },
             "id": 17,
             "options": {
@@ -1601,7 +1615,7 @@
             "type": "table"
         }
     ],
-    "refresh": "5s",
+    "refresh": false,
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -1611,10 +1625,10 @@
                 "current": {
                     "selected": true,
                     "text": [
-                        "air_quality"
+                        "All"
                     ],
                     "value": [
-                        "air_quality"
+                        "$__all"
                     ]
                 },
                 "datasource": {
@@ -1668,13 +1682,13 @@
         ]
     },
     "time": {
-        "from": "now/y",
-        "to": "now/y"
+        "from": "2024-05-25T08:00:07.958Z",
+        "to": "2024-06-21T00:50:21.664Z"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Raw Data",
     "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-    "version": 3,
+    "version": 2,
     "weekStart": ""
 }
