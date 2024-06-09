@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -39,7 +39,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               }
             ]
@@ -72,7 +72,7 @@
           {
             "config": {
               "blur": 50,
-              "radius": 12,
+              "radius": 40,
               "weight": {
                 "field": "air_quality_index",
                 "fixed": 1,
@@ -141,6 +141,7 @@
           }
         }
       ],
+      "transparent": true,
       "type": "orchestracities-map-panel"
     },
     {
@@ -268,6 +269,7 @@
           }
         }
       ],
+      "transparent": true,
       "type": "barchart"
     },
     {
@@ -544,7 +546,7 @@
           "refId": "A"
         }
       ],
-      "title": "Average Pollutants quanity",
+      "title": "Average Pollutants quantity",
       "transformations": [
         {
           "id": "filterFieldsByName",
@@ -581,6 +583,7 @@
           }
         }
       ],
+      "transparent": true,
       "type": "stat"
     }
   ],
@@ -591,9 +594,9 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "rubano",
-          "value": "rubano"
+          "selected": false,
+          "text": "cadoneghe",
+          "value": "cadoneghe"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -623,6 +626,6 @@
   "timezone": "",
   "title": "Air Quality",
   "uid": "d44a73d4-5a1c-4cae-b667-659c095c7fb3",
-  "version": 16,
+  "version": 7,
   "weekStart": ""
 }
