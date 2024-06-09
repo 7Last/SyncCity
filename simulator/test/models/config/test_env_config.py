@@ -10,7 +10,7 @@ class TestEnvConfig(unittest.TestCase):
         "KAFKA_HOST": "host",
         "KAFKA_PORT": "1234",
         "LOG_LEVEL": "INFO",
-        "MAX_BLOCK_MS": "2000",
+        "KAFKA_MAX_BLOCK_MS": "2000",
     }, clear=True)
     def test_existing_envs(self) -> None:
         conf = EnvConfig()
@@ -25,7 +25,7 @@ class TestEnvConfig(unittest.TestCase):
         "KAFKA_HOST": "host",
         "LOG_LEVEL": "INFO",
         # set to empty string to override any env on the host machine
-        "MAX_BLOCK_MS": "",
+        "KAFKA_MAX_BLOCK_MS": "",
     }, clear=True)
     def test_default_values(self) -> None:
         conf = EnvConfig()
@@ -46,7 +46,7 @@ class TestEnvConfig(unittest.TestCase):
         "KAFKA_HOST": "host",
         "KAFKA_PORT": "1234",
         "LOG_LEVEL": "INFO",
-        "MAX_BLOCK_MS": "2000",
+        "KAFKA_MAX_BLOCK_MS": "2000",
     }, clear=True)
     def test_bootstrap_server(self) -> None:
         conf = EnvConfig()

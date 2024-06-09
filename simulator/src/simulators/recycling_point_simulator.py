@@ -61,7 +61,7 @@ class RecyclingPointSimulator(Simulator):
         # update fill rate
         self._calculate_fill_rate()
 
-        # update previuos timestamp
+        # update previous timestamp
         self.prev_timestamp = self.timestamp
 
         # check if it is time to empty

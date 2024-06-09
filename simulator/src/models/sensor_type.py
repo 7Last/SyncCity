@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class SensorType(Enum):
+    AIR_QUALITY = "air_quality"
     TEMPERATURE = "temperature"
     TRAFFIC = "traffic"
     RECYCLING_POINT = "recycling_point"

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -178,6 +178,7 @@
           }
         }
       ],
+      "transparent": true,
       "type": "geomap"
     },
     {
@@ -304,6 +305,7 @@
         }
       ],
       "title": "Vehicles",
+      "transparent": true,
       "type": "timeseries"
     },
     {
@@ -431,6 +433,7 @@
         }
       ],
       "title": "Real time",
+      "transparent": true,
       "type": "gauge"
     },
     {
@@ -558,6 +561,7 @@
         }
       ],
       "title": "Avg speed",
+      "transparent": true,
       "type": "timeseries"
     },
     {
@@ -752,6 +756,7 @@
       ],
       "title": "Avg vehicles per hour",
       "transformations": [],
+      "transparent": true,
       "type": "barchart"
     }
   ],
@@ -794,6 +799,6 @@
   "timezone": "",
   "title": "Traffic",
   "uid": "b5080f2f-8ff2-40a2-b96d-5f45b447ed01",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
