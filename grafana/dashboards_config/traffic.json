@@ -262,7 +262,7 @@
       },
       "gridPos": {
         "h": 11,
-        "w": 19,
+        "w": 24,
         "x": 0,
         "y": 9
       },
@@ -305,107 +305,6 @@
       ],
       "title": "Vehicles",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "description": "Describes with an index from 0 to 10 the driveability of the street the sensor is placed in. A low index indicates a congestion, viceversa an high one indicates good circulation.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 10,
-          "min": 0,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              },
-              {
-                "color": "semi-dark-orange",
-                "value": 25
-              },
-              {
-                "color": "#EAB839",
-                "value": 50
-              },
-              {
-                "color": "green",
-                "value": 75
-              }
-            ]
-          },
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 5,
-        "x": 19,
-        "y": 9
-      },
-      "id": 7,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto"
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.8",
-          "queryType": "table",
-          "rawSql": "SELECT\n    avg(avg_speed) as avg_speed,\n    avg(vehicles) as avg_num_vehicles,\n    avg_speed * 20 / 50 as speed_score,\n    avg_num_vehicles * 10 / 100 as vehicles_score,\n    round((vehicles_score + speed_score) / 2) as traffic_score\nFROM sensors.traffic\nWHERE timestamp >= now() - INTERVAL 1 HOUR AND timestamp <= now() and sensor_name = '${sensor_name}'\n",
-          "refId": "A"
-        }
-      ],
-      "title": "Real Time Driveability Index",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "traffic_score"
-              ]
-            }
-          }
-        }
-      ],
-      "type": "gauge"
     },
     {
       "datasource": {
@@ -856,7 +755,7 @@
       "type": "barchart"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -888,8 +787,8 @@
     ]
   },
   "time": {
-    "from": "2024-05-29T00:51:54.893Z",
-    "to": "2024-06-01T21:59:59.999Z"
+    "from": "now/y",
+    "to": "now/y"
   },
   "timepicker": {},
   "timezone": "",
