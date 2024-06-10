@@ -1,7 +1,7 @@
 import json, time
 from datetime import datetime, timezone, timedelta, tzinfo
 
-from kafka import KafkaProducer
+from kafka3 import KafkaProducer
 
 producer = KafkaProducer(bootstrap_servers='localhost:19092',
                          value_serializer=lambda v: json.dumps(v).encode('utf-8'))

@@ -1,223 +1,237 @@
 networks:
-  redpanda_network:
+  synccity:
     driver: bridge
 
 services:
-  redpanda:
-    container_name: redpanda
-    command:
-      - redpanda
-      - start
-      - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
-      - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
-      - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
-      - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
-      - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
-      - --rpc-addr redpanda:33145
-      - --advertise-rpc-addr redpanda:33145
-      - --mode dev-container
-      - --smp 1
-      - --overprovisioned
-      - --default-log-level=warn
-    image: docker.redpanda.com/redpandadata/redpanda:v23.3.11
-    volumes:
-      - ./volumes/redpanda:/var/lib/redpanda/data
-    networks:
-      - redpanda_network
-    ports:
-      - 18081:18081
-      - 18082:18082
-      - 19092:19092
-      - 19644:9644
-    healthcheck:
-      test: ["CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1"]
-      interval: 2s
-      timeout: 1m
-      retries: 12
-    profiles: ["local", "release"]
+    redpanda:
+      container_name: redpanda
+      command:
+        - redpanda
+        - start
+        - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092
+        - --advertise-kafka-addr internal://redpanda:9092,external://localhost:19092
+        - --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082
+        - --advertise-pandaproxy-addr internal://redpanda:8082,external://localhost:18082
+        - --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081
+        - --rpc-addr redpanda:33145
+        - --advertise-rpc-addr redpanda:33145
+        - --mode dev-container
+        - --smp 1
+        - --overprovisioned
+        - --default-log-level=warn
+      image: docker.redpanda.com/redpandadata/redpanda:v23.3.11
+      volumes:
+        - ./volumes/redpanda:/var/lib/redpanda/data
+      networks:
+        - synccity
+      ports:
+        - 18081:18081
+        - 18082:18082
+        - 19092:19092
+        - 19644:9644
+      healthcheck:
+        test: [ "CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1" ]
+        interval: 2s
+        timeout: 1m
+        retries: 12
+      profiles: [ "local", "release" ]
 
-  redpanda_console:
-    container_name: redpanda_console
-    image: docker.redpanda.com/redpandadata/console:v2.4.6
-    networks:
-      - redpanda_network
-    entrypoint: /bin/sh
-    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
-    ports:
-      - 8080:8080
-    depends_on:
-      redpanda:
-        condition: service_healthy
-    restart: on-failure
-    profiles: ["local", "release"]
-
-    environment:
-      CONFIG_FILEPATH: /tmp/config.yml
-      CONSOLE_CONFIG_FILE: |
-        kafka:
-          brokers: ["redpanda:9092"]
-          schemaRegistry:
-            enabled: true
-            urls: ["http://redpanda:8081"]
+    redpanda_console:
+      container_name: redpanda_console
+      image: docker.redpanda.com/redpandadata/console:v2.4.6
+      networks:
+        - synccity
+      entrypoint: /bin/sh
+      command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+      ports:
+        - 8080:8080
+      depends_on:
         redpanda:
-          adminApi:
+          condition: service_healthy
+      restart: on-failure
+      profiles: [ "local", "release" ]
+
+      environment:
+        CONFIG_FILEPATH: /tmp/config.yml
+        CONSOLE_CONFIG_FILE: |
+          kafka:
+            brokers: ["redpanda:9092"]
+            schemaRegistry:
+              enabled: true
+              urls: ["http://redpanda:8081"]
+          redpanda:
+            adminApi:
+              enabled: true
+              urls: ["http://redpanda:9644"]
+          connect:
             enabled: true
-            urls: ["http://redpanda:9644"]
-        connect:
-          enabled: true
-          clusters:
-            - name: local-connect-cluster
-              url: http://connect:8083
+            clusters:
+              - name: local-connect-cluster
+                url: http://connect:8083
 
-  connect:
-    container_name: connect
-    image: docker.redpanda.com/redpandadata/connectors:latest
-    volumes:
-      - ./connectors/plugins:/opt/kafka/connect-plugins
-    hostname: connect
-    ports:
-      - "8083:8083"
-    depends_on:
-      redpanda:
-        condition: service_healthy
-    networks:
-      - redpanda_network
-    profiles: ["local", "release"]
-    environment:
-      CONNECT_CONFIGURATION: |
-        key.converter=java.lang.String
-        value.converter=java.lang.String
-        plugin.path=/opt/kafka/connect-plugins
-        value.converter=io.confluent.connect.avro.AvroConverter
-        value.converter.schema.registry.url=http://redpanda:8081
-        group.id=connectors-group
-        offset.storage.topic=_connectors_offsets
-        config.storage.topic=_connectors_configs
-        status.storage.topic=_connectors_status
-        config.storage.replication.factor=-1
-        offset.storage.replication.factor=-1
-        status.storage.replication.factor=-1
-      CONNECT_BOOTSTRAP_SERVERS: "redpanda:9092"
-      CONNECT_GC_LOG_ENABLED: "false"
-      CONNECT_HEAP_OPTS: -Xms1G -Xmx1G
-      CONNECT_METRICS_ENABLED: "false"
-      CONNECT_TLS_ENABLED: "false"
-      CONNECT_PLUGIN_PATH: "/opt/kafka/connect-plugins"
+    connect:
+      container_name: connect
+      image: docker.redpanda.com/redpandadata/connectors:latest
+      volumes:
+        - ./connectors/plugins:/opt/kafka/connect-plugins
+      hostname: connect
+      ports:
+        - "8083:8083"
+      depends_on:
+        redpanda:
+          condition: service_healthy
+      networks:
+        - synccity
+      profiles: [ "local", "release" ]
+      environment:
+        CONNECT_CONFIGURATION: |
+          key.converter=java.lang.String
+          value.converter=java.lang.String
+          plugin.path=/opt/kafka/connect-plugins
+          value.converter=io.confluent.connect.avro.AvroConverter
+          value.converter.schema.registry.url=http://redpanda:8081
+          group.id=connectors-group
+          offset.storage.topic=_connectors_offsets
+          config.storage.topic=_connectors_configs
+          status.storage.topic=_connectors_status
+          config.storage.replication.factor=-1
+          offset.storage.replication.factor=-1
+          status.storage.replication.factor=-1
+        CONNECT_BOOTSTRAP_SERVERS: "redpanda:9092"
+        CONNECT_GC_LOG_ENABLED: "false"
+        CONNECT_HEAP_OPTS: -Xms1G -Xmx1G
+        CONNECT_METRICS_ENABLED: "false"
+        CONNECT_TLS_ENABLED: "false"
+        CONNECT_PLUGIN_PATH: "/opt/kafka/connect-plugins"
 
-  clickhouse:
-    image: clickhouse/clickhouse-server:24-alpine
-    hostname: clickhouse
-    container_name: clickhouse
-    ports:
-      - "8123:8123"
-    healthcheck:
-      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
-      interval: 5s
-      timeout: 1m
-      retries: 12
-    environment:
-      CLICKHOUSE_DB: sensors
-      CLICKHOUSE_USER: admin
-      CLICKHOUSE_PASSWORD: admin
-      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
-    volumes:
-      - type: bind
-        source: ./clickhouse/timezone.xml
-        target: /etc/clickhouse-server/config.d/timezone.xml
-      - type: bind
-        source: ./clickhouse/init
-        target: /docker-entrypoint-initdb.d
-    depends_on:
-      redpanda:
-        condition: service_healthy
-    networks:
-      - redpanda_network
-    profiles: ["local", "release"]
+    clickhouse:
+      image: clickhouse/clickhouse-server:24-alpine
+      hostname: clickhouse
+      container_name: clickhouse
+      ports:
+        - "8123:8123"
+      healthcheck:
+        test: [ "CMD", "clickhouse-client", "--query", "SELECT 1" ]
+        interval: 5s
+        timeout: 1m
+        retries: 12
+      environment:
+        CLICKHOUSE_DB: sensors
+        CLICKHOUSE_USER: admin
+        CLICKHOUSE_PASSWORD: admin
+        CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+      volumes:
+        - type: bind
+          source: ./clickhouse/timezone.xml
+          target: /etc/clickhouse-server/config.d/timezone.xml
+        - type: bind
+          source: ./clickhouse/init
+          target: /docker-entrypoint-initdb.d
+      depends_on:
+        redpanda:
+          condition: service_healthy
+      networks:
+        - synccity
+      profiles: [ "local", "release" ]
 
-  simulator:
-    container_name: simulator
-    environment:
-      - KAFKA_HOST=redpanda
-      - KAFKA_PORT=9092
-      - KAFKA_MAX_BLOCK_MS=2000
-      - LOG_LEVEL=INFO
-    build:
-      context: ./simulator
-      dockerfile: Dockerfile
-    depends_on:
-      redpanda:
-        condition: service_healthy
-    volumes:
-      - ./simulator/sensors.toml:/simulator/sensors.toml
-    networks:
-      - redpanda_network
-    profiles: ["release"]
+    simulator:
+      container_name: simulator
+      environment:
+        - KAFKA_HOST=redpanda
+        - KAFKA_PORT=9092
+        - KAFKA_MAX_BLOCK_MS=1000
+        - LOG_LEVEL=INFO
+      build:
+        context: ./simulator
+        dockerfile: Dockerfile
+      depends_on:
+        redpanda:
+          condition: service_healthy
+      volumes:
+        - ./simulator/sensors.toml:/simulator/sensors.toml
+      networks:
+        - synccity
+      profiles: [ "release" ]
 
-  grafana:
-    image: grafana/grafana-oss:10.3.0
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-      - ./grafana/dashboards_config:/var/lib/grafana/dashboards
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-    environment:
-      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource,orchestracities-map-panel
-#      GF_AUTH_ANONYMOUS_ENABLED: true
-#      GF_AUTH_DISABLE_LOGIN_FORM: true
-#      GF_AUTH_ANONYMOUS_ORG_ROLE: "Organization administrator"
-    depends_on:
-      clickhouse:
-        condition: service_healthy
-    networks:
-      - redpanda_network
-    profiles: ["local", "release"]
+    grafana:
+      image: grafana/grafana-oss:10.3.0
+      container_name: grafana
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+        - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting
+        - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+        - ./grafana/dashboards_config:/var/lib/grafana/dashboards
+        - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      environment:
+        GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+      #      GF_AUTH_ANONYMOUS_ENABLED: true
+      #      GF_AUTH_DISABLE_LOGIN_FORM: true
+      #      GF_AUTH_ANONYMOUS_ORG_ROLE: "Organization administrator"
+      depends_on:
+        clickhouse:
+          condition: service_healthy
+      networks:
+        - synccity
+      profiles: [ "local", "release" ]
 
-  flink-jobmanager:
-    image: flink:1.18.1-java17
-      # add job jar with arguments
-    # command: standalone-job --job-classname com.sevenlast.synccity.Job --job-jar /opt/flink/jars/flink-job.jar "redpanda:9092" "sensors"
-    command: jobmanager
-    container_name: jobmanager
-    ports:
-      - "9001:8081" 
-    environment:
-      FLINK_CONF_DIR: /opt/flink/conf
-      FLINK_PROPERTIES: |
-        jobmanager.rpc.address: flink-jobmanager
-        jobmanager.rpc.port: 6123
-        jobmanager.heap.size: 1024m
-        taskmanager.heap.size: 1024m
-        parallelism.default: 1
-        # set web ui port
-    volumes:
-      - type: bind
-        source: ./flink-job.jar
-        target: /opt/flink/jars/flink-job.jar
-    networks:
-      - redpanda_network
+    jobmanager:
+      image: flink:1.18.1-java17
+      hostname: jobmanager
+      command: jobmanager
+      container_name: jobmanager
+      healthcheck:
+        test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
+        interval: 5s
+        retries: 10
+      ports:
+        - "9001:8081"
+        - "6123:6123"
+      environment:
+        FLINK_CONF_DIR: /opt/flink/conf
+        JOB_MANAGER_RPC_ADDRESS: jobmanager
+      networks:
+        - synccity
 
-  flink-taskmanager:
-    image: flink:1.18.1-java17
-    command: taskmanager
-    container_name: taskmanager
-    ports:
-      - "6121:6121"
-    depends_on:
-      - flink-jobmanager
-    environment:
-      FLINK_CONF_DIR: /opt/flink/conf
-      FLINK_TM_NUMBER_OF_TASK_SLOTS: 1  # Adjust as needed
-      FLINK_PROPERTIES: |
-        jobmanager.rpc.address: flink-jobmanager
-        jobmanager.rpc.port: 6123
-        taskmanager.heap.size: 1024m
-    volumes:
-      - type: bind
-        source: ./flink-job.jar
-        target: /opt/flink/jars/flink-job.jar
-    networks:
-      - redpanda_network
+    taskmanager:
+      image: flink:1.18.1-java17
+      command: taskmanager
+      container_name: taskmanager
+      hostname: taskmanager
+      ports:
+        - "6121:6121"
+      depends_on:
+        - jobmanager
+      environment:
+        FLINK_CONF_DIR: /opt/flink/conf
+        JOB_MANAGER_RPC_ADDRESS: jobmanager
+      networks:
+        - synccity
+
+    deployer:
+      image: nielsdenissen/flink-deployer:1.0.0
+      container_name: deployer
+      depends_on:
+        jobmanager:
+          condition: service_healthy
+  #      taskmanager:
+  #        condition: service_healthy
+      volumes:
+        - type: bind
+          source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
+          target: /tmp/flink-job.jar
+      command:
+        - "deploy"
+        - "--file-name"
+        - "/tmp/flink-job.jar"
+        - "--entry-class"
+        - "com.sevenlast.synccity.Job"
+        - "--parallelism"
+        - "1"
+        - "--program-args"
+        - "--Dapp.env=release"
+      environment:
+        - FLINK_BASE_URL=http://jobmanager:8081
+      networks:
+        - synccity

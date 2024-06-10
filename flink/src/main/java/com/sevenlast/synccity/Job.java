@@ -19,19 +19,27 @@ import java.time.ZoneOffset;
 public class Job {
     public static void main(String[] args) throws Exception {
 
-        var appEnv = System.getProperty("app.env", "local");
-        var configLoader = new ConfigLoader(appEnv);
+//        var appEnv = System.getProperty("app.env", "local");
+//        var configLoader = new ConfigLoader(appEnv);
+//
+//        var broker = configLoader.getProperty("kafka.bootstrap.servers");
+//        var topic = configLoader.getProperty("flink.source.topic");
+//        var groupId = configLoader.getProperty("kafka.group.id");
+//        var sourceName = configLoader.getProperty("flink.source.name");
+//        var sinkTopic = configLoader.getProperty("flink.sink.topic");
+//        var jobName = configLoader.getProperty("flink.job.name");
 
-        var broker = configLoader.getProperty("kafka.bootstrap.servers");
-        var topic = configLoader.getProperty("flink.source.topic");
-        var groupId = configLoader.getProperty("kafka.group.id");
-        var sourceName = configLoader.getProperty("flink.source.name");
-        var sinkTopic = configLoader.getProperty("flink.sink.topic");
-        var jobName = configLoader.getProperty("flink.job.name");
+        var broker = "http://redpanda:9092";
+        var topic = "sensors";
+        var groupId = "flink-group";
+        var sourceName = "sensors-source";
+        var sinkTopic = "sensors-aggregated";
+        var jobName = "sensors-aggregator";
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
-        long watermarkInterval = Long.parseLong(configLoader.getProperty("flink.watermark-interval"));
+//        long watermarkInterval = Long.parseLong(configLoader.getProperty("flink.watermark-interval"));
+        long watermarkInterval = 1000;
         env.getConfig().setAutoWatermarkInterval(watermarkInterval);
 
         JsonDeserializationSchema<SensorData> jsonFormat = new JsonDeserializationSchema<>(SensorData.class);
