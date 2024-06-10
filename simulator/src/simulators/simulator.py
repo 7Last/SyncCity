@@ -28,12 +28,12 @@ class Simulator(ABC):
 
         self.sensor_name = sensor_name
         self.sensor_uuid = sensor_uuid
-        self.frequency = points_spacing
+        self.points_spacing = points_spacing
         self.limit = limit
         self.latitude = latitude
         self.longitude = longitude
         self.running = False
-        self.delay = generation_delay
+        self.generation_delay = generation_delay
         rome = zoneinfo.ZoneInfo('Europe/Rome')
         self.timestamp = begin_date or datetime.now(tz=rome)
         self._event = threading.Event()
@@ -56,23 +56,26 @@ class Simulator(ABC):
 
         return self.sensor_name == other.sensor_name and \
             self.sensor_uuid == other.sensor_uuid and \
-            self.frequency == other.frequency and \
+            self.points_spacing == other.points_spacing and \
             self.limit == other.limit and \
             self.latitude == other.latitude and \
             self.longitude == other.longitude and \
             self.running == other.running and \
-            self.delay == other.delay and \
+            self.generation_delay == other.generation_delay and \
             self.timestamp == other.timestamp
 
     def __hash__(self) -> int:
         return hash((
             self.sensor_name,
             self.sensor_uuid,
-            self.frequency,
+            self.points_spacing,
             self.limit,
             self.latitude,
             self.longitude,
             self.running,
-            self.delay,
+            self.generation_delay,
             self.timestamp,
         ))
+
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__} {self.__dict__}'

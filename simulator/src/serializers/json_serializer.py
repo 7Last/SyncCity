@@ -6,5 +6,5 @@ from ..models.raw_data.raw_data import RawData
 
 class JsonSerializer(SerializerStrategy):
 
-    def serialize(self, data: RawData) -> Dict[str, Any]:
+    def serialize_value(self, data: RawData) -> Dict[str, Any]:
         return data.accept(self._visitor)

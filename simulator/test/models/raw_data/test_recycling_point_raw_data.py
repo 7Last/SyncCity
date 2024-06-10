@@ -2,34 +2,34 @@ import unittest
 from datetime import datetime
 from uuid import UUID
 
-from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
+from simulator.src.models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 
 
-class TestTemperatureRawData(unittest.TestCase):
+class TestRecyclingPointRawData(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.timestamp = datetime(2024, 1, 1, 0, 0, 0)
 
     def test_topic(self) -> None:
-        data = TemperatureRawData(
-            sensor_name="temperature",
+        data = RecyclingPointRawData(
+            sensor_name="traffic",
             sensor_uuid=UUID("00000000-0000-0000-0000-000000000000"),
             latitude=0.0,
             longitude=0.0,
             timestamp=self.timestamp,
-            value=0.0,
+            filling=0,
         )
 
-        self.assertEqual(data.topic, "temperature")
+        self.assertEqual(data.topic, "recycling_point")
 
     def test_subject(self) -> None:
-        data = TemperatureRawData(
-            sensor_name="temperature",
+        data = RecyclingPointRawData(
+            sensor_name="recycling_point",
             sensor_uuid=UUID("00000000-0000-0000-0000-000000000000"),
             latitude=0.0,
             longitude=0.0,
             timestamp=self.timestamp,
-            value=0.0,
+            filling=0,
         )
 
-        self.assertEqual(data.value_subject(), "temperature-value")
+        self.assertEqual(data.value_subject(), "recycling_point-value")

@@ -26,8 +26,7 @@ class Runner:
     def run(self) -> None:
         try:
             log.debug("Creating thread pool with %d workers", len(self._simulators))
-            with concurrent.ThreadPoolExecutor(max_workers=100,
-                                               thread_name_prefix='simulator') as pool:
+            with concurrent.ThreadPoolExecutor(thread_name_prefix='simulator') as pool:
                 pool.map(self._callback, self._simulators)
         except KeyboardInterrupt:
             log.info('Received shutdown signal, gracefully stopping...')
