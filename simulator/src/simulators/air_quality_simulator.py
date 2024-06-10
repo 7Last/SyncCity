@@ -44,15 +44,15 @@ class AirQualitySimulator(Simulator):
 
             if self.limit is not None:
                 self.limit -= 1
-            self.timestamp += self.frequency
-            time.sleep(self.delay.total_seconds())
+            self.timestamp += self.points_spacing
+            self._event.wait(self.generation_delay.total_seconds())
 
 
 def _sinusoidal_value(timestamp: datetime) -> float:
     daily_variation = _daily_variation(timestamp)
     weekly_variation = _weekly_variation(timestamp)
     seasonal_variation = _seasonal_variation(timestamp)
-    return daily_variation + weekly_variation + seasonal_variation
+    return daily_variation + weekly_variation + seasonal_variation + 1
 
 
 def _daily_variation(timestamp: datetime) -> float:
@@ -68,7 +68,7 @@ def _weekly_variation(timestamp: datetime) -> float:
 
 
 def _seasonal_variation(timestamp: datetime) -> float:
-    day_of_year = timestamp.timetuple().tm_yday  # day of year
+    day_of_year = timestamp.timetuple().tm_yday
     x = day_of_year + (timestamp.hour + timestamp.minute / 60) / 24
     noise = random.uniform(-20, 20)
     return -80 * sin(x * pi / 182.5 + 105) + 60 + noise
