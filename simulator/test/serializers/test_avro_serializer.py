@@ -19,8 +19,13 @@ class TestAvroSerializer(unittest.TestCase):
         ):
             AvroSerializer()
 
-    @unittest.mock.patch('pathlib.Path.read_text', )
-    def test_serialize(self, mock_path_read_text: MagicMock) -> None:
+    @unittest.mock.patch.dict(
+        os.environ, {"SCHEMA_REGISTRY_URL": "http://schema-registry.com"}, clear=True,
+    )
+    @unittest.mock.patch('simulator.src.serializers.avro_serializer.SchemaRegistry')
+    @unittest.mock.patch('pathlib.Path.read_text')
+    def test_serialize(self, mock_path_read_text: MagicMock,
+                       registry_mock: MagicMock, ) -> None:
         mock_path_read_text.return_value = """{
                 "type": "record",
                 "name": "Temperature",
@@ -51,6 +56,8 @@ class TestAvroSerializer(unittest.TestCase):
                     }
                 ]
             }"""
+        registry_mock.register_schema.return_value = 1
+
         temperature_raw_data = TemperatureRawData(
             sensor_name="sensor_name",
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
