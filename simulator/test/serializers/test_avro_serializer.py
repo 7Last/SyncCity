@@ -19,7 +19,7 @@ class TestAvroSerializer(unittest.TestCase):
         ):
             AvroSerializer()
 
-    @unittest.mock.patch( 'pathlib.Path.read_text', )
+    @unittest.mock.patch('pathlib.Path.read_text', )
     def test_serialize(self, mock_path_read_text: MagicMock) -> None:
         mock_path_read_text.return_value = """{
                 "type": "record",
