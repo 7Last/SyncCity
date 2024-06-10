@@ -1,6 +1,6 @@
 import unittest
 from datetime import timedelta, datetime
-from unittest.mock import patch, Mock
+from unittest.mock import MagicMock
 from uuid import UUID
 
 from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
@@ -46,8 +46,9 @@ class TestAirQualitySimulator(unittest.TestCase):
         simulator.stop()
         self.assertEqual(simulator.running, False)
 
-    @patch('random.uniform')
-    def test_stream(self, mock_uniform: Mock) -> None:   # noqa: PLR6301
+    @unittest.mock.patch("random.uniform")
+    def test_stream(self, mock_uniform: MagicMock) -> None:
+        self.maxDiff = None
         simulator = AirQualitySimulator(
             sensor_name='test',
             sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
@@ -58,22 +59,23 @@ class TestAirQualitySimulator(unittest.TestCase):
             latitude=0,
             longitude=0,
         )
-        mock_uniform.side_effect = lambda a, _: a
+
+        mock_uniform.return_value = 0
 
         simulator.start()
-        list(simulator.stream())
+        stream = list(simulator.stream())
 
-        a = [
+        expected = [
             AirQualityRawData(
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
-                o3=113.9815680878308,
-                pm25=75.98771205855387,
-                pm10=56.9907840439154,
                 no2=227.9631361756616,
+                o3=113.9815680878308,
+                pm10=56.9907840439154,
+                pm25=75.98771205855387,
                 so2=227.9631361756616,
             ),
             AirQualityRawData(
@@ -82,10 +84,10 @@ class TestAirQualitySimulator(unittest.TestCase):
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
-                o3=115.10626418591272,
-                pm25=76.73750945727515,
-                pm10=57.55313209295636,
                 no2=230.21252837182544,
+                o3=115.10626418591272,
+                pm10=57.55313209295636,
+                pm25=76.73750945727515,
                 so2=230.21252837182544,
             ),
             AirQualityRawData(
@@ -94,11 +96,11 @@ class TestAirQualitySimulator(unittest.TestCase):
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 2, 0, 0),
-                o3=116.20867221871677,
-                pm25=77.47244814581119,
-                pm10=58.104336109358385,
                 no2=232.41734443743354,
+                o3=116.20867221871677,
+                pm10=58.104336109358385,
+                pm25=77.47244814581119,
                 so2=232.41734443743354,
             ),
         ]
-        print(a)
+        self.assertEqual(stream, expected)

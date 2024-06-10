@@ -39,3 +39,6 @@ class AirQualityRawData(RawData):
     def __hash__(self) -> int:
         return hash((super().__hash__(), self.pm25, self.pm10, self.no2,
                      self.o3, self.so2))
+
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__} {self.__dict__}'
