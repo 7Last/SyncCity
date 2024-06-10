@@ -139,7 +139,7 @@ services:
     environment:
       - KAFKA_HOST=redpanda
       - KAFKA_PORT=9092
-      - KAFKA_MAX_BLOCK_MS=1000
+      - KAFKA_MAX_BLOCK_MS=2000
       - LOG_LEVEL=INFO
     build:
       context: ./simulator
@@ -165,7 +165,7 @@ services:
       - ./grafana/dashboards_config:/var/lib/grafana/dashboards
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource,orchestracities-map-panel
 #      GF_AUTH_ANONYMOUS_ENABLED: true
 #      GF_AUTH_DISABLE_LOGIN_FORM: true
 #      GF_AUTH_ANONYMOUS_ORG_ROLE: "Organization administrator"

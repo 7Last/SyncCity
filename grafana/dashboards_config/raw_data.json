@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 2,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -44,7 +44,7 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "fixed"
+                        "mode": "thresholds"
                     },
                     "custom": {
                         "hideFrom": {
@@ -60,6 +60,10 @@
                             {
                                 "color": "green",
                                 "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
                             }
                         ]
                     },
@@ -94,7 +98,7 @@
                             "showLegend": true,
                             "style": {
                                 "color": {
-                                    "fixed": "dark-red"
+                                    "fixed": "red"
                                 },
                                 "opacity": 1,
                                 "rotation": {
@@ -145,7 +149,7 @@
                             "showLegend": true,
                             "style": {
                                 "color": {
-                                    "fixed": "dark-green"
+                                    "fixed": "green"
                                 },
                                 "opacity": 1,
                                 "rotation": {
@@ -239,9 +243,9 @@
                             "showLegend": true,
                             "style": {
                                 "color": {
-                                    "fixed": "purple"
+                                    "fixed": "yellow"
                                 },
-                                "opacity": 0.4,
+                                "opacity": 1,
                                 "rotation": {
                                     "fixed": 0,
                                     "max": 360,
@@ -408,6 +412,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "geomap"
         },
         {
@@ -435,6 +440,7 @@
             },
             "pluginVersion": "10.3.0",
             "title": "Dashboards",
+            "transparent": true,
             "type": "dashlist"
         },
         {
@@ -569,6 +575,7 @@
                 }
             ],
             "title": "Sensors",
+            "transparent": true,
             "type": "table"
         },
         {
@@ -672,6 +679,7 @@
                 }
             ],
             "title": "Sensors by type",
+            "transparent": true,
             "type": "bargauge"
         },
         {
@@ -799,6 +807,7 @@
                 }
             ],
             "title": "Temperatures table",
+            "transparent": true,
             "type": "table"
         },
         {
@@ -914,6 +923,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -1028,6 +1038,7 @@
                 }
             ],
             "title": "Traffic",
+            "transparent": true,
             "type": "table"
         },
         {
@@ -1143,6 +1154,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -1258,6 +1270,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -1372,6 +1385,7 @@
                 }
             ],
             "title": "Recycling points",
+            "transparent": true,
             "type": "table"
         },
         {
@@ -1436,7 +1450,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Filling % recycling-point-sensor-1"
+                            "options": "Avg. filling"
                         },
                         "properties": [
                             {
@@ -1448,12 +1462,12 @@
                 ]
             },
             "gridPos": {
-                "h": 11,
+                "h": 12,
                 "w": 12,
                 "x": 12,
                 "y": 56
             },
-            "id": 17,
+            "id": 18,
             "options": {
                 "legend": {
                     "calcs": [],
@@ -1487,11 +1501,11 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "select filling as Filling, timestamp, sensor_name\nfrom sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+                    "rawSql": "select filling as \"Avg. filling\", timestamp, sensor_name\nfrom sensors.recycling_points\nwhere match(sensor_name, '^(${sensor_name:pipe})$')",
                     "refId": "A"
                 }
             ],
-            "title": "Filling time series",
+            "title": "Recycling points time series",
             "transformations": [
                 {
                     "id": "prepareTimeSeries",
@@ -1500,6 +1514,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -1507,20 +1522,17 @@
                 "type": "grafana-clickhouse-datasource",
                 "uid": "P5CECDC4694398594"
             },
-            "description": "",
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "thresholds"
                     },
                     "custom": {
-                        "align": "left",
+                        "align": "auto",
                         "cellOptions": {
                             "type": "auto"
                         },
-                        "filterable": true,
-                        "inspect": false,
-                        "minWidth": 100
+                        "inspect": false
                     },
                     "mappings": [],
                     "thresholds": {
@@ -1542,116 +1554,12 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "sensor_name"
+                            "options": "Filling % recycling-point-sensor-1"
                         },
                         "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Sensor"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "Sensor"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 223
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "pm25"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 100
-                            },
                             {
                                 "id": "unit",
-                                "value": "conμgm3"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "pm10"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 100
-                            },
-                            {
-                                "id": "unit",
-                                "value": "conμgm3"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "no2"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 100
-                            },
-                            {
-                                "id": "unit",
-                                "value": "conμgm3"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "timestamp"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 200
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "o3"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 100
-                            },
-                            {
-                                "id": "unit",
-                                "value": "conμgm3"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "so2"
-                        },
-                        "properties": [
-                            {
-                                "id": "custom.width",
-                                "value": 100
-                            },
-                            {
-                                "id": "unit",
-                                "value": "conμgm3"
+                                "value": "percent"
                             }
                         ]
                     }
@@ -1659,24 +1567,22 @@
             },
             "gridPos": {
                 "h": 11,
-                "w": 12,
+                "w": 24,
                 "x": 0,
-                "y": 67
+                "y": 68
             },
-            "id": 18,
+            "id": 17,
             "options": {
                 "cellHeight": "sm",
                 "footer": {
                     "countRows": false,
-                    "enablePagination": true,
                     "fields": "",
                     "reducer": [
                         "sum"
                     ],
                     "show": false
                 },
-                "showHeader": true,
-                "sortBy": []
+                "showHeader": true
             },
             "pluginVersion": "10.3.0",
             "targets": [
@@ -1699,15 +1605,17 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT sensor_name, timestamp, pm25, pm10, no2, o3, so2\nFROM sensors.air_quality\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by timestamp desc",
-                    "refId": "A"
+                    "rawSql": "select sensor_name, timestamp, so2, no2, o3, pm25, pm10\nfrom sensors.air_quality\nwhere match(sensor_name, '^(${sensor_name:pipe})$')\norder by sensor_name",
+                    "refId": "Air Quality"
                 }
             ],
             "title": "Air quality",
+            "transformations": [],
+            "transparent": true,
             "type": "table"
         }
     ],
-    "refresh": "5s",
+    "refresh": false,
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -1717,10 +1625,10 @@
                 "current": {
                     "selected": true,
                     "text": [
-                        "air_quality"
+                        "All"
                     ],
                     "value": [
-                        "air_quality"
+                        "$__all"
                     ]
                 },
                 "datasource": {
@@ -1774,13 +1682,13 @@
         ]
     },
     "time": {
-        "from": "now-5m",
-        "to": "now"
+        "from": "2024-05-25T08:00:07.958Z",
+        "to": "2024-06-21T00:50:21.664Z"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Raw Data",
     "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-    "version": 3,
+    "version": 1,
     "weekStart": ""
 }

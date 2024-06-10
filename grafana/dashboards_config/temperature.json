@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 4,
+    "id": 3,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -182,6 +182,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "geomap"
         },
         {
@@ -356,14 +357,15 @@
                             "table": "temperature"
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "select date, avg_temperature as \"Temperature\"\nfrom sensors.temperatures_5m\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                        from sensors.temperatures_5m\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\n and sensor_name = '${sensor_name}'\norder by date;",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;",
                     "refId": "A"
                 }
             ],
             "title": "Time series",
             "transformations": [],
+            "transparent": true,
             "type": "timeseries"
         },
         {
@@ -480,6 +482,7 @@
                 }
             ],
             "title": "Real time",
+            "transparent": true,
             "type": "stat"
         },
         {
@@ -538,7 +541,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "avg_temperature"
+                            "options": "Temperature"
                         },
                         "properties": [
                             {
@@ -609,11 +612,11 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
                     "queryType": "table",
                     "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-                    "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_weekly\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_weekly\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 10;",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_weekly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true
@@ -630,6 +633,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "barchart"
         },
         {
@@ -688,25 +692,17 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "avg_temperature"
+                            "options": "Temperature"
                         },
                         "properties": [
                             {
                                 "id": "unit",
                                 "value": "celsius"
-                            }
-                        ]
-                    },
-                    {
-                        "matcher": {
-                            "id": "byName",
-                            "options": "avg_temperature"
-                        },
-                        "properties": [
+                            },
                             {
                                 "id": "color",
                                 "value": {
-                                    "fixedColor": "#ffffff",
+                                    "fixedColor": "#d4d4d4",
                                     "mode": "fixed"
                                 }
                             }
@@ -761,9 +757,9 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "select date, avg_temperature\nfrom sensors.temperatures_daily\nwhere (insertion_timestamp, date) in (select max(insertion_timestamp), date\n                                      from sensors.temperatures_daily\n                                      where sensor_name = '${sensor_name}'\n                                      group by date)\nand date >= $__fromTime and date <= $__toTime\nand sensor_name = '${sensor_name}'\norder by date\nlimit 30;",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date\nLIMIT 30;\n",
                     "refId": "A"
                 }
             ],
@@ -779,6 +775,7 @@
                     }
                 }
             ],
+            "transparent": true,
             "type": "barchart"
         },
         {
@@ -797,7 +794,8 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "semi-dark-blue"
+                                "color": "semi-dark-blue",
+                                "value": null
                             },
                             {
                                 "color": "#ffffff",
@@ -852,8 +850,8 @@
                 ]
             },
             "gridPos": {
-                "h": 11,
-                "w": 12,
+                "h": 12,
+                "w": 18,
                 "x": 0,
                 "y": 29
             },
@@ -913,6 +911,109 @@
             ],
             "title": "Min, max and average",
             "transformations": [],
+            "transparent": true,
+            "type": "gauge"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "description": "The Livability Temperature Index (LTI) is a scale from 0 to 10 that represents how comfortable a city's climate is based on temperature. The index considers the average annual temperatures and their suitability for comfortable living",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "max": 100,
+                    "min": 0,
+                    "thresholds": {
+                        "mode": "percentage",
+                        "steps": [
+                            {
+                                "color": "dark-red",
+                                "value": null
+                            },
+                            {
+                                "color": "semi-dark-orange",
+                                "value": 25
+                            },
+                            {
+                                "color": "#EAB839",
+                                "value": 50
+                            },
+                            {
+                                "color": "green",
+                                "value": 75
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 12,
+                "w": 6,
+                "x": 18,
+                "y": 29
+            },
+            "id": 11,
+            "options": {
+                "minVizHeight": 75,
+                "minVizWidth": 75,
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showThresholdLabels": false,
+                "showThresholdMarkers": true,
+                "sizing": "auto"
+            },
+            "pluginVersion": "10.3.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "with daily_averages as(\n    SELECT\n        date,\n        argMax(avg_temperature, insertion_timestamp) AS daily_avg,\n        max(insertion_timestamp) AS last_insertion_time FROM sensors.temperatures_daily\n    WHERE date > toStartOfYear(now()) and date < toStartOfYear(now() + interval '1' year)\n    AND sensor_name = '$sensor_name'\n    GROUP BY date\n    ORDER BY date\n)\nselect\n    countIf(daily_avg >= 15 AND daily_avg <= 25) as CS_days_in_range,\n    countIf(daily_avg > 35) + countIf(daily_avg < 5) as ETP_days_out_of_range,\n    stddevPop(daily_avg) as VP_std_dev,\n    (avg(daily_avg) - 15) / (25 - 15) * 100 as OATS,\n    count() as total_days,\n    greatest(0, round((2 * CS_days_in_range - ETP_days_out_of_range - VP_std_dev + OATS) / 4)) as comfort_score\nfrom daily_averages;\n",
+                    "refId": "A"
+                }
+            ],
+            "title": "Current Year Livability Temperature Index (LTI)",
+            "transformations": [
+                {
+                    "id": "filterFieldsByName",
+                    "options": {
+                        "include": {
+                            "names": [
+                                "comfort_score"
+                            ]
+                        }
+                    }
+                }
+            ],
+            "transparent": true,
             "type": "gauge"
         }
     ],
@@ -924,8 +1025,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "prato-della-valle",
-                    "value": "prato-della-valle"
+                    "text": "via-pralungo",
+                    "value": "via-pralungo"
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
@@ -948,8 +1049,8 @@
         ]
     },
     "time": {
-        "from": "now/d",
-        "to": "now/d"
+        "from": "now/y",
+        "to": "now/y"
     },
     "timepicker": {},
     "timezone": "",

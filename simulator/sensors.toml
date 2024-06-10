@@ -2,99 +2,119 @@
 [sensors.via-pralungo]
 uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT1S" # 1 hour
-generation_delay = "PT1S"
-begin_date = 2024-05-29T08:00:00
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
 latitude = 45.4018782
 longitude = 11.7769644
 
 [sensors.kioene-arena]
 uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
-points_spacing = "PT1S" # 1 hour
-generation_delay = "PT1S" # 1 second
-begin_date = 2024-05-29T08:00:00
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
 latitude = 45.4224876
 longitude = 11.9233274
 
-# [sensors.prato-della-valle]
-# uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
-# type = "temperature"
-# points_spacing = "PT1H" # 1 hour
-# generation_delay = "PT1S" # 1 second
-# begin_date = 2024-05-29T08:00:00
-# latitude = 45.3984208
-# longitude = 11.8739536
-#
-# [sensors.romea-argine-sx]
-# uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
-# type = "traffic"
-# points_spacing = "PT5M"
-# generation_delay = "PT1S"
-#  latitude = 45.4145567
-# longitude = 12.1581
-#
-# [sensors.tangenziale-fornase-sud]
-# uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
-# type = "traffic"
-# points_spacing = "PT5M"
-# generation_delay = "PT1S"
-#  latitude = 45.4675237
-# longitude = 12.1736561
-#
-#[sensors.dipartimento-matematica]
-#uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
-#type = "recycling_point"
-#points_spacing = "PT1H" # 1 hour
-#generation_delay = "PT1S"
-# latitude = 45.4113102
-# longitude = 11.88880725672
-#
-#[sensors.campus-ca-foscari]
-#uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
-#type = "recycling_point"
-#points_spacing = "PT1H" # 1 hour
-#generation_delay = "PT1S"
-# latitude = 45.4344957
-# longitude = 12.3264484
-#
-#[sensors.unipd-via-s-francesco]
-#uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
-#type = "recycling_point"
-#points_spacing = "PT1H" # 1 hour
-#generation_delay = "PT1S"
-# latitude = 45.4067383
-# longitude = 11.87739398715
-#
-#[sensors.unipd-beato-pellegrino]
-#uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
-#type = "recycling_point"
-#points_spacing = "PT1H" # 1 hour
-#generation_delay = "PT1S"
-# latitude = 45.4137767
-# longitude = 11.8669841
-#
-#[sensors.unipd-ponte-s-michele]
-#uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
-#type = "recycling_point"
-#points_spacing = "PT1H" # 1 hour
-#generation_delay = "PT1S"
-# latitude = 45.5458673
-# longitude = 11.5484712
-#
-# [sensors.bologna-giardini-margherita]
-# uuid = "44d1ec68-79f3-440a-854d-8e0d70e50430"
-# type = "air_quality"
-# points_spacing = "PT24H" # 24 hours
-# generation_delay = "PT1S"
-# latitude = 44.483628
-# longitude = 11.355035
-#
-# [sensors.test-1]
-# uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
-# type = "air_quality"
-# points_spacing = "PT24H" # 24 hours
-# generation_delay = "PT1S"
-# latitude = 45.783628
-# longitude = 11.355035
-#
+[sensors.prato-della-valle]
+uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
+type = "temperature"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.3984208
+longitude = 11.8739536
+
+[sensors.romea-argine-sx]
+uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
+type = "traffic"
+points_spacing = "PT5M"
+generation_delay = "PT0.01S"
+latitude = 45.4145567
+longitude = 12.1581
+
+[sensors.tangenziale-fornase-sud]
+uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
+type = "traffic"
+points_spacing = "PT5M"
+generation_delay = "PT0.01S"
+latitude = 45.4675237
+longitude = 12.1736561
+
+[sensors.dipartimento-matematica]
+uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
+type = "recycling_point"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.4113102
+longitude = 11.88880725672
+
+[sensors.campus-ca-foscari]
+uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
+type = "recycling_point"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.4344957
+longitude = 12.3264484
+
+[sensors.unipd-via-s-francesco]
+uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
+type = "recycling_point"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.4067383
+longitude = 11.87739398715
+
+[sensors.unipd-beato-pellegrino]
+uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
+type = "recycling_point"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.4137767
+longitude = 11.8669841
+
+[sensors.unipd-ponte-s-michele]
+uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
+type = "recycling_point"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT0.01S"
+latitude = 45.5458673
+longitude = 11.5484712
+
+[sensors.cadoneghe]
+uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4490747
+longitude = 11.9038461
+
+[sensors.abano-terme-centro]
+uuid = "4fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.3591562
+longitude = 11.7510624
+
+[sensors.legnaro]
+uuid = "5ed1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.3378992
+longitude = 11.9248366
+
+[sensors.rubano]
+uuid = "6fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4249376
+longitude = 11.7714498
+
+[sensors.unipd-tito-livio]
+uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
+type = "air_quality"
+points_spacing = "PT1H"
+generation_delay = "PT1S"
+latitude = 45.4034159
+longitude = 11.8756551
