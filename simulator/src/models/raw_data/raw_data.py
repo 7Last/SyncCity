@@ -25,8 +25,11 @@ class RawData(ABC):
     def topic(self) -> str:
         pass
 
-    def subject(self) -> str:
+    def value_subject(self) -> str:
         return f'{self.topic}-value'
+
+    def key_subject(self) -> str:
+        return f'{self.topic}-key'
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RawData):

@@ -13,7 +13,7 @@ class TestStdOutProducer(unittest.TestCase):
     @unittest.mock.patch("builtins.print")
     def test_produce_serialized_called(self, mock_print: MagicMock,  # noqa: PLR6301
                                        mock_producer_strategy: MagicMock) -> None:
-        mock_producer_strategy.serialize.return_value = "serialized"
+        mock_producer_strategy.serialize_value.return_value = "serialized"
         mock_print.side_effect = lambda x: x
         stdout_producer = StdOutProducer(mock_producer_strategy)
 

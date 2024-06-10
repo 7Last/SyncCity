@@ -32,4 +32,4 @@ class TestTemperatureRawData(unittest.TestCase):
             value=0.0,
         )
 
-        self.assertEqual(data.subject(), "temperature-value")
+        self.assertEqual(data.value_subject(), "temperature-value")

@@ -40,4 +40,4 @@ class TestAirQualityRawData(unittest.TestCase):
             o3=0,
         )
 
-        self.assertEqual(data.subject(), "air_quality-value")
+        self.assertEqual(data.value_subject(), "air_quality-value")

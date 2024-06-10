@@ -4,8 +4,6 @@ from datetime import datetime
 from unittest.mock import MagicMock
 from uuid import UUID
 
-from avro.schema import parse
-
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
 from simulator.src.serializers.avro_serializer import AvroSerializer
 
@@ -21,40 +19,9 @@ class TestAvroSerializer(unittest.TestCase):
         ):
             AvroSerializer()
 
-    @unittest.mock.patch.dict(
-        os.environ,
-        {
-            "SCHEMA_REGISTRY_URL": "schema_registry",
-            "SCHEMAS_PATH": "",
-        },
-        clear=True,
-    )
-    def test_load_avro_schema_missing_schema_path(self) -> None:
-        with self.assertRaisesRegex(
-                Exception,
-                "SCHEMAS_PATH environment variable must be set",
-        ):
-            AvroSerializer()
-
-    @unittest.mock.patch.dict(
-        os.environ,
-        {},
-        clear=True,
-    )
-    def test_load_avro_schema(self) -> None:
-        pass
-
-    @unittest.skip  # TODO: implement when overwriting schemas is removed
-    @unittest.mock.patch("requests.post")
-    def test_create_subject_already_exists(self, mock_post: MagicMock) -> None:
-        pass
-
-    @unittest.mock.patch(
-        "simulator.src.serializers.avro_serializer.load_avro_schemas",
-    )
-    def test_serialize(self, load_avro_mock: MagicMock) -> None:
-        load_avro_mock.return_value = {
-            'temperature-value': (1, parse("""{
+    @unittest.mock.patch( 'pathlib.Path.read_text', )
+    def test_serialize(self, mock_path_read_text: MagicMock) -> None:
+        mock_path_read_text.return_value = """{
                 "type": "record",
                 "name": "Temperature",
                 "fields": [
@@ -83,8 +50,7 @@ class TestAvroSerializer(unittest.TestCase):
                         "type": "float"
                     }
                 ]
-            }""")),
-        }
+            }"""
         temperature_raw_data = TemperatureRawData(
             sensor_name="sensor_name",
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
@@ -95,7 +61,7 @@ class TestAvroSerializer(unittest.TestCase):
         )
 
         avro_serializer = AvroSerializer()
-        serialized = avro_serializer.serialize(temperature_raw_data)
+        serialized = avro_serializer.serialize_value(temperature_raw_data)
 
         magic_byte = b'\x00'
         schema_id_bytes = b'\x00\x00\x00\x01'

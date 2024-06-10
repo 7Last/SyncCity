@@ -8,7 +8,7 @@ class StdOutProducer(ProducerStrategy):
         super().__init__(serializer)
 
     def produce(self, data: RawData) -> None:
-        serialized = self._serializer.serialize(data)
+        serialized = self._serializer.serialize_value(data)
         print(serialized)
 
     def close(self) -> None:

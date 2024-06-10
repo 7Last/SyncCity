@@ -22,5 +22,5 @@ class TestJsonSerializer(unittest.TestCase):
     def test_serialize_raw_data(self, mock_raw_data: MagicMock) -> None:  # noqa: PLR6301
         mock_raw_data.accept.return_value = {}
         json_serializer = JsonSerializer()
-        json_serializer.serialize(mock_raw_data)
+        json_serializer.serialize_value(mock_raw_data)
         mock_raw_data.accept.assert_called_once()
