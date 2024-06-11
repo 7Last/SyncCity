@@ -78,7 +78,7 @@
         ]
       },
       "gridPos": {
-        "h": 14,
+        "h": 11,
         "w": 20,
         "x": 0,
         "y": 0
@@ -315,6 +315,115 @@
       ],
       "transparent": true,
       "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 13,
+        "x": 0,
+        "y": 11
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "basic",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^occupied_seconds$/",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_occupied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.parking)\nselect\n    sumIf(seconds, is_occupied = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total occupancy time by parking lot",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byName",
+              "options": "occupied_seconds"
+            },
+            "configRefId": "A",
+            "mappings": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "max_time": "",
+              "occupied_seconds": ""
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
     }
   ],
   "refresh": "",
@@ -324,9 +433,9 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "navigli-portello",
-          "value": "navigli-portello"
+          "selected": false,
+          "text": "piazza-insurrezione",
+          "value": "piazza-insurrezione"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -349,13 +458,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
-    "to": "now"
+    "from": "now/w",
+    "to": "now/w"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Parking",
   "uid": "e801a019-4a4c-434d-9f3e-70d252a63362",
-  "version": 3,
+  "version": 6,
   "weekStart": ""
 }
