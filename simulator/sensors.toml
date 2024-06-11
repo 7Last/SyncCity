@@ -121,108 +121,160 @@
 
 [sensors.piazza-insurrezione-p1]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409753
 longitude = 11.876399
 
 [sensors.piazza-insurrezione-p2]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409748
 longitude = 11.876204
 
 [sensors.piazza-insurrezione-p3]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409748
 longitude = 11.875999
 
 [sensors.piazza-insurrezione-p4]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "2ecd24cb-6b15-4f96-81bf-75ef23d87797"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409734
 longitude = 11.875767
 
 [sensors.piazza-insurrezione-p5]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409619
 longitude = 11.875758
 
 [sensors.piazza-insurrezione-p6]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409474
 longitude = 11.875759
 
 [sensors.piazza-insurrezione-p7]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409356
 longitude = 11.875777
 
 [sensors.piazza-insurrezione-p8]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409378
 longitude = 11.875976
 
 [sensors.piazza-insurrezione-p9]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409382
 longitude = 11.876208
 
 [sensors.piazza-insurrezione-p10]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409395
 longitude = 11.876387
 
 [sensors.piazza-insurrezione-p11]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.40949
 longitude = 11.876408
 
 [sensors.piazza-insurrezione-p12]
 group_name = "piazza-insurrezione"
+begin_date = 2024-06-11T22:00:00
 uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
 type = "parking"
-points_spacing = "PT1H"
+points_spacing = "PT1M"
 generation_delay = "PT1S"
 latitude = 45.409666
 longitude = 11.876403
+
+[sensors.navigli-portello-p1]
+group_name = "navigli-portello"
+begin_date = 2024-06-11T22:00:00
+uuid = "2e942305-41b6-4c2f-80c5-ea29bbe6e382"
+type = "parking"
+points_spacing = "PT1M"
+generation_delay = "PT1S"
+latitude = 45.4101843
+longitude = 11.8875258
+
+[sensors.navigli-portello-p2]
+group_name = "navigli-portello"
+begin_date = 2024-06-11T22:00:00
+uuid = "f3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+type = "parking"
+points_spacing = "PT1M"
+generation_delay = "PT1S"
+latitude = 45.409991
+longitude = 11.8891664
+
+[sensors.navigli-portello-p3]
+group_name = "navigli-portello"
+begin_date = 2024-06-11T22:00:00
+uuid = "a3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+type = "parking"
+points_spacing = "PT1M"
+generation_delay = "PT1S"
+latitude = 45.4099449
+longitude = 11.8895423
+
+[sensors.navigli-portello-p4]
+group_name = "navigli-portello"
+begin_date = 2024-06-11T22:00:00
+uuid = "d3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+type = "parking"
+points_spacing = "PT1M"
+generation_delay = "PT1S"
+latitude = 45.4098889
+longitude = 11.8899313
