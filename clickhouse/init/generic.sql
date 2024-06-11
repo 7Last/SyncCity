@@ -9,6 +9,33 @@ create table sensors
 ) engine = MergeTree()
       order by insertion_timestamp;
 
+create materialized view air_quality_sensor_mv to sensors
+as
+select sensor_name,
+       'air_quality' as type,
+       timestamp           as last_message,
+       latitude,
+       longitude
+from sensors.air_quality;
+
+create materialized view parking_sensor_mv to sensors
+as
+select sensor_name,
+       'parking' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.parking;
+
+create materialized view recycling_points_sensor_mv to sensors
+as
+select sensor_name,
+       'recycling_points' as type,
+       timestamp           as last_message,
+       latitude,
+       longitude
+from sensors.recycling_points;
+
 create materialized view temperatures_sensor_mv to sensors
 as
 select sensor_name,
@@ -26,21 +53,3 @@ select sensor_name,
        latitude,
        longitude
 from sensors.traffic;
-
-create materialized view recycling_points_sensor_mv to sensors
-as
-select sensor_name,
-       'recycling_points' as type,
-       timestamp           as last_message,
-       latitude,
-       longitude
-from sensors.recycling_points;
-
-create materialized view air_quality_sensor_mv to sensors
-as
-select sensor_name,
-       'air_quality' as type,
-       timestamp           as last_message,
-       latitude,
-       longitude
-from sensors.air_quality;

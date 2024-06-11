@@ -1,6 +1,6 @@
 import logging as log
 
-import kafka3 as kafka
+import kafka
 
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
