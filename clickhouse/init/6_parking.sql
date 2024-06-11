@@ -28,7 +28,7 @@ CREATE TABLE sensors.parking
 -- FROM sensors.parking
 -- GROUP BY sensor_name, date;
 --
--- -- Weekly occupancy
+-- -- Weekly occupied
 -- CREATE TABLE sensors.parking_weekly
 -- (
 --     sensor_name         String,
@@ -46,7 +46,7 @@ CREATE TABLE sensors.parking
 -- FROM sensors.parking
 -- GROUP BY sensor_name, date;
 --
--- -- Daily occupancy
+-- -- Daily occupied
 -- CREATE TABLE sensors.parking_daily
 -- (
 --     sensor_name         String,
