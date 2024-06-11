@@ -1,7 +1,6 @@
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Iterable
-from uuid import UUID
 
 from math import pi, sin
 
@@ -10,16 +9,6 @@ from ..models.raw_data.air_quality_raw_data import AirQualityRawData
 
 
 class AirQualitySimulator(Simulator):
-
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 points_spacing: timedelta, latitude: float, longitude: float,
-                 generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None,
-                 limit: int = None) -> None:
-        super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
-                         points_spacing=points_spacing, latitude=latitude,
-                         generation_delay=generation_delay, longitude=longitude,
-                         begin_date=begin_date, limit=limit)
 
     def stream(self) -> Iterable[AirQualityRawData]:
         o3_coefficient = random.uniform(-50, 50)

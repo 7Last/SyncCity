@@ -1,41 +1,32 @@
+import logging as log
 import threading
 import zoneinfo
 from abc import ABC, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Iterable
-from uuid import UUID
-import logging as log
 
+from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.raw_data import RawData
 
 
 class Simulator(ABC):
 
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 points_spacing: timedelta, latitude: float, longitude: float,
-                 limit: int = None, generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None) -> None:
-        """Simulator class that simulates raw data from sensors
-        :param generation_delay: time to wait between the generation
-        of a point and the next one
-        :param points_spacing: how spaced in time are the data points
-        :param limit: maximum number of values to generate
-        :param begin_date: Date to start generating data, if None, now is assumed
-        """
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
 
         if not sensor_name or sensor_name == '':
             raise ValueError('sensor_name cannot be empty')
 
         self.sensor_name = sensor_name
-        self.sensor_uuid = sensor_uuid
-        self.points_spacing = points_spacing
-        self.limit = limit
-        self.latitude = latitude
-        self.longitude = longitude
+        self.sensor_uuid = config.sensor_uuid
+        self.group_id = config.group_id
+        self.points_spacing = config.points_spacing
+        self.limit = config.limit
+        self.latitude = config.latitude
+        self.longitude = config.longitude
         self.running = False
-        self.generation_delay = generation_delay
+        self.generation_delay = config.generation_delay
         rome = zoneinfo.ZoneInfo('Europe/Rome')
-        self.timestamp = begin_date or datetime.now(tz=rome)
+        self.timestamp = config.begin_date or datetime.now(tz=rome)
         self._event = threading.Event()
 
     def start(self) -> None:

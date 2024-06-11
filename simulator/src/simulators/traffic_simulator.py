@@ -1,7 +1,5 @@
 import random
-from datetime import datetime, timedelta
 from typing import Iterable
-from uuid import UUID
 
 from math import e, pi, sqrt
 
@@ -12,16 +10,6 @@ from ..models.raw_data.traffic_raw_data import TrafficRawData
 class TrafficSimulator(Simulator):
     _SPEED_MULTIPLICATIVE_FACTOR = 100
     _VEHICLES_MULTIPLICATIVE_FACTOR = 200
-
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 latitude: float, longitude: float,
-                 points_spacing: timedelta, limit: int = None,
-                 generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None) -> None:
-        super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
-                         points_spacing=points_spacing,
-                         generation_delay=generation_delay, limit=limit,
-                         begin_date=begin_date, latitude=latitude, longitude=longitude)
 
     def stream(self) -> Iterable[TrafficRawData]:
         while self.limit != 0 and self.running:

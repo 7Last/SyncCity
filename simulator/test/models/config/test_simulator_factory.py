@@ -12,7 +12,7 @@ class TestSimulatorFactory(unittest.TestCase):
         sensors = {
             "sensor1": {
                 "type": "temperature",
-                "uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
+                "sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
                 "generation_delay": "PT1S",
                 "points_spacing": "PT2S",
                 "latitude": 0,
@@ -21,7 +21,7 @@ class TestSimulatorFactory(unittest.TestCase):
             },
             "sensor2": {
                 "type": "traffic",
-                "uuid": "456a08e8-57aa-4592-a89a-c292f26848c8",
+                "sensor_uuid": "456a08e8-57aa-4592-a89a-c292f26848c8",
                 "generation_delay": "PT6S",
                 "points_spacing": "PT7S",
                 "latitude": 0,
@@ -58,7 +58,7 @@ class TestSimulatorFactory(unittest.TestCase):
         sensors = {
             "sensor1": {
                 "type": "not_implemented",
-                "uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
+                "sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
                 "generation_delay": "PT1S",
                 "points_spacing": "PT2S",
                 "latitude": 0,

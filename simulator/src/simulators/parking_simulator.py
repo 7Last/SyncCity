@@ -1,23 +1,11 @@
 import random
-from datetime import datetime, timedelta
 from typing import Iterable
-from uuid import UUID
 
 from .simulator import Simulator
 from ..models.raw_data.parking_raw_data import ParkingRawData
 
 
 class ParkingSimulator(Simulator):
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 latitude: float, longitude: float,
-                 points_spacing: timedelta, limit: int = None,
-                 generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None) -> None:
-        super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
-                         points_spacing=points_spacing,
-                         generation_delay=generation_delay, limit=limit,
-                         begin_date=begin_date, latitude=latitude, longitude=longitude)
-
     def stream(self) -> Iterable[ParkingRawData]:
         while self.limit != 0 and self.running:
             is_occupied = self._generate_occupancy()

@@ -14,11 +14,12 @@ class SensorConfig:
         Represents the schema for the sensor configuration
         :param config: dictionary with the configuration for a single sensor
         """
-        self.uuid = UUID(config.get('uuid'))
+        self.sensor_uuid = UUID(config.get('uuid'))
         self.limit = config.get('limit') or None
         self.begin_date = config.get('begin_date') or None
         self.latitude = config.get('latitude')
         self.longitude = config.get('longitude')
+        self.group_id = config.get('group_id') or None
 
         generation_delay = config.get('generation_delay') or None
         points_spacing = config.get('points_spacing')
