@@ -19,7 +19,7 @@ def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
         yield _simulator_factory(sensor_name, sensor_config)
 
 
-def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
+def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator: # noqa: PLR0911
     """
     Factory method to create the _simulators based on the configuration
     """
