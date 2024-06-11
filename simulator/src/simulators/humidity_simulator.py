@@ -33,8 +33,8 @@ class HumiditySimulator(Simulator):
 
             if self.limit is not None:
                 self.limit -= 1
-            self.timestamp += self.frequency
-            self._event.wait(self.delay.total_seconds())
+            self.timestamp += self.points_spacing
+            self._event.wait(self.generation_delay.total_seconds())
 
 
 def _humidity_value(timestamp: datetime) -> float:
