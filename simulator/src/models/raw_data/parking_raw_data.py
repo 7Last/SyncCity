@@ -7,10 +7,10 @@ from .raw_data import RawData
 
 class ParkingRawData(RawData):
 
-    def __init__(self, *, is_occupied: bool, latitude: float,
+    def __init__(self, *, is_occupied: bool, latitude: float, group_name: str | None,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now()) -> None:
-        super().__init__(latitude=latitude, longitude=longitude,
+        super().__init__(latitude=latitude, longitude=longitude, group_name=group_name,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp)
         self.is_occupied = is_occupied

@@ -15,6 +15,7 @@ class SerializerVisitor:
         return {
             "sensor_name": raw_data.sensor_name,
             "sensor_uuid": str(raw_data.sensor_uuid),
+            "group_name": raw_data.group_name,
             "latitude": raw_data.latitude,
             "longitude": raw_data.longitude,
             "timestamp": raw_data.timestamp.isoformat(),

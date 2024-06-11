@@ -29,6 +29,13 @@
     {
       "name": "avg_speed",
       "type": "float"
+    },
+    {
+      "name": "group_name",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   ]
 }

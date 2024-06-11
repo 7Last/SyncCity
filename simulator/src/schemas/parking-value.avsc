@@ -25,6 +25,13 @@
     {
       "name": "is_occupied",
       "type": "boolean"
+    },
+    {
+      "name": "group_name",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   ]
 }

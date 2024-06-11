@@ -29,6 +29,7 @@ class AirQualitySimulator(Simulator):
                 sensor_uuid=self.sensor_uuid,
                 timestamp=self.timestamp,
                 sensor_name=self.sensor_name,
+                group_name=self.group_name,
             )
 
             if self.limit is not None:

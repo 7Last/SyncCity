@@ -19,7 +19,7 @@ class SensorConfig:
         self.begin_date = config.get('begin_date') or None
         self.latitude = config.get('latitude')
         self.longitude = config.get('longitude')
-        self.group_id = config.get('group_id') or None
+        self.group_name = config.get('group_name') or None
 
         generation_delay = config.get('generation_delay') or None
         points_spacing = config.get('points_spacing')

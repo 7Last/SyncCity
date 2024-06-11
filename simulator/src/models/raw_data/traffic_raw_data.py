@@ -6,7 +6,7 @@ from .raw_data import RawData
 
 
 class TrafficRawData(RawData):
-    def __init__(self, *, vehicles: int, avg_speed: float,
+    def __init__(self, *, vehicles: int, avg_speed: float, group_name: str | None,
                  latitude: float, longitude: float, sensor_uuid: UUID,
                  sensor_name: str, timestamp: datetime = datetime.now()) -> None:
         """
@@ -16,7 +16,7 @@ class TrafficRawData(RawData):
         """
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
-                         timestamp=timestamp)
+                         timestamp=timestamp, group_name=group_name)
         self.vehicles = vehicles
         self.avg_speed = avg_speed
 

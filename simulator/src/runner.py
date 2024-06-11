@@ -19,14 +19,18 @@ class Runner:
 
         try:
             for item in simulator.stream():
-                self._producer.produce(item)
+                produced = self._producer.produce(item)
+                if not produced:
+                    simulator.stop()
+                    log.info(f'Stopping {simulator.sensor_name}')
         except Exception as e:
             log.exception('Error while producing data', e)
 
     def run(self) -> None:
         try:
             log.debug("Creating thread pool with %d workers", len(self._simulators))
-            with concurrent.ThreadPoolExecutor(max_workers=25, thread_name_prefix='simulator') as pool:
+            with concurrent.ThreadPoolExecutor(max_workers=25,
+                                               thread_name_prefix='simulator') as pool:
                 pool.map(self._callback, self._simulators)
         except KeyboardInterrupt:
             log.info('Received shutdown signal, gracefully stopping...')

@@ -18,7 +18,7 @@ class Simulator(ABC):
 
         self.sensor_name = sensor_name
         self.sensor_uuid = config.sensor_uuid
-        self.group_id = config.group_id
+        self.group_name = config.group_name
         self.points_spacing = config.points_spacing
         self.limit = config.limit
         self.latitude = config.latitude

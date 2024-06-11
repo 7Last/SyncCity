@@ -43,6 +43,7 @@ class TrafficSimulator(Simulator):
                 timestamp=self.timestamp,
                 sensor_uuid=self.sensor_uuid,
                 sensor_name=self.sensor_name,
+                group_name=self.group_name,
             )
 
             if self.limit is not None:

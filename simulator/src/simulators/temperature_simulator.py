@@ -1,7 +1,6 @@
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Iterable
-from uuid import UUID
 
 from math import pi, sin
 
@@ -19,6 +18,7 @@ class TemperatureSimulator(Simulator):
                 latitude=self.latitude,
                 longitude=self.longitude,
                 timestamp=self.timestamp,
+                group_name=self.group_name,
             )
 
             if self.limit is not None:

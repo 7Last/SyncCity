@@ -2,6 +2,7 @@ CREATE TABLE sensors.parking
 (
     sensor_uuid UUID,
     sensor_name String,
+    group_name Nullable(String) default null,
     timestamp   DateTime64,
     is_occupied BOOL,
     latitude    Float64,
@@ -20,7 +21,7 @@ CREATE TABLE sensors.parking_5m
       ORDER BY (sensor_name, date);
 
 CREATE MATERIALIZED VIEW sensors.parking_5m_mv
-            TO sensors.parking_5m AS
+    TO sensors.parking_5m AS
 SELECT sensor_name,
        toStartOfFiveMinutes(timestamp) AS date,
        avg(is_occupied)                AS avg_occupancy

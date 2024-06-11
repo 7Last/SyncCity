@@ -3,8 +3,8 @@ import os
 
 import toml
 
-from simulator.src.models.config.sensor_config import SensorConfig
-from simulator.src.models.config.simulator_factory import SimulatorFactory
+from src.models.config.sensor_config import SensorConfig
+from src.models.config.simulator_factory import SimulatorFactory
 from src.models.config.env_config import EnvConfig
 from src.producers.kafka_producer import KafkaProducer
 from src.runner import Runner
