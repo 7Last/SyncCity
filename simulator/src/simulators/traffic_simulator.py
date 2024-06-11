@@ -1,8 +1,9 @@
 import random
 from datetime import datetime, timedelta
-from math import e, pi, sqrt
 from typing import Iterable
 from uuid import UUID
+
+from math import e, pi, sqrt
 
 from .simulator import Simulator
 from ..models.raw_data.traffic_raw_data import TrafficRawData
@@ -58,8 +59,11 @@ class TrafficSimulator(Simulator):
 
             if self.limit is not None:
                 self.limit -= 1
-            self.timestamp += self.frequency
-            self._event.wait(self.delay.total_seconds())
+            self.timestamp += self.points_spacing
+            self._event.wait(self.generation_delay.total_seconds())
+
+    def __str__(self) -> str:
+        return f'{self.__class__.__name__} {self.__dict__}'
 
 
 def _multimodal_gauss_value(x: float, modes: list[tuple[float, float]]) -> float:

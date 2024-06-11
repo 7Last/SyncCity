@@ -9,5 +9,5 @@ class SerializerStrategy(ABC):
         self._visitor = SerializerVisitor()
 
     @abstractmethod
-    def serialize(self, data: RawData) -> any:
+    def serialize_value(self, data: RawData) -> any:
         pass

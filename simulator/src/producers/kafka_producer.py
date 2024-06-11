@@ -1,6 +1,6 @@
 import logging as log
 
-import kafka
+import kafka3 as kafka
 
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
@@ -19,7 +19,7 @@ class KafkaProducer(ProducerStrategy):
         )
 
     def produce(self, data: RawData) -> None:
-        serialized = self._serializer.serialize(data)
+        serialized = self._serializer.serialize_value(data)
         log.info(f'Producing data to topic {data.topic}: {data}')
         self._producer.send(data.topic, value=serialized)
         self._producer.flush()

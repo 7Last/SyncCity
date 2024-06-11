@@ -7,7 +7,7 @@ from .simulators.simulator import Simulator
 
 
 class Runner:
-    def __init__(self, *, simulators: list[Simulator], producer: ProducerStrategy)\
+    def __init__(self, *, simulators: list[Simulator], producer: ProducerStrategy) \
             -> None:
         self._simulators = simulators
         self._producer = producer
@@ -26,8 +26,8 @@ class Runner:
     def run(self) -> None:
         try:
             log.debug("Creating thread pool with %d workers", len(self._simulators))
-            with concurrent.ThreadPoolExecutor() as executor:
-                executor.map(self._callback, self._simulators)
+            with concurrent.ThreadPoolExecutor(thread_name_prefix='simulator') as pool:
+                pool.map(self._callback, self._simulators)
         except KeyboardInterrupt:
             log.info('Received shutdown signal, gracefully stopping...')
             for simulator in self._simulators:

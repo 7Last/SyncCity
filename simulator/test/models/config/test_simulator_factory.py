@@ -17,7 +17,7 @@ class TestSimulatorFactory(unittest.TestCase):
                 "points_spacing": "PT2S",
                 "latitude": 0,
                 "longitude": 0,
-                "begin_date": "2022-01-01T00:00:00",
+                "begin_date": datetime(2022, 1, 1),
             },
             "sensor2": {
                 "type": "traffic",
@@ -26,11 +26,11 @@ class TestSimulatorFactory(unittest.TestCase):
                 "points_spacing": "PT7S",
                 "latitude": 0,
                 "longitude": 0,
-                "begin_date": "2022-02-02T00:00:00",
+                "begin_date": datetime(2022, 2, 2),
             },
         }
 
-        simulators = list(simulators_generator(sensors))
+        simulators = sorted(simulators_generator(sensors), key=lambda x: x.sensor_name)
         expected = [
             TemperatureSimulator(
                 sensor_name="sensor1",
