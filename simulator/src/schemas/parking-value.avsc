@@ -24,7 +24,7 @@
     },
     {
       "name": "is_occupied",
-      "type": "int"
+      "type": "boolean"
     }
   ]
 }

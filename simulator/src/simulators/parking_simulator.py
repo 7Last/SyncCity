@@ -21,7 +21,7 @@ class ParkingSimulator(Simulator):
     def stream(self) -> Iterable[ParkingRawData]:
         while self.limit != 0 and self.running:
             is_occupied = self._generate_occupancy()
-            
+
             yield ParkingRawData(
                 is_occupied=is_occupied,
                 latitude=self.latitude,
@@ -36,18 +36,18 @@ class ParkingSimulator(Simulator):
             self.timestamp += self.points_spacing
             self._event.wait(self.generation_delay.total_seconds())
 
-    def _generate_occupancy(self) -> int:
+    def _generate_occupancy(self) -> bool:
         """
         Generate a realistic occupancy value (0 or 1) based on the time of day.
         Assume higher occupancy during business hours and lower during night hours.
         """
         hour = self.timestamp.hour
         if 8 <= hour < 18:  # Peak business hours
-            return 1 if random.random() < 0.7 else 0  # 70% chance occupied
-        elif 18 <= hour < 22:  # Evening hours
-            return 1 if random.random() < 0.5 else 0  # 50% chance occupied
-        else:  # Night hours
-            return 1 if random.random() < 0.2 else 0  # 20% chance occupied
+            return random.random() < 0.7  # 70% chance occupied
+        if 18 <= hour < 22:  # Evening hours
+            return random.random() < 0.5  # 50% chance occupied
+        # Night hours
+        return random.random() < 0.2  # 20% chance occupied
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

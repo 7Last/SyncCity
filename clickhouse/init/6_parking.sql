@@ -3,7 +3,7 @@ CREATE TABLE sensors.parking
     sensor_uuid UUID,
     sensor_name String,
     timestamp   DateTime64,
-    is_occupied UInt8,
+    is_occupied BOOL,
     latitude    Float64,
     longitude   Float64
 ) ENGINE = MergeTree()
