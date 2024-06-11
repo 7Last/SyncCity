@@ -19,7 +19,7 @@ def simulators_generator(sensors: Dict[str, any]) -> Iterable[Simulator]:
         yield _simulator_factory(sensor_name, sensor_config)
 
 
-def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
+def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator: # noqa: C901
     """
     Factory method to create the _simulators based on the configuration
     """
@@ -79,5 +79,3 @@ def _simulator_factory(sensor_name: str, config: SensorConfig) -> Simulator:
                 begin_date=config.begin_date,
                 limit=config.limit,
             )
-        case _:
-            raise NotImplementedError(f'No factory for {type}')
