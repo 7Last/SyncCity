@@ -1,0 +1,178 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 7,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showLayercontrol": true,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "cluster": true,
+              "clusterDistance": 19,
+              "clusterMinDistance": 0,
+              "clusterValue": "size",
+              "color": {
+                "fixed": "purple"
+              },
+              "enableGradient": false,
+              "enableShadow": false,
+              "fillOpacity": 1,
+              "iconSize": 9,
+              "pinShape": "marker",
+              "shape": "circle",
+              "showLegend": true,
+              "showPin": false,
+              "size": {
+                "fixed": 5,
+                "max": 15,
+                "min": 2
+              }
+            },
+            "displayProperties": [
+              "latitude",
+              "longitude"
+            ],
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Parking",
+            "query": "A",
+            "titleField": "sensor_name",
+            "type": "markers"
+          }
+        ],
+        "view": {
+          "id": "auto",
+          "lat": 45.409555,
+          "lon": 11.876079,
+          "zoom": 14
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "SELECT distinct latitude, longitude, sensor_name\nfrom sensors\nwhere type = 'parking'",
+          "refId": "A"
+        }
+      ],
+      "title": "Location",
+      "type": "orchestracities-map-panel"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "piazza-insurrezione-p4",
+          "value": "piazza-insurrezione-p4"
+        },
+        "definition": "SELECT DISTINCT sensor_name\nFROM default.sensors\nWHERE type = 'parking'",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Sensor name",
+        "multi": false,
+        "name": "sensor_name",
+        "options": [],
+        "query": "SELECT DISTINCT sensor_name\nFROM default.sensors\nWHERE type = 'parking'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Parking",
+  "uid": "e801a019-4a4c-434d-9f3e-70d252a63362",
+  "version": 4,
+  "weekStart": ""
+}
