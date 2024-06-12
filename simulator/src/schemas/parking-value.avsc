@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Traffic",
+  "name": "Parking",
   "fields": [
     {
       "name": "sensor_uuid",
@@ -23,12 +23,8 @@
       "type": "string"
     },
     {
-      "name": "vehicles",
-      "type": "int"
-    },
-    {
-      "name": "avg_speed",
-      "type": "float"
+      "name": "is_occupied",
+      "type": "boolean"
     },
     {
       "name": "group_name",

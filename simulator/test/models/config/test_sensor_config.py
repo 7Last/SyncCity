@@ -1,7 +1,8 @@
 import unittest
-import isodate.isoerror
 from datetime import datetime, timedelta
 from uuid import UUID
+
+import isodate.isoerror
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.sensor_type import SensorType
@@ -19,7 +20,8 @@ class TestSensorConfig(unittest.TestCase):
             "generation_delay": "PT1H",
             "points_spacing": "PT1H",
         })
-        self.assertEqual(config.uuid, UUID("00000000-0000-0000-0000-000000000000"))
+        self.assertEqual(config.sensor_uuid,
+                         UUID("00000000-0000-0000-0000-000000000000"))
         self.assertEqual(config.limit, 10)
         self.assertEqual(config.begin_date, datetime(2024, 1, 1, 0, 0, 0))
         self.assertEqual(config.latitude, 0.0)

@@ -1,50 +1,41 @@
+import logging as log
 import threading
 import zoneinfo
 from abc import ABC, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Iterable
-from uuid import UUID
-import logging as log
 
+from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.raw_data import RawData
 
 
 class Simulator(ABC):
 
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 points_spacing: timedelta, latitude: float, longitude: float,
-                 limit: int = None, generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None) -> None:
-        """Simulator class that simulates raw data from sensors
-        :param generation_delay: time to wait between the generation
-        of a point and the next one
-        :param points_spacing: how spaced in time are the data points
-        :param limit: maximum number of values to generate
-        :param begin_date: Date to start generating data, if None, now is assumed
-        """
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
 
         if not sensor_name or sensor_name == '':
             raise ValueError('sensor_name cannot be empty')
 
         self.sensor_name = sensor_name
-        self.sensor_uuid = sensor_uuid
-        self.points_spacing = points_spacing
-        self.limit = limit
-        self.latitude = latitude
-        self.longitude = longitude
-        self.running = False
-        self.generation_delay = generation_delay
+        self._sensor_uuid = config.sensor_uuid
+        self._group_name = config.group_name
+        self._points_spacing = config.points_spacing
+        self._limit = config.limit
+        self._latitude = config.latitude
+        self._longitude = config.longitude
+        self._running = False
+        self._generation_delay = config.generation_delay
         rome = zoneinfo.ZoneInfo('Europe/Rome')
-        self.timestamp = begin_date or datetime.now(tz=rome)
+        self._timestamp = config.begin_date or datetime.now(tz=rome)
         self._event = threading.Event()
 
     def start(self) -> None:
-        self.running = True
+        self._running = True
 
     def stop(self) -> None:
         self._event.set()
         log.debug(f'Emitted event to {self.sensor_name}')
-        self.running = False
+        self._running = False
 
     @abstractmethod
     def stream(self) -> Iterable[RawData]:
@@ -55,26 +46,26 @@ class Simulator(ABC):
             return False
 
         return self.sensor_name == other.sensor_name and \
-            self.sensor_uuid == other.sensor_uuid and \
-            self.points_spacing == other.points_spacing and \
-            self.limit == other.limit and \
-            self.latitude == other.latitude and \
-            self.longitude == other.longitude and \
-            self.running == other.running and \
-            self.generation_delay == other.generation_delay and \
-            self.timestamp == other.timestamp
+            self._sensor_uuid == other._sensor_uuid and \
+            self._points_spacing == other._points_spacing and \
+            self._limit == other._limit and \
+            self._latitude == other._latitude and \
+            self._longitude == other._longitude and \
+            self._running == other._running and \
+            self._generation_delay == other._generation_delay and \
+            self._timestamp == other._timestamp
 
     def __hash__(self) -> int:
         return hash((
             self.sensor_name,
-            self.sensor_uuid,
-            self.points_spacing,
-            self.limit,
-            self.latitude,
-            self.longitude,
-            self.running,
-            self.generation_delay,
-            self.timestamp,
+            self._sensor_uuid,
+            self._points_spacing,
+            self._limit,
+            self._latitude,
+            self._longitude,
+            self._running,
+            self._generation_delay,
+            self._timestamp,
         ))
 
     def __str__(self) -> str:

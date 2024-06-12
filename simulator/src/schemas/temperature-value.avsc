@@ -25,6 +25,13 @@
     {
       "name": "value",
       "type": "float"
+    },
+    {
+      "name": "group_name",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   ]
 }

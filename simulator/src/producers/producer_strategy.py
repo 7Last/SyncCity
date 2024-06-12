@@ -9,7 +9,7 @@ class ProducerStrategy(ABC):
         self._serializer = serializer
 
     @abstractmethod
-    def produce(self, data: RawData) -> None:
+    def produce(self, data: RawData) -> bool:
         pass
 
     @abstractmethod

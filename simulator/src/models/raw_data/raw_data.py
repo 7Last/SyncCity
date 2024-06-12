@@ -6,12 +6,14 @@ from uuid import UUID
 
 class RawData(ABC):
     def __init__(self, *, sensor_name: str, latitude: float, longitude: float,
-                 sensor_uuid: UUID, timestamp: datetime = datetime.now()) -> None:
+                 group_name: str | None, sensor_uuid: UUID,
+                 timestamp: datetime = datetime.now()) -> None:
         self.sensor_name = sensor_name
         self.latitude = latitude
         self.longitude = longitude
         self.sensor_uuid = sensor_uuid
         self.timestamp = timestamp
+        self.group_name = group_name
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

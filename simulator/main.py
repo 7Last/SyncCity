@@ -3,9 +3,9 @@ import os
 
 import toml
 
-from src.producers.kafka_producer import KafkaProducer
 from src.models.config.env_config import EnvConfig
-from src.models.config.simulator_factory import simulators_generator
+from src.models.config.simulator_factory import build_simulators
+from src.producers.kafka_producer import KafkaProducer
 from src.runner import Runner
 from src.serializers.avro_serializer import AvroSerializer
 
@@ -33,7 +33,7 @@ def main() -> None:
     )
 
     runner = Runner(
-        simulators=list(simulators_generator(sensors_config)),
+        simulators=build_simulators(sensors_config),
         producer=producer,
     )
 

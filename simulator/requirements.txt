@@ -4,11 +4,12 @@ certifi==2024.6.2
 charset-normalizer==3.3.2
 confluent_avro==1.8.0
 coverage==7.5.1
+dill==0.3.8
 fastavro==1.9.4
 idna==3.7
 isodate==0.6.1
 isort==5.13.2
-kafka-python3==3.0.0
+kafka-python-ng==2.2.2
 mccabe==0.7.0
 pip-autoremove==0.10.0
 platformdirs==4.2.0

@@ -24,6 +24,7 @@ class TestSerializerVisitor(unittest.TestCase):
     def test_serialize_temperature_raw_data(self) -> None:
         temperature_raw_data = TemperatureRawData(
             sensor_name="sensor_name",
+            group_name="group_name",
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
             latitude=0.0,
             longitude=0.0,
@@ -34,18 +35,43 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
+            "group_name": "group_name",
             "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
             "latitude": 0.0,
             "longitude": 0.0,
             "timestamp": "2024-01-01T00:00:00+00:00",
             "value": 0.0,
         }
-        self.assertEqual(visitor.serialize_temperature_raw_data(temperature_raw_data),
+        self.assertEqual(visitor.visit_temperature_raw_data(temperature_raw_data),
+                         expected)
+
+    def test_serialize_temperature_raw_data_without_group(self) -> None:
+        temperature_raw_data = TemperatureRawData(
+            sensor_name="sensor_name",
+            sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
+            latitude=0.0,
+            longitude=0.0,
+            timestamp=self.datetime,
+            value=0.0,
+        )
+        visitor = SerializerVisitor()
+
+        expected = {
+            "sensor_name": "sensor_name",
+            "group_name": None,
+            "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "timestamp": "2024-01-01T00:00:00+00:00",
+            "value": 0.0,
+        }
+        self.assertEqual(visitor.visit_temperature_raw_data(temperature_raw_data),
                          expected)
 
     def test_serialize_traffic_raw_data(self) -> None:
         traffic_raw_data = TrafficRawData(
             sensor_name="sensor_name",
+            group_name="group_name",
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
             latitude=0.0,
             longitude=0.0,
@@ -57,6 +83,7 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
+            "group_name": "group_name",
             "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
             "latitude": 0.0,
             "longitude": 0.0,
@@ -64,12 +91,13 @@ class TestSerializerVisitor(unittest.TestCase):
             "vehicles": 0,
             "avg_speed": 0.0,
         }
-        self.assertEqual(visitor.serialize_traffic_raw_data(traffic_raw_data),
+        self.assertEqual(visitor.visit_traffic_raw_data(traffic_raw_data),
                          expected)
 
     def test_serialize_recycling_point_raw_data(self) -> None:
         recycling_point_raw_data = RecyclingPointRawData(
             sensor_name="sensor_name",
+            group_name="group_name",
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
             latitude=0.0,
             longitude=0.0,
@@ -80,6 +108,7 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
+            "group_name": "group_name",
             "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
             "latitude": 0.0,
             "longitude": 0.0,
@@ -87,5 +116,5 @@ class TestSerializerVisitor(unittest.TestCase):
             "filling": 0.0,
         }
         self.assertEqual(
-            visitor.serialize_recycling_point_raw_data(recycling_point_raw_data),
+            visitor.visit_recycling_point_raw_data(recycling_point_raw_data),
             expected)
