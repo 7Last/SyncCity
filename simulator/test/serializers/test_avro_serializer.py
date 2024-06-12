@@ -1,5 +1,6 @@
 import os
 import unittest.mock
+import zoneinfo
 from datetime import datetime
 from unittest.mock import MagicMock
 from uuid import UUID
@@ -70,7 +71,8 @@ class TestAvroSerializer(unittest.TestCase):
             sensor_uuid=UUID("123e4567-e89b-12d3-a456-426614174000"),
             latitude=0.0,
             longitude=0.0,
-            timestamp=datetime(year=2024, month=1, day=1, hour=0, minute=0, second=0),
+            timestamp=datetime(year=2024, month=1, day=1, hour=0, minute=0, second=0,
+                               tzinfo=zoneinfo.ZoneInfo("Europe/Rome")),
             value=0.0,
         )
 
