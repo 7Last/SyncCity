@@ -3,8 +3,6 @@ from datetime import datetime
 from typing import Dict
 from uuid import UUID
 
-from ...serializers.visitor import Visitor
-
 
 class RawData(ABC):
     def __init__(self, *, sensor_name: str, latitude: float, longitude: float,
@@ -21,7 +19,7 @@ class RawData(ABC):
         return f'{self.__class__.__name__} {self.__dict__}'
 
     @abstractmethod
-    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         pass
 
     @property

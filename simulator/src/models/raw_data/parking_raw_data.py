@@ -3,7 +3,6 @@ from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
-from ...serializers.visitor import Visitor
 
 
 class ParkingRawData(RawData):
@@ -16,7 +15,7 @@ class ParkingRawData(RawData):
                          timestamp=timestamp)
         self.is_occupied = is_occupied
 
-    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.visit_parking_raw_data(self)
 
     @property
