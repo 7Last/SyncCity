@@ -63,7 +63,7 @@ class TestParkingSimulator(unittest.TestCase):
     @unittest.mock.patch(
         'simulator.src.simulators.parking_simulator.ParkingSimulator._generate_next_occupancy_change',
     )
-    def test_stream(self, mock_next_change: MagicMock, _) -> None:
+    def test_stream(self, mock_next_change: MagicMock, _: any) -> None:
         simulator = ParkingSimulator(
             sensor_name='test',
             config=SensorConfig({
