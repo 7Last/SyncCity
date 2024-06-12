@@ -10,14 +10,14 @@ from simulator.src.models.sensor_type import SensorType
 class TestSensorConfig(unittest.TestCase):
     def test_valid_config(self) -> None:
         config = SensorConfig({
-            "_sensor_uuid": "00000000-0000-0000-0000-000000000000",
-            "_limit": 10,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "limit": 10,
             "begin_date": datetime(2024, 1, 1, 0, 0, 0),
-            "_latitude": 0.0,
-            "_longitude": 0.0,
+            "latitude": 0.0,
+            "longitude": 0.0,
             "type": "TRAFFIC",
-            "_generation_delay": "PT1H",
-            "_points_spacing": "PT1H",
+            "generation_delay": "PT1H",
+            "points_spacing": "PT1H",
         })
         self.assertEqual(config.sensor_uuid, UUID("00000000-0000-0000-0000-000000000000"))
         self.assertEqual(config.limit, 10)
@@ -30,27 +30,27 @@ class TestSensorConfig(unittest.TestCase):
 
     def test_invalid_type(self) -> None:
         config = {
-            "_sensor_uuid": "00000000-0000-0000-0000-000000000000",
-            "_limit": 10,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "limit": 10,
             "begin_date": "2024-01-01T00:00:00",
-            "_latitude": 0.0,
-            "_longitude": 0.0,
+            "latitude": 0.0,
+            "longitude": 0.0,
             "type": "INVALID",
-            "_generation_delay": "PT1H",
-            "_points_spacing": "PT1H",
+            "generation_delay": "PT1H",
+            "points_spacing": "PT1H",
         }
         with self.assertRaises(KeyError):
             SensorConfig(config)
 
     def test_missing_type(self) -> None:
         config = {
-            "_sensor_uuid": "00000000-0000-0000-0000-000000000000",
-            "_limit": 10,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "limit": 10,
             "begin_date": "2024-01-01T00:00:00",
-            "_latitude": 0.0,
-            "_longitude": 0.0,
-            "_generation_delay": "PT1H",
-            "_points_spacing": "PT1H",
+            "latitude": 0.0,
+            "longitude": 0.0,
+            "generation_delay": "PT1H",
+            "points_spacing": "PT1H",
         }
         with self.assertRaisesRegex(
                 Exception,
@@ -60,14 +60,14 @@ class TestSensorConfig(unittest.TestCase):
 
     def test_invalid_points_spacing(self) -> None:
         config = {
-            "_sensor_uuid": "00000000-0000-0000-0000-000000000000",
-            "_limit": 10,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "limit": 10,
             "begin_date": "2024-01-01T00:00:00",
-            "_latitude": 0.0,
-            "_longitude": 0.0,
+            "latitude": 0.0,
+            "longitude": 0.0,
             "type": "TRAFFIC",
-            "_generation_delay": "PT1H",
-            "_points_spacing": "INVALID",
+            "generation_delay": "PT1H",
+            "points_spacing": "INVALID",
         }
 
         with self.assertRaises(isodate.isoerror.ISO8601Error):
@@ -75,14 +75,14 @@ class TestSensorConfig(unittest.TestCase):
 
     def test_invalid_generation_delay(self) -> None:
         config = {
-            "_sensor_uuid": "00000000-0000-0000-0000-000000000000",
-            "_limit": 10,
+            "uuid": "00000000-0000-0000-0000-000000000000",
+            "limit": 10,
             "begin_date": "2024-01-01T00:00:00",
-            "_latitude": 0.0,
-            "_longitude": 0.0,
+            "latitude": 0.0,
+            "longitude": 0.0,
             "type": "TRAFFIC",
-            "_generation_delay": "INVALID",
-            "_points_spacing": "PT1H",
+            "generation_delay": "INVALID",
+            "points_spacing": "PT1H",
         }
 
         with self.assertRaises(isodate.isoerror.ISO8601Error):

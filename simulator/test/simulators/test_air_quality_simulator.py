@@ -1,8 +1,9 @@
 import unittest
-from datetime import timedelta, datetime
+from datetime import datetime
 from unittest.mock import MagicMock
 from uuid import UUID
 
+from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
 from simulator.src.simulators.air_quality_simulator import AirQualitySimulator
 
@@ -12,21 +13,27 @@ class TestAirQualitySimulator(unittest.TestCase):
         with self.assertRaises(ValueError):
             AirQualitySimulator(
                 sensor_name='',
-                sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-                points_spacing=timedelta(seconds=1),
-                generation_delay=timedelta(seconds=1),
-                latitude=0,
-                longitude=0,
+                config=SensorConfig({
+                    'uuid': '00000000-0000-0000-0000-000000000000',
+                    'type': 'air_quality',
+                    'points_spacing': 'PT1H',
+                    'generation_delay': 'PT1H',
+                    'latitude': 0,
+                    'longitude': 0,
+                }),
             )
 
     def test_start(self) -> None:
         simulator = AirQualitySimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(seconds=1),
-            generation_delay=timedelta(seconds=1),
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'air_quality',
+                'points_spacing': 'PT1S',
+                'generation_delay': 'PT1S',
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
         self.assertEqual(simulator._running, False)
         simulator.start()
@@ -35,11 +42,14 @@ class TestAirQualitySimulator(unittest.TestCase):
     def test_stop(self) -> None:
         simulator = AirQualitySimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(seconds=0),
-            generation_delay=timedelta(seconds=0),
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'air_quality',
+                'points_spacing': 'PT1S',
+                'generation_delay': 'PT1S',
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
         simulator.start()
         self.assertEqual(simulator._running, True)
@@ -48,16 +58,18 @@ class TestAirQualitySimulator(unittest.TestCase):
 
     @unittest.mock.patch("random.uniform")
     def test_stream(self, mock_uniform: MagicMock) -> None:
-        self.maxDiff = None
         simulator = AirQualitySimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(hours=1),
-            generation_delay=timedelta(seconds=0),
-            begin_date=datetime(2024, 1, 1, 0, 0, 0),
-            limit=3,
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'air_quality',
+                'begin_date': datetime(2024, 1, 1),
+                'points_spacing': 'PT1H',
+                'generation_delay': 'PT0S',
+                'limit': 3,
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
 
         mock_uniform.return_value = 0

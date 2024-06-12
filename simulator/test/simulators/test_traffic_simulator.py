@@ -3,6 +3,7 @@ from datetime import timedelta, datetime
 from unittest.mock import patch, Mock
 from uuid import UUID
 
+from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.traffic_raw_data import TrafficRawData
 from simulator.src.simulators.traffic_simulator import TrafficSimulator
 
@@ -12,21 +13,27 @@ class TestTrafficSimulator(unittest.TestCase):
         with self.assertRaises(ValueError):
             TrafficSimulator(
                 sensor_name='',
-                sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-                points_spacing=timedelta(seconds=1),
-                generation_delay=timedelta(seconds=1),
-                latitude=0,
-                longitude=0,
+                config=SensorConfig({
+                    'uuid': '00000000-0000-0000-0000-000000000000',
+                    'type': 'traffic',
+                    'points_spacing': 'PT1H',
+                    'generation_delay': 'PT1H',
+                    'latitude': 0,
+                    'longitude': 0,
+                }),
             )
 
     def test_start(self) -> None:
         simulator = TrafficSimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(seconds=1),
-            generation_delay=timedelta(seconds=1),
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'traffic',
+                'points_spacing': 'PT1H',
+                'generation_delay': 'PT1H',
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
         self.assertEqual(simulator._running, False)
         simulator.start()
@@ -35,11 +42,14 @@ class TestTrafficSimulator(unittest.TestCase):
     def test_stop(self) -> None:
         simulator = TrafficSimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(seconds=0),
-            generation_delay=timedelta(seconds=0),
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'traffic',
+                'points_spacing': 'PT1H',
+                'generation_delay': 'PT1H',
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
         simulator.start()
         self.assertEqual(simulator._running, True)
@@ -50,13 +60,16 @@ class TestTrafficSimulator(unittest.TestCase):
     def test_stream(self, mock_uniform: Mock) -> None:
         simulator = TrafficSimulator(
             sensor_name='test',
-            sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
-            points_spacing=timedelta(hours=1),
-            generation_delay=timedelta(seconds=0),
-            begin_date=datetime(2024, 1, 1, 0, 0, 0),
-            limit=3,
-            latitude=0,
-            longitude=0,
+            config=SensorConfig({
+                'uuid': '00000000-0000-0000-0000-000000000000',
+                'type': 'traffic',
+                'limit': 3,
+                'points_spacing': 'PT1H',
+                'generation_delay': 'PT0S',
+                'begin_date': datetime(2024, 1, 1),
+                'latitude': 0,
+                'longitude': 0,
+            }),
         )
         mock_uniform.return_value = 0
         simulator.start()

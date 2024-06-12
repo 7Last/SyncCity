@@ -16,7 +16,7 @@ class TestTrafficRawData(unittest.TestCase):
             sensor_uuid=UUID("00000000-0000-0000-0000-000000000000"),
             latitude=0.0,
             longitude=0.0,
-            timestamp=self._timestamp,
+            timestamp=self.timestamp,
             vehicles=0,
             avg_speed=0,
         )
@@ -29,7 +29,7 @@ class TestTrafficRawData(unittest.TestCase):
             sensor_uuid=UUID("00000000-0000-0000-0000-000000000000"),
             latitude=0.0,
             longitude=0.0,
-            timestamp=self._timestamp,
+            timestamp=self.timestamp,
             vehicles=0,
             avg_speed=0,
         )

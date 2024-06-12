@@ -8,9 +8,10 @@ from ...serializers.visitor import Visitor
 
 class RecyclingPointRawData(RawData):
 
-    def __init__(self, *, filling: float, latitude: float, group_name: str | None,
-                 longitude: float, sensor_uuid: UUID, sensor_name: str,
-                 timestamp: datetime = datetime.now()) -> None:
+    def __init__(self, *, filling: float, latitude: float, longitude: float,
+                 sensor_uuid: UUID, sensor_name: str,
+                 timestamp: datetime = datetime.now(), group_name: str | None = None,
+                 ) -> None:
         """
         :param filling: filling value in percentage
         """

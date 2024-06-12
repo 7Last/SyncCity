@@ -31,7 +31,7 @@ class TestAvroSerializer(unittest.TestCase):
                 "name": "Temperature",
                 "fields": [
                     {
-                        "name": "_sensor_uuid",
+                        "name": "sensor_uuid",
                         "type": "string"
                     },
                     {
@@ -39,11 +39,11 @@ class TestAvroSerializer(unittest.TestCase):
                         "type": "string"
                     },
                     {
-                        "name": "_latitude",
+                        "name": "latitude",
                         "type": "double"
                     },
                     {
-                        "name": "_longitude",
+                        "name": "longitude",
                         "type": "double"
                     },
                     {
@@ -53,6 +53,13 @@ class TestAvroSerializer(unittest.TestCase):
                     {
                         "name": "value",
                         "type": "float"
+                    },
+                    {
+                        "name": "group_name",
+                        "type": [
+                            "null",
+                            "string"
+                        ]
                     }
                 ]
             }"""
@@ -72,7 +79,9 @@ class TestAvroSerializer(unittest.TestCase):
 
         magic_byte = b'\x00'
         schema_id_bytes = b'\x00\x00\x00\x01'
-        raw_bytes = b'H123e4567-e89b-12d3-a456-426614174000\x16sensor_name\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00&2024-01-01T00:00:00\x00\x00\x00\x00'  # noqa: E501
+        raw_bytes = (b'H123e4567-e89b-12d3-a456-426614174000\x16sensor_name\x00\x00'
+                     b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x0022023'
+                     b'-12-31T23:00:00+00:00\x00\x00\x00\x00\x00')
 
         expected = magic_byte + schema_id_bytes + raw_bytes
         self.assertEqual(serialized, expected)

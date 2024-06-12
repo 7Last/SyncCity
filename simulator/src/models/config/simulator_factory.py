@@ -8,6 +8,13 @@ from ...simulators.temperature_simulator import TemperatureSimulator
 from ...simulators.traffic_simulator import TrafficSimulator
 
 
+def build_simulators(sensors_config: dict[str, any]) -> list[Simulator]:
+    return [
+        SimulatorFactory.generate(name, SensorConfig(config)) for name, config
+        in sensors_config.items()
+    ]
+
+
 class SimulatorFactory:
     @staticmethod
     def generate(name: str, config: SensorConfig) -> Simulator:

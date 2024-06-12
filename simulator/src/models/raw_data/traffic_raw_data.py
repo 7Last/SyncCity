@@ -7,9 +7,10 @@ from ...serializers.visitor import Visitor
 
 
 class TrafficRawData(RawData):
-    def __init__(self, *, vehicles: int, avg_speed: float, group_name: str | None,
-                 latitude: float, longitude: float, sensor_uuid: UUID,
-                 sensor_name: str, timestamp: datetime = datetime.now()) -> None:
+    def __init__(self, *, vehicles: int, avg_speed: float, latitude: float,
+                 longitude: float, sensor_uuid: UUID, sensor_name: str,
+                 timestamp: datetime = datetime.now(),
+                 group_name: str | None = None) -> None:
         """
         :param vehicles: number of vehicles passing through the location
         :param avg_speed: average speed in km/h of the vehicles passing
