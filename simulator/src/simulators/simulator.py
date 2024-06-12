@@ -17,25 +17,25 @@ class Simulator(ABC):
             raise ValueError('sensor_name cannot be empty')
 
         self.sensor_name = sensor_name
-        self.sensor_uuid = config.sensor_uuid
-        self.group_name = config.group_name
-        self.points_spacing = config.points_spacing
-        self.limit = config.limit
-        self.latitude = config.latitude
-        self.longitude = config.longitude
-        self.running = False
-        self.generation_delay = config.generation_delay
+        self._sensor_uuid = config.sensor_uuid
+        self._group_name = config.group_name
+        self._points_spacing = config.points_spacing
+        self._limit = config.limit
+        self._latitude = config.latitude
+        self._longitude = config.longitude
+        self._running = False
+        self._generation_delay = config.generation_delay
         rome = zoneinfo.ZoneInfo('Europe/Rome')
-        self.timestamp = config.begin_date or datetime.now(tz=rome)
+        self._timestamp = config.begin_date or datetime.now(tz=rome)
         self._event = threading.Event()
 
     def start(self) -> None:
-        self.running = True
+        self._running = True
 
     def stop(self) -> None:
         self._event.set()
         log.debug(f'Emitted event to {self.sensor_name}')
-        self.running = False
+        self._running = False
 
     @abstractmethod
     def stream(self) -> Iterable[RawData]:
@@ -46,26 +46,26 @@ class Simulator(ABC):
             return False
 
         return self.sensor_name == other.sensor_name and \
-            self.sensor_uuid == other.sensor_uuid and \
-            self.points_spacing == other.points_spacing and \
-            self.limit == other.limit and \
-            self.latitude == other.latitude and \
-            self.longitude == other.longitude and \
-            self.running == other.running and \
-            self.generation_delay == other.generation_delay and \
-            self.timestamp == other.timestamp
+            self._sensor_uuid == other._sensor_uuid and \
+            self._points_spacing == other._points_spacing and \
+            self._limit == other._limit and \
+            self._latitude == other._latitude and \
+            self._longitude == other._longitude and \
+            self._running == other._running and \
+            self._generation_delay == other._generation_delay and \
+            self._timestamp == other._timestamp
 
     def __hash__(self) -> int:
         return hash((
             self.sensor_name,
-            self.sensor_uuid,
-            self.points_spacing,
-            self.limit,
-            self.latitude,
-            self.longitude,
-            self.running,
-            self.generation_delay,
-            self.timestamp,
+            self._sensor_uuid,
+            self._points_spacing,
+            self._limit,
+            self._latitude,
+            self._longitude,
+            self._running,
+            self._generation_delay,
+            self._timestamp,
         ))
 
     def __str__(self) -> str:

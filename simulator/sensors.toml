@@ -119,7 +119,7 @@ generation_delay = "PT1S"
 latitude = 45.4034159
 longitude = 11.8756551
 
-# !!! Parking sensors do not need points_spacing since they are event driven !!!
+# !!! Parking sensors do not need _points_spacing since they are event driven !!!
 [sensors.piazza-insurrezione-p1]
 group_name = "piazza-insurrezione"
 begin_date = 2024-06-11T22:00:00

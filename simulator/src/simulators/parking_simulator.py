@@ -14,31 +14,31 @@ class ParkingSimulator(Simulator):
         self._is_occupied = self._generate_occupancy()
 
     def stream(self) -> Iterable[ParkingRawData]:
-        while self.limit != 0 and self.running:
+        while self._limit != 0 and self._running:
 
             yield ParkingRawData(
                 is_occupied=self._is_occupied,
-                latitude=self.latitude,
-                longitude=self.longitude,
-                timestamp=self.timestamp,
-                sensor_uuid=self.sensor_uuid,
+                latitude=self._latitude,
+                longitude=self._longitude,
+                timestamp=self._timestamp,
+                sensor_uuid=self._sensor_uuid,
                 sensor_name=self.sensor_name,
-                group_name=self.group_name,
+                group_name=self._group_name,
             )
 
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp = self._generate_next_occupancy_change()
+            if self._limit is not None:
+                self._limit -= 1
+            self._timestamp = self._generate_next_occupancy_change()
             # Change the occupancy status
             self._is_occupied = not self._is_occupied
-            self._event.wait(self.generation_delay.total_seconds())
+            self._event.wait(self._generation_delay.total_seconds())
 
     def _generate_occupancy(self) -> bool:
         """
         Generate a realistic occupancy value (0 or 1) based on the time of day.
         Assume higher occupancy during business hours and lower during night hours.
         """
-        hour = self.timestamp.hour
+        hour = self._timestamp.hour
         if 8 <= hour < 18:  # Peak business hours
             return random.random() < 0.7  # 70% chance occupied
         if 18 <= hour < 22:  # Evening hours
@@ -55,15 +55,15 @@ class ParkingSimulator(Simulator):
             - from 6 PM to 10 PM the occupancy will change every 30 minutes to 2 hour
             - from 10 PM to 7 AM the occupancy will change every 1 hour to 9 hours
         """
-        hour = self.timestamp.hour
+        hour = self._timestamp.hour
         if 7 <= hour < 9:
-            return self.timestamp + _random_timedelta(10, 60)
+            return self._timestamp + _random_timedelta(10, 60)
         if 9 <= hour < 18:
-            return self.timestamp + _random_timedelta(30, 360)
+            return self._timestamp + _random_timedelta(30, 360)
         if 18 <= hour < 22:
-            return self.timestamp + _random_timedelta(30, 120)
+            return self._timestamp + _random_timedelta(30, 120)
 
-        return self.timestamp + _random_timedelta(60, 540)
+        return self._timestamp + _random_timedelta(60, 540)
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

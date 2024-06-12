@@ -3,6 +3,7 @@ from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
+from ...serializers.visitor import Visitor
 
 
 class TemperatureRawData(RawData):
@@ -14,8 +15,8 @@ class TemperatureRawData(RawData):
                          sensor_name=sensor_name, group_name=group_name)
         self.value = value
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_temperature_raw_data(self)
+    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+        return visitor.visit_temperature_raw_data(self)
 
     @property
     def topic(self) -> str:

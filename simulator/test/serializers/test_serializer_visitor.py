@@ -34,13 +34,13 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
-            "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
-            "latitude": 0.0,
-            "longitude": 0.0,
+            "_sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "_latitude": 0.0,
+            "_longitude": 0.0,
             "timestamp": "2024-01-01T00:00:00+00:00",
             "value": 0.0,
         }
-        self.assertEqual(visitor.serialize_temperature_raw_data(temperature_raw_data),
+        self.assertEqual(visitor.visit_temperature_raw_data(temperature_raw_data),
                          expected)
 
     def test_serialize_traffic_raw_data(self) -> None:
@@ -57,14 +57,14 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
-            "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
-            "latitude": 0.0,
-            "longitude": 0.0,
+            "_sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "_latitude": 0.0,
+            "_longitude": 0.0,
             "timestamp": "2024-01-01T00:00:00+00:00",
             "vehicles": 0,
             "avg_speed": 0.0,
         }
-        self.assertEqual(visitor.serialize_traffic_raw_data(traffic_raw_data),
+        self.assertEqual(visitor.visit_traffic_raw_data(traffic_raw_data),
                          expected)
 
     def test_serialize_recycling_point_raw_data(self) -> None:
@@ -80,12 +80,12 @@ class TestSerializerVisitor(unittest.TestCase):
 
         expected = {
             "sensor_name": "sensor_name",
-            "sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
-            "latitude": 0.0,
-            "longitude": 0.0,
+            "_sensor_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "_latitude": 0.0,
+            "_longitude": 0.0,
             "timestamp": "2024-01-01T00:00:00+00:00",
             "filling": 0.0,
         }
         self.assertEqual(
-            visitor.serialize_recycling_point_raw_data(recycling_point_raw_data),
+            visitor.visit_recycling_point_raw_data(recycling_point_raw_data),
             expected)

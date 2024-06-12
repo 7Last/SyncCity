@@ -3,6 +3,7 @@ from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
+from ...serializers.visitor import Visitor
 
 
 class RecyclingPointRawData(RawData):
@@ -18,8 +19,8 @@ class RecyclingPointRawData(RawData):
                          timestamp=timestamp, group_name=group_name)
         self.filling = filling
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_recycling_point_raw_data(self)
+    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+        return visitor.visit_recycling_point_raw_data(self)
 
     @property
     def topic(self) -> str:

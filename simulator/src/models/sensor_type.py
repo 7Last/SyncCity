@@ -9,5 +9,5 @@ class SensorType(Enum):
     TRAFFIC = "traffic"
 
     @staticmethod
-    def from_str(key: str):  # noqa: ANN205
+    def from_str(key: str) -> "SensorType":
         return SensorType[key.upper()]

@@ -28,9 +28,9 @@ class TestTrafficSimulator(unittest.TestCase):
             latitude=0,
             longitude=0,
         )
-        self.assertEqual(simulator.running, False)
+        self.assertEqual(simulator._running, False)
         simulator.start()
-        self.assertEqual(simulator.running, True)
+        self.assertEqual(simulator._running, True)
 
     def test_stop(self) -> None:
         simulator = TrafficSimulator(
@@ -42,9 +42,9 @@ class TestTrafficSimulator(unittest.TestCase):
             longitude=0,
         )
         simulator.start()
-        self.assertEqual(simulator.running, True)
+        self.assertEqual(simulator._running, True)
         simulator.stop()
-        self.assertEqual(simulator.running, False)
+        self.assertEqual(simulator._running, False)
 
     @patch('random.uniform')
     def test_stream(self, mock_uniform: Mock) -> None:

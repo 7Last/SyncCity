@@ -3,6 +3,7 @@ from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
+from ...serializers.visitor import Visitor
 
 
 class TrafficRawData(RawData):
@@ -20,8 +21,8 @@ class TrafficRawData(RawData):
         self.vehicles = vehicles
         self.avg_speed = avg_speed
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_traffic_raw_data(self)
+    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+        return visitor.visit_traffic_raw_data(self)
 
     @property
     def topic(self) -> str:

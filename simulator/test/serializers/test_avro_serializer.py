@@ -31,7 +31,7 @@ class TestAvroSerializer(unittest.TestCase):
                 "name": "Temperature",
                 "fields": [
                     {
-                        "name": "sensor_uuid",
+                        "name": "_sensor_uuid",
                         "type": "string"
                     },
                     {
@@ -39,11 +39,11 @@ class TestAvroSerializer(unittest.TestCase):
                         "type": "string"
                     },
                     {
-                        "name": "latitude",
+                        "name": "_latitude",
                         "type": "double"
                     },
                     {
-                        "name": "longitude",
+                        "name": "_longitude",
                         "type": "double"
                     },
                     {

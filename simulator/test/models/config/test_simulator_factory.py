@@ -12,20 +12,20 @@ class TestSimulatorFactory(unittest.TestCase):
         sensors = {
             "sensor1": {
                 "type": "temperature",
-                "sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
-                "generation_delay": "PT1S",
-                "points_spacing": "PT2S",
-                "latitude": 0,
-                "longitude": 0,
+                "_sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
+                "_generation_delay": "PT1S",
+                "_points_spacing": "PT2S",
+                "_latitude": 0,
+                "_longitude": 0,
                 "begin_date": datetime(2022, 1, 1),
             },
             "sensor2": {
                 "type": "traffic",
-                "sensor_uuid": "456a08e8-57aa-4592-a89a-c292f26848c8",
-                "generation_delay": "PT6S",
-                "points_spacing": "PT7S",
-                "latitude": 0,
-                "longitude": 0,
+                "_sensor_uuid": "456a08e8-57aa-4592-a89a-c292f26848c8",
+                "_generation_delay": "PT6S",
+                "_points_spacing": "PT7S",
+                "_latitude": 0,
+                "_longitude": 0,
                 "begin_date": datetime(2022, 2, 2),
             },
         }
@@ -58,11 +58,11 @@ class TestSimulatorFactory(unittest.TestCase):
         sensors = {
             "sensor1": {
                 "type": "not_implemented",
-                "sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
-                "generation_delay": "PT1S",
-                "points_spacing": "PT2S",
-                "latitude": 0,
-                "longitude": 0,
+                "_sensor_uuid": "366a08e8-57aa-4592-a89a-c292f26848c8",
+                "_generation_delay": "PT1S",
+                "_points_spacing": "PT2S",
+                "_latitude": 0,
+                "_longitude": 0,
                 "begin_date": "2022-01-01T00:00:00",
             },
         }

@@ -38,7 +38,7 @@ class Runner:
                 log.debug(f'Stopping {simulator.sensor_name}')
                 simulator.stop()
         except Exception as e:
-            log.exception('Error while running simulator', e)
+            log.exception('Error while _running simulator', e)
         finally:
             self._producer.close()
             log.debug('ProducerStrategy closed, exiting.')

@@ -3,6 +3,7 @@ from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
+from ...serializers.visitor import Visitor
 
 
 class AirQualityRawData(RawData):
@@ -20,8 +21,8 @@ class AirQualityRawData(RawData):
         self.o3 = o3
         self.so2 = so2
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_air_quality_raw_data(self)
+    def accept(self, visitor: 'Visitor') -> Dict[str, any]:
+        return visitor.visit_air_quality_raw_data(self)
 
     @property
     def topic(self) -> str:

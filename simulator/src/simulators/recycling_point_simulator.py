@@ -11,76 +11,70 @@ class RecyclingPointSimulator(Simulator):
     def __init__(self, sensor_name: str, config: SensorConfig) -> None:
         super().__init__(sensor_name, config)
 
-        # last value
-        self.last_value = random.uniform(0, 30)
-        # previous value's timestamp
-        self.prev_timestamp = self.timestamp
-        # filling rate
-        self.fill_rate = 0
-        # emptying days and hours per week
-        self.emptying_hours = _generate_emptying_hours()
-        # noise rate
-        self.noise_limit = random.uniform(-5, 5)
-        # chance for partial emptying
-        self.partial_emptying_chance = random.uniform(0.0, 0.15)
+        self._last_value = random.uniform(0, 30)
+        self._prev_timestamp = self._timestamp
+        self._fill_rate = 0
+        self._emptying_hours = _generate_emptying_hours()
+        self._noise_limit = random.uniform(-5, 5)
+        self._partial_emptying_chance = random.uniform(0.0, 0.15)
         # max percentage of value to leave after partial emptying
-        self.partial_emptying_max_percentage = random.uniform(0.05, 0.3)
+        self._partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
     def stream(self) -> Iterable[RecyclingPointRawData]:
-        while self.limit != 0 and self.running:
-            self.last_value = self._filling()
+        while self._limit != 0 and self._running:
+            self._last_value = self._filling()
 
             yield RecyclingPointRawData(
-                filling=self.last_value,
-                latitude=self.latitude,
-                longitude=self.longitude,
-                timestamp=self.timestamp,
-                sensor_uuid=self.sensor_uuid,
+                filling=self._last_value,
+                latitude=self._latitude,
+                longitude=self._longitude,
+                timestamp=self._timestamp,
+                sensor_uuid=self._sensor_uuid,
                 sensor_name=self.sensor_name,
-                group_name=self.group_name,
+                group_name=self._group_name,
             )
 
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.points_spacing
-            self._event.wait(self.generation_delay.total_seconds())
+            if self._limit is not None:
+                self._limit -= 1
+            self._timestamp += self._points_spacing
+            self._event.wait(self._generation_delay.total_seconds())
 
     def _calculate_fill_rate(self) -> None:
-        time_passed = self.timestamp - self.prev_timestamp
+        elapsed_time = self._timestamp - self._prev_timestamp
         fill_rate_per_hour = random.uniform(0.8, 1.2)
         fill_rate_per_second = fill_rate_per_hour / 3600
-        self.fill_rate = fill_rate_per_second * time_passed.total_seconds()
+        self._fill_rate = fill_rate_per_second * elapsed_time.total_seconds()
 
     def _filling(self) -> float:
         # update fill rate
         self._calculate_fill_rate()
 
         # update previous timestamp
-        self.prev_timestamp = self.timestamp
+        self._prev_timestamp = self._timestamp
 
         # check if it is time to empty
-        if (self.timestamp.weekday(), self.timestamp.hour) in self.emptying_hours:
+        if (self._timestamp.weekday(), self._timestamp.hour) in self._emptying_hours:
             # 10% chance for partial emptying
-            if random.random() < self.partial_emptying_chance:
+            if random.random() < self._partial_emptying_chance:
                 # leave up to 30% of current value
-                self.last_value *= random.uniform(
-                    0.0, self.partial_emptying_max_percentage)
+                self._last_value *= random.uniform(
+                    0.0, self._partial_emptying_max_percentage)
             else:
-                self.last_value = 0.0  # complete emptying
-            return self.last_value
+                self._last_value = 0.0  # complete emptying
+            return self._last_value
 
         # calculate new value
-        new_value = self.last_value + self.fill_rate
+        new_value = self._last_value + self._fill_rate
 
         # adding some noise
-        noise = random.uniform(-self.noise_limit, self.noise_limit)
-        new_value = max(self.last_value, new_value + noise)
+        noise = random.uniform(-self._noise_limit, self._noise_limit)
+        new_value = max(self._last_value, new_value + noise)
 
         # check value over 100
         new_value = min(new_value, 100.0)
 
         # update last value
-        self.last_value = new_value
+        self._last_value = new_value
 
         return new_value
 

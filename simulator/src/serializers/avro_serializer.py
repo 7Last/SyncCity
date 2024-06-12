@@ -17,7 +17,7 @@ class AvroSerializer(SerializerStrategy):
         super().__init__()
         load_dotenv()
         schema_registry_url = os.getenv('SCHEMA_REGISTRY_URL')
-        self.schema_path = Path(__file__).parent.parent.joinpath('schemas')
+        self._schema_path = Path(__file__).parent.parent.joinpath('schemas')
 
         if schema_registry_url is None or schema_registry_url == "":
             raise Exception("SCHEMA_REGISTRY_URL environment variable must be set")
@@ -28,6 +28,9 @@ class AvroSerializer(SerializerStrategy):
         )
         self._serde_by_subject: Dict[str, SerdeWithSchema] = {}
 
+    def serialize_key(self, data: RawData) -> bytes:
+        pass
+
     def serialize_value(self, data: RawData) -> bytes:
         json_item = data.accept(self._visitor)
         value_subject = data.value_subject()
@@ -35,7 +38,7 @@ class AvroSerializer(SerializerStrategy):
         if value_subject not in self._serde_by_subject:
             avro_serde = AvroValueSerde(self._registry_client, data.topic)
             value_schema = (
-                        self.schema_path / f"{data.value_subject()}.avsc").read_text()
+                    self._schema_path / f"{data.value_subject()}.avsc").read_text()
 
             self._serde_by_subject[value_subject] = (avro_serde, value_schema)
         else:

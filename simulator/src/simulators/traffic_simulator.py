@@ -12,9 +12,9 @@ class TrafficSimulator(Simulator):
     _VEHICLES_MULTIPLICATIVE_FACTOR = 200
 
     def stream(self) -> Iterable[TrafficRawData]:
-        while self.limit != 0 and self.running:
+        while self._limit != 0 and self._running:
             speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
-                x=self.timestamp.hour + self.timestamp.minute / 60,
+                x=self._timestamp.hour + self._timestamp.minute / 60,
                 modes=[
                     (0, 2.1),
                     (4, 2.2),
@@ -25,7 +25,7 @@ class TrafficSimulator(Simulator):
             )
 
             vehicles = self._VEHICLES_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
-                x=self.timestamp.hour + self.timestamp.minute / 60,
+                x=self._timestamp.hour + self._timestamp.minute / 60,
                 modes=[
                     (0, 4),
                     (8.5, 1.8),
@@ -38,18 +38,18 @@ class TrafficSimulator(Simulator):
             yield TrafficRawData(
                 vehicles=int(vehicles),
                 avg_speed=speed,
-                latitude=self.latitude,
-                longitude=self.longitude,
-                timestamp=self.timestamp,
-                sensor_uuid=self.sensor_uuid,
+                latitude=self._latitude,
+                longitude=self._longitude,
+                timestamp=self._timestamp,
+                sensor_uuid=self._sensor_uuid,
                 sensor_name=self.sensor_name,
-                group_name=self.group_name,
+                group_name=self._group_name,
             )
 
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.points_spacing
-            self._event.wait(self.generation_delay.total_seconds())
+            if self._limit is not None:
+                self._limit -= 1
+            self._timestamp += self._points_spacing
+            self._event.wait(self._generation_delay.total_seconds())
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

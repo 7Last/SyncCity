@@ -41,7 +41,7 @@ class SensorConfig:
                 self.points_spacing: timedelta = isodate.parse_duration(points_spacing)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid points_spacing value. Must be specified following ISO8601',
+                'Invalid _points_spacing value. Must be specified following ISO8601',
             )
             raise
 
@@ -53,7 +53,7 @@ class SensorConfig:
                     generation_delay)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid generation_delay value. Must be specified following ISO8601',
+                'Invalid _generation_delay value. Must be specified following ISO8601',
             )
             raise
 
