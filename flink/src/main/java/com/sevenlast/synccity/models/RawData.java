@@ -4,28 +4,29 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.generic.GenericRecord;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class TemperatureRawData {
+public class RawData {
     private final UUID sensorUuid;
     private final String sensorName;
+    private final String groupName;
     private final double latitude;
     private final double longitude;
     private final ZonedDateTime timestamp;
-    private final double value;
+    private final float value;
 
-    public static TemperatureRawData fromGenericRecord(GenericRecord record) {
-        return new TemperatureRawData(
-                UUID.fromString(record.get("sensorUuid").toString()),
-                record.get("sensorName").toString(),
+    public static RawData fromGenericRecord(GenericRecord record) {
+        return new RawData(
+                UUID.fromString(record.get("sensor_uuid").toString()),
+                record.get("sensor_name").toString(),
+                record.get("group_name").toString(),
                 (double) record.get("latitude"),
                 (double) record.get("longitude"),
                 ZonedDateTime.parse(record.get("timestamp").toString()),
-                (double) record.get("value")
+                (float) record.get("value")
         );
     }
 }
