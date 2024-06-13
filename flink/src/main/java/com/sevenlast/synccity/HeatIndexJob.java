@@ -24,12 +24,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class HeatIndexJob {
-    private static String TEMPERATURE_TOPIC = "temperature";
-    private static String HUMIDITY_TOPIC = "humidity";
-
-    private static Time WINDOW_SIZE = Time.minutes(5);
-    private static String HEAT_INDEX_TOPIC = "heat_index";
-
+    private static final String TEMPERATURE_TOPIC = "temperature";
+    private static final String HUMIDITY_TOPIC = "humidity";
+    private static final Time WINDOW_SIZE = Time.minutes(5);
+    private static final String HEAT_INDEX_TOPIC = "heat_index";
 
     public static void main(String[] args) throws Exception {
 
@@ -88,12 +86,14 @@ public class HeatIndexJob {
 
         var avgTemperatureStream = env.fromSource(temperatureKafkaSource, watermark, sourceName)
                 .map(RawData::fromGenericRecord)
+                .filter(data -> !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
         var avgHumidityStream = env.fromSource(humidityKafkaSource, watermark, sourceName)
                 .map(RawData::fromGenericRecord)
+                .filter(data -> !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());

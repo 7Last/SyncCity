@@ -49,7 +49,7 @@ while True:
     if i % 2 == 0:
         item = {
             **temperature,
-            "value": random.randint(0, 40),
+            "value": random.randint(25, 40),
             "timestamp": item_date.astimezone(UTC).isoformat(),
         }
         serialized = serialize(item, 'temperature-value', 'temperature')
@@ -57,7 +57,7 @@ while True:
     else:
         item = {
             **humidity,
-            "value": random.randint(0, 100),
+            "value": random.random(),
             "timestamp": item_date.astimezone(UTC).isoformat(),
         }
         serialized = serialize(item, 'humidity-value', 'humidity')
