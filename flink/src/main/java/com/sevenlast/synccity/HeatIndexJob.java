@@ -3,25 +3,25 @@ package com.sevenlast.synccity;
 import com.sevenlast.synccity.functions.AverageWindowFunction;
 import com.sevenlast.synccity.models.RawData;
 import com.sevenlast.synccity.models.ResultTuple;
+import com.sevenlast.synccity.serialization.AvroResultTupleSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
-import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroSerializationSchema;
-import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 
 public class HeatIndexJob {
     private static String TEMPERATURE_TOPIC = "temperature";
@@ -44,14 +44,12 @@ public class HeatIndexJob {
 //        var jobName = configLoader.getProperty("flink.job.name");
 //        long watermarkInterval = Long.parseLong(configLoader.getProperty("flink.watermark-interval"));
 
-//        var broker = "http://redpanda:9092";
-//        var schemaRegistryUrl = "http://redpanda:8081";
-        var broker = "http://localhost:19092";
-        var schemaRegistryUrl = "http://localhost:18081";
+        var broker = "http://redpanda:9092";
+        var schemaRegistryUrl = "http://redpanda:8081";
+//        var broker = "http://localhost:19092";
+//        var schemaRegistryUrl = "http://localhost:18081";
         var groupId = "flink-group";
         var sourceName = "sensors-source";
-        var sinkTopic = "sensors-aggregated";
-        var jobName = "sensors-aggregator";
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
@@ -115,33 +113,35 @@ public class HeatIndexJob {
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
 
         var heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
-                .where(ResultTuple::key)
-                .equalTo(ResultTuple::key)
+                .where(ResultTuple::getKey)
+                .equalTo(ResultTuple::getKey)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply((averageTemperature, averageHumidity) -> {
-                    double t = averageTemperature.value();
-                    double h = averageHumidity.value();
+                    double t = averageTemperature.getValue();
+                    double h = averageHumidity.getValue();
 
                     double heatIndex = c1 + (c2 * t) + (c3 * h) + (c4 * t * h)
                             + (c5 * t * t) + (c6 * h * h)
                             + (c7 * t * t * h) + (c8 * t * h * h)
                             + (c9 * t * t * h * h);
-                    return new ResultTuple(averageTemperature.key(), heatIndex, averageTemperature.windowStart());
-                })
-                .map(result -> result.toGenericRecord(heatIndexSchema));
+                    return new ResultTuple(averageTemperature.getKey(), heatIndex, averageTemperature.getWindowStart());
+                });
 
-        var serializer = ConfluentRegistryAvroSerializationSchema.forGeneric(heatIndexSchema);
-        var sink = KafkaSink.<GenericRecord>builder()
+        var sink = KafkaSink.<ResultTuple>builder()
                 .setBootstrapServers(broker)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-                        .setTopic(sinkTopic)
-                        .setValueSerializationSchema(serializer)
+                        .setTopic(HEAT_INDEX_TOPIC)
+                        .setValueSerializationSchema(new AvroResultTupleSerializationSchema(
+                                HEAT_INDEX_TOPIC,
+                                heatIndexSchema,
+                                schemaRegistryUrl
+                        ))
                         .build()
                 )
                 .build();
 
         heatIndexStream.sinkTo(sink);
-        env.execute(jobName);
+        env.execute("Heat Index Job");
     }
 
 }

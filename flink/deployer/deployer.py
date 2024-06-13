@@ -38,7 +38,7 @@ class FlinkRestClient:
         try:
             with open(path, 'rb') as file:
                 files = {'jarfile': (
-                    os.path.basename(path), file, 'application/java-archive'
+                    os.path.basename(path), file, 'application/java-archive',
                 )}
                 response = self.client.post(url, files=files)
                 response.raise_for_status()
@@ -69,18 +69,19 @@ class FlinkRestClient:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Flink REST client')
-    parser.add_argument('base_url', type=str, help='Flink REST API base url')
-    parser.add_argument('jar_files', type=str,
+    parser.add_argument('--flink_url', type=str, help='Flink REST API base url',
+                        required=True)
+    parser.add_argument('--jars', type=str, required=True,
                         help='Comma separated list of jar files to upload')
-    parser.add_argument('entry_classes', type=str,
+    parser.add_argument('--classes', type=str, required=True,
                         help='Comma separated list of entry classes')
 
     args = parser.parse_args()
-    client = FlinkRestClient(base_url=args.base_url)
-    jar_files = args.jar_files.split(',')
-    entry_classes = args.entry_classes.split(',')
+    client = FlinkRestClient(base_url=args.flink_url)
+    jar_files = args.jars.split(',')
+    entry_classes = args.classes.split(',')
 
-    for jar_file, entry_class in zip(jar_files, entry_classes):
+    for jar_file, entry_class in zip(jar_files, entry_classes, strict=False):
         response = client.upload_jar(jar_file)
         jar_id = client.extract_jar_id(response)
         client.run_jar(jar_id, entry_class)

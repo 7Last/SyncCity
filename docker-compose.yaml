@@ -176,55 +176,61 @@ services:
     networks:
       - synccity
     profiles: [ "local", "release" ]
-  #
-  # jobmanager:
-  #   image: flink:1.18.1-java17
-  #   hostname: jobmanager
-  #   command: jobmanager
-  #   container_name: jobmanager
-  #   healthcheck:
-  #     test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
-  #     interval: 5s
-  #     retries: 10
-  #   ports:
-  #     - "9001:8081"
-  #     - "6123:6123"
-  #   environment:
-  #     FLINK_CONF_DIR: /opt/flink/conf
-  #     JOB_MANAGER_RPC_ADDRESS: jobmanager
-  #   networks:
-  #     - synccity
-  #
-  # taskmanager:
-  #   image: flink:1.18.1-java17
-  #   command: taskmanager
-  #   container_name: taskmanager
-  #   hostname: taskmanager
-  #   ports:
-  #     - "6121:6121"
-  #   depends_on:
-  #     - jobmanager
-  #   environment:
-  #     FLINK_CONF_DIR: /opt/flink/conf
-  #     JOB_MANAGER_RPC_ADDRESS: jobmanager
-  #   networks:
-  #     - synccity
-  #
-  # liftoff:
-  #   build:
-  #     context: ./flink/liftoff
-  #     dockerfile: Dockerfile
-  #   container_name: liftoff
-  #   depends_on:
-  #     jobmanager:
-  #       condition: service_healthy
-  #   volumes:
-  #     - type: bind
-  #       source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
-  #       target: /flink-job.jar
-  #   command:
-  #     - "python3"
-  #     - "liftoff"
-  #     - "http://jobmanager:8081"
-  #     - "/flink-job.jar"
-  #     - "com.sevenlast.synccity.Job"
+
+  jobmanager:
+    image: flink:1.18.1-java17
+    hostname: jobmanager
+    command: jobmanager
+    container_name: jobmanager
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
+      interval: 5s
+      retries: 10
+    ports:
+      - "9001:8081"
+      - "6123:6123"
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+    networks:
+      - synccity
+    profiles: [ "local", "release" ]
+
+  taskmanager:
+    image: flink:1.18.1-java17
+    command: taskmanager
+    container_name: taskmanager
+    hostname: taskmanager
+    ports:
+      - "6121:6121"
+    depends_on:
+      - jobmanager
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+    networks:
+      - synccity
+    profiles: [ "local", "release" ]
+
+  deployer:
+    build:
+      context: ./flink/deployer
+      dockerfile: Dockerfile
+    container_name: deployer
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
+        target: /flink-job.jar
+    command:
+      - "python"
+      - "deployer.py"
+      - "--flink_url=http://jobmanager:8081"
+      - "--jars=/flink-job.jar"
+      - "--class=com.sevenlast.synccity.HeatIndexJob"
+    profiles: [ "local", "release" ]
+    networks:
+      - synccity
+
