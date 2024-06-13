@@ -4,3 +4,4 @@
 /.venv_samples/
 /volumes/
 **/__pycache__/**
+.coverage

@@ -18,12 +18,16 @@ class KafkaProducer(ProducerStrategy):
             acks=acks,
         )
 
-    def produce(self, data: RawData) -> None:
-        serialized = self._serializer.serialize(data)
-        log.info(f'Producing data to topic {data.topic}: {data}')
-        # TODO: send the timestamp and callback
-        self._producer.send(data.topic, value=serialized)
-        self._producer.flush()
+    def produce(self, data: RawData) -> bool:
+        try:
+            serialized = self._serializer.serialize_value(data)
+            log.info(f'Producing data to topic {data.topic}: {data}')
+            self._producer.send(data.topic, value=serialized)
+            self._producer.flush()
+            return True
+        except Exception as e:
+            log.error(f'Failed to produce data to topic {data.topic}: {e}')
+            return False
 
     def close(self) -> None:
         self._producer.close(timeout=2)

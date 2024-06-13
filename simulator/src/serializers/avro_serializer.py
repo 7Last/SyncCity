@@ -1,36 +1,47 @@
-import io
+import os
+from pathlib import Path
+from typing import Dict
 
-from avro.io import DatumWriter, BinaryEncoder
+from confluent_avro import SchemaRegistry, AvroValueSerde
+from dotenv import load_dotenv
 
-from . import load_avro_schemas
 from .serializer_strategy import SerializerStrategy
 from ..models.raw_data.raw_data import RawData
+
+SerdeWithSchema = (AvroValueSerde, str)
 
 
 class AvroSerializer(SerializerStrategy):
 
     def __init__(self) -> None:
         super().__init__()
-        self._schemas_by_subject = load_avro_schemas()
+        load_dotenv()
+        schema_registry_url = os.getenv('SCHEMA_REGISTRY_URL')
+        self._schema_path = Path(__file__).parent.parent.joinpath('schemas')
 
-    def serialize(self, data: RawData) -> bytes:
-        # json encode the data
+        if schema_registry_url is None or schema_registry_url == "":
+            raise Exception("SCHEMA_REGISTRY_URL environment variable must be set")
+
+        self._registry_client = SchemaRegistry(
+            url=schema_registry_url,
+            headers={"Content-Type": "application/vnd.schemaregistry.v1+json"},
+        )
+        self._serde_by_subject: Dict[str, SerdeWithSchema] = {}
+
+    def serialize_key(self, data: RawData) -> bytes:
+        pass
+
+    def serialize_value(self, data: RawData) -> bytes:
         json_item = data.accept(self._visitor)
+        value_subject = data.value_subject()
 
-        # TODO: optimize to avoid creating objects every time
-        # avro encode the json data
-        schema_id, schema = self._schemas_by_subject[data.subject]
-        writer = DatumWriter(schema)
-        bytes_writer = io.BytesIO()
-        encoder = BinaryEncoder(bytes_writer)
+        if value_subject not in self._serde_by_subject:
+            avro_serde = AvroValueSerde(self._registry_client, data.topic)
+            value_schema = (
+                    self._schema_path / f"{data.value_subject()}.avsc").read_text()
 
-        writer.write(json_item, encoder)
-        raw_bytes = bytes_writer.getvalue()
+            self._serde_by_subject[value_subject] = (avro_serde, value_schema)
+        else:
+            avro_serde, value_schema = self._serde_by_subject[value_subject]
 
-        # prepend the magic byte and schema id to the raw bytes
-        return self._schema_bytes_identifier(schema_id) + raw_bytes
-
-    @staticmethod
-    def _schema_bytes_identifier(schema_id: int) -> bytes:
-        magic_byte = bytearray([0])
-        return magic_byte + schema_id.to_bytes(4, 'big')
+        return avro_serde.serialize(json_item, value_schema)

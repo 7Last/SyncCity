@@ -30,11 +30,11 @@ services:
       - 19092:19092
       - 19644:9644
     healthcheck:
-      test: [ "CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1" ]
+      test: [ "CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1"]
       interval: 2s
       timeout: 1m
       retries: 12
-    profiles: [ "local", "release" ]
+    profiles: ["local", "release"]
 
   redpanda_console:
     container_name: redpanda_console
@@ -49,7 +49,7 @@ services:
       redpanda:
         condition: service_healthy
     restart: on-failure
-    profiles: [ "local", "release" ]
+    profiles: ["local", "release"]
 
     environment:
       CONFIG_FILEPATH: /tmp/config.yml
@@ -82,7 +82,7 @@ services:
         condition: service_healthy
     networks:
       - synccity
-    profiles: [ "local", "release" ]
+    profiles: ["local", "release"]
     environment:
       CONNECT_CONFIGURATION: |
         key.converter=java.lang.String
@@ -139,7 +139,8 @@ services:
     environment:
       - KAFKA_HOST=redpanda
       - KAFKA_PORT=9092
-      - KAFKA_MAX_BLOCK_MS=1000
+      - SCHEMA_REGISTRY_URL=http://redpanda:8081
+      - KAFKA_MAX_BLOCK_MS=2000
       - LOG_LEVEL=INFO
     build:
       context: ./simulator
@@ -176,54 +177,54 @@ services:
       - synccity
     profiles: [ "local", "release" ]
 
-  jobmanager:
-    image: flink:1.18.1-java17
-    hostname: jobmanager
-    command: jobmanager
-    container_name: jobmanager
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
-      interval: 5s
-      retries: 10
-    ports:
-      - "9001:8081"
-      - "6123:6123"
-    environment:
-      FLINK_CONF_DIR: /opt/flink/conf
-      JOB_MANAGER_RPC_ADDRESS: jobmanager
-    networks:
-      - synccity
-
-  taskmanager:
-    image: flink:1.18.1-java17
-    command: taskmanager
-    container_name: taskmanager
-    hostname: taskmanager
-    ports:
-      - "6121:6121"
-    depends_on:
-      - jobmanager
-    environment:
-      FLINK_CONF_DIR: /opt/flink/conf
-      JOB_MANAGER_RPC_ADDRESS: jobmanager
-    networks:
-      - synccity
-
-  liftoff:
-    build:
-      context: ./flink/liftoff
-      dockerfile: Dockerfile
-    container_name: liftoff
-    depends_on:
-      jobmanager:
-        condition: service_healthy
-    volumes:
-      - type: bind
-        source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
-        target: /flink-job.jar
-    command:
-      - "python3"
-      - "liftoff"
-      - "http://jobmanager:8081"
-      - "/flink-job.jar"
-      - "com.sevenlast.synccity.Job"
+#  jobmanager:
+#    image: flink:1.18.1-java17
+#    hostname: jobmanager
+#    command: jobmanager
+#    container_name: jobmanager
+#    healthcheck:
+#      test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
+#      interval: 5s
+#      retries: 10
+#    ports:
+#      - "9001:8081"
+#      - "6123:6123"
+#    environment:
+#      FLINK_CONF_DIR: /opt/flink/conf
+#      JOB_MANAGER_RPC_ADDRESS: jobmanager
+#    networks:
+#      - synccity
+#
+#  taskmanager:
+#    image: flink:1.18.1-java17
+#    command: taskmanager
+#    container_name: taskmanager
+#    hostname: taskmanager
+#    ports:
+#      - "6121:6121"
+#    depends_on:
+#      - jobmanager
+#    environment:
+#      FLINK_CONF_DIR: /opt/flink/conf
+#      JOB_MANAGER_RPC_ADDRESS: jobmanager
+#    networks:
+#      - synccity
+#
+#  liftoff:
+#    build:
+#      context: ./flink/liftoff
+#      dockerfile: Dockerfile
+#    container_name: liftoff
+#    depends_on:
+#      jobmanager:
+#        condition: service_healthy
+#    volumes:
+#      - type: bind
+#        source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
+#        target: /flink-job.jar
+#    command:
+#      - "python3"
+#      - "liftoff"
+#      - "http://jobmanager:8081"
+#      - "/flink-job.jar"
+#      - "com.sevenlast.synccity.Job"

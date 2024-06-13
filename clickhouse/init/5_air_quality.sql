@@ -2,6 +2,7 @@ CREATE TABLE sensors.air_quality
 (
     sensor_uuid UUID,
     sensor_name String,
+    group_name Nullable(String) default null,
     timestamp   DateTime64,
     latitude    Float64,
     longitude   Float64,
