@@ -140,6 +140,7 @@ public class HeatIndexJob {
                 )
                 .build();
 
+//        heatIndexStream.print();
         heatIndexStream.sinkTo(sink);
         env.execute("Heat Index Job");
     }
