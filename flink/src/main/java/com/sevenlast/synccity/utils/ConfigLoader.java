@@ -1,4 +1,4 @@
-package com.sevenlast.synccity;
+package com.sevenlast.synccity.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
