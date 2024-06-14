@@ -26,7 +26,7 @@ Add the new type to the `SensorType` enum in the [src/models/sensor_type.py](../
 file.
 
 ## Step 3: Write the Avro schema definition for the new sensor type
-Create a new file in [src/schemas](../src/schemas). The file should be named as follows:
+Create a new file in [src/schemas](../../redpanda/schemas). The file should be named as follows:
 `<new_sensor_type>-value.avsc`, where `<new_sensor_type>` must be replaced with the sensor type
 which is being created.
 
@@ -71,7 +71,7 @@ If any support method is needed to generate the realistic values for the simulat
 measurement, create a **private** function on the bottom of the file.
 
 ## Step 7: Edit ClickHouse connector config
-In the [connectors/configs/clickhouse.json](../../connectors/configs/clickhouse.json)
+In the [connectors/configs/clickhouse.json](../../redpanda/connectors/configs/clickhouse.json)
 file add `<new_sensor_type>` to the list of `topics` in `config` and in the `topics2TableMap`.
 
 ## Step 8: Create ClickHouse Table

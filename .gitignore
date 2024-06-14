@@ -2,6 +2,6 @@
 /.idea/
 ./logs/
 /.venv_samples/
-/volumes/
+/redpanda/volumes/
 **/__pycache__/**
 .coverage

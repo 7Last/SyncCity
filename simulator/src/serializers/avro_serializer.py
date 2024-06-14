@@ -17,7 +17,9 @@ class AvroSerializer(SerializerStrategy):
         super().__init__()
         load_dotenv()
         schema_registry_url = os.getenv('SCHEMA_REGISTRY_URL')
-        self._schema_path = Path(__file__).parent.parent.joinpath('schemas')
+        # <project_root>/redpanda/schemas directory
+        self._schema_path = Path(__file__).parent.parent.parent.joinpath(
+            'redpanda').joinpath('schemas')
 
         if schema_registry_url is None or schema_registry_url == "":
             raise Exception("SCHEMA_REGISTRY_URL environment variable must be set")
