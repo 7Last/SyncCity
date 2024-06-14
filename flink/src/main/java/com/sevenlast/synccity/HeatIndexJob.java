@@ -1,9 +1,10 @@
 package com.sevenlast.synccity;
 
 import com.sevenlast.synccity.functions.AverageWindowFunction;
+import com.sevenlast.synccity.models.AverageResult;
+import com.sevenlast.synccity.models.HeatIndexResult;
 import com.sevenlast.synccity.models.RawData;
-import com.sevenlast.synccity.models.ResultTuple;
-import com.sevenlast.synccity.serialization.AvroResultTupleSerializationSchema;
+import com.sevenlast.synccity.serialization.HeatIndexSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
@@ -17,13 +18,9 @@ import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDes
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
-import org.apache.flink.streaming.runtime.tasks.mailbox.MailboxDefaultAction;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";
@@ -106,8 +103,8 @@ public class HeatIndexJob {
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
 
         var heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
-                .where(ResultTuple::getKey)
-                .equalTo(ResultTuple::getKey)
+                .where(AverageResult::getGroupName)
+                .equalTo(AverageResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply((averageTemperature, averageHumidity) -> {
                     double t = averageTemperature.getValue();
@@ -117,14 +114,24 @@ public class HeatIndexJob {
                             + (c5 * t * t) + (c6 * h * h)
                             + (c7 * t * t * h) + (c8 * t * h * h)
                             + (c9 * t * t * h * h);
-                    return new ResultTuple(averageTemperature.getKey(), heatIndex, averageTemperature.getWindowStart());
+
+                    var sensors = averageTemperature.getSensorNames();
+                    sensors.addAll(averageHumidity.getSensorNames());
+                    return new HeatIndexResult(
+                            sensors,
+                            averageTemperature.getGroupName(),
+                            heatIndex,
+                            t,
+                            h,
+                            averageTemperature.getWindowStart()
+                    );
                 });
 
-        var sink = KafkaSink.<ResultTuple>builder()
+        var sink = KafkaSink.<HeatIndexResult>builder()
                 .setBootstrapServers(bootstrapServers)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
                         .setTopic(HEAT_INDEX_TOPIC)
-                        .setValueSerializationSchema(new AvroResultTupleSerializationSchema(
+                        .setValueSerializationSchema(new HeatIndexSerializationSchema(
                                 HEAT_INDEX_TOPIC,
                                 heatIndexSchema,
                                 schemaRegistryUrl

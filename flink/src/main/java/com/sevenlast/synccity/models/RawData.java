@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.generic.GenericRecord;
 
+import javax.annotation.Nullable;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -22,7 +24,7 @@ public class RawData {
         return new RawData(
                 UUID.fromString(record.get("sensor_uuid").toString()),
                 record.get("sensor_name").toString(),
-                record.get("group_name").toString(),
+                Optional.ofNullable(record.get("group_name")).map(Object::toString).orElse(null),
                 (double) record.get("latitude"),
                 (double) record.get("longitude"),
                 ZonedDateTime.parse(record.get("timestamp").toString()),
