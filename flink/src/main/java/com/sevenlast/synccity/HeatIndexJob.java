@@ -17,10 +17,12 @@ import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDes
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.runtime.tasks.mailbox.MailboxDefaultAction;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class HeatIndexJob {
@@ -29,30 +31,21 @@ public class HeatIndexJob {
     private static final Time WINDOW_SIZE = Time.minutes(5);
     private static final String HEAT_INDEX_TOPIC = "heat_index";
 
+    private static final String GROUP_ID = "heat-index-job";
+
+
     public static void main(String[] args) throws Exception {
 
-//        var appEnv = System.getProperty("app.env", "local");
-//        var configLoader = new ConfigLoader(appEnv);
-//
-//        var broker = configLoader.getProperty("kafka.bootstrap.servers");
-//        var topic = configLoader.getProperty("flink.source.topic");
-//        var groupId = configLoader.getProperty("kafka.group.id");
-//        var sourceName = configLoader.getProperty("flink.source.name");
-//        var sinkTopic = configLoader.getProperty("flink.sink.topic");
-//        var jobName = configLoader.getProperty("flink.job.name");
-//        long watermarkInterval = Long.parseLong(configLoader.getProperty("flink.watermark-interval"));
+        var bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
+        var schemaRegistryUrl = System.getenv("SCHEMA_REGISTRY_URL");
 
-        var broker = "http://redpanda:9092";
-        var schemaRegistryUrl = "http://redpanda:8081";
-//        var broker = "http://localhost:19092";
-//        var schemaRegistryUrl = "http://localhost:18081";
-        var groupId = "flink-group";
-        var sourceName = "sensors-source";
+        if (bootstrapServers == null || schemaRegistryUrl == null) {
+            throw new IllegalArgumentException("BOOTSTRAP_SERVERS and SCHEMA_REGISTRY_URL must be set");
+        }
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
-        long watermarkInterval = 1000;
-        env.getConfig().setAutoWatermarkInterval(watermarkInterval);
+        env.getConfig().setAutoWatermarkInterval(1000);
 
         var client = new CachedSchemaRegistryClient(schemaRegistryUrl, 20);
         // temperature and humidity have the same schema, using temperature as a reference
@@ -70,28 +63,28 @@ public class HeatIndexJob {
 
         var temperatureKafkaSource = KafkaSource.<GenericRecord>builder()
                 .setStartingOffsets(OffsetsInitializer.latest())
-                .setBootstrapServers(broker)
+                .setBootstrapServers(bootstrapServers)
                 .setTopics(TEMPERATURE_TOPIC)
-                .setGroupId(groupId)
+                .setGroupId(GROUP_ID)
                 .setValueOnlyDeserializer(deserializer)
                 .build();
 
         var humidityKafkaSource = KafkaSource.<GenericRecord>builder()
                 .setStartingOffsets(OffsetsInitializer.latest())
-                .setBootstrapServers(broker)
+                .setBootstrapServers(bootstrapServers)
                 .setTopics(HUMIDITY_TOPIC)
-                .setGroupId(groupId)
+                .setGroupId(GROUP_ID)
                 .setValueOnlyDeserializer(deserializer)
                 .build();
 
-        var avgTemperatureStream = env.fromSource(temperatureKafkaSource, watermark, sourceName)
+        var avgTemperatureStream = env.fromSource(temperatureKafkaSource, watermark, "temperature-source")
                 .map(RawData::fromGenericRecord)
                 .filter(data -> !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
-        var avgHumidityStream = env.fromSource(humidityKafkaSource, watermark, sourceName)
+        var avgHumidityStream = env.fromSource(humidityKafkaSource, watermark, "humidity-source")
                 .map(RawData::fromGenericRecord)
                 .filter(data -> !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
@@ -128,7 +121,7 @@ public class HeatIndexJob {
                 });
 
         var sink = KafkaSink.<ResultTuple>builder()
-                .setBootstrapServers(broker)
+                .setBootstrapServers(bootstrapServers)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
                         .setTopic(HEAT_INDEX_TOPIC)
                         .setValueSerializationSchema(new AvroResultTupleSerializationSchema(
