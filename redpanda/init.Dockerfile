@@ -8,6 +8,5 @@ RUN curl -LO https://github.com/redpanda-data/redpanda/releases/download/v23.3.1
 RUN unzip rpk-linux-amd64.zip -d /usr/local/bin
 RUN chmod +x /usr/local/bin/rpk
 
-# Use rpk as the entrypoint
-ENTRYPOINT ["rpk"]
-CMD ["help"]
+ENTRYPOINT ["sh", "-c"]
+CMD ["rpk --help"]
