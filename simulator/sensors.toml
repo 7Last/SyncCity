@@ -288,6 +288,6 @@ uuid = "adaffc51-851e-4753-b333-5d6c131a0ea9"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT1S"
-latitude = 45.399868
+latitude = 45.399868g
 longitude = 11.875570
 
