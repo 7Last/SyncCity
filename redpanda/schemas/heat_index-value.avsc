@@ -1,0 +1,33 @@
+{
+  "type": "record",
+  "name": "Heat_Index",
+  "fields": [
+    {
+        "name":"sensor_names",
+        "type": {
+            "type": "array",  
+            "items": "string"
+        }
+    },
+    {
+      "name": "group_name",
+      "type": "string"
+    },
+    {
+      "name": "heat_index",
+      "type": "float"
+    },
+    {
+      "name": "avg_temperature",
+      "type": "float"
+    },
+    {
+      "name": "avg_humidity",
+      "type": "float"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    }
+  ]
+}
