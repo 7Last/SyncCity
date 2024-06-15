@@ -13,7 +13,6 @@ class HumiditySimulator(Simulator):
 
     def __init__(self, sensor_name: str, config: SensorConfig) -> None:
         super().__init__(sensor_name, config)
-        # self._value = _humidity_value(self._timestamp)
  
 
     def stream(self) -> Iterable[HumidityRawData]:
@@ -60,6 +59,4 @@ def _night_attenuation_factor(timestamp: datetime) -> float:
     return 1
 
 def _equator_distance_factor(latitude: float) -> float:
-    # Assumiamo che l'umidità aumenti avvicinandosi all'equatore e diminuisca allontanandosi
-    # Utilizziamo un semplice modello lineare per questo esempio
     return 1 - abs(latitude) / 90  # Riduciamo l'impatto della latitudine all'aumentare della distanza dall'equatore
