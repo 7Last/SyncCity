@@ -6,18 +6,22 @@ services:
   simulator:
     container_name: simulator
     environment:
-      - KAFKA_HOST=redpanda
-      - KAFKA_PORT=9092
-      - SCHEMA_REGISTRY_URL=http://redpanda:8081
-      - KAFKA_MAX_BLOCK_MS=2000
-      - LOG_LEVEL=INFO
+      KAFKA_HOST: redpanda
+      KAFKA_PORT: 9092
+      SCHEMA_REGISTRY_URL: http://redpanda:8081
+      KAFKA_MAX_BLOCK_MS: 2000
+      LOG_LEVEL: INFO
+      SCHEMAS_RELATIVE_PATH: ../../../schemas
     build:
       context: ./simulator
     depends_on:
       redpanda_init:
         condition: service_completed_successfully
     volumes:
-      - ./simulator/sensors.toml:/simulator/sensors.toml
+      - type: bind
+        source: ./simulator/sensors.toml
+        target: /simulator/sensors.toml
+      - ./redpanda/schemas:/schemas
     networks:
       - synccity
     profiles: [ "release" ]
