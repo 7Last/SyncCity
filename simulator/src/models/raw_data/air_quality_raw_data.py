@@ -6,13 +6,14 @@ from .raw_data import RawData
 
 
 class AirQualityRawData(RawData):
-    def __init__(self, *, pm25: float, pm10: float, no2: float, o3: float,
-                 so2: float, latitude: float, longitude: float,
-                 sensor_name: str, sensor_uuid: UUID,
-                 timestamp: datetime = datetime.now()) -> None:
+    def __init__(  # noqa: PLR0913
+            self, *, pm25: float, pm10: float, no2: float, o3: float,
+            so2: float, latitude: float, longitude: float,
+            sensor_name: str, sensor_uuid: UUID, timestamp: datetime = datetime.now(),
+            group_name: str | None = None) -> None:
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_name=sensor_name, sensor_uuid=sensor_uuid,
-                         timestamp=timestamp)
+                         timestamp=timestamp, group_name=group_name)
         self.pm25 = pm25
         self.pm10 = pm10
         self.no2 = no2
@@ -20,7 +21,7 @@ class AirQualityRawData(RawData):
         self.so2 = so2
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_air_quality_raw_data(self)
+        return visitor.visit_air_quality_raw_data(self)
 
     @property
     def topic(self) -> str:

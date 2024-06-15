@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 6,
+    "id": 7,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -468,10 +468,262 @@
           {
             "id": "convertFieldType",
             "options": {
-              "conversions": [
-                {
-                  "destinationType": "string",
-                  "targetField": "latitude"
+                "basemap": {
+                    "config": {},
+                    "name": "Layer 0",
+                    "type": "default"
+                },
+                "controls": {
+                    "mouseWheelZoom": true,
+                    "showAttribution": true,
+                    "showDebug": false,
+                    "showMeasure": true,
+                    "showScale": false,
+                    "showZoom": true
+                },
+                "layers": [
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "red"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "text": {
+                                    "fixed": "",
+                                    "mode": "field"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Temp"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Temperature",
+                        "tooltip": true,
+                        "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "green"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Traffic"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Traffic",
+                        "tooltip": true,
+                        "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "semi-dark-blue"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Recycling Point"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Recycling Point",
+                        "tooltip": true,
+                        "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "yellow"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Air Quality"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Air Quality",
+                        "tooltip": true,
+                        "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "showLegend": true,
+                            "style": {
+                                "color": {
+                                    "fixed": "purple"
+                                },
+                                "opacity": 1,
+                                "rotation": {
+                                    "fixed": 0,
+                                    "max": 360,
+                                    "min": -360,
+                                    "mode": "mod"
+                                },
+                                "size": {
+                                    "fixed": 5,
+                                    "max": 15,
+                                    "min": 2
+                                },
+                                "symbol": {
+                                    "fixed": "img/icons/marker/circle.svg",
+                                    "mode": "fixed"
+                                },
+                                "symbolAlign": {
+                                    "horizontal": "center",
+                                    "vertical": "center"
+                                },
+                                "textConfig": {
+                                    "fontSize": 12,
+                                    "offsetX": 0,
+                                    "offsetY": 0,
+                                    "textAlign": "center",
+                                    "textBaseline": "middle"
+                                }
+                            }
+                        },
+                        "filterData": {
+                            "id": "byRefId",
+                            "options": "Parking"
+                        },
+                        "location": {
+                            "mode": "auto"
+                        },
+                        "name": "Parking",
+                        "tooltip": true,
+                        "type": "markers"
+                    }
+                ],
+                "tooltip": {
+                    "mode": "details"
                 },
                 {
                   "destinationType": "string",
@@ -535,8 +787,26 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green",
-                  "value": null
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'temperature'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+                    "refId": "Temp"
                 },
                 {
                   "color": "red",
@@ -579,10 +849,34 @@
                           "index": 0,
                           "text": "$2 $3"
                         }
-                      },
-                      "type": "regex"
-                    }
-                  ]
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'air_quality'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+                    "refId": "Air Quality"
+                },
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": "P5CECDC4694398594"
+                    },
+                    "editorType": "sql",
+                    "format": 1,
+                    "hide": false,
+                    "meta": {
+                        "builderOptions": {
+                            "columns": [],
+                            "database": "",
+                            "limit": 1000,
+                            "mode": "list",
+                            "queryType": "table",
+                            "table": ""
+                        }
+                    },
+                    "pluginVersion": "4.0.8",
+                    "queryType": "table",
+                    "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'parking'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+                    "refId": "Parking"
                 }
               ]
             },
@@ -742,54 +1036,21 @@
                 "table": ""
               }
             },
-            "pluginVersion": "4.0.7",
-            "queryType": "table",
-            "rawSql": "with sensors_by_type as (\n    select sensor_name, type, max(last_message) as last_message\n    from sensors\n    group by sensor_name, type\n)\nselect type, count(sensor_name) as count\nfrom sensors_by_type\nwhere match(type, '^(${sensor_type:pipe})$')\ngroup by type",
-            "refId": "A"
-          }
-        ],
-        "title": "Sensors by type",
-        "transparent": true,
-        "type": "bargauge"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 20
-        },
-        "id": 12,
-        "panels": [],
-        "title": "Raw data",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "grafana-clickhouse-datasource",
-          "uid": "P5CECDC4694398594"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "align": "left",
-              "cellOptions": {
-                "type": "auto"
-              },
-              "filterable": true,
-              "inspect": false
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green"
+
+            "id": 4,
+            "options": {
+                "displayMode": "gradient",
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "left",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "/^count$/",
+                    "values": true
                 },
                 {
                   "color": "red",
@@ -810,25 +1071,42 @@
                   "id": "displayName",
                   "value": "Sensor"
                 }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "value"
-              },
-              "properties": [
+            ],
+            "title": "Sensors by type",
+            "transformations": [
                 {
-                  "id": "displayName",
-                  "value": "Value"
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "total",
+                        "mode": "reduceRow",
+                        "reduce": {
+                            "include": [
+                                "count"
+                            ],
+                            "reducer": "sum"
+                        }
+                    }
                 },
                 {
-                  "id": "unit",
-                  "value": "celsius"
+                    "id": "configFromData",
+                    "options": {
+                        "applyTo": {
+                            "id": "byName",
+                            "options": "count"
+                        },
+                        "configRefId": "A",
+                        "mappings": [
+                            {
+                                "fieldName": "total",
+                                "handlerKey": "field.value",
+                                "reducerId": "max"
+                            }
+                        ]
+                    }
                 }
-              ]
-            }
-          ]
+            ],
+            "transparent": true,
+            "type": "bargauge"
         },
         "gridPos": {
           "h": 12,
@@ -1083,8 +1361,69 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": true,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "sensor_name"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Sensor"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "avg_speed"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Value"
+                            },
+                            {
+                                "id": "unit",
+                                "value": "velocitykmh"
+                            }
+                        ]
+                    }
+                ]
             },
             "editorType": "sql",
             "format": 1,
@@ -1190,8 +1529,63 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
             },
             "editorType": "sql",
             "format": 1,
@@ -1305,8 +1699,62 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": []
             },
             "editorType": "sql",
             "format": 1,
@@ -1427,8 +1875,68 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": true,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "sensor_name"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Sensor"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "filling"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Value"
+                            }
+                        ]
+                    }
+                ]
             },
             "editorType": "sql",
             "format": 1,
@@ -1547,8 +2055,75 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Avg. filling"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            }
+                        ]
+                    }
+                ]
             },
             "editorType": "sql",
             "format": 1,
@@ -1650,8 +2225,50 @@
         "targets": [
           {
             "datasource": {
-              "type": "grafana-clickhouse-datasource",
-              "uid": "P5CECDC4694398594"
+                "type": "grafana-clickhouse-datasource",
+                "uid": "P5CECDC4694398594"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    },
+                    "unitScale": true
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Filling % recycling-point-sensor-1"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "percent"
+                            }
+                        ]
+                    }
+                ]
             },
             "editorType": "sql",
             "format": 1,
@@ -1751,6 +2368,6 @@
     "timezone": "",
     "title": "Raw Data",
     "uid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
-    "version": 1,
+    "version": 2,
     "weekStart": ""
   }

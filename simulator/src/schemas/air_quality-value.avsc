@@ -23,6 +23,13 @@
       "type": "string"
     },
     {
+      "name": "group_name",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    {
       "name": "pm25",
       "type": [
         "null",

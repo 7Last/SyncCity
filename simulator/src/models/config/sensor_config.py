@@ -14,14 +14,15 @@ class SensorConfig:
         Represents the schema for the sensor configuration
         :param config: dictionary with the configuration for a single sensor
         """
-        self.uuid = UUID(config.get('uuid'))
+        self.sensor_uuid = UUID(config.get('uuid'))
         self.limit = config.get('limit') or None
         self.begin_date = config.get('begin_date') or None
         self.latitude = config.get('latitude')
         self.longitude = config.get('longitude')
+        self.group_name = config.get('group_name') or None
 
         generation_delay = config.get('generation_delay') or None
-        points_spacing = config.get('points_spacing')
+        points_spacing = config.get('points_spacing') or None
 
         try:
             if not config.get('type'):
@@ -34,18 +35,25 @@ class SensorConfig:
             raise
 
         try:
-            self.points_spacing: timedelta = isodate.parse_duration(points_spacing)
+            if points_spacing is None:
+                self.points_spacing = None
+            else:
+                self.points_spacing: timedelta = isodate.parse_duration(points_spacing)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid points_spacing value. Must be specified following ISO8601',
+                'Invalid _points_spacing value. Must be specified following ISO8601',
             )
             raise
 
         try:
-            self.generation_delay: timedelta = isodate.parse_duration(generation_delay)
+            if generation_delay is None:
+                self.generation_delay = None
+            else:
+                self.generation_delay: timedelta = isodate.parse_duration(
+                    generation_delay)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid generation_delay value. Must be specified following ISO8601',
+                'Invalid _generation_delay value. Must be specified following ISO8601',
             )
             raise
 
