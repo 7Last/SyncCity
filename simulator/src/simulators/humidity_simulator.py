@@ -5,36 +5,42 @@ from typing import Iterable
 from uuid import UUID
 
 from .simulator import Simulator
+from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.humidity_raw_data import HumidityRawData
 
 
 class HumiditySimulator(Simulator):
 
-    def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
-                 points_spacing: timedelta, latitude: float, longitude: float,
-                 generation_delay: timedelta = timedelta(seconds=1),
-                 begin_date: datetime = None,
-                 limit: int = None) -> None:
-        super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
-                         points_spacing=points_spacing, latitude=latitude,
-                         generation_delay=generation_delay, longitude=longitude,
-                         begin_date=begin_date, limit=limit)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
+        self._value = _humidity_value(self._timestamp)
+    # def __init__(self, *, sensor_name: str, sensor_uuid: UUID,
+    #              points_spacing: timedelta, latitude: float, longitude: float,
+    #              generation_delay: timedelta = timedelta(seconds=1),
+    #              begin_date: datetime = None,
+    #              limit: int = None) -> None:
+    #     super().__init__(sensor_name=sensor_name, sensor_uuid=sensor_uuid,
+    #                      points_spacing=points_spacing, latitude=latitude,
+    #                      generation_delay=generation_delay, longitude=longitude,
+    #                      begin_date=begin_date, limit=limit)
 
     def stream(self) -> Iterable[HumidityRawData]:
-        while self.limit != 0 and self.running:
+        while self._limit != 0 and self._running:
+            
             yield HumidityRawData(
-                value=_humidity_value(self.timestamp),
-                sensor_uuid=self.sensor_uuid,
+                value=self._value,
+                sensor_uuid=self._sensor_uuid,
                 sensor_name=self.sensor_name,
-                latitude=self.latitude,
-                longitude=self.longitude,
-                timestamp=self.timestamp,
+                latitude=self._latitude,
+                longitude=self._longitude,
+                timestamp=self._timestamp,
+                group_name=self._group_name,
             )
 
-            if self.limit is not None:
-                self.limit -= 1
-            self.timestamp += self.points_spacing
-            self._event.wait(self.generation_delay.total_seconds())
+            if self._limit is not None:
+                self._limit -= 1
+            self._timestamp += self._points_spacing
+            self._event.wait(self._generation_delay.total_seconds())
 
 
 def _humidity_value(timestamp: datetime) -> float:

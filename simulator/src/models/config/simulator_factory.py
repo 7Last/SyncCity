@@ -26,8 +26,6 @@ def _get_simulator(name: str, config: SensorConfig) -> Simulator:  # noqa: PLR09
     match config.type:
         case SensorType.AIR_QUALITY:
             return AirQualitySimulator(name, config)
-        case SensorType.HUMIDITY:
-            return HumiditySimulator(name, config)
         case SensorType.RECYCLING_POINT:
             return RecyclingPointSimulator(name, config)
         case SensorType.PARKING:
@@ -36,4 +34,6 @@ def _get_simulator(name: str, config: SensorConfig) -> Simulator:  # noqa: PLR09
             return TemperatureSimulator(name, config)
         case SensorType.TRAFFIC:
             return TrafficSimulator(name, config)
+        case SensorType.HUMIDITY:
+            return HumiditySimulator(name, config)
           
