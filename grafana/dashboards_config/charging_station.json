@@ -1,0 +1,465 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 9,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.5
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "status"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "false": {
+                        "index": 0,
+                        "text": "Occupied"
+                      },
+                      "true": {
+                        "index": 1,
+                        "text": "Free"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 20,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "basemap": {
+          "config": {},
+          "type": "default"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showDebug": false,
+          "showLayercontrol": true,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "cluster": true,
+              "clusterDistance": 20,
+              "clusterMinDistance": 0,
+              "clusterValue": "size",
+              "color": {
+                "field": "status",
+                "fixed": "dark-green"
+              },
+              "enableGradient": false,
+              "enableShadow": false,
+              "fillOpacity": 0,
+              "iconSize": 16,
+              "pinShape": "marker",
+              "selectIcon": "fa-car",
+              "shape": "circle",
+              "showLegend": false,
+              "showPin": true,
+              "size": {
+                "fixed": 1,
+                "max": 15,
+                "min": 2
+              }
+            },
+            "displayProperties": [
+              "latitude",
+              "longitude",
+              "sensor_name",
+              "status"
+            ],
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Parking layer",
+            "query": "Parking",
+            "titleField": "sensor_name",
+            "type": "markers"
+          }
+        ],
+        "view": {
+          "id": "auto",
+          "lat": 45.410145,
+          "lon": 11.889549,
+          "zoom": 14
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "SELECT latitude, longitude, sensor_name, not argMax(is_occupied, timestamp) as status\nfrom sensors.charging_station\nwhere group_name = '${group_name}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
+          "refId": "Parking"
+        }
+      ],
+      "title": "Real time status",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "latitude"
+              },
+              {
+                "destinationType": "string",
+                "targetField": "longitude"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "orchestracities-map-panel"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "occupied"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "free"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "displayLabels": ["percent", "name"],
+        "legend": {
+          "calcs": [],
+          "displayMode": "hidden",
+          "placement": "right",
+          "showLegend": false,
+          "values": []
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(is_occupied, timestamp) as occupied\n         FROM sensors.charging_station\n         where group_name = '${group_name}' and timestamp <= now()\n         group by sensor_name\n         );",
+          "refId": "A"
+        }
+      ],
+      "title": "Real time occupancy rate",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": ["free", "occupied"]
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 13,
+        "x": 0,
+        "y": 11
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "basic",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "/^occupied_seconds$/",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_occupied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.charging_station)\nselect\n    sumIf(seconds, is_occupied = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Total occupancy time by charging station",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "applyTo": {
+              "id": "byName",
+              "options": "occupied_seconds"
+            },
+            "configRefId": "A",
+            "mappings": []
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "max_time": "",
+              "occupied_seconds": ""
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
+        },
+        "definition": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'parking'\nand group_name is not null",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Park name",
+        "multi": false,
+        "name": "group_name",
+        "options": [],
+        "query": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'parking'\nand group_name is not null",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now/w",
+    "to": "now/w"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Charging",
+  "uid": "feb79911-5158-48f3-bcf1-361979f81026",
+  "version": 1,
+  "weekStart": ""
+}
