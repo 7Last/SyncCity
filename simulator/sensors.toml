@@ -269,7 +269,7 @@ begin_date = 2024-06-11T22:00:00
 uuid = "a3d15940-a584-456a-86aa-7d34ff98bdb9"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT1S"
+generation_delay = "PT0.1S"
 latitude = 45.416091
 longitude = 11.882568
 
@@ -278,7 +278,7 @@ begin_date = 2024-06-11T22:00:00
 uuid = "3a5cf9aa-4200-41da-a200-12dd2b7359a0"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT1S"
+generation_delay = "PT0.1S"
 latitude = 45.408044
 longitude = 11.877469
 
@@ -287,7 +287,7 @@ begin_date = 2024-06-11T22:00:00
 uuid = "adaffc51-851e-4753-b333-5d6c131a0ea9"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT1S"
-latitude = 45.399868g
+generation_delay = "PT0.1S"
+latitude = 45.3998688
 longitude = 11.875570
 

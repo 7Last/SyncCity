@@ -32,7 +32,7 @@ CREATE TABLE sensors.precipitation_daily
 (
     sensor_name         String,
     date                DateTime64,
-    avg_humidity        Float32,
+    avg_precipitation        Float32,
     insertion_timestamp DateTime64(6) default now64()
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
