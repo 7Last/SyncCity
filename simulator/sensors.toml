@@ -263,3 +263,33 @@ type = "parking"
 generation_delay = "PT1S"
 latitude = 45.4098889
 longitude = 11.8899313
+
+[sensors.brenta_monte]
+group_name = "brenta"
+begin_date = 2024-06-11T22:00:00
+uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
+type = "river_level"
+points_spacing = "PT1H"
+generation_delay = "PT0.1S"
+latitude = 45.0078311
+longitude = 11.2643933
+
+[sensors.brenta_centro]
+group_name = "brenta"
+begin_date = 2024-06-11T22:00:00
+uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
+type = "river_level"
+points_spacing = "PT1H"
+generation_delay = "PT0.1S"
+latitude = 45.8564388
+longitude = 11.6624399
+
+[sensors.brenta_valle]
+group_name = "brenta"
+begin_date = 2024-06-11T22:00:00
+uuid = "ee5b0400-5549-453c-8238-684f6187866d"
+type = "river_level"
+points_spacing = "PT1H"
+generation_delay = "PT0.1S"
+latitude = 45.1908855
+longitude = 12.2219133

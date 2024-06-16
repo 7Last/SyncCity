@@ -7,6 +7,7 @@ class SensorType(Enum):
     RECYCLING_POINT = "recycling_point"
     TEMPERATURE = "temperature"
     TRAFFIC = "traffic"
+    RIVER_LEVEL="river_level"
 
     @staticmethod
     def from_str(key: str) -> "SensorType":
