@@ -36,7 +36,7 @@ registry_client = SchemaRegistry(
 
 def serialize(json_item: Dict, value_subject: str, topic: str) -> bytes:
     avro_serde = AvroValueSerde(registry_client, topic)
-    path = Path('/redpanda/schemas')
+    path = Path(__file__).parent.joinpath('../redpanda/schemas')
     value_schema = (path / f"{value_subject}.avsc").read_text()
     return avro_serde.serialize(json_item, value_schema)
 
