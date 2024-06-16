@@ -1,5 +1,6 @@
 package com.sevenlast.synccity.models;
 
+import com.sevenlast.synccity.serialization.RecordSerializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.Schema;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class HeatIndexResult {
+public class HeatIndexResult implements RecordSerializable {
     private Set<String> sensorNames;
     private String groupName;
     private double heatIndex;

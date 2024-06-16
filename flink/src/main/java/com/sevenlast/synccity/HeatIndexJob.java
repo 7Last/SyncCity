@@ -4,7 +4,8 @@ import com.sevenlast.synccity.functions.AverageWindowFunction;
 import com.sevenlast.synccity.models.AverageResult;
 import com.sevenlast.synccity.models.HeatIndexResult;
 import com.sevenlast.synccity.models.RawData;
-import com.sevenlast.synccity.serialization.HeatIndexSerializationSchema;
+import com.sevenlast.synccity.serialization.RecordSerializable;
+import com.sevenlast.synccity.serialization.RecordSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
@@ -15,6 +16,7 @@ import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -102,7 +104,7 @@ public class HeatIndexJob {
         var metadata = client.getLatestSchemaMetadata(HEAT_INDEX_TOPIC + "-value");
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
 
-        var heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
+        DataStream<RecordSerializable> heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
                 .where(AverageResult::getGroupName)
                 .equalTo(AverageResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
@@ -127,11 +129,11 @@ public class HeatIndexJob {
                     );
                 });
 
-        var sink = KafkaSink.<HeatIndexResult>builder()
+        var sink = KafkaSink.<RecordSerializable>builder()
                 .setBootstrapServers(bootstrapServers)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
                         .setTopic(HEAT_INDEX_TOPIC)
-                        .setValueSerializationSchema(new HeatIndexSerializationSchema(
+                        .setValueSerializationSchema(new RecordSerializationSchema(
                                 HEAT_INDEX_TOPIC,
                                 heatIndexSchema,
                                 schemaRegistryUrl

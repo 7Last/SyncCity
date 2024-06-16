@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.generic.GenericRecord;
 
-import javax.annotation.Nullable;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
