@@ -6,7 +6,7 @@ from ...simulators.recycling_point_simulator import RecyclingPointSimulator
 from ...simulators.simulator import Simulator
 from ...simulators.temperature_simulator import TemperatureSimulator
 from ...simulators.traffic_simulator import TrafficSimulator
-
+from ...simulators.charging_station_simulator import ChargingStationSimulator
 
 def build_simulators(sensors_config: dict[str, any]) -> list[Simulator]:
     return [
@@ -33,3 +33,5 @@ def _get_simulator(name: str, config: SensorConfig) -> Simulator:  # noqa: PLR09
             return TemperatureSimulator(name, config)
         case SensorType.TRAFFIC:
             return TrafficSimulator(name, config)
+        case SensorType.CHARGING_STATION:
+            return ChargingStationSimulator(name, config)
