@@ -41,7 +41,7 @@ humidity2 = {
     "longitude": 11.7969644,
 }
 
-begin_date = datetime(2024, 1, 1, 1, 5, 0)
+begin_date = datetime(2024, 6, 17, 0, 0, 0, tzinfo=UTC)
 
 registry_client = SchemaRegistry(
     url='http://localhost:18081',
@@ -58,7 +58,7 @@ def serialize(json_item: Dict, value_subject: str, topic: str) -> bytes:
 
 i = 0
 while True:
-    item_date = begin_date + timedelta(minutes=i)
+    item_date = begin_date + timedelta(minutes=15 * i)
     item_date_ms = int(item_date.timestamp() * 1000)
 
     if i % 2 == 0:

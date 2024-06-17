@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 7,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -42,9 +42,7 @@
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
-            "steps": [
-
-            ]
+            "steps": []
           },
           "unitScale": true
         },
@@ -129,7 +127,7 @@
           },
           "pluginVersion": "4.0.8",
           "queryType": "table",
-          "rawSql": "select --TODO: change this when implementing aggregation with Flink\n    avg(o3) as avg_o3,\n    avg(no2) as avg_no2,\n    avg(so2) as avg_so2,\n    avg(pm10) as avg_pm10,\n    avg(pm25) as avg_pm25,\n    multiIf(avg_o3 < 50, 1,\n            avg_o3 < 100, 2,\n            avg_o3 < 130, 3,\n            avg_o3 < 240, 4,\n            avg_o3 < 380, 5,\n            6) as o3_level,\n    multiIf(avg_no2 < 40, 1,\n            avg_no2 < 90, 2,\n            avg_no2 < 120, 3,\n            avg_no2 < 230, 4,\n            avg_no2 < 340, 5,\n            6) as no2_level,\n    multiIf(avg_so2 < 100, 1,\n            avg_so2 < 200, 2,\n            avg_so2 < 350, 3,\n            avg_so2 < 500, 4,\n            avg_so2 < 750, 5,\n            6) as so2_level,\n    multiIf(avg_pm10 < 20, 1,\n            avg_pm10 < 40, 2,\n            avg_pm10 < 50, 3,\n            avg_pm10 < 100, 4,\n            avg_pm10 < 150, 5,\n            6) as pm10_level,\n    multiIf(avg_pm25 < 10, 1,\n            avg_pm25 < 20, 2,\n            avg_pm25 < 25, 3,\n            avg_pm25 < 50, 4,\n            avg_pm25 < 75, 5,\n            6) as pm25_level,\n    greatest(o3_level, no2_level, so2_level, pm10_level, pm25_level) as air_quality_index,\n    latitude,\n    longitude,\n    sensor_name\nfrom sensors.air_quality\nwhere timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name, latitude, longitude\n",
+          "rawSql": "select\n    avg(o3) as avg_o3,\n    avg(no2) as avg_no2,\n    avg(so2) as avg_so2,\n    avg(pm10) as avg_pm10,\n    avg(pm25) as avg_pm25,\n    multiIf(avg_o3 < 50, 1,\n            avg_o3 < 100, 2,\n            avg_o3 < 130, 3,\n            avg_o3 < 240, 4,\n            avg_o3 < 380, 5,\n            6) as o3_level,\n    multiIf(avg_no2 < 40, 1,\n            avg_no2 < 90, 2,\n            avg_no2 < 120, 3,\n            avg_no2 < 230, 4,\n            avg_no2 < 340, 5,\n            6) as no2_level,\n    multiIf(avg_so2 < 100, 1,\n            avg_so2 < 200, 2,\n            avg_so2 < 350, 3,\n            avg_so2 < 500, 4,\n            avg_so2 < 750, 5,\n            6) as so2_level,\n    multiIf(avg_pm10 < 20, 1,\n            avg_pm10 < 40, 2,\n            avg_pm10 < 50, 3,\n            avg_pm10 < 100, 4,\n            avg_pm10 < 150, 5,\n            6) as pm10_level,\n    multiIf(avg_pm25 < 10, 1,\n            avg_pm25 < 20, 2,\n            avg_pm25 < 25, 3,\n            avg_pm25 < 50, 4,\n            avg_pm25 < 75, 5,\n            6) as pm25_level,\n    greatest(o3_level, no2_level, so2_level, pm10_level, pm25_level) as air_quality_index,\n    latitude,\n    longitude,\n    sensor_name\nfrom sensors.air_quality\nwhere timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name, latitude, longitude\n",
           "refId": "A"
         }
       ],
@@ -589,8 +587,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -689,7 +686,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "rubano",
           "value": "rubano"
         },
@@ -721,6 +718,6 @@
   "timezone": "",
   "title": "Air Quality",
   "uid": "d44a73d4-5a1c-4cae-b667-659c095c7fb3",
-  "version": 6,
+  "version": 1,
   "weekStart": ""
 }

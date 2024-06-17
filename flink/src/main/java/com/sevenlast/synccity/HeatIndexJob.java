@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";
     private static final String HUMIDITY_TOPIC = "humidity";
-    private static final Time WINDOW_SIZE = Time.minutes(5);
+    private static final Time WINDOW_SIZE = Time.hours(1);
     private static final String HEAT_INDEX_TOPIC = "heat_index";
 
     private static final String GROUP_ID = "heat-index-job";

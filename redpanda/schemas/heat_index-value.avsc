@@ -26,6 +26,18 @@
       "type": "float"
     },
     {
+      "name": "center_of_mass_latitude",
+      "type": "float"
+    },
+    {
+      "name": "center_of_mass_longitude",
+      "type": "float"
+    },
+    {
+      "name": "radius_in_km",
+      "type": "float"
+    },
+    {
       "name": "timestamp",
       "type": "string"
     }

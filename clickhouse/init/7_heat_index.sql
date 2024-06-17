@@ -1,11 +1,14 @@
 CREATE TABLE sensors.heat_index
 (
-    sensor_names    Array(String),
-    group_name      String,
-    timestamp       DateTime64,
-    heat_index      Float32,
-    avg_temperature Float32,
-    avg_humidity    Float32
+    sensor_names             Array(String),
+    group_name               String,
+    timestamp                DateTime64,
+    heat_index               Float32,
+    avg_temperature          Float32,
+    avg_humidity             Float32,
+    center_of_mass_latitude  Float32,
+    center_of_mass_longitude Float32,
+    radius_in_km             Float32
 ) ENGINE = MergeTree()
       ORDER BY (group_name, timestamp);
 

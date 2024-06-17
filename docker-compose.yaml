@@ -80,11 +80,27 @@ services:
       }
       
       rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create heat_index-value --schema /schemas/heat_index-value.avsc
+      
+      rpk topic create temperature -X brokers=http://redpanda:9092 2>&1 | {
+        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
+            exit 1
+        fi
+      }
+      
+      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create temperature-value --schema /schemas/temperature-value.avsc
+      
+      rpk topic create humidity -X brokers=http://redpanda:9092 2>&1 | {
+        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
+            exit 1
+        fi
+      }
+      
+      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create humidity-value --schema /schemas/humidity-value.avsc
       "
     volumes:
       - type: bind
-        source: ./redpanda/schemas/heat_index-value.avsc
-        target: /schemas/heat_index-value.avsc
+        source: ./redpanda/schemas/
+        target: /schemas
       - type: bind
         source: ./redpanda/redpanda-console-config.yaml
         target: /etc/redpanda/redpanda.yaml
@@ -190,7 +206,7 @@ services:
       - ./grafana/dashboards_config:/var/lib/grafana/dashboards
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     environment:
-      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource
+      GF_INSTALL_PLUGINS: grafana-clickhouse-datasource,orchestracities-map-panel
     #      GF_AUTH_ANONYMOUS_ENABLED: true
     #      GF_AUTH_DISABLE_LOGIN_FORM: true
     #      GF_AUTH_ANONYMOUS_ORG_ROLE: "Organization administrator"
