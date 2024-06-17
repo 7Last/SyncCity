@@ -1,6 +1,5 @@
 import random
 from datetime import datetime
-from typing import Iterable
 
 from math import pi, sin
 

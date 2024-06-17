@@ -9,6 +9,9 @@ from simulator.src.simulators.air_quality_simulator import AirQualitySimulator
 
 
 class TestAirQualitySimulator(unittest.TestCase):
+    def setUp(self) -> None:
+        self.producer = MagicMock()
+
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
             AirQualitySimulator(sensor_name='', config=SensorConfig({
@@ -18,7 +21,7 @@ class TestAirQualitySimulator(unittest.TestCase):
                 'generation_delay': 'PT1H',
                 'latitude': 0,
                 'longitude': 0,
-            }), producer=producer)
+            }), producer=self.producer)
 
     def test_start(self) -> None:
         simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
@@ -28,10 +31,10 @@ class TestAirQualitySimulator(unittest.TestCase):
             'generation_delay': 'PT1S',
             'latitude': 0,
             'longitude': 0,
-        }), producer=producer)
-        self.assertEqual(simulator._running, False)
+        }), producer=self.producer)
         simulator.start()
-        self.assertEqual(simulator._running, True)
+        self.assertEqual(simulator.is_running(), True)
+        simulator.stop()
 
     def test_stop(self) -> None:
         simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
@@ -41,13 +44,12 @@ class TestAirQualitySimulator(unittest.TestCase):
             'generation_delay': 'PT1S',
             'latitude': 0,
             'longitude': 0,
-        }), producer=producer)
+        }), producer=self.producer)
         simulator.start()
-        self.assertEqual(simulator._running, True)
         simulator.stop()
-        self.assertEqual(simulator._running, False)
+        self.assertEqual(simulator.is_running(), False)
 
-    @unittest.mock.patch("random.uniform")
+    @unittest.mock.patch("random.uniform", return_value=0)
     def test_stream(self, mock_uniform: MagicMock) -> None:
         simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
             'uuid': '00000000-0000-0000-0000-000000000000',
@@ -58,12 +60,11 @@ class TestAirQualitySimulator(unittest.TestCase):
             'limit': 3,
             'latitude': 0,
             'longitude': 0,
-        }), producer=producer)
+        }), producer=self.producer)
 
         mock_uniform.return_value = 0
 
-        simulator.start()
-        stream = list(simulator.data())
+        stream = [simulator.data() for _ in range(3)]
 
         expected = [
             AirQualityRawData(

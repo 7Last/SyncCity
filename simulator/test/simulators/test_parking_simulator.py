@@ -9,6 +9,9 @@ from simulator.src.simulators.parking_simulator import ParkingSimulator
 
 
 class TestParkingSimulator(unittest.TestCase):
+    def setUp(self) -> None:
+        self.producer = MagicMock()
+
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
             ParkingSimulator(
@@ -21,6 +24,7 @@ class TestParkingSimulator(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
+                producer=self.producer,
             )
 
     def test_start(self) -> None:
@@ -34,10 +38,11 @@ class TestParkingSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
-        self.assertEqual(simulator._running, False)
         simulator.start()
-        self.assertEqual(simulator._running, True)
+        self.assertEqual(simulator.is_running(), True)
+        simulator.stop()
 
     def test_stop(self) -> None:
         simulator = ParkingSimulator(
@@ -50,11 +55,11 @@ class TestParkingSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
         simulator.start()
-        self.assertEqual(simulator._running, True)
         simulator.stop()
-        self.assertEqual(simulator._running, False)
+        self.assertEqual(simulator.is_running(), False)
 
     @unittest.mock.patch(
         'random.random',
@@ -76,6 +81,7 @@ class TestParkingSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
 
         mock_next_change.side_effect = [
@@ -84,8 +90,7 @@ class TestParkingSimulator(unittest.TestCase):
             datetime(2024, 1, 1, 6),
         ]
 
-        simulator.start()
-        stream = list(simulator.data())
+        stream = [simulator.data() for _ in range(3)]
 
         expected = [
             ParkingRawData(

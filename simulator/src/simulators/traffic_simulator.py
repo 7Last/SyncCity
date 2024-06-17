@@ -11,7 +11,7 @@ class TrafficSimulator(Simulator):
     _SPEED_MULTIPLICATIVE_FACTOR = 100
     _VEHICLES_MULTIPLICATIVE_FACTOR = 200
 
-    def data(self) -> Iterable[TrafficRawData]:
+    def data(self) -> TrafficRawData:
         speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[

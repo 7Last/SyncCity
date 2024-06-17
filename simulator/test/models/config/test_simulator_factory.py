@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.config.simulator_factory import build_simulators
@@ -9,6 +10,8 @@ from simulator.src.simulators.traffic_simulator import TrafficSimulator
 
 class TestSimulatorFactory(unittest.TestCase):
     def test_simulator_generator(self) -> None:
+        mock_producer = MagicMock()
+
         config = {
             "sensor1": {
                 "type": "temperature",
@@ -30,7 +33,8 @@ class TestSimulatorFactory(unittest.TestCase):
             },
         }
 
-        simulators = sorted(build_simulators(config), key=lambda x: x.sensor_name)
+        simulators = sorted(build_simulators(config, mock_producer),
+                            key=lambda x: x.sensor_name)
         expected = [
             TemperatureSimulator(
                 sensor_name="sensor1",
@@ -45,6 +49,7 @@ class TestSimulatorFactory(unittest.TestCase):
                         "points_spacing": "PT2S",
                     },
                 ),
+                producer=mock_producer,
             ),
             TrafficSimulator(
                 sensor_name="sensor2",
@@ -59,12 +64,14 @@ class TestSimulatorFactory(unittest.TestCase):
                         "points_spacing": "PT7S",
                     },
                 ),
+                producer=mock_producer,
             ),
         ]
 
         self.assertEqual(simulators, expected)
 
     def test_not_implemented_error(self) -> None:
+        mock_producer = MagicMock()
         sensors = {
             "sensor1": {
                 "type": "not_implemented",
@@ -78,4 +85,4 @@ class TestSimulatorFactory(unittest.TestCase):
         }
 
         with self.assertRaises(KeyError):
-            list(build_simulators(sensors))
+            list(build_simulators(sensors, mock_producer))
