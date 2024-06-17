@@ -76,7 +76,7 @@ class TestRecyclingPointSimulator(unittest.TestCase):
         mock_max.side_effect = lambda _, __: 0
 
         simulator.start()
-        stream = list(simulator.stream())
+        stream = list(simulator.data())
 
         expected = [
             RecyclingPointRawData(

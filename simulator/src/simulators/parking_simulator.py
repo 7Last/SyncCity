@@ -1,37 +1,33 @@
 import random
 from datetime import datetime, timedelta
-from typing import Iterable
 
 from .simulator import Simulator
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.parking_raw_data import ParkingRawData
+from ..producers.producer_strategy import ProducerStrategy
 
 
 class ParkingSimulator(Simulator):
 
-    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
-        super().__init__(sensor_name, config)
+    def __init__(self, sensor_name: str, config: SensorConfig,
+                 producer: ProducerStrategy) -> None:
+        super().__init__(sensor_name, config, producer)
         self._is_occupied = self._generate_occupancy()
 
-    def stream(self) -> Iterable[ParkingRawData]:
-        while self._limit != 0 and self._running:
+    def data(self) -> ParkingRawData:
+        data = ParkingRawData(
+            is_occupied=self._is_occupied,
+            latitude=self._latitude,
+            longitude=self._longitude,
+            timestamp=self._timestamp,
+            sensor_uuid=self._sensor_uuid,
+            sensor_name=self.sensor_name,
+            group_name=self._group_name,
+        )
 
-            yield ParkingRawData(
-                is_occupied=self._is_occupied,
-                latitude=self._latitude,
-                longitude=self._longitude,
-                timestamp=self._timestamp,
-                sensor_uuid=self._sensor_uuid,
-                sensor_name=self.sensor_name,
-                group_name=self._group_name,
-            )
-
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp = self._generate_next_occupancy_change()
-            # Change the occupancy status
-            self._is_occupied = not self._is_occupied
-            self._event.wait(self._generation_delay.total_seconds())
+        self._timestamp = self._generate_next_occupancy_change()
+        self._is_occupied = not self._is_occupied  # Change the occupancy status
+        return data
 
     def _generate_occupancy(self) -> bool:
         """

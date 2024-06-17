@@ -85,7 +85,7 @@ class TestParkingSimulator(unittest.TestCase):
         ]
 
         simulator.start()
-        stream = list(simulator.stream())
+        stream = list(simulator.data())
 
         expected = [
             ParkingRawData(

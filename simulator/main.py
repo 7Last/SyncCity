@@ -4,10 +4,9 @@ import os
 import toml
 
 from src.models.config.env_config import EnvConfig
-from src.models.config.simulator_factory import build_simulators
-from src.producers.kafka_producer import KafkaProducer
+from src.producers.stdout_producer import StdOutProducer
 from src.runner import Runner
-from src.serializers.avro_serializer import AvroSerializer
+from src.serializers.json_serializer import JsonSerializer
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 
@@ -23,20 +22,16 @@ def main() -> None:
     sensors_config = toml.load(sensors_path).get('sensors')
     log.debug(f'Loaded sensors configuration {sensors_config}')
 
-    # producer = StdOutProducer(serializer=JsonSerializer())  # noqa: ERA001
+    producer = StdOutProducer(serializer=JsonSerializer())
 
-    producer = KafkaProducer(
-        bootstrap_servers=[env_config.bootstrap_server],
-        max_block_ms=env_config.max_block_ms,
-        serializer=AvroSerializer(),
-        acks=1,
-    )
+    # producer = KafkaProducer(
+    #     bootstrap_servers=[env_config.bootstrap_server],
+    #     max_block_ms=env_config.max_block_ms,
+    #     serializer=AvroSerializer(),
+    #     acks=1,
+    # )
 
-    runner = Runner(
-        simulators=build_simulators(sensors_config),
-        producer=producer,
-    )
-
+    runner = Runner(sensors_config, producer)
     log.debug('Starting runner')
     runner.run()
 

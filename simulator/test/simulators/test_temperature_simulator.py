@@ -73,7 +73,7 @@ class TestTemperatureSimulator(unittest.TestCase):
         )
         mock_uniform.return_value = 0
         simulator.start()
-        stream = list(simulator.stream())
+        stream = list(simulator.data())
 
         expected = [
             TemperatureRawData(
