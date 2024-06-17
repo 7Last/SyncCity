@@ -1,5 +1,4 @@
 import random
-from typing import Iterable
 
 from math import e, pi, sqrt
 

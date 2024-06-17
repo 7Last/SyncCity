@@ -65,7 +65,7 @@ class TestRecyclingPointSimulator(unittest.TestCase):
 
     @patch('random.uniform', return_value=0)
     @patch('builtins.max', return_value=0)
-    def test_stream(self, mock_max: Mock, mock_uniform: Mock) -> None:
+    def test_stream(self, _: Mock, __: Mock) -> None:
         simulator = RecyclingPointSimulator(
             sensor_name='test',
             config=SensorConfig({

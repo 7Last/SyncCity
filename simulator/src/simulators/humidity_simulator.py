@@ -36,32 +36,33 @@ def _humidity_value(timestamp: datetime, latitude: float) -> float:
     night_attenuation = _night_attenuation_factor(timestamp)
 
     hour = timestamp.hour + timestamp.minute / 60
-    noise = random.uniform(-3, 3)  # Raffiniamo la variazione casuale
+    noise = random.uniform(-3, 3)
     humidity = (daily_variation * sin(
         hour * pi / 24) + seasonal_coeff + noise) * night_attenuation
-    return min(humidity, 100)  # Assicuriamo che l'umidità non superi il 100%
+    return min(humidity, 100)
 
 
 def _humidity_seasonal_coefficient(timestamp: datetime, latitude: float) -> float:
     x = timestamp.month + (timestamp.day - 1) / 30
     equator_distance_factor = _equator_distance_factor(latitude)
+    # Change the seasonal coefficients based on the latitude
     return (45 + 15 * sin(
-        x * pi / 12 - 1 / 4)) * equator_distance_factor  # Modifichiamo i coefficienti stagionali in base alla latitudine
+        x * pi / 12 - 1 / 4)) * equator_distance_factor
 
 
 def _humidity_daily_variation(timestamp: datetime) -> float:
     x = timestamp.month + (timestamp.day - 1) / 30
-    return 25 * (sin(x * pi / 12 - (
-            pi - 3) / 2) + 1)  # Modifichiamo la variazione giornaliera
+    return 25 * (sin(x * pi / 12 - (pi - 3) / 2) + 1)
 
 
 def _night_attenuation_factor(timestamp: datetime) -> float:
     hour = timestamp.hour
+    # Reducing the humidity variation during the night hours
     if 0 <= hour < 6 or 20 <= hour < 24:
-        return 0.8  # Riduciamo la variazione di umidità durante le ore notturne
+        return 0.8
     return 1
 
 
 def _equator_distance_factor(latitude: float) -> float:
-    return 1 - abs(
-        latitude) / 90  # Riduciamo l'impatto della latitudine all'aumentare della distanza dall'equatore
+    # Reduce the impact of the latitude moving away from the equator
+    return 1 - abs(latitude) / 90
