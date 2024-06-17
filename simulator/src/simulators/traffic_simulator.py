@@ -1,5 +1,4 @@
 import random
-from typing import Iterable
 
 from math import e, pi, sqrt
 
@@ -11,45 +10,42 @@ class TrafficSimulator(Simulator):
     _SPEED_MULTIPLICATIVE_FACTOR = 100
     _VEHICLES_MULTIPLICATIVE_FACTOR = 200
 
-    def stream(self) -> Iterable[TrafficRawData]:
-        while self._limit != 0 and self._running:
-            speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
-                x=self._timestamp.hour + self._timestamp.minute / 60,
-                modes=[
-                    (0, 2.1),
-                    (4, 2.2),
-                    (13, 3),
-                    (21, 3),
-                    (24, 3),
-                ],
-            )
+    def data(self) -> TrafficRawData:
+        speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
+            x=self._timestamp.hour + self._timestamp.minute / 60,
+            modes=[
+                (0, 2.1),
+                (4, 2.2),
+                (13, 3),
+                (21, 3),
+                (24, 3),
+            ],
+        )
 
-            vehicles = self._VEHICLES_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
-                x=self._timestamp.hour + self._timestamp.minute / 60,
-                modes=[
-                    (0, 4),
-                    (8.5, 1.8),
-                    (13, 2),
-                    (17.5, 1.7),
-                    (21, 3),
-                ],
-            )
+        vehicles = self._VEHICLES_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
+            x=self._timestamp.hour + self._timestamp.minute / 60,
+            modes=[
+                (0, 4),
+                (8.5, 1.8),
+                (13, 2),
+                (17.5, 1.7),
+                (21, 3),
+            ],
+        )
 
-            yield TrafficRawData(
-                vehicles=int(vehicles),
-                avg_speed=speed,
-                latitude=self._latitude,
-                longitude=self._longitude,
-                timestamp=self._timestamp,
-                sensor_uuid=self._sensor_uuid,
-                sensor_name=self.sensor_name,
-                group_name=self._group_name,
-            )
+        data = TrafficRawData(
+            vehicles=int(vehicles),
+            avg_speed=speed,
+            latitude=self._latitude,
+            longitude=self._longitude,
+            timestamp=self._timestamp,
+            sensor_uuid=self._sensor_uuid,
+            sensor_name=self.sensor_name,
+            group_name=self._group_name,
+        )
 
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp += self._points_spacing
-            self._event.wait(self._generation_delay.total_seconds())
+        self._timestamp += self._points_spacing
+        return data
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

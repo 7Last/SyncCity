@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime
-from unittest.mock import patch, Mock
+from unittest.mock import patch, Mock, MagicMock
 from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
@@ -9,6 +9,9 @@ from simulator.src.simulators.traffic_simulator import TrafficSimulator
 
 
 class TestTrafficSimulator(unittest.TestCase):
+    def setUp(self) -> None:
+        self.producer = MagicMock()
+
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
             TrafficSimulator(
@@ -21,6 +24,7 @@ class TestTrafficSimulator(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
+                producer=self.producer,
             )
 
     def test_start(self) -> None:
@@ -34,10 +38,11 @@ class TestTrafficSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
-        self.assertEqual(simulator._running, False)
         simulator.start()
-        self.assertEqual(simulator._running, True)
+        self.assertEqual(simulator.is_running(), True)
+        simulator.stop()
 
     def test_stop(self) -> None:
         simulator = TrafficSimulator(
@@ -50,14 +55,14 @@ class TestTrafficSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
         simulator.start()
-        self.assertEqual(simulator._running, True)
         simulator.stop()
-        self.assertEqual(simulator._running, False)
+        self.assertEqual(simulator.is_running(), False)
 
-    @patch('random.uniform')
-    def test_stream(self, mock_uniform: Mock) -> None:
+    @patch('random.uniform', return_value=0)
+    def test_stream(self, _: Mock) -> None:
         simulator = TrafficSimulator(
             sensor_name='test',
             config=SensorConfig({
@@ -70,10 +75,10 @@ class TestTrafficSimulator(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
+            producer=self.producer,
         )
-        mock_uniform.return_value = 0
-        simulator.start()
-        stream = list(simulator.stream())
+
+        stream = [simulator.data() for _ in range(3)]
 
         expected = [
             TrafficRawData(

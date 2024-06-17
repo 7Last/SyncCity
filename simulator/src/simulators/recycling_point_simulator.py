@@ -1,15 +1,17 @@
 import random
-from typing import Iterable, List, Tuple
+from typing import List, Tuple
 
 from .simulator import Simulator
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
+from ..producers.producer_strategy import ProducerStrategy
 
 
 class RecyclingPointSimulator(Simulator):
 
-    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
-        super().__init__(sensor_name, config)
+    def __init__(self, sensor_name: str, config: SensorConfig,
+                 producer: ProducerStrategy) -> None:
+        super().__init__(sensor_name, config, producer)
 
         self._last_value = random.uniform(0, 30)
         self._prev_timestamp = self._timestamp
@@ -20,24 +22,19 @@ class RecyclingPointSimulator(Simulator):
         # max percentage of value to leave after partial emptying
         self._partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
-    def stream(self) -> Iterable[RecyclingPointRawData]:
-        while self._limit != 0 and self._running:
-            self._last_value = self._filling()
+    def data(self) -> RecyclingPointRawData:
+        data = RecyclingPointRawData(
+            filling=self._last_value,
+            latitude=self._latitude,
+            longitude=self._longitude,
+            timestamp=self._timestamp,
+            sensor_uuid=self._sensor_uuid,
+            sensor_name=self.sensor_name,
+            group_name=self._group_name,
+        )
 
-            yield RecyclingPointRawData(
-                filling=self._last_value,
-                latitude=self._latitude,
-                longitude=self._longitude,
-                timestamp=self._timestamp,
-                sensor_uuid=self._sensor_uuid,
-                sensor_name=self.sensor_name,
-                group_name=self._group_name,
-            )
-
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp += self._points_spacing
-            self._event.wait(self._generation_delay.total_seconds())
+        self._timestamp += self._points_spacing
+        return data
 
     def _calculate_fill_rate(self) -> None:
         elapsed_time = self._timestamp - self._prev_timestamp
@@ -79,7 +76,7 @@ class RecyclingPointSimulator(Simulator):
         return new_value
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__} {self.__dict__}'
+        return 'self.__class__.__name__ self.__dict__'
 
 
 def _generate_emptying_hours() -> List[Tuple[int, int]]:

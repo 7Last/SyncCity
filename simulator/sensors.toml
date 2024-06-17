@@ -1,25 +1,52 @@
 # Dates and duration are expressed with ISO8601 standard
-[sensors.via-pralungo]
+[sensors.via-pralungo-temperature]
 uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4018782
 longitude = 11.7769644
 
-[sensors.kioene-arena]
+[sensors.kioene-arena-temperature]
 uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4224876
 longitude = 11.9233274
 
-[sensors.prato-della-valle]
+[sensors.prato-della-valle-temperature]
 uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
 type = "temperature"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
+latitude = 45.3984208
+longitude = 11.8739536
+
+[sensors.via-pralungo-humidity]
+uuid = "d45ce7f8-b960-4762-b52b-144414a9369c"
+type = "humidity"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S"
+begin_date = 2024-05-29T08:00:00
+latitude = 45.4018782
+longitude = 11.7769644
+
+[sensors.kioene-arena-humidity]
+uuid = "d9a07cea-7db1-4580-ab58-cc24731141ed"
+type = "humidity"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+begin_date = 2024-05-29T08:00:00
+latitude = 45.4224876
+longitude = 11.9233274
+
+[sensors.prato-della-valle-humidity]
+uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
+type = "humidity"
+points_spacing = "PT1H" # 1 hour
+generation_delay = "PT1S" # 1 second
+begin_date = 2024-05-29T08:00:00
 latitude = 45.3984208
 longitude = 11.8739536
 
@@ -27,7 +54,7 @@ longitude = 11.8739536
 uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
 type = "traffic"
 points_spacing = "PT5M"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4145567
 longitude = 12.1581
 
@@ -35,7 +62,7 @@ longitude = 12.1581
 uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
 type = "traffic"
 points_spacing = "PT5M"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4675237
 longitude = 12.1736561
 
@@ -43,7 +70,7 @@ longitude = 12.1736561
 uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4113102
 longitude = 11.88880725672
 
@@ -51,7 +78,7 @@ longitude = 11.88880725672
 uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4344957
 longitude = 12.3264484
 
@@ -59,7 +86,7 @@ longitude = 12.3264484
 uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4067383
 longitude = 11.87739398715
 
@@ -67,7 +94,7 @@ longitude = 11.87739398715
 uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4137767
 longitude = 11.8669841
 
@@ -75,7 +102,7 @@ longitude = 11.8669841
 uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.5458673
 longitude = 11.5484712
 
@@ -119,7 +146,7 @@ generation_delay = "PT1S"
 latitude = 45.4034159
 longitude = 11.8756551
 
-# !!! Parking sensors do not need _points_spacing since they are event driven !!!
+# !!! Parking sensors do not need _points_spacing since they are #event driven !!!
 [sensors.piazza-insurrezione-p1]
 group_name = "piazza-insurrezione"
 begin_date = 2024-06-11T22:00:00

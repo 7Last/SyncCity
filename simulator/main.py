@@ -3,11 +3,10 @@ import os
 
 import toml
 
-from src.models.config.env_config import EnvConfig
-from src.models.config.simulator_factory import build_simulators
 from src.producers.kafka_producer import KafkaProducer
-from src.runner import Runner
 from src.serializers.avro_serializer import AvroSerializer
+from src.models.config.env_config import EnvConfig
+from src.runner import Runner
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 
@@ -32,11 +31,7 @@ def main() -> None:
         acks=1,
     )
 
-    runner = Runner(
-        simulators=build_simulators(sensors_config),
-        producer=producer,
-    )
-
+    runner = Runner(sensors_config, producer)
     log.debug('Starting runner')
     runner.run()
 

@@ -40,6 +40,15 @@ select sensor_name,
        longitude
 from sensors.recycling_points;
 
+create materialized view humidity_sensor_mv to sensors
+as
+select sensor_name,
+       'humidity' as type,
+       timestamp   as last_message,
+       latitude,
+       longitude
+from sensors.humidity;
+
 create materialized view temperatures_sensor_mv to sensors
 as
 select sensor_name,
