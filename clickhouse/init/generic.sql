@@ -59,3 +59,13 @@ select sensor_name,
        latitude,
        longitude
 from sensors.traffic;
+
+create materialized view precipitation_sensor_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'precipitation' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.precipitation;

@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 13,
+  "id": 10,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -357,7 +357,7 @@
           },
           "pluginVersion": "4.0.8",
           "queryType": "table",
-          "rawSql": "SELECT\n    date,\n    argMax(avg_precipitation, insertion_timestamp) AS Precipitation\nFROM sensors.precipitation_1h\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;)",
+          "rawSql": "SELECT\n    date,\n    argMax(avg_precipitation, insertion_timestamp) AS Precipitation\nFROM sensors.precipitation_1h\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;",
           "refId": "A"
         }
       ],
@@ -1139,8 +1139,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 18,
+        "h": 9,
+        "w": 24,
         "x": 0,
         "y": 40
       },
@@ -1200,169 +1200,18 @@
       "transformations": [],
       "transparent": true,
       "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "grafana-clickhouse-datasource",
-        "uid": "P5CECDC4694398594"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "axisBorderShow": true,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "area"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-blue",
-                "value": null
-              },
-              {
-                "color": "#ffffff",
-                "value": 5
-              },
-              {
-                "color": "red",
-                "value": 30
-              }
-            ]
-          },
-          "unit": "short",
-          "unitScale": true
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Temperature"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "celsius"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#ffffff",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 12,
-        "y": 52
-      },
-      "id": 12,
-      "options": {
-        "barRadius": 0.02,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": false
-        },
-        "orientation": "auto",
-        "showValue": "always",
-        "stacking": "none",
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        },
-        "xField": "date",
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
-      },
-      "pluginVersion": "10.3.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "vertamedia-clickhouse-datasource",
-            "uid": "PBB98D3AAE97FB2CD"
-          },
-          "dateTimeType": "DATETIME",
-          "editorMode": "builder",
-          "editorType": "sql",
-          "extrapolate": true,
-          "format": 1,
-          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
-          "intervalFactor": 1,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
-          "pluginVersion": "4.0.8",
-          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-          "queryType": "table",
-          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-          "rawSql": "SELECT\n    date,\n    argMax(avg_precipitation, insertion_timestamp) AS Precipitation\nFROM sensors.precipitation_monthly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
-          "refId": "A",
-          "round": "0s",
-          "skip_comments": true
-        }
-      ],
-      "title": "Monthly average",
-      "transformations": [
-        {
-          "id": "formatTime",
-          "options": {
-            "outputFormat": "Wo",
-            "timeField": "date",
-            "useTimezone": true
-          }
-        }
-      ],
-      "transparent": true,
-      "type": "barchart"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": "precipitation_padova_station",
-          "value": "precipitation_padova_station"
+          "selected": false,
+          "text": "precipitation_padova_centre",
+          "value": "precipitation_padova_centre"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",

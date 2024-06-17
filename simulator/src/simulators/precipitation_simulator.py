@@ -13,7 +13,6 @@ class PrecipitationSimulator(Simulator):
     def stream(self) -> Iterable[PrecipitationRawData]:
         while self._limit != 0 and self._running:
             yield PrecipitationRawData(
-                #TODOO: implement value
                 value=_sinusoidal_value(self._timestamp, self._latitude),
                 sensor_uuid=self._sensor_uuid,
                 sensor_name=self.sensor_name,
@@ -33,33 +32,39 @@ class PrecipitationSimulator(Simulator):
 
 
 def _sinusoidal_value(timestamp: datetime, latitude: float) -> float:
-    # Calculate the day of the year
+    # Calculate day of year
     day_of_year = timestamp.timetuple().tm_yday
-    
-    # Calculate the angle for the sinusoidal function
-    angle = (2 * pi * day_of_year) / 365
-    
-    # Calculate the base sinusoidal value
-    base_value = sin(angle)
-    
-    # Modify the value based on latitude
-    # Assuming a simple model where equator (latitude 0) has higher precipitation
-    # and poles (latitude +/- 90) have lower precipitation
-    latitude_factor = 1 - abs(latitude) / 90
-    
-    # Scale the base value by the latitude factor
+
+    # Calculate angles for seasonal and annual variations (adjusted for rain range)
+    angle_seasonal = (2 * pi * day_of_year) / 365 * (15 / 2)  # Scales for 0-15 range
+    angle_annual = (2 * pi * day_of_year) / (365.25 * 10) * (15 / 2)
+
+    # Calculate base value with seasonal and annual variations, scaled for rain range
+    base_value = sin(angle_seasonal) + 0.1 * sin(angle_annual)
+
+    # Modify value based on latitude (consider adjusting factors for desired effect)
+    latitude_factor = 1 - abs(latitude) / (90 / (15 / 2))  # Scales for 0-15 range
+
+    # Scale base value by latitude factor
     value = base_value * latitude_factor
-    
-    # Introduce a random factor to simulate daily variations
+
+    # Introduce random factor for daily variations (consider adjusting range)
     random_factor = random.uniform(0.8, 1.2)
-    
-    # Calculate the final precipitation value
-    precipitation_value = value * random_factor
-    
-    # Ensure the value is non-negative (since precipitation cannot be negative)
+
+    # Calculate final precipitation value (scaled for 0-15 cm)
+    precipitation_value = value * random_factor * 15
+
+    # Simulate no rain with a probability based on absolute base value
+    no_rain_probability = 1 - abs(base_value)
+    if random.random() < no_rain_probability:
+        precipitation_value = 0
+
+    # Simulate extreme weather events with low probability (consider adjusting factor)
+    if random.random() < 0.02:  # 2% chance of extreme weather event
+        extreme_weather_factor = random.uniform(1.5, 2.5)
+        precipitation_value *= extreme_weather_factor
+
+    # Ensure non-negative value
     precipitation_value = max(precipitation_value, 0)
-    
+
     return precipitation_value
-
-
-
