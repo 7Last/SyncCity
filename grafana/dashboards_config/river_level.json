@@ -1139,8 +1139,8 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 18,
+        "h": 10,
+        "w": 24,
         "x": 0,
         "y": 40
       },
@@ -1202,16 +1202,16 @@
       "type": "gauge"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
-          "text": "brenta_centro",
-          "value": "brenta_centro"
+          "selected": true,
+          "text": "brenta_monte",
+          "value": "brenta_monte"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -1234,8 +1234,8 @@
     ]
   },
   "time": {
-    "from": "now-30d",
-    "to": "now"
+    "from": "2024-05-03T20:10:15.583Z",
+    "to": "2024-10-30T18:10:15.585Z"
   },
   "timepicker": {},
   "timezone": "",

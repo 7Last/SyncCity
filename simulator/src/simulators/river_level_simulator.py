@@ -36,7 +36,7 @@ def _sinusoidal_value(timestamp: datetime, latitude: float) -> float:
     DAILY_AMPLITUDE = 0.5   # Variazione giornaliera dei livelli del fiume
     SEASONAL_AMPLITUDE = 1.5 # Variazione stagionale dei livelli del fiume
     BASE_LEVEL = 5.0        # Livello base del fiume
-    LATITUDE_FACTOR = latitude / 90.0  # Fattore per influenzare la variazione in base alla latitudine
+    LATITUDE_FACTOR = (sin(latitude / 90.0 * pi / 2)) ** 2  # Fattore non lineare per la latitudine
 
     # Calcolo dell'offset stagionale (giorno dell'anno)
     day_of_year = timestamp.timetuple().tm_yday
@@ -46,7 +46,11 @@ def _sinusoidal_value(timestamp: datetime, latitude: float) -> float:
     seconds_in_day = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
     daily_variation = DAILY_AMPLITUDE * sin(2 * pi * seconds_in_day / 86400)
 
-    # Calcolo del valore finale
-    value = BASE_LEVEL + seasonal_variation + (daily_variation * LATITUDE_FACTOR)
+    # Introduzione di una variabilità casuale controllata
+    RANDOM_VARIABILITY = 0.1  # Questo valore può essere modificato per aumentare o diminuire la variabilità
+    random_factor = random.gauss(1, RANDOM_VARIABILITY)
+
+    # Calcolo del valore finale con variabilità casuale
+    value = ((BASE_LEVEL + seasonal_variation + daily_variation * LATITUDE_FACTOR) * random_factor) * 500
 
     return value

@@ -59,3 +59,13 @@ select sensor_name,
        latitude,
        longitude
 from sensors.traffic;
+
+create materialized view river_level_sensor_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'river_level' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.river_level;
