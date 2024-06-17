@@ -8,6 +8,7 @@ from ...simulators.recycling_point_simulator import RecyclingPointSimulator
 from ...simulators.simulator import Simulator
 from ...simulators.temperature_simulator import TemperatureSimulator
 from ...simulators.traffic_simulator import TrafficSimulator
+from ...simulators.precipitation_simulator import PrecipitationSimulator
 from ...simulators.river_level_simulator import RiverLevelSimulator
 
 
@@ -43,3 +44,5 @@ def _get_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
             return HumiditySimulator(name, config, producer)
         case SensorType.RIVER_LEVEL:
             return RiverLevelSimulator(name, config, producer)
+        case SensorType.PRECIPITATION:
+            return PrecipitationSimulator(name, config, producer)
