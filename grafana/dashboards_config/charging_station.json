@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 9,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -427,23 +427,22 @@
     "list": [
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": "prato-della-valle",
+          "value": "prato-della-valle"
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
           "uid": "P5CECDC4694398594"
         },
-        "definition": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'parking'\nand group_name is not null",
+        "definition": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'charging_station'\nand group_name is not null",
         "hide": 0,
         "includeAll": false,
         "label": "Park name",
         "multi": false,
         "name": "group_name",
         "options": [],
-        "query": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'parking'\nand group_name is not null",
+        "query": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'charging_station'\nand group_name is not null",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

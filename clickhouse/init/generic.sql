@@ -59,3 +59,13 @@ select sensor_name,
        latitude,
        longitude
 from sensors.traffic;
+
+create materialized view charging_station_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'charging_station' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.charging_station;
