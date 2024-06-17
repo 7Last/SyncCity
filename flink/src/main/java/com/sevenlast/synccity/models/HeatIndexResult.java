@@ -19,6 +19,9 @@ public class HeatIndexResult implements RecordSerializable {
     private double heatIndex;
     private double averageTemperature;
     private double averageHumidity;
+    private double centerOfMassLatitude;
+    private double centerOfMassLongitude;
+    private double radius;
     private ZonedDateTime windowStart;
 
     public GenericRecord toGenericRecord(Schema schema) {
@@ -28,6 +31,9 @@ public class HeatIndexResult implements RecordSerializable {
         record.put("heat_index", heatIndex);
         record.put("avg_temperature", averageTemperature);
         record.put("avg_humidity", averageHumidity);
+        record.put("center_of_mass_latitude", centerOfMassLatitude);
+        record.put("center_of_mass_longitude", centerOfMassLongitude);
+        record.put("radius_in_km", radius);
         record.put("timestamp", windowStart.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         return record;
     }

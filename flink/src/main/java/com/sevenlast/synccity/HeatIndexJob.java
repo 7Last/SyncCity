@@ -4,6 +4,7 @@ import com.sevenlast.synccity.functions.AverageWindowFunction;
 import com.sevenlast.synccity.models.AverageResult;
 import com.sevenlast.synccity.models.HeatIndexResult;
 import com.sevenlast.synccity.models.RawData;
+import com.sevenlast.synccity.models.SensorLocation;
 import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.serialization.RecordSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
@@ -11,6 +12,8 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -23,6 +26,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
 
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";
@@ -117,14 +121,29 @@ public class HeatIndexJob {
                             + (c7 * t * t * h) + (c8 * t * h * h)
                             + (c9 * t * t * h * h);
 
-                    var sensors = averageTemperature.getSensorNames();
-                    sensors.addAll(averageHumidity.getSensorNames());
+                    var sensors = averageTemperature.getSensors();
+                    sensors.addAll(averageHumidity.getSensors());
+
+                    Tuple2<Double, Double> centerOfMass = sensors.stream()
+                            .map(sensor -> new Tuple2<>(sensor.getLatitude(), sensor.getLongitude()))
+                            .reduce((a, b) -> new Tuple2<>(a.f0 + b.f0, a.f1 + b.f1))
+                            .map(tuple -> new Tuple2<>(tuple.f0 / sensors.size(), tuple.f1 / sensors.size()))
+                            .orElseThrow();
+
+                    double maxRadius = sensors.stream()
+                            .map(sensor -> haversine(sensor.getLatitude(), sensor.getLongitude(), centerOfMass.f0, centerOfMass.f1))
+                            .max(Double::compareTo)
+                            .orElseThrow();
+
                     return new HeatIndexResult(
-                            sensors,
+                            sensors.stream().map(SensorLocation::getSensorName).collect(Collectors.toSet()),
                             averageTemperature.getGroupName(),
                             heatIndex,
-                            t,
-                            h,
+                            averageTemperature.getValue(),
+                            averageHumidity.getValue(),
+                            centerOfMass.f0,
+                            centerOfMass.f1,
+                            maxRadius,
                             averageTemperature.getWindowStart()
                     );
                 });
@@ -147,4 +166,21 @@ public class HeatIndexJob {
         env.execute("Heat Index Job");
     }
 
+    static double haversine(double lat1, double lon1, double lat2, double lon2) {
+        double latitudeDistance = Math.toRadians(lat2 - lat1);
+        double longitudeDistance = Math.toRadians(lon2 - lon1);
+
+        // convert to radians
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // apply formulae
+        double a = Math.pow(Math.sin(latitudeDistance / 2), 2) +
+                Math.pow(Math.sin(longitudeDistance / 2), 2) *
+                        Math.cos(lat1) *
+                        Math.cos(lat2);
+        double rad = 6371;
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return rad * c; // in kilometers
+    }
 }

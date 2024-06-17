@@ -10,7 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class AverageResult {
     private String groupName;
-    private Set<String> sensorNames;
+    private Set<SensorLocation> sensors;
     private double value;
     private ZonedDateTime windowStart;
 }
