@@ -8,6 +8,7 @@ from ..models.raw_data.raw_data import RawData
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
+from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
 from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
 from ..models.raw_data.river_level_raw_data import RiverLevelRowData
 from ..models.raw_data.humidity_raw_data import HumidityRawData
@@ -64,8 +65,14 @@ class SerializerVisitor(Visitor):
             "vehicles": raw_data.vehicles,
             "avg_speed": raw_data.avg_speed,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
-        }
+        }    
 
+    @staticmethod
+    def visit_charging_station_raw_sata (raw_data: ChargingStationRawData) -> Dict:
+        return {
+            "is_occupied": raw_data.is_occupied,
+            **(SerializerVisitor._serialize_raw_data(raw_data)),
+        }
     @staticmethod
     def visit_precipitation_raw_data(raw_data: PrecipitationRawData) -> Dict:
         return {

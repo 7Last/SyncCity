@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Parking",
+  "name": "charging_station",
   "fields": [
     {
       "name": "sensor_uuid",
