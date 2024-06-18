@@ -1,370 +1,370 @@
-# Dates and duration are expressed with ISO8601 standard
-# !!! Parking and charging sensors do not need _points_spacing since they are event driven !!!
-
-[sensors.via-pralungo-temperature]
-uuid = "14894ca7-d3cc-4cca-b2e5-be33bb70359b"
-type = "temperature"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4018782
-longitude = 11.7769644
-
-[sensors.kioene-arena-temperature]
-uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4224876
-longitude = 11.9233274
-
-[sensors.prato-della-valle-temperature]
-uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.3984208
-longitude = 11.8739536
-
-[sensors.via-pralungo-humidity]
-uuid = "d45ce7f8-b960-4762-b52b-144414a9369c"
-type = "humidity"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4018782
-longitude = 11.7769644
-
-[sensors.kioene-arena-humidity]
-uuid = "d9a07cea-7db1-4580-ab58-cc24731141ed"
-type = "humidity"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4224876
-longitude = 11.9233274
-
-[sensors.prato-della-valle-humidity]
-uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
-type = "humidity"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.3984208
-longitude = 11.8739536
-
-[sensors.padova-stazione-precipitation]
-uuid = "a3d15940-a584-456a-86aa-7d34ff98bdb9"
-type = "precipitation"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4224876
-longitude = 11.9233274
-
-[sensors.romea-argine-sx-traffic]
-uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
-type = "traffic"
-points_spacing = "PT5M"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4145567
-longitude = 12.1581
-
-[sensors.tangenziale-fornase-sud-traffic]
-uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
-type = "traffic"
-points_spacing = "PT5M"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4675237
-longitude = 12.1736561
-
-[sensors.dipartimento-matematica-recycling]
-uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
-type = "recycling_point"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4113102
-longitude = 11.88880725672
-
-[sensors.campus-ca-foscari-recycling]
-uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
-type = "recycling_point"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4344957
-longitude = 12.3264484
-
-[sensors.unipd-via-s-francesco-recycling]
-uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
-type = "recycling_point"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4067383
-longitude = 11.87739398715
-
-[sensors.unipd-beato-pellegrino-recycling]
-uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
-type = "recycling_point"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4137767
-longitude = 11.8669841
-
-[sensors.unipd-ponte-s-michele-recycling]
-uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
-type = "recycling_point"
-points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.5458673
-longitude = 11.5484712
-
-[sensors.cadoneghe-air]
-uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4490747
-longitude = 11.9038461
-
-[sensors.abano-terme-centro-air]
-uuid = "4fd1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.3591562
-longitude = 11.7510624
-
-[sensors.legnaro-air]
-uuid = "5ed1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.3378992
-longitude = 11.9248366
-
-[sensors.rubano-air]
-uuid = "6fd1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4249376
-longitude = 11.7714498
-
-[sensors.unipd-tito-livio-air]
-uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
-type = "air_quality"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4034159
-longitude = 11.8756551
-
-[sensors.piazza-insurrezione-park1]
-group_name = "piazza-insurrezione"
-uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409753
-longitude = 11.876399
-
-[sensors.piazza-insurrezione-park2]
-group_name = "piazza-insurrezione"
-uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409748
-longitude = 11.876204
-
-[sensors.piazza-insurrezione-park3]
-group_name = "piazza-insurrezione"
-uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409748
-longitude = 11.875999
-
-[sensors.piazza-insurrezione-park4]
-group_name = "piazza-insurrezione"
-uuid = "2ecd24cb-6b15-4f96-81bf-75ef23d87797"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409734
-longitude = 11.875767
-
-[sensors.piazza-insurrezione-park5]
-group_name = "piazza-insurrezione"
-uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409619
-longitude = 11.875758
-
-[sensors.piazza-insurrezione-park6]
-group_name = "piazza-insurrezione"
-uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409474
-longitude = 11.875759
-
-[sensors.piazza-insurrezione-park7]
-group_name = "piazza-insurrezione"
-uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409356
-longitude = 11.875777
-
-[sensors.piazza-insurrezione-park8]
-group_name = "piazza-insurrezione"
-uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409378
-longitude = 11.875976
-
-[sensors.piazza-insurrezione-park9]
-group_name = "piazza-insurrezione"
-uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409382
-longitude = 11.876208
-
-[sensors.piazza-insurrezione-park10]
-group_name = "piazza-insurrezione"
-uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409395
-longitude = 11.876387
-
-[sensors.piazza-insurrezione-park11]
-group_name = "piazza-insurrezione"
-uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.40949
-longitude = 11.876408
-
-[sensors.piazza-insurrezione-park12]
-group_name = "piazza-insurrezione"
-uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409666
-longitude = 11.876403
-
-[sensors.navigli-portello-park1]
-group_name = "navigli-portello"
-uuid = "2e942305-41b6-4c2f-80c5-ea29bbe6e382"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4101843
-longitude = 11.8875258
-
-[sensors.navigli-portello-park2]
-group_name = "navigli-portello"
-uuid = "f3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.409991
-longitude = 11.8891664
-
-[sensors.navigli-portello-park3]
-group_name = "navigli-portello"
-uuid = "a3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4099449
-longitude = 11.8895423
-
-[sensors.navigli-portello-park4]
-group_name = "navigli-portello"
-uuid = "d3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
-type = "parking"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4098889
-longitude = 11.8899313
-
-[sensors.brenta-monte-river]
-group_name = "brenta"
-uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
-type = "river_level"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.0078311
-longitude = 11.2643933
-
-[sensors.brenta-centro-river]
-group_name = "brenta"
-uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
-type = "river_level"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.8564388
-longitude = 11.6624399
-
-[sensors.brenta-valle-river]
-group_name = "brenta"
-uuid = "ee5b0400-5549-453c-8238-684f6187866d"
-type = "river_level"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.1908855
-longitude = 12.2219133
-
-[sensors.prato-della-valle-charge1]
-group_name = "prato-della-valle"
-uuid = "429de1de-bda7-442c-b429-baeb745e425c"
-type = "charging_station"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.3969133
-longitude = 11.8780366
-
-[sensors.prato-della-valle-charge2]
-group_name = "prato-della-valle"
-uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
-type = "charging_station"
-points_spacing = "PT1H"
-generation_delay = "PT0.1S"
-begin_date = 2024-01-01T00:00:00
-latitude = 45.4094499 
-longitude = 11.8717011
+## Dates and duration are expressed with ISO8601 standard
+## !!! Parking and charging sensors do not need _points_spacing since they are event driven !!!
+#
+#[sensors.via-pralungo-temperature]
+#uuid = "14894ca7-d3cc-4cca-b2e5-be33bb70359b"
+#type = "temperature"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4018782
+#longitude = 11.7769644
+#
+#[sensors.kioene-arena-temperature]
+#uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
+#type = "temperature"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4224876
+#longitude = 11.9233274
+#
+#[sensors.prato-della-valle-temperature]
+#uuid = "b544c389-8fa9-40eb-9b5c-1deaf2383c99"
+#type = "temperature"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.3984208
+#longitude = 11.8739536
+#
+#[sensors.via-pralungo-humidity]
+#uuid = "d45ce7f8-b960-4762-b52b-144414a9369c"
+#type = "humidity"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4018782
+#longitude = 11.7769644
+#
+#[sensors.kioene-arena-humidity]
+#uuid = "d9a07cea-7db1-4580-ab58-cc24731141ed"
+#type = "humidity"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4224876
+#longitude = 11.9233274
+#
+#[sensors.prato-della-valle-humidity]
+#uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
+#type = "humidity"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.3984208
+#longitude = 11.8739536
+#
+#[sensors.padova-stazione-precipitation]
+#uuid = "a3d15940-a584-456a-86aa-7d34ff98bdb9"
+#type = "precipitation"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4224876
+#longitude = 11.9233274
+#
+#[sensors.romea-argine-sx-traffic]
+#uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "traffic"
+#points_spacing = "PT5M"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4145567
+#longitude = 12.1581
+#
+#[sensors.tangenziale-fornase-sud-traffic]
+#uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
+#type = "traffic"
+#points_spacing = "PT5M"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4675237
+#longitude = 12.1736561
+#
+#[sensors.dipartimento-matematica-recycling]
+#uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
+#type = "recycling_point"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4113102
+#longitude = 11.88880725672
+#
+#[sensors.campus-ca-foscari-recycling]
+#uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
+#type = "recycling_point"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4344957
+#longitude = 12.3264484
+#
+#[sensors.unipd-via-s-francesco-recycling]
+#uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
+#type = "recycling_point"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4067383
+#longitude = 11.87739398715
+#
+#[sensors.unipd-beato-pellegrino-recycling]
+#uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
+#type = "recycling_point"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4137767
+#longitude = 11.8669841
+#
+#[sensors.unipd-ponte-s-michele-recycling]
+#uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
+#type = "recycling_point"
+#points_spacing = "PT1H" # 1 hour
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.5458673
+#longitude = 11.5484712
+#
+#[sensors.cadoneghe-air]
+#uuid = "45d1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "air_quality"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4490747
+#longitude = 11.9038461
+#
+#[sensors.abano-terme-centro-air]
+#uuid = "4fd1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "air_quality"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.3591562
+#longitude = 11.7510624
+#
+#[sensors.legnaro-air]
+#uuid = "5ed1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "air_quality"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.3378992
+#longitude = 11.9248366
+#
+#[sensors.rubano-air]
+#uuid = "6fd1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "air_quality"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4249376
+#longitude = 11.7714498
+#
+#[sensors.unipd-tito-livio-air]
+#uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
+#type = "air_quality"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4034159
+#longitude = 11.8756551
+#
+#[sensors.piazza-insurrezione-park1]
+#group_name = "piazza-insurrezione"
+#uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409753
+#longitude = 11.876399
+#
+#[sensors.piazza-insurrezione-park2]
+#group_name = "piazza-insurrezione"
+#uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409748
+#longitude = 11.876204
+#
+#[sensors.piazza-insurrezione-park3]
+#group_name = "piazza-insurrezione"
+#uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409748
+#longitude = 11.875999
+#
+#[sensors.piazza-insurrezione-park4]
+#group_name = "piazza-insurrezione"
+#uuid = "2ecd24cb-6b15-4f96-81bf-75ef23d87797"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409734
+#longitude = 11.875767
+#
+#[sensors.piazza-insurrezione-park5]
+#group_name = "piazza-insurrezione"
+#uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409619
+#longitude = 11.875758
+#
+#[sensors.piazza-insurrezione-park6]
+#group_name = "piazza-insurrezione"
+#uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409474
+#longitude = 11.875759
+#
+#[sensors.piazza-insurrezione-park7]
+#group_name = "piazza-insurrezione"
+#uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409356
+#longitude = 11.875777
+#
+#[sensors.piazza-insurrezione-park8]
+#group_name = "piazza-insurrezione"
+#uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409378
+#longitude = 11.875976
+#
+#[sensors.piazza-insurrezione-park9]
+#group_name = "piazza-insurrezione"
+#uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409382
+#longitude = 11.876208
+#
+#[sensors.piazza-insurrezione-park10]
+#group_name = "piazza-insurrezione"
+#uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409395
+#longitude = 11.876387
+#
+#[sensors.piazza-insurrezione-park11]
+#group_name = "piazza-insurrezione"
+#uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.40949
+#longitude = 11.876408
+#
+#[sensors.piazza-insurrezione-park12]
+#group_name = "piazza-insurrezione"
+#uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409666
+#longitude = 11.876403
+#
+#[sensors.navigli-portello-park1]
+#group_name = "navigli-portello"
+#uuid = "2e942305-41b6-4c2f-80c5-ea29bbe6e382"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4101843
+#longitude = 11.8875258
+#
+#[sensors.navigli-portello-park2]
+#group_name = "navigli-portello"
+#uuid = "f3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.409991
+#longitude = 11.8891664
+#
+#[sensors.navigli-portello-park3]
+#group_name = "navigli-portello"
+#uuid = "a3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4099449
+#longitude = 11.8895423
+#
+#[sensors.navigli-portello-park4]
+#group_name = "navigli-portello"
+#uuid = "d3b3b3b4-1b3b-4b3b-8b3b-eb3b3b3b3b3b"
+#type = "parking"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4098889
+#longitude = 11.8899313
+#
+#[sensors.brenta-monte-river]
+#group_name = "brenta"
+#uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
+#type = "river_level"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.0078311
+#longitude = 11.2643933
+#
+#[sensors.brenta-centro-river]
+#group_name = "brenta"
+#uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
+#type = "river_level"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.8564388
+#longitude = 11.6624399
+#
+#[sensors.brenta-valle-river]
+#group_name = "brenta"
+#uuid = "ee5b0400-5549-453c-8238-684f6187866d"
+#type = "river_level"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.1908855
+#longitude = 12.2219133
+#
+#[sensors.prato-della-valle-charge1]
+#group_name = "prato-della-valle"
+#uuid = "429de1de-bda7-442c-b429-baeb745e425c"
+#type = "charging_station"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.3969133
+#longitude = 11.8780366
+#
+#[sensors.prato-della-valle-charge2]
+#group_name = "prato-della-valle"
+#uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
+#type = "charging_station"
+#points_spacing = "PT1H"
+#generation_delay = "PT0.1S"
+#begin_date = 2024-01-01T00:00:00
+#latitude = 45.4094499
+#longitude = 11.8717011
 
 [sensors.prato-della-valle-charge3]
 group_name = "prato-della-valle"

@@ -16,6 +16,7 @@ class ChargingStationRawData(RawData):
                          timestamp=timestamp)
         self.is_being_used = is_being_used
         self.energy_supplied = energy_supplied
+        self.kwh_consumption = 0.0
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.visit_charging_station_raw_data(self)

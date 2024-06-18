@@ -71,6 +71,7 @@ class SerializerVisitor(Visitor):
     def visit_charging_station_raw_data(raw_data: ChargingStationRawData) -> Dict:
         return {
             "is_being_used": raw_data.is_being_used,
+            "kwh_consumption": raw_data.kwh_consumption,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
     @staticmethod
