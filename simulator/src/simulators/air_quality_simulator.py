@@ -1,41 +1,42 @@
 import random
 from datetime import datetime
-from typing import Iterable
 
 from math import pi, sin
 
 from .simulator import Simulator
+from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.air_quality_raw_data import AirQualityRawData
+from ..producers.producer_strategy import ProducerStrategy
 
 
 class AirQualitySimulator(Simulator):
 
-    def stream(self) -> Iterable[AirQualityRawData]:
-        o3_coefficient = random.uniform(-50, 50)
-        pm25_coefficient = random.uniform(-50, 50)
-        pm10_coefficient = random.uniform(-50, 50)
-        no2_coefficient = random.uniform(-50, 50)
-        so2_coefficient = random.uniform(-50, 50)
+    def __init__(self, sensor_name: str, config: SensorConfig,
+                 producer: ProducerStrategy) -> None:
+        super().__init__(sensor_name, config, producer)
+        self._o3_coefficient = random.uniform(-50, 50)
+        self._pm25_coefficient = random.uniform(-50, 50)
+        self._pm10_coefficient = random.uniform(-50, 50)
+        self._no2_coefficient = random.uniform(-50, 50)
+        self._so2_coefficient = random.uniform(-50, 50)
 
-        while self._limit != 0 and self._running:
-            yield AirQualityRawData(
-                o3=_sinusoidal_value(self._timestamp, o3_coefficient) / 2,
-                pm25=_sinusoidal_value(self._timestamp, pm25_coefficient) / 3,
-                pm10=_sinusoidal_value(self._timestamp, pm10_coefficient) / 4,
-                no2=_sinusoidal_value(self._timestamp, no2_coefficient),
-                so2=_sinusoidal_value(self._timestamp, so2_coefficient),
-                latitude=self._latitude,
-                longitude=self._longitude,
-                sensor_uuid=self._sensor_uuid,
-                timestamp=self._timestamp,
-                sensor_name=self.sensor_name,
-                group_name=self._group_name,
-            )
+    def data(self) -> AirQualityRawData:
+        data = AirQualityRawData(
+            o3=_sinusoidal_value(self._timestamp, self._o3_coefficient) / 2,
+            pm25=_sinusoidal_value(self._timestamp, self._pm25_coefficient) / 3,
+            pm10=_sinusoidal_value(self._timestamp, self._pm10_coefficient) / 4,
+            no2=_sinusoidal_value(self._timestamp, self._no2_coefficient),
+            so2=_sinusoidal_value(self._timestamp, self._so2_coefficient),
+            latitude=self._latitude,
+            longitude=self._longitude,
+            sensor_uuid=self._sensor_uuid,
+            timestamp=self._timestamp,
+            sensor_name=self.sensor_name,
+            group_name=self._group_name,
+        )
 
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp += self._points_spacing
-            self._event.wait(self._generation_delay.total_seconds())
+        self._timestamp += self._points_spacing
+        return data
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

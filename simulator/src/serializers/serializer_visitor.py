@@ -8,12 +8,13 @@ from ..models.raw_data.raw_data import RawData
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
+from ..models.raw_data.humidity_raw_data import HumidityRawData
 
 
 class SerializerVisitor(Visitor):
 
     @staticmethod
-    def _serialize_raw_data(raw_data: RawData) -> Dict:
+    def _visit_raw_data(raw_data: RawData) -> Dict:
         return {
             "sensor_name": raw_data.sensor_name,
             "sensor_uuid": str(raw_data.sensor_uuid),
@@ -31,28 +32,28 @@ class SerializerVisitor(Visitor):
             "no2": raw_data.no2,
             "o3": raw_data.o3,
             "so2": raw_data.so2,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(SerializerVisitor._visit_raw_data(raw_data)),
         }
 
     @staticmethod
     def visit_parking_raw_data(raw_data: ParkingRawData) -> Dict:
         return {
             "is_occupied": raw_data.is_occupied,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(SerializerVisitor._visit_raw_data(raw_data)),
         }
 
     @staticmethod
     def visit_recycling_point_raw_data(raw_data: RecyclingPointRawData) -> Dict:
         return {
             "filling": raw_data.filling,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(SerializerVisitor._visit_raw_data(raw_data)),
         }
 
     @staticmethod
     def visit_temperature_raw_data(raw_data: TemperatureRawData) -> Dict:
         return {
             "value": raw_data.value,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(SerializerVisitor._visit_raw_data(raw_data)),
         }
 
     @staticmethod
@@ -60,5 +61,12 @@ class SerializerVisitor(Visitor):
         return {
             "vehicles": raw_data.vehicles,
             "avg_speed": raw_data.avg_speed,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(SerializerVisitor._visit_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def visit_humidity_raw_data(raw_data: HumidityRawData) -> Dict:
+        return {
+            "value": raw_data.value,
+            **(SerializerVisitor._visit_raw_data(raw_data)),
         }

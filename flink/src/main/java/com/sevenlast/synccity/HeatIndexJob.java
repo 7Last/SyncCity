@@ -82,14 +82,14 @@ public class HeatIndexJob {
 
         var avgTemperatureStream = env.fromSource(temperatureKafkaSource, watermark, "temperature-source")
                 .map(RawData::fromGenericRecord)
-                .filter(data -> !data.getGroupName().isEmpty())
+                .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
         var avgHumidityStream = env.fromSource(humidityKafkaSource, watermark, "humidity-source")
                 .map(RawData::fromGenericRecord)
-                .filter(data -> !data.getGroupName().isEmpty())
+                .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(RawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());

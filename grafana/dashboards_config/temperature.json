@@ -31,7 +31,14 @@
             "fieldConfig": {
                 "defaults": {
                     "color": {
-                        "mode": "continuous-BlYlRd"
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        }
                     },
                     "mappings": [],
                     "max": 45,
@@ -100,6 +107,7 @@
             "options": {
                 "basemap": {
                     "config": {},
+                    "name": "Layer 0",
                     "type": "default"
                 },
                 "controls": {
