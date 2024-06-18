@@ -159,7 +159,7 @@
                     },
                     "pluginVersion": "4.0.6",
                     "queryType": "table",
-                    "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperatures\nWHERE sensor_name = '${sensor_name}'\n",
+                    "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperature\nWHERE sensor_name = '${sensor_name}'\n",
                     "refId": "Temperature"
                 }
             ],
@@ -359,7 +359,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperature_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;",
                     "refId": "A"
                 }
             ],
@@ -477,7 +477,7 @@
                     },
                     "pluginVersion": "4.0.7",
                     "queryType": "table",
-                    "rawSql": "SELECT value\nFROM sensors.temperatures\nWHERE timestamp <= now()\nAND sensor_name = '${sensor_name}'\nORDER BY timestamp DESC\nLIMIT 1",
+                    "rawSql": "SELECT value\nFROM sensors.temperature\nWHERE timestamp <= now()\nAND sensor_name = '${sensor_name}'\nORDER BY timestamp DESC\nLIMIT 1",
                     "refId": "Real time temp"
                 }
             ],
@@ -600,7 +600,7 @@
                     "editorType": "sql",
                     "extrapolate": true,
                     "format": 1,
-                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+                    "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
                     "intervalFactor": 1,
                     "meta": {
                         "builderOptions": {
@@ -613,10 +613,10 @@
                         }
                     },
                     "pluginVersion": "4.0.8",
-                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+                    "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
                     "queryType": "table",
-                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_weekly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
+                    "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperature_weekly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true
@@ -759,7 +759,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date\nLIMIT 30;\n",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperature_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date\nLIMIT 30;\n",
                     "refId": "A"
                 }
             ],
@@ -899,10 +899,10 @@
                         }
                     },
                     "pluginVersion": "4.0.7",
-                    "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date\n",
+                    "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date\n",
                     "queryType": "table",
-                    "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
-                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
+                    "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
+                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperature\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true,
@@ -919,7 +919,7 @@
                 "type": "grafana-clickhouse-datasource",
                 "uid": "P5CECDC4694398594"
             },
-            "description": "The Livability Temperature Index (LTI) is a scale from 0 to 10 that represents how comfortable a city's climate is based on temperature. The index considers the average annual temperatures and their suitability for comfortable living",
+            "description": "The Livability Temperature Index (LTI) is a scale from 0 to 10 that represents how comfortable a city's climate is based on temperature. The index considers the average annual temperature and their suitability for comfortable living",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -996,7 +996,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "with daily_averages as(\n    SELECT\n        date,\n        argMax(avg_temperature, insertion_timestamp) AS daily_avg,\n        max(insertion_timestamp) AS last_insertion_time FROM sensors.temperatures_daily\n    WHERE date > toStartOfYear(now()) and date < toStartOfYear(now() + interval '1' year)\n    AND sensor_name = '$sensor_name'\n    GROUP BY date\n    ORDER BY date\n)\nselect\n    countIf(daily_avg >= 15 AND daily_avg <= 25) as CS_days_in_range,\n    countIf(daily_avg > 35) + countIf(daily_avg < 5) as ETP_days_out_of_range,\n    stddevPop(daily_avg) as VP_std_dev,\n    (avg(daily_avg) - 15) / (25 - 15) * 100 as OATS,\n    count() as total_days,\n    greatest(0, round((2 * CS_days_in_range - ETP_days_out_of_range - VP_std_dev + OATS) / 4)) as comfort_score\nfrom daily_averages;\n",
+                    "rawSql": "with daily_averages as(\n    SELECT\n        date,\n        argMax(avg_temperature, insertion_timestamp) AS daily_avg,\n        max(insertion_timestamp) AS last_insertion_time FROM sensors.temperature_daily\n    WHERE date > toStartOfYear(now()) and date < toStartOfYear(now() + interval '1' year)\n    AND sensor_name = '$sensor_name'\n    GROUP BY date\n    ORDER BY date\n)\nselect\n    countIf(daily_avg >= 15 AND daily_avg <= 25) as CS_days_in_range,\n    countIf(daily_avg > 35) + countIf(daily_avg < 5) as ETP_days_out_of_range,\n    stddevPop(daily_avg) as VP_std_dev,\n    (avg(daily_avg) - 15) / (25 - 15) * 100 as OATS,\n    count() as total_days,\n    greatest(0, round((2 * CS_days_in_range - ETP_days_out_of_range - VP_std_dev + OATS) / 4)) as comfort_score\nfrom daily_averages;\n",
                     "refId": "A"
                 }
             ],
@@ -1032,14 +1032,14 @@
                     "type": "grafana-clickhouse-datasource",
                     "uid": "P5CECDC4694398594"
                 },
-                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
+                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperature\nORDER BY sensor_name",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Sensor name",
                 "multi": false,
                 "name": "sensor_name",
                 "options": [],
-                "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
+                "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperature\nORDER BY sensor_name",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,

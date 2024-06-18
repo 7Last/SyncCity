@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.config.simulator_factory import build_simulators
-from simulator.src.simulators.temperature_simulator import TemperatureSimulator
+from simulator.src.simulators.temperature_simulator import temperatureimulator
 from simulator.src.simulators.traffic_simulator import TrafficSimulator
 
 
@@ -36,7 +36,7 @@ class TestSimulatorFactory(unittest.TestCase):
         simulators = sorted(build_simulators(config, mock_producer),
                             key=lambda x: x.sensor_name)
         expected = [
-            TemperatureSimulator(
+            temperatureimulator(
                 sensor_name="sensor1",
                 config=SensorConfig(
                     {

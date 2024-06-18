@@ -1,4 +1,4 @@
-CREATE TABLE sensors.temperatures
+CREATE TABLE sensors.temperature
 (
     sensor_uuid UUID,
     sensor_name String,
@@ -11,7 +11,7 @@ CREATE TABLE sensors.temperatures
       ORDER BY (sensor_uuid, timestamp);
 
 -- 5m averages
-CREATE TABLE sensors.temperatures_5m
+CREATE TABLE sensors.temperature_5m
 (
     sensor_name         String,
     date                DateTime64,
@@ -20,16 +20,16 @@ CREATE TABLE sensors.temperatures_5m
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 
-CREATE MATERIALIZED VIEW sensors.temperatures_5m_mv
-            TO sensors.temperatures_5m AS
+CREATE MATERIALIZED VIEW sensors.temperature_5m_mv
+            TO sensors.temperature_5m AS
 SELECT sensor_name,
        toStartOfFiveMinutes(timestamp) AS date,
        avg(value)                      AS avg_temperature
-FROM sensors.temperatures
+FROM sensors.temperature
 GROUP BY sensor_name, date;
 
--- Weekly temperatures
-CREATE TABLE sensors.temperatures_weekly
+-- Weekly temperature
+CREATE TABLE sensors.temperature_weekly
 (
     sensor_name         String,
     date                DateTime64,
@@ -38,16 +38,16 @@ CREATE TABLE sensors.temperatures_weekly
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 
-CREATE MATERIALIZED VIEW sensors.temperatures_weekly_mv
-    TO sensors.temperatures_weekly AS
+CREATE MATERIALIZED VIEW sensors.temperature_weekly_mv
+    TO sensors.temperature_weekly AS
 SELECT sensor_name,
        toStartOfWeek(timestamp) AS date,
        avg(value)               AS avg_temperature
-FROM sensors.temperatures
+FROM sensors.temperature
 GROUP BY sensor_name, date;
 
--- Daily temperatures
-CREATE TABLE sensors.temperatures_daily
+-- Daily temperature
+CREATE TABLE sensors.temperature_daily
 (
     sensor_name         String,
     date                Date,
@@ -56,10 +56,10 @@ CREATE TABLE sensors.temperatures_daily
 ) ENGINE = MergeTree()
       ORDER BY (sensor_name, date);
 
-CREATE MATERIALIZED VIEW sensors.temperatures_daily_mv
-    TO sensors.temperatures_daily AS
+CREATE MATERIALIZED VIEW sensors.temperature_daily_mv
+    TO sensors.temperature_daily AS
 SELECT sensor_name,
        toStartOfDay(timestamp) AS date,
        avg(value)              AS avg_temperature
-FROM sensors.temperatures
+FROM sensors.temperature
 GROUP BY sensor_name, date;

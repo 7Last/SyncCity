@@ -37,7 +37,7 @@
                 },
                 "pluginVersion": "4.0.7",
                 "queryType": "table",
-                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp >= subtractMinutes(now(), 45) and timestamp <= now()\ngroup by sensor_name",
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperature\nwhere timestamp >= subtractMinutes(now(), 45) and timestamp <= now()\ngroup by sensor_name",
                 "refId": "Temperature"
               }
             },

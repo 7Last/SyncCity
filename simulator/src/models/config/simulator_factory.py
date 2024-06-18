@@ -6,7 +6,7 @@ from ...simulators.humidity_simulator import HumiditySimulator
 from ...simulators.parking_simulator import ParkingSimulator
 from ...simulators.recycling_point_simulator import RecyclingPointSimulator
 from ...simulators.simulator import Simulator
-from ...simulators.temperature_simulator import TemperatureSimulator
+from ...simulators.temperature_simulator import temperatureimulator
 from ...simulators.traffic_simulator import TrafficSimulator
 from ...simulators.charging_station_simulator import ChargingStationSimulator
 from ...simulators.precipitation_simulator import PrecipitationSimulator
@@ -38,7 +38,7 @@ def _get_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
         case SensorType.PARKING:
             return ParkingSimulator(name, config, producer)
         case SensorType.TEMPERATURE:
-            return TemperatureSimulator(name, config, producer)
+            return temperatureimulator(name, config, producer)
         case SensorType.TRAFFIC:
             return TrafficSimulator(name, config, producer)
         case SensorType.HUMIDITY:

@@ -5,17 +5,17 @@ from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.simulators.temperature_simulator import TemperatureSimulator
+from simulator.src.simulators.temperature_simulator import temperatureimulator
 
 
-class TestTemperatureSimulator(unittest.TestCase):
+class Testtemperatureimulator(unittest.TestCase):
 
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            TemperatureSimulator(
+            temperatureimulator(
                 sensor_name='',
                 config=SensorConfig({
                     'uuid': '00000000-0000-0000-0000-000000000000',
@@ -29,7 +29,7 @@ class TestTemperatureSimulator(unittest.TestCase):
             )
 
     def test_start(self) -> None:
-        simulator = TemperatureSimulator(
+        simulator = temperatureimulator(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
@@ -46,7 +46,7 @@ class TestTemperatureSimulator(unittest.TestCase):
         simulator.stop()
 
     def test_stop(self) -> None:
-        simulator = TemperatureSimulator(
+        simulator = temperatureimulator(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
@@ -64,7 +64,7 @@ class TestTemperatureSimulator(unittest.TestCase):
 
     @patch('random.uniform', return_value=0)
     def test_stream(self, _: any) -> None:
-        simulator = TemperatureSimulator(
+        simulator = temperatureimulator(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',

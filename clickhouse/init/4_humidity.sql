@@ -2,6 +2,7 @@ CREATE TABLE sensors.humidity
 (
     sensor_uuid UUID,
     sensor_name String,
+    group_name  Nullable(String) default null,
     timestamp   DateTime64,
     value       Float32,
     latitude    Float64,

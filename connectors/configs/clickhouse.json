@@ -18,7 +18,7 @@
     "ssl": false,
     "exactlyOnce": false,
     "suppressTableExistenceException": false,
-    "topic2TableMap": "air_quality=air_quality,humidity=humidity,parking=parking,recycling_point=recycling_points,temperature=temperatures,traffic=traffic,precipitation=precipitation,river_level=river_level,charging_station=charging_station",
+    "topic2TableMap": "air_quality=air_quality,humidity=humidity,parking=parking,recycling_point=recycling_point,temperature=temperature,traffic=traffic,precipitation=precipitation,river_level=river_level,charging_station=charging_station",
     "customInsertFormat": false,
     "enableDbTopicSplit": false,
     "errors.log.enable": false,

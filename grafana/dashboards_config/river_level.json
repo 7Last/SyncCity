@@ -880,7 +880,7 @@
           "editorType": "sql",
           "extrapolate": true,
           "format": 1,
-          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
           "intervalFactor": 1,
           "meta": {
             "builderOptions": {
@@ -893,9 +893,9 @@
             }
           },
           "pluginVersion": "4.0.8",
-          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
           "queryType": "table",
-          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
           "rawSql": "SELECT\n    date,\n    argMax(avg_river_level, insertion_timestamp) AS River_level\nFROM sensors.river_level_monthly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
           "refId": "A",
           "round": "0s",
@@ -1031,7 +1031,7 @@
           "editorType": "sql",
           "extrapolate": true,
           "format": 1,
-          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+          "formattedQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS mean_daily_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
           "intervalFactor": 1,
           "meta": {
             "builderOptions": {
@@ -1044,9 +1044,9 @@
             }
           },
           "pluginVersion": "4.0.8",
-          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
           "queryType": "table",
-          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
+          "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperature\nGROUP BY month\nORDER BY month",
           "rawSql": "SELECT\n    date,\n    argMax(avg_river_level, insertion_timestamp) AS River_level\nFROM sensors.river_level_yearly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
           "refId": "A",
           "round": "0s",
@@ -1186,9 +1186,9 @@
             }
           },
           "pluginVersion": "4.0.8",
-          "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date\n",
+          "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date\n",
           "queryType": "table",
-          "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
+          "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperature\nGROUP BY date\nORDER BY date",
           "rawSql": "SELECT\n    min(value) as min_river_level,\n    avg(value) AS avg_river_level,\n    max(value) as max_river_level\nFROM sensors.river_level\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
           "refId": "A",
           "round": "0s",

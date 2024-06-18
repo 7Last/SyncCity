@@ -7,7 +7,7 @@ from .simulator import Simulator
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 
 
-class TemperatureSimulator(Simulator):
+class temperatureimulator(Simulator):
     def data(self) -> TemperatureRawData:
         data = TemperatureRawData(
             value=_sinusoidal_value(self._timestamp),
