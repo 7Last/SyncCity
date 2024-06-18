@@ -1,56 +1,50 @@
 import random
 from datetime import datetime
-from typing import Iterable
 
 from math import pi, sin
 
 from .simulator import Simulator
-from ..models.raw_data.river_level_raw_data import RiverLevelRowData
+from ..models.config.sensor_config import SensorConfig
+from ..models.raw_data.river_level_raw_data import RiverLevelRawData
+from ..producers.producer_strategy import ProducerStrategy
 
 
 class RiverLevelSimulator(Simulator):
-    def data(self) -> Iterable[RiverLevelRowData]:
-        while self._limit != 0 and self._running:
-            yield RiverLevelRowData(
-                value=_sinusoidal_value(self._timestamp, self._latitude),
-                sensor_uuid=self._sensor_uuid,
-                sensor_name=self.sensor_name,
-                latitude=self._latitude,
-                longitude=self._longitude,
-                timestamp=self._timestamp,
-                group_name=self._group_name,
-            )
+    _DAILY_VARIATION = 0.5
+    _SEASONAL_VARIATION = 1.5
+    _BASE_LEVEL = 5.0
+    _RANDOM_VARIABILITY = 0.1
 
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp += self._points_spacing
-            self._event.wait(self._generation_delay.total_seconds())
+    def __init__(self, sensor_name: str, config: SensorConfig, producer: ProducerStrategy) -> None:
+        super().__init__(sensor_name, config, producer)
+        self._latitude_factor = (sin(config.latitude / 90.0 * pi / 2)) ** 2
+
+    def data(self) -> RiverLevelRawData:
+        data = RiverLevelRawData(
+            value=self._sinusoidal_value(self._timestamp),
+            sensor_uuid=self._sensor_uuid,
+            sensor_name=self.sensor_name,
+            latitude=self._latitude,
+            longitude=self._longitude,
+            timestamp=self._timestamp,
+            group_name=self._group_name,
+        )
+
+        self._timestamp += self._points_spacing
+        return data
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
 
+    def _sinusoidal_value(self, timestamp: datetime) -> float:
+        # Yearly variation
+        day_of_year = timestamp.timetuple().tm_yday
+        seasonal_variation = self._SEASONAL_VARIATION * sin(2 * pi * day_of_year / 365.25)
 
+        # Daily variation
+        seconds_in_day = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
+        daily_variation = self._DAILY_VARIATION * sin(2 * pi * seconds_in_day / 86400)
 
-def _sinusoidal_value(timestamp: datetime, latitude: float) -> float:
-    # Costanti che possono essere modificate per adattare il modello alla realtà
-    DAILY_AMPLITUDE = 0.5   # Variazione giornaliera dei livelli del fiume
-    SEASONAL_AMPLITUDE = 1.5 # Variazione stagionale dei livelli del fiume
-    BASE_LEVEL = 5.0        # Livello base del fiume
-    LATITUDE_FACTOR = (sin(latitude / 90.0 * pi / 2)) ** 2  # Fattore non lineare per la latitudine
+        random_factor = random.gauss(1, self._RANDOM_VARIABILITY)
 
-    # Calcolo dell'offset stagionale (giorno dell'anno)
-    day_of_year = timestamp.timetuple().tm_yday
-    seasonal_variation = SEASONAL_AMPLITUDE * sin(2 * pi * day_of_year / 365.25)
-
-    # Calcolo dell'offset giornaliero (secondo del giorno)
-    seconds_in_day = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
-    daily_variation = DAILY_AMPLITUDE * sin(2 * pi * seconds_in_day / 86400)
-
-    # Introduzione di una variabilità casuale controllata
-    RANDOM_VARIABILITY = 0.1  # Questo valore può essere modificato per aumentare o diminuire la variabilità
-    random_factor = random.gauss(1, RANDOM_VARIABILITY)
-
-    # Calcolo del valore finale con variabilità casuale
-    value = ((BASE_LEVEL + seasonal_variation + daily_variation * LATITUDE_FACTOR) * random_factor) * 500
-
-    return value
+        return 500 * (self._BASE_LEVEL + seasonal_variation + daily_variation * self._latitude_factor) * random_factor

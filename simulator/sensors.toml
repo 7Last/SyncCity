@@ -1,5 +1,4 @@
 # Dates and duration are expressed with ISO8601 standard
-# !!! Parking sensors do not need _points_spacing since they are event #driven !!!
 
 [sensors.via-pralungo-temperature]
 uuid = "14894ca7-d3cc-4cca-b2e5-be33bb70359b"
@@ -172,6 +171,7 @@ begin_date = 2024-01-01T00:00:00
 latitude = 45.4034159
 longitude = 11.8756551
 
+# !!! Parking sensors do not need _points_spacing since they are event #driven !!!
 [sensors.piazza-insurrezione-park1]
 group_name = "piazza-insurrezione"
 uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"

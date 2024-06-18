@@ -10,7 +10,7 @@ from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
 from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
 from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
-from ..models.raw_data.river_level_raw_data import RiverLevelRowData
+from ..models.raw_data.river_level_raw_data import RiverLevelRawData
 from ..models.raw_data.humidity_raw_data import HumidityRawData
 
 
@@ -81,7 +81,7 @@ class SerializerVisitor(Visitor):
         }
 
     @staticmethod
-    def visit_river_level_raw_data(raw_data: RiverLevelRowData) -> Dict:
+    def visit_river_level_raw_data(raw_data: RiverLevelRawData) -> Dict:
         return {
             "value": raw_data.value,
             **(SerializerVisitor._serialize_raw_data(raw_data)),

@@ -7,7 +7,7 @@ from ..models.raw_data.temperature_raw_data import TemperatureRawData
 from ..models.raw_data.traffic_raw_data import TrafficRawData
 from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
 from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
-from ..models.raw_data.river_level_raw_data import RiverLevelRowData
+from ..models.raw_data.river_level_raw_data import RiverLevelRawData
 from ..models.raw_data.humidity_raw_data import HumidityRawData
 
 class Visitor(ABC):
@@ -48,7 +48,7 @@ class Visitor(ABC):
 
     @staticmethod
     @abstractmethod
-    def visit_river_level_raw_data(raw_data: 'RiverLevelRowData') -> any:
+    def visit_river_level_raw_data(raw_data: 'RiverLevelRawData') -> any:
         pass
 
     @staticmethod

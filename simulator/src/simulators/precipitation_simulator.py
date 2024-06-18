@@ -1,8 +1,5 @@
 import random
 from datetime import datetime
-from typing import Iterable
-# from datetime import timedelta
-# from threading import Event
 from math import pi, sin
 
 from .simulator import Simulator
@@ -10,22 +7,19 @@ from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
 
 
 class PrecipitationSimulator(Simulator):
-    def data(self) -> Iterable[PrecipitationRawData]:
-        while self._limit != 0 and self._running:
-            yield PrecipitationRawData(
-                value=_sinusoidal_value(self._timestamp, self._latitude),
-                sensor_uuid=self._sensor_uuid,
-                sensor_name=self.sensor_name,
-                latitude=self._latitude,
-                longitude=self._longitude,
-                timestamp=self._timestamp,
-                group_name=self._group_name,
-            )
+    def data(self) -> PrecipitationRawData:
+        data = PrecipitationRawData(
+            value=_sinusoidal_value(self._timestamp, self._latitude),
+            sensor_uuid=self._sensor_uuid,
+            sensor_name=self.sensor_name,
+            latitude=self._latitude,
+            longitude=self._longitude,
+            timestamp=self._timestamp,
+            group_name=self._group_name,
+        )
 
-            if self._limit is not None:
-                self._limit -= 1
-            self._timestamp += self._points_spacing
-            self._event.wait(self._generation_delay.total_seconds())
+        self._timestamp += self._points_spacing
+        return data
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

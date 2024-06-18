@@ -5,7 +5,7 @@ from uuid import UUID
 from .raw_data import RawData
 
 
-class RiverLevelRowData(RawData):
+class RiverLevelRawData(RawData):
     def __init__(self, *, value: float, latitude: float, longitude: float,
                  sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now(), group_name: str | None = None,
@@ -23,7 +23,7 @@ class RiverLevelRowData(RawData):
         return "river_level"
 
     def __eq__(self, other: any) -> bool:
-        if not isinstance(other, RiverLevelRowData):
+        if not isinstance(other, RiverLevelRawData):
             return False
         return self.value == other.value and super().__eq__(other)
 
