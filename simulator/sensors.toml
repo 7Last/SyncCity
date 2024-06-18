@@ -363,7 +363,7 @@ type = "charging_station"
 points_spacing = "PT1H"
 generation_delay = "PT0.1S"
 begin_date = 2024-01-01T00:00:00
-latitude = 45.4094499 
+latitude = 45.4094499
 longitude = 11.8717011
 
 [sensors.prato-della-valle-charge3]
