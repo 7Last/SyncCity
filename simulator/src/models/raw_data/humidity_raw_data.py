@@ -17,7 +17,7 @@ class HumidityRawData(RawData):
         self.value = value
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.serialize_humidity_raw_data(self)
+        return visitor.visit_humidity_raw_data(self)
 
     @property
     def topic(self) -> str:

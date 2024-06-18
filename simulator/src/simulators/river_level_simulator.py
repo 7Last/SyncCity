@@ -9,7 +9,7 @@ from ..models.raw_data.river_level_raw_data import RiverLevelRowData
 
 
 class RiverLevelSimulator(Simulator):
-    def stream(self) -> Iterable[RiverLevelRowData]:
+    def data(self) -> Iterable[RiverLevelRowData]:
         while self._limit != 0 and self._running:
             yield RiverLevelRowData(
                 value=_sinusoidal_value(self._timestamp, self._latitude),

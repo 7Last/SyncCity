@@ -1,8 +1,8 @@
 import random
 from datetime import datetime
 from typing import Iterable
-import timedelta
-from threading import Event
+# from datetime import timedelta
+# from threading import Event
 from math import pi, sin
 
 from .simulator import Simulator
@@ -10,7 +10,7 @@ from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
 
 
 class PrecipitationSimulator(Simulator):
-    def stream(self) -> Iterable[PrecipitationRawData]:
+    def data(self) -> Iterable[PrecipitationRawData]:
         while self._limit != 0 and self._running:
             yield PrecipitationRawData(
                 value=_sinusoidal_value(self._timestamp, self._latitude),

@@ -12,7 +12,7 @@ class ChargingStationSimulator(Simulator):
         super().__init__(sensor_name, config)
         self._is_occupied = self._generate_occupancy()
 
-    def stream(self) -> Iterable[ChargingStationRawData]:
+    def data(self) -> Iterable[ChargingStationRawData]:
         while self._limit != 0 and self._running:
 
             yield ChargingStationRawData(
