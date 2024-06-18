@@ -16,7 +16,7 @@ class ChargingStationSimulator(Simulator):
         kwh_supplied = self._generate_energy_consumption()
         data = ChargingStationRawData(
             is_being_used=kwh_supplied>0,
-            energy_supplied=kwh_supplied,
+            kwh_supplied=kwh_supplied,
             latitude=self._latitude,
             longitude=self._longitude,
             timestamp=self._timestamp,

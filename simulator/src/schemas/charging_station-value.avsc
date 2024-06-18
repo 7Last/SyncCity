@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "charging_station",
+  "name": "Charging_Station",
   "fields": [
     {
       "name": "sensor_uuid",
@@ -25,6 +25,9 @@
     {
       "name": "is_being_used",
       "type": "boolean"
+    },    {
+      "name": "kwh_supplied",
+      "type": "float"
     },
     {
       "name": "group_name",

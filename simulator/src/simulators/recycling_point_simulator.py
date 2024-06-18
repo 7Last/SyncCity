@@ -24,7 +24,7 @@ class RecyclingPointSimulator(Simulator):
 
     def data(self) -> RecyclingPointRawData:
         data = RecyclingPointRawData(
-            filling=self._last_value,
+            filling=self._filling(),
             latitude=self._latitude,
             longitude=self._longitude,
             timestamp=self._timestamp,

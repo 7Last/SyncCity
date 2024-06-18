@@ -7,7 +7,7 @@ from .raw_data import RawData
 
 class ChargingStationRawData(RawData):
 
-    def __init__(self, *, is_being_used: bool, energy_supplied: float, latitude: float,
+    def __init__(self, *, is_being_used: bool, kwh_supplied: float, latitude: float,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now(),
                  group_name: str | None = None) -> None:
@@ -15,7 +15,7 @@ class ChargingStationRawData(RawData):
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp)
         self.is_being_used = is_being_used
-        self.energy_supplied = energy_supplied
+        self.kwh_supplied = kwh_supplied
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
         return visitor.visit_charging_station_raw_data(self)
