@@ -23,7 +23,7 @@
       "type": "string"
     },
     {
-      "name": "is_occupied",
+      "name": "is_being_used",
       "type": "boolean"
     },
     {

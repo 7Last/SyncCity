@@ -70,7 +70,7 @@ class SerializerVisitor(Visitor):
     @staticmethod
     def visit_charging_station_raw_data(raw_data: ChargingStationRawData) -> Dict:
         return {
-            "is_occupied": raw_data.is_occupied,
+            "is_being_used": raw_data.is_being_used,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
     @staticmethod

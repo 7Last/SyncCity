@@ -165,7 +165,7 @@
           },
           "pluginVersion": "4.0.8",
           "queryType": "table",
-          "rawSql": "SELECT latitude, longitude, sensor_name, not argMax(is_occupied, timestamp) as status\nfrom sensors.charging_station\nwhere group_name = '${group_name}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
+          "rawSql": "SELECT latitude, longitude, sensor_name, not argMax(is_being_used, timestamp) as status\nfrom sensors.charging_station\nwhere group_name = '${group_name}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
           "refId": "Parking"
         }
       ],
@@ -292,7 +292,7 @@
           },
           "pluginVersion": "4.0.8",
           "queryType": "table",
-          "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(is_occupied, timestamp) as occupied\n         FROM sensors.charging_station\n         where group_name = '${group_name}' and timestamp <= now()\n         group by sensor_name\n         );",
+          "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(is_being_used, timestamp) as occupied\n         FROM sensors.charging_station\n         where group_name = '${group_name}' and timestamp <= now()\n         group by sensor_name\n         );",
           "refId": "A"
         }
       ],
@@ -386,7 +386,7 @@
           },
           "pluginVersion": "4.0.8",
           "queryType": "table",
-          "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_occupied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.charging_station)\nselect\n    sumIf(seconds, is_occupied = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
+          "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_being_used,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.charging_station)\nselect\n    sumIf(seconds, is_being_used = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
           "refId": "A"
         }
       ],
