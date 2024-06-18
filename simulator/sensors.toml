@@ -1,4 +1,5 @@
 # Dates and duration are expressed with ISO8601 standard
+# !!! Parking and charging sensors do not need _points_spacing since they are event driven !!!
 
 [sensors.via-pralungo-temperature]
 uuid = "14894ca7-d3cc-4cca-b2e5-be33bb70359b"
@@ -171,7 +172,6 @@ begin_date = 2024-01-01T00:00:00
 latitude = 45.4034159
 longitude = 11.8756551
 
-# !!! Parking sensors do not need _points_spacing since they are event #driven !!!
 [sensors.piazza-insurrezione-park1]
 group_name = "piazza-insurrezione"
 uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
@@ -345,3 +345,30 @@ generation_delay = "PT0.1S"
 begin_date = 2024-01-01T00:00:00
 latitude = 45.1908855
 longitude = 12.2219133
+
+[sensors.prato-della-valle-charge1]
+group_name = "prato-della-valle"
+uuid = "429de1de-bda7-442c-b429-baeb745e425c"
+type = "charging_station"
+generation_delay = "PT0.1S"
+begin_date = 2024-01-01T00:00:00
+latitude = 45.3969133
+longitude = 11.8780366
+
+[sensors.prato-della-valle-charge2]
+group_name = "prato-della-valle"
+uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
+type = "charging_station"
+generation_delay = "PT0.1S"
+begin_date = 2024-01-01T00:00:00
+latitude = 45.4094499 
+longitude = 11.8717011
+
+[sensors.prato-della-valle-charge3]
+group_name = "prato-della-valle"
+uuid = "1d9a2b77-d964-4894-bd4e-5ab303766a0d"
+type = "charging_station"
+generation_delay = "PT0.1S"
+begin_date = 2024-01-01T00:00:00
+latitude = 45.4061577
+longitude = 11.8766844

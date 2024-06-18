@@ -17,7 +17,7 @@ class ChargingStationRawData(RawData):
         self.is_occupied = is_occupied
 
     def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_charging_station_raw_sata(self)
+        return visitor.visit_charging_station_raw_data(self)
 
     @property
     def topic(self) -> str:
