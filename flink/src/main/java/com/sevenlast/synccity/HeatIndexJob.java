@@ -13,7 +13,6 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -26,6 +25,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HeatIndexJob {
@@ -94,16 +95,15 @@ public class HeatIndexJob {
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
-
-        final double c1 = -42.379;
-        final double c2 = 2.04901523;
-        final double c3 = 10.14333127;
-        final double c4 = -0.22475541;
-        final double c5 = -0.00683783;
-        final double c6 = -0.05481717;
-        final double c7 = 0.00122874;
-        final double c8 = 0.00085282;
-        final double c9 = -0.00000199;
+        final double c1 = -8.78469475556;
+        final double c2 = 1.61139411;
+        final double c3 = 2.33854883889;
+        final double c4 = -0.14611605;
+        final double c5 = -0.012308094;
+        final double c6 = -0.0164248277778;
+        final double c7 = 2.211732e-3;
+        final double c8 = 7.2546e-4;
+        final double c9 = -3.582e-6;
 
         var metadata = client.getLatestSchemaMetadata(HEAT_INDEX_TOPIC + "-value");
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
@@ -161,7 +161,6 @@ public class HeatIndexJob {
                 )
                 .build();
 
-//        heatIndexStream.print();
         heatIndexStream.sinkTo(sink);
         env.execute("Heat Index Job");
     }
