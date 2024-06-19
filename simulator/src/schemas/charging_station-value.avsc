@@ -30,6 +30,10 @@
       "type": "float"
     },
     {
+      "name": "remaining_charge_time",
+      "type": ["float", "null"]
+    },
+    {
       "name": "group_name",
       "type": ["string", "null"]
     }

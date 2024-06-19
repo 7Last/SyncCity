@@ -72,6 +72,7 @@ class SerializerVisitor(Visitor):
         return {
             "is_being_used": raw_data.is_being_used,
             "kwh_supplied": raw_data.kwh_supplied,
+            "remaining_charge_time": raw_data.remaining_charge_time,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
     @staticmethod
