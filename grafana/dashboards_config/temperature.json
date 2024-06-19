@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 5,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -99,7 +99,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Markers actual_temperature"
+                            "options": "actual_temperature"
                         },
                         "properties": [
                             {
@@ -200,7 +200,8 @@
                         "displayProperties": [
                             "sensor_name",
                             "latitude",
-                            "longitude"
+                            "longitude",
+                            "actual_temperature"
                         ],
                         "location": {
                             "latitude": "latitude",
@@ -240,7 +241,7 @@
                     },
                     "pluginVersion": "4.1.0",
                     "queryType": "table",
-                    "rawSql": "SELECT *\nfrom (\n    SELECT center_of_mass_latitude,\n           center_of_mass_longitude,\n           (10 * radius_in_km + 10) as radius,\n           avg(heat_index)          as avg_heat_index\n    FROM sensors.heat_index\n    WHERE timestamp <= now() AND group_name = '${group_name}'\n    GROUP BY center_of_mass_latitude, center_of_mass_longitude, radius_in_km\n)\npaste join\n(\n    SELECT sensor_name,\n           latitude,\n           longitude,\n           argMax(value, timestamp) as actual_temperature\n    FROM sensors.temperatures\n    WHERE timestamp <= now()\n    GROUP BY sensor_name, latitude, longitude\n)\n",
+                    "rawSql": "SELECT center_of_mass_latitude,\n       center_of_mass_longitude,\n       sensor_name,\n       latitude,\n       longitude,\n       (20 * radius_in_km + 10) as radius,\n       avg(heat_index)          as avg_heat_index,\n       argMax(value, timestamp) as actual_temperature\nFROM sensors.heat_index hi\n         join sensors.temperatures t on t.group_name = hi.group_name\nWHERE group_name = '${group_name}' -- timestamp <= now() AND\nGROUP BY center_of_mass_latitude, center_of_mass_longitude, radius_in_km, sensor_name, latitude, longitude\n",
                     "refId": "Sensors"
                 }
             ],
@@ -249,7 +250,9 @@
                 {
                     "id": "convertFieldType",
                     "options": {
-                        "conversions": [],
+                        "conversions": [
+                            {}
+                        ],
                         "fields": {}
                     }
                 }
@@ -1109,8 +1112,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "via-pralungo",
-                    "value": "via-pralungo"
+                    "text": "prato-della-valle",
+                    "value": "prato-della-valle"
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
@@ -1141,6 +1144,6 @@
     "timezone": "",
     "title": "Temperature",
     "uid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-    "version": 7,
+    "version": 1,
     "weekStart": ""
 }
