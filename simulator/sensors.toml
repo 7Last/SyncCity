@@ -316,7 +316,7 @@ begin_date = 2024-01-01T00:00:00
 latitude = 45.4098889
 longitude = 11.8899313
 
-[sensors.brenta-monte-river]
+[sensors.brenta-centro-river]
 group_name = "brenta"
 uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
 type = "river_level"
@@ -326,7 +326,7 @@ begin_date = 2024-01-01T00:00:00
 latitude = 45.0078311
 longitude = 11.2643933
 
-[sensors.brenta-centro-river]
+[sensors.brenta-monte-river]
 group_name = "brenta"
 uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
 type = "river_level"
