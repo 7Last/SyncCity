@@ -6,7 +6,7 @@ from unittest.mock import MagicMock
 from uuid import UUID
 
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.serializers.avro_serializer import AvroSerializer
+from simulator.src.serializers.strategy.avro_record_serialization_strategy import AvroRecordSerializationStrategy
 
 
 class TestAvroSerializer(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestAvroSerializer(unittest.TestCase):
                 Exception,
                 "SCHEMA_REGISTRY_URL environment variable must be set",
         ):
-            AvroSerializer()
+            AvroRecordSerializationStrategy()
 
     @unittest.mock.patch.dict(
         os.environ, {"SCHEMA_REGISTRY_URL": "http://schema-registry.com"}, clear=True,
@@ -76,7 +76,7 @@ class TestAvroSerializer(unittest.TestCase):
             value=0.0,
         )
 
-        avro_serializer = AvroSerializer()
+        avro_serializer = AvroRecordSerializationStrategy()
         serialized = avro_serializer.serialize_value(temperature_raw_data)
 
         magic_byte = b'\x00'

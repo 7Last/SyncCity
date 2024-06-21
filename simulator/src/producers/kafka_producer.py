@@ -2,14 +2,16 @@ import logging as log
 
 import kafka
 
+from simulator.src.serializers.strategy.record_serialization_strategy import \
+    RecordSerializationStrategy
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
-from ..serializers.serializer_strategy import SerializerStrategy
 
 
 class KafkaProducer(ProducerStrategy):
 
-    def __init__(self, *, serializer: SerializerStrategy, bootstrap_servers: list[str],
+    def __init__(self, *, serializer: RecordSerializationStrategy,
+                 bootstrap_servers: list[str],
                  max_block_ms: int, acks: int) -> None:
         super().__init__(serializer)
         self._producer = kafka.KafkaProducer(

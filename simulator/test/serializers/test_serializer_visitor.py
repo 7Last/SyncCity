@@ -5,7 +5,7 @@ from uuid import UUID
 from simulator.src.models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
 from simulator.src.models.raw_data.traffic_raw_data import TrafficRawData
-from simulator.src.serializers.serializer_visitor import SerializerVisitor
+from simulator.src.serializers.visitor.json_converter_visitor import JsonConverterVisitor
 
 
 class TestSerializerVisitor(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestSerializerVisitor(unittest.TestCase):
             timestamp=self.datetime,
             value=0.0,
         )
-        visitor = SerializerVisitor()
+        visitor = JsonConverterVisitor()
 
         expected = {
             "sensor_name": "sensor_name",
@@ -54,7 +54,7 @@ class TestSerializerVisitor(unittest.TestCase):
             timestamp=self.datetime,
             value=0.0,
         )
-        visitor = SerializerVisitor()
+        visitor = JsonConverterVisitor()
 
         expected = {
             "sensor_name": "sensor_name",
@@ -79,7 +79,7 @@ class TestSerializerVisitor(unittest.TestCase):
             vehicles=0,
             avg_speed=0.0,
         )
-        visitor = SerializerVisitor()
+        visitor = JsonConverterVisitor()
 
         expected = {
             "sensor_name": "sensor_name",
@@ -104,7 +104,7 @@ class TestSerializerVisitor(unittest.TestCase):
             timestamp=self.datetime,
             filling=0.0,
         )
-        visitor = SerializerVisitor()
+        visitor = JsonConverterVisitor()
 
         expected = {
             "sensor_name": "sensor_name",

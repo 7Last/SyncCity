@@ -4,7 +4,7 @@ import os
 import toml
 
 from src.producers.kafka_producer import KafkaProducer
-from src.serializers.avro_serializer import AvroSerializer
+from simulator.src.serializers.strategy.avro_record_serialization_strategy import AvroRecordSerializationStrategy
 from src.models.config.env_config import EnvConfig
 from src.runner import Runner
 
@@ -27,7 +27,7 @@ def main() -> None:
     producer = KafkaProducer(
         bootstrap_servers=[env_config.bootstrap_server],
         max_block_ms=env_config.max_block_ms,
-        serializer=AvroSerializer(),
+        serializer=AvroRecordSerializationStrategy(),
         acks=1,
     )
 

@@ -5,16 +5,17 @@ from typing import Dict
 from confluent_avro import SchemaRegistry, AvroValueSerde
 from dotenv import load_dotenv
 
-from .serializer_strategy import SerializerStrategy
-from ..models.raw_data.raw_data import RawData
+from simulator.src.models.raw_data.raw_data import RawData
+from .record_serialization_strategy import RecordSerializationStrategy
+from ..visitor.json_converter_visitor import JsonConverterVisitor
 
 SerdeWithSchema = (AvroValueSerde, str)
 
 
-class AvroSerializer(SerializerStrategy):
+class AvroRecordSerializationStrategy(RecordSerializationStrategy):
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(JsonConverterVisitor())
         load_dotenv()
         schema_registry_url = os.getenv('SCHEMA_REGISTRY_URL')
         if schema_registry_url is None or schema_registry_url == "":
