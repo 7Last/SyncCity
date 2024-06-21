@@ -61,7 +61,7 @@ class TestRiverLevelSimulator(unittest.TestCase):
         simulator.stop()
         self.assertEqual(simulator.is_running(), False)
 
-    @patch('random.gauss', return_value=0)
+    @patch('random.gauss', side_effect=[0.8, 0.9, 0.5])
     def test_stream(self, _: Mock) -> None:
         simulator = RiverLevelSimulator(
             sensor_name='test',
@@ -81,24 +81,24 @@ class TestRiverLevelSimulator(unittest.TestCase):
         stream = [simulator.data() for _ in range(3)]
 
         expected = [
-            RiverLevelSimulator(
-                value=2512.9011815636954, #non so che valore mettere
+            RiverLevelRawData(
+                value=2010.3209452509564,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
-            RiverLevelSimulator(
-                value=2512.9011815636954,
+            RiverLevelRawData(
+                value=2261.611063407326,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
-            RiverLevelSimulator(
-                value=2512.9011815636954,
+            RiverLevelRawData(
+                value=1256.4505907818477,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,

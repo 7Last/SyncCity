@@ -15,7 +15,8 @@ class RiverLevelSimulator(Simulator):
     _BASE_LEVEL = 5.0
     _RANDOM_VARIABILITY = 0.1
 
-    def __init__(self, sensor_name: str, config: SensorConfig, producer: ProducerStrategy) -> None:
+    def __init__(self, sensor_name: str, config: SensorConfig,
+                 producer: ProducerStrategy) -> None:
         super().__init__(sensor_name, config, producer)
         self._latitude_factor = (sin(config.latitude / 90.0 * pi / 2)) ** 2
 
@@ -39,7 +40,8 @@ class RiverLevelSimulator(Simulator):
     def _sinusoidal_value(self, timestamp: datetime) -> float:
         # Yearly variation
         day_of_year = timestamp.timetuple().tm_yday
-        seasonal_variation = self._SEASONAL_VARIATION * sin(2 * pi * day_of_year / 365.25)
+        seasonal_variation = self._SEASONAL_VARIATION * sin(
+            2 * pi * day_of_year / 365.25)
 
         # Daily variation
         seconds_in_day = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
@@ -47,4 +49,5 @@ class RiverLevelSimulator(Simulator):
 
         random_factor = random.gauss(1, self._RANDOM_VARIABILITY)
 
-        return 500 * (self._BASE_LEVEL + seasonal_variation + daily_variation * self._latitude_factor) * random_factor
+        return 500 * (self._BASE_LEVEL + seasonal_variation +
+                      daily_variation * self._latitude_factor) * random_factor

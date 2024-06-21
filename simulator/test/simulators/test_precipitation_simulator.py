@@ -61,8 +61,9 @@ class TestPrecipitationSimulator(unittest.TestCase):
         simulator.stop()
         self.assertEqual(simulator.is_running(), False)
 
-    @patch('random.uniform', return_value=0)
-    def test_stream(self, _: Mock) -> None:
+    @patch('random.uniform', side_effect=[0.8, 0.9, 0.5])
+    @patch('random.random', side_effect=[0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98, 1.0])
+    def test_stream(self, _: Mock, __: Mock) -> None:
         simulator = PrecipitationSimulator(
             sensor_name='test',
             config=SensorConfig({
@@ -81,24 +82,24 @@ class TestPrecipitationSimulator(unittest.TestCase):
         stream = [simulator.data() for _ in range(3)]
 
         expected = [
-            PrecipitationSimulator(
-                value=1.9505748517128412, #non so che valore mettere
+            PrecipitationRawData(
+                value=0,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
-            PrecipitationSimulator(
-                value=1.9505748517128412,
+            PrecipitationRawData(
+                value=1.755517366541557,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
-            PrecipitationSimulator(
-                value=1.9505748517128412,
+            PrecipitationRawData(
+                value=0.9752874258564206,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,

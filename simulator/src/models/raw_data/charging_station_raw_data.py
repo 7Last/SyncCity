@@ -7,7 +7,8 @@ from .raw_data import RawData
 
 class ChargingStationRawData(RawData):
 
-    def __init__(self, *, is_being_used: bool, kwh_supplied: float, remaining_charge_time: float, latitude: float,
+    def __init__(self, *, is_being_used: bool, kwh_supplied: float,
+                 remaining_charge_time: float, latitude: float,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now(),
                  group_name: str | None = None) -> None:
@@ -34,7 +35,8 @@ class ChargingStationRawData(RawData):
                 self.remaining_charge_time == other.remaining_charge_time)
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.is_being_used, self.kwh_supplied, self.remaining_charge_time))
+        return hash((super().__hash__(), self.is_being_used, self.kwh_supplied,
+                     self.remaining_charge_time))
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
