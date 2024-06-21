@@ -82,7 +82,7 @@ class TestPrecipitationSimulator(unittest.TestCase):
 
         expected = [
             PrecipitationSimulator(
-                value=0, #non so che valore mettere
+                value=1.9505748517128412, #non so che valore mettere
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -90,7 +90,7 @@ class TestPrecipitationSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
             PrecipitationSimulator(
-                value=0,
+                value=1.9505748517128412,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -98,7 +98,7 @@ class TestPrecipitationSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             PrecipitationSimulator(
-                value=0,
+                value=1.9505748517128412,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,

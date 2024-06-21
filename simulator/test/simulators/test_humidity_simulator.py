@@ -82,7 +82,7 @@ class TestHumiditySimulator(unittest.TestCase):
 
         expected = [
             HumidityRawData(
-                value=0, #non so che valori mettere
+                value=39.24770500506624, #non so che valori mettere
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -90,7 +90,7 @@ class TestHumiditySimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
             HumidityRawData(
-                value=0,
+                value=39.24770500506624,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -98,7 +98,7 @@ class TestHumiditySimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             HumidityRawData(
-                value=0,
+                value=42.30067414234525,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
