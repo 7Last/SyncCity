@@ -6,7 +6,7 @@ from .models.config.simulator_factory import build_simulators
 from .producers.producer_strategy import ProducerStrategy
 
 
-class Runner:
+class SimulatorExecutor:
     def __init__(self, config: Dict[str, any], producer: ProducerStrategy) -> None:
         self._simulators = build_simulators(config, producer)
         self._stop_event = threading.Event()

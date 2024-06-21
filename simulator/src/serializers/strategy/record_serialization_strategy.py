@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-from simulator.src.models.raw_data.raw_data import RawData
-from simulator.src.serializers.visitor.serialization_visitor import SerializationVisitor
+from ...models.raw_data.raw_data import RawData
+from ...serializers.visitor.converter_visitor import ConverterVisitor
 
 
 class RecordSerializationStrategy(ABC):
-    def __init__(self, visitor: SerializationVisitor) -> None:
+    def __init__(self, visitor: ConverterVisitor) -> None:
         self._visitor = visitor
 
     @abstractmethod

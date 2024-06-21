@@ -5,7 +5,7 @@ from typing import Dict
 from confluent_avro import SchemaRegistry, AvroValueSerde
 from dotenv import load_dotenv
 
-from simulator.src.models.raw_data.raw_data import RawData
+from ...models.raw_data.raw_data import RawData
 from .record_serialization_strategy import RecordSerializationStrategy
 from ..visitor.json_converter_visitor import JsonConverterVisitor
 
@@ -26,7 +26,7 @@ class AvroRecordSerializationStrategy(RecordSerializationStrategy):
             raise Exception("SCHEMAS_RELATIVE_PATH environment variable must be set")
 
         # <project_root>/redpanda/schemas directory
-        self._schema_path = Path(__file__).parent.joinpath(schemas_path)
+        self._schema_path = Path(__file__).parent.parent.joinpath(schemas_path)
 
         self._registry_client = SchemaRegistry(
             url=schema_registry_url,

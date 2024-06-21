@@ -1,17 +1,17 @@
 from datetime import UTC
 from typing import Dict
 
-from simulator.src.serializers.visitor import Visitor
-from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
-from simulator.src.models.raw_data.parking_raw_data import ParkingRawData
-from simulator.src.models.raw_data.raw_data import RawData
-from simulator.src.models.raw_data.recycling_point_raw_data import RecyclingPointRawData
-from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.models.raw_data.traffic_raw_data import TrafficRawData
-from simulator.src.models.raw_data.humidity_raw_data import HumidityRawData
+from ...serializers.visitor.converter_visitor import ConverterVisitor
+from ...models.raw_data.air_quality_raw_data import AirQualityRawData
+from ...models.raw_data.parking_raw_data import ParkingRawData
+from ...models.raw_data.raw_data import RawData
+from ...models.raw_data.recycling_point_raw_data import RecyclingPointRawData
+from ...models.raw_data.temperature_raw_data import TemperatureRawData
+from ...models.raw_data.traffic_raw_data import TrafficRawData
+from ...models.raw_data.humidity_raw_data import HumidityRawData
 
 
-class JsonConverterVisitor(Visitor):
+class JsonConverterVisitor(ConverterVisitor):
 
     @staticmethod
     def _visit_raw_data(raw_data: RawData) -> Dict:
