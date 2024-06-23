@@ -36,6 +36,7 @@ class ChargingStationSimulator(Simulator):
 
     def data(self) -> ChargingStationRawData:
         if self._idle_time > timedelta(seconds=0):
+            self._timestamp += self._points_spacing
             self._idle_time -= self._points_spacing
             return ChargingStationRawData(
                 vehicle_type='',
@@ -66,9 +67,6 @@ class ChargingStationSimulator(Simulator):
             group_name=self._group_name,
         )
 
-        self._timestamp += self._points_spacing
-        self._elapsed_time += self._points_spacing
-
         # Update remaining charge time and battery level
         if self._remaining_charge_time > timedelta(seconds=0):
             self._update_charge_status(kwh_supplied)
@@ -78,6 +76,8 @@ class ChargingStationSimulator(Simulator):
             else:
                 self._initialize_new_session()
 
+        self._timestamp += self._points_spacing
+        self._elapsed_time += self._points_spacing
         return data
 
     def _initialize_charging_power(self) -> float:
