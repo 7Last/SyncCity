@@ -23,15 +23,24 @@
       "type": "string"
     },
     {
-      "name": "is_being_used",
-      "type": "boolean"
-    },    {
+      "name": "vehicle_type",
+      "type": "string"
+    },
+    {
+      "name": "battery_level",
+      "type": "float"
+    },
+    {
       "name": "kwh_supplied",
       "type": "float"
     },
     {
       "name": "remaining_charge_time",
-      "type": ["float", "null"]
+      "type": ["int", "null"]
+    },
+    {
+      "name": "elapsed_time",
+      "type": ["int", "null"]
     },
     {
       "name": "group_name",

@@ -70,9 +70,11 @@ class SerializerVisitor(Visitor):
     @staticmethod
     def visit_charging_station_raw_data(raw_data: ChargingStationRawData) -> Dict:
         return {
-            "is_being_used": raw_data.is_being_used,
+            "vehicle_type": raw_data.vehicle_type,
+            "battery_level": raw_data.battery_level,
             "kwh_supplied": raw_data.kwh_supplied,
             "remaining_charge_time": raw_data.remaining_charge_time,
+            "elapsed_time": raw_data.elapsed_time,
             **(SerializerVisitor._serialize_raw_data(raw_data)),
         }
     @staticmethod

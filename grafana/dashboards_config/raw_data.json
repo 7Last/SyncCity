@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2316,7 +2316,7 @@
           },
           "pluginVersion": "4.1.0",
           "queryType": "table",
-          "rawSql": "SELECT (SUM(is_being_used) / COUNT(*)) * 100 AS usage_percentage\nFROM (\n    SELECT sensor_uuid, is_being_used\n    FROM sensors.charging_station\n    WHERE (sensor_uuid, timestamp) IN (\n            SELECT sensor_uuid, MAX(timestamp) AS max_timestamp\n            FROM sensors.charging_station\n            GROUP BY sensor_uuid));",
+          "rawSql": "SELECT (SUM(kwh_supplied>0) / COUNT(*)) * 100 AS usage_percentage\nFROM (\n    SELECT sensor_uuid, kwh_supplied\n    FROM sensors.charging_station\n    WHERE (sensor_uuid, timestamp) IN (\n            SELECT sensor_uuid, MAX(timestamp) AS max_timestamp\n            FROM sensors.charging_station\n            GROUP BY sensor_uuid));",
           "refId": "A"
         }
       ],
@@ -2422,7 +2422,7 @@
       "type": "table"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 39,
   "tags": [],
   "templating": {
