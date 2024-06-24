@@ -4,15 +4,17 @@ import kafka
 
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
-from ..serializers.serializer_strategy import SerializerStrategy
+from ..serializers.strategy.record_serialization_strategy import \
+    RecordSerializationStrategy
 
 
-class KafkaProducer(ProducerStrategy):
+class KafkaProducerAdapter(ProducerStrategy):
 
-    def __init__(self, *, serializer: SerializerStrategy, bootstrap_servers: list[str],
+    def __init__(self, *, serializer: RecordSerializationStrategy,
+                 bootstrap_servers: list[str],
                  max_block_ms: int, acks: int) -> None:
         super().__init__(serializer)
-        self._producer = kafka.KafkaProducer(
+        self._adaptee = kafka.KafkaProducer(
             bootstrap_servers=bootstrap_servers,
             max_block_ms=max_block_ms,
             acks=acks,
@@ -22,12 +24,12 @@ class KafkaProducer(ProducerStrategy):
         try:
             serialized = self._serializer.serialize_value(data)
             log.info(f'Producing data to topic {data.topic}: {data}')
-            self._producer.send(data.topic, value=serialized)
-            self._producer.flush()
+            self._adaptee.send(data.topic, value=serialized)
+            self._adaptee.flush()
             return True
         except Exception as e:
             log.error(f'Failed to produce data to topic {data.topic}: {e}')
             return False
 
     def close(self) -> None:
-        self._producer.close(timeout=2)
+        self._adaptee.close(timeout=2)

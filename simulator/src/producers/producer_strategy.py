@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 
 from ..models.raw_data.raw_data import RawData
-from ..serializers.serializer_strategy import SerializerStrategy
+from ..serializers.strategy.record_serialization_strategy import \
+    RecordSerializationStrategy
 
 
 class ProducerStrategy(ABC):
-    def __init__(self, serializer: SerializerStrategy) -> None:
+    def __init__(self, serializer: RecordSerializationStrategy) -> None:
         self._serializer = serializer
 
     @abstractmethod
