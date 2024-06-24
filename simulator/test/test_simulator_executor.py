@@ -14,8 +14,8 @@ class TestSimulatorExecutor(unittest.TestCase):
     @unittest.mock.patch(
         "simulator.src.simulator_executor.threading.Event",
     )
-    def test_run(self, _: MagicMock,
-                 mock_build_simulators: MagicMock) -> None:  # noqa: PLR6301
+    def test_run(self, _: MagicMock,  # noqa: PLR6301
+                 mock_build_simulators: MagicMock) -> None:
         simulator_mock = MagicMock(spec=TemperatureSimulator)
         simulator_mock.start = MagicMock()
         simulator_mock.sensor_name = "test"
@@ -34,7 +34,7 @@ class TestSimulatorExecutor(unittest.TestCase):
     @unittest.mock.patch(
         "simulator.src.simulator_executor.threading.Event",
     )
-    def test_stop_all(self, _: MagicMock, __: MagicMock) -> None:
+    def test_stop_all(self, _: MagicMock, __: MagicMock) -> None:  # noqa: PLR6301
         simulator_mock = MagicMock(spec=TemperatureSimulator)
         simulator_mock.stop = MagicMock()
 
