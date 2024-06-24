@@ -1,6 +1,7 @@
+from simulator.src.serializers.strategy.record_serialization_strategy import \
+    RecordSerializationStrategy
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
-from simulator.src.serializers.strategy.record_serialization_strategy import RecordSerializationStrategy
 
 
 class StdOutProducer(ProducerStrategy):

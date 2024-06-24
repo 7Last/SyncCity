@@ -5,7 +5,8 @@ from uuid import UUID
 from simulator.src.models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
 from simulator.src.models.raw_data.traffic_raw_data import TrafficRawData
-from simulator.src.serializers.visitor.json_converter_visitor import JsonConverterVisitor
+from simulator.src.serializers.visitor.json_converter_visitor import \
+    JsonConverterVisitor
 
 
 class TestSerializerVisitor(unittest.TestCase):

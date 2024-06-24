@@ -6,7 +6,8 @@ from unittest.mock import MagicMock
 from uuid import UUID
 
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.serializers.strategy.avro_record_serialization_strategy import AvroRecordSerializationStrategy
+from simulator.src.serializers.strategy.avro_record_serialization_strategy import \
+    AvroRecordSerializationStrategy
 
 
 class TestAvroSerializer(unittest.TestCase):
