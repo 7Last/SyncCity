@@ -11,7 +11,7 @@ class SimulatorExecutor:
         self._simulators = build_simulators(config, producer)
         self._stop_event = threading.Event()
 
-    def _stop(self) -> None:
+    def _stop_all(self) -> None:
         self._stop_event.set()
         log.debug("Stopping simulator threads")
         for simulator in self._simulators:
@@ -27,7 +27,7 @@ class SimulatorExecutor:
             self._stop_event.wait()  # Keep the main thread alive
         except KeyboardInterrupt:
             log.info("KeyboardInterrupt received")
-            self._stop()
+            self._stop_all()
         except Exception as e:
             log.error(f"An error occurred: {e}")
-            self._stop()
+            self._stop_all()
