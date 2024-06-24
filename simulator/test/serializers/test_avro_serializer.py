@@ -24,7 +24,7 @@ class TestAvroSerializer(unittest.TestCase):
     @unittest.mock.patch.dict(
         os.environ, {"SCHEMA_REGISTRY_URL": "http://schema-registry.com"}, clear=True,
     )
-    @unittest.mock.patch('simulator.src.serializers.avro_serializer.SchemaRegistry')
+    @unittest.mock.patch('simulator.src.serializers.strategy.avro_record_serialization_strategy.SchemaRegistry')
     @unittest.mock.patch('pathlib.Path.read_text')
     def test_serialize(self, mock_path_read_text: MagicMock,
                        registry_mock: MagicMock, ) -> None:
