@@ -79,4 +79,4 @@ class Simulator(ABC, threading.Thread):
         ))
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__} {self.__dict__}'
+        return f'self.__class__.__name__ {self.__dict__}'

@@ -76,7 +76,7 @@ class RecyclingPointSimulator(Simulator):
         return new_value
 
     def __str__(self) -> str:
-        return f'{self.__class__.__name__} {self.__dict__}'
+        return 'self.__class__.__name__ self.__dict__'
 
 
 def _generate_emptying_hours() -> List[Tuple[int, int]]:
