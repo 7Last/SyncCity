@@ -24,7 +24,7 @@ jobs:
           pip install -r ./simulator/requirements.txt
 
       - name: Run ruff lint
-        run: ruff check --fix --output-format=github
+        run: ruff check --fix --output-format=github ./simulator
 
       - name: Run unit tests with coverage
         run: |

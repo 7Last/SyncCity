@@ -18,7 +18,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 3,
+    "id": 5,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -27,43 +27,100 @@
                 "type": "grafana-clickhouse-datasource",
                 "uid": "P5CECDC4694398594"
             },
+            "description": "",
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "thresholds"
                     },
-                    "custom": {
-                        "hideFrom": {
-                            "legend": false,
-                            "tooltip": false,
-                            "viz": false
-                        }
-                    },
                     "mappings": [],
+                    "max": 45,
+                    "min": -10,
                     "thresholds": {
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green",
+                                "color": "dark-blue",
                                 "value": null
                             },
                             {
-                                "color": "red",
-                                "value": 80
+                                "color": "blue",
+                                "value": 0
+                            },
+                            {
+                                "color": "super-light-blue",
+                                "value": 10
+                            },
+                            {
+                                "color": "super-light-yellow",
+                                "value": 20
+                            },
+                            {
+                                "color": "orange",
+                                "value": 30
+                            },
+                            {
+                                "color": "dark-orange",
+                                "value": 40
+                            },
+                            {
+                                "color": "dark-red",
+                                "value": 50
                             }
                         ]
                     },
                     "unitScale": true
                 },
-                "overrides": []
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "avg_heat_index"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Feels like"
+                            },
+                            {
+                                "id": "min",
+                                "value": -10
+                            },
+                            {
+                                "id": "max",
+                                "value": 50
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "actual_temperature"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Actual temperature"
+                            }
+                        ]
+                    }
+                ]
             },
             "gridPos": {
-                "h": 8,
+                "h": 11,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
-            "id": 8,
+            "id": 13,
             "options": {
                 "basemap": {
                     "config": {},
@@ -72,73 +129,98 @@
                 },
                 "controls": {
                     "mouseWheelZoom": true,
-                    "showAttribution": true,
+                    "showAttribution": false,
                     "showDebug": false,
-                    "showMeasure": false,
+                    "showLayercontrol": true,
                     "showScale": false,
                     "showZoom": true
                 },
                 "layers": [
                     {
                         "config": {
+                            "cluster": false,
+                            "clusterDistance": 20,
+                            "clusterMinDistance": 0,
+                            "clusterValue": "size",
+                            "color": {
+                                "field": "avg_heat_index",
+                                "fixed": "dark-green"
+                            },
+                            "enableGradient": false,
+                            "enableShadow": false,
+                            "fillOpacity": 0.4,
+                            "iconSize": 9,
+                            "pinShape": "marker",
+                            "shape": "circle",
                             "showLegend": true,
-                            "style": {
-                                "color": {
-                                    "fixed": "dark-red"
-                                },
-                                "opacity": 1,
-                                "rotation": {
-                                    "fixed": 0,
-                                    "max": 360,
-                                    "min": -360,
-                                    "mode": "mod"
-                                },
-                                "size": {
-                                    "fixed": 8,
-                                    "max": 15,
-                                    "min": 2
-                                },
-                                "symbol": {
-                                    "fixed": "img/icons/marker/circle.svg",
-                                    "mode": "fixed"
-                                },
-                                "symbolAlign": {
-                                    "horizontal": "center",
-                                    "vertical": "center"
-                                },
-                                "text": {
-                                    "fixed": "",
-                                    "mode": "field"
-                                },
-                                "textConfig": {
-                                    "fontSize": 12,
-                                    "offsetX": 0,
-                                    "offsetY": 0,
-                                    "textAlign": "center",
-                                    "textBaseline": "middle"
-                                }
+                            "showPin": false,
+                            "size": {
+                                "field": "radius",
+                                "fixed": 30,
+                                "max": 100,
+                                "min": 10
                             }
                         },
+                        "displayProperties": [
+                            "avg_heat_index"
+                        ],
                         "location": {
-                            "mode": "auto"
+                            "latitude": "center_of_mass_latitude",
+                            "longitude": "center_of_mass_longitude",
+                            "mode": "coords"
                         },
-                        "name": "Temperature",
-                        "tooltip": true,
+                        "name": "Feels like",
+                        "query": "Sensors",
+                        "titleField": "sensor_name",
+                        "type": "markers"
+                    },
+                    {
+                        "config": {
+                            "cluster": false,
+                            "clusterDistance": 20,
+                            "clusterMinDistance": 0,
+                            "clusterValue": "size",
+                            "color": {
+                                "fixed": "#ffffff"
+                            },
+                            "enableGradient": false,
+                            "enableShadow": false,
+                            "fillOpacity": 0.4,
+                            "iconSize": 9,
+                            "pinShape": "marker",
+                            "shape": "circle",
+                            "showLegend": true,
+                            "showPin": true,
+                            "size": {
+                                "fixed": 1,
+                                "max": 15,
+                                "min": 2
+                            }
+                        },
+                        "displayProperties": [
+                            "sensor_name",
+                            "latitude",
+                            "longitude",
+                            "actual_temperature"
+                        ],
+                        "location": {
+                            "latitude": "latitude",
+                            "longitude": "longitude",
+                            "mode": "coords"
+                        },
+                        "name": "Actual temperature",
+                        "query": "Sensors",
+                        "titleField": "sensor_name",
                         "type": "markers"
                     }
                 ],
-                "tooltip": {
-                    "mode": "details"
-                },
                 "view": {
-                    "allLayers": true,
-                    "id": "fit",
-                    "lat": 46,
-                    "lon": 14,
-                    "zoom": 9
+                    "id": "auto",
+                    "lat": 45.42188,
+                    "lon": 11.786964,
+                    "zoom": 10
                 }
             },
-            "pluginVersion": "10.3.0",
             "targets": [
                 {
                     "datasource": {
@@ -157,33 +239,25 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.6",
+                    "pluginVersion": "4.1.0",
                     "queryType": "table",
-                    "rawSql": "SELECT distinct sensor_name,\n       'Temperature' as type,\n       latitude,\n       longitude\nFROM sensors.temperatures\nWHERE sensor_name = '${sensor_name}'\n",
-                    "refId": "Temperature"
+                    "rawSql": "SELECT center_of_mass_latitude,\n       center_of_mass_longitude,\n       sensor_name,\n       latitude,\n       longitude,\n       (20 * radius_in_km + 10) as radius,\n       avg(heat_index)          as avg_heat_index,\n       argMax(value, timestamp) as actual_temperature\nFROM sensors.heat_index hi\n         join sensors.temperatures t on t.group_name = hi.group_name\nWHERE group_name = '${group_name}' -- timestamp <= now() AND\nGROUP BY center_of_mass_latitude, center_of_mass_longitude, radius_in_km, sensor_name, latitude, longitude\n",
+                    "refId": "Sensors"
                 }
             ],
-            "title": "Location",
+            "title": "Real time temperature",
             "transformations": [
                 {
                     "id": "convertFieldType",
                     "options": {
                         "conversions": [
-                            {
-                                "destinationType": "string",
-                                "targetField": "latitude"
-                            },
-                            {
-                                "destinationType": "string",
-                                "targetField": "longitude"
-                            }
+                            {}
                         ],
                         "fields": {}
                     }
                 }
             ],
-            "transparent": true,
-            "type": "geomap"
+            "type": "orchestracities-map-panel"
         },
         {
             "datasource": {
@@ -252,7 +326,7 @@
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Temperature"
+                            "options": "avg_temperature"
                         },
                         "properties": [
                             {
@@ -261,18 +335,37 @@
                                     "fixedColor": "text",
                                     "mode": "fixed"
                                 }
+                            },
+                            {
+                                "id": "unit",
+                                "value": "celsius"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Actual temperature"
                             }
                         ]
                     },
                     {
                         "matcher": {
                             "id": "byName",
-                            "options": "Temperature"
+                            "options": "heat_index"
                         },
                         "properties": [
                             {
                                 "id": "unit",
                                 "value": "celsius"
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Feels like"
+                            },
+                            {
+                                "id": "color",
+                                "value": {
+                                    "fixedColor": "yellow",
+                                    "mode": "fixed"
+                                }
                             }
                         ]
                     }
@@ -282,14 +375,12 @@
                 "h": 10,
                 "w": 19,
                 "x": 0,
-                "y": 8
+                "y": 11
             },
             "id": 7,
             "options": {
                 "legend": {
-                    "calcs": [
-                        "last"
-                    ],
+                    "calcs": [],
                     "displayMode": "list",
                     "placement": "bottom",
                     "showLegend": true
@@ -359,7 +450,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date;",
+                    "rawSql": "SELECT timestamp, heat_index, avg_temperature\nFROM sensors.heat_index\nWHERE timestamp >= $__fromTime AND timestamp <= $__toTime AND group_name = '${group_name}'\nORDER BY timestamp;",
                     "refId": "A"
                 }
             ],
@@ -437,7 +528,7 @@
                 "h": 10,
                 "w": 5,
                 "x": 19,
-                "y": 8
+                "y": 11
             },
             "id": 9,
             "options": {
@@ -475,9 +566,9 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT value\nFROM sensors.temperatures\nWHERE timestamp <= now()\nAND sensor_name = '${sensor_name}'\nORDER BY timestamp DESC\nLIMIT 1",
+                    "rawSql": "SELECT argMax(avg_temperature, timestamp)\nFROM sensors.heat_index\nWHERE timestamp <= now() AND group_name = '${group_name}'",
                     "refId": "Real time temp"
                 }
             ],
@@ -521,8 +612,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "semi-dark-blue",
-                                "value": null
+                                "color": "semi-dark-blue"
                             },
                             {
                                 "color": "#ffffff",
@@ -563,7 +653,7 @@
                 "h": 11,
                 "w": 12,
                 "x": 0,
-                "y": 18
+                "y": 21
             },
             "id": 4,
             "options": {
@@ -616,7 +706,7 @@
                     "query": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
                     "queryType": "table",
                     "rawQuery": "SELECT\n    toMonth(timestamp) AS month,\n    avg(value) AS monthly_mean_temperature\nFROM sensors.temperatures\nGROUP BY month\nORDER BY month",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_weekly\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_weekly\nWHERE date >= $__fromTime AND date <= $__toTime AND group_name = '${group_name}'\nGROUP BY date\nORDER BY date",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true
@@ -673,8 +763,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "semi-dark-blue",
-                                "value": null
+                                "color": "semi-dark-blue"
                             },
                             {
                                 "color": "#ffffff",
@@ -714,7 +803,7 @@
                 "h": 11,
                 "w": 12,
                 "x": 12,
-                "y": 18
+                "y": 21
             },
             "id": 10,
             "options": {
@@ -759,7 +848,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND sensor_name = '${sensor_name}'\nGROUP BY date\nORDER BY date\nLIMIT 30;\n",
+                    "rawSql": "SELECT\n    date,\n    argMax(avg_temperature, insertion_timestamp) AS Temperature\nFROM sensors.temperatures_5m\nWHERE date >= $__fromTime AND date <= $__toTime AND group_name = '${group_name}'\nGROUP BY date\nORDER BY date\nLIMIT 30;\n",
                     "refId": "A"
                 }
             ],
@@ -794,8 +883,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "semi-dark-blue",
-                                "value": null
+                                "color": "semi-dark-blue"
                             },
                             {
                                 "color": "#ffffff",
@@ -853,7 +941,7 @@
                 "h": 12,
                 "w": 18,
                 "x": 0,
-                "y": 29
+                "y": 32
             },
             "id": 3,
             "options": {
@@ -898,11 +986,11 @@
                             "table": ""
                         }
                     },
-                    "pluginVersion": "4.0.7",
+                    "pluginVersion": "4.0.8",
                     "query": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date\n",
                     "queryType": "table",
                     "rawQuery": "SELECT\n    toDate(timestamp) AS date,\n    avg(value) AS daily_mean_temperature\nFROM sensors.temperatures\nGROUP BY date\nORDER BY date",
-                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperatures\nwhere sensor_name = '${sensor_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
+                    "rawSql": "SELECT\n    min(value) as min_temperature,\n    avg(value) AS avg_temperature,\n    max(value) as max_temperature\nFROM sensors.temperatures\nwhere group_name = '${group_name}' and timestamp  >= $__fromTime AND timestamp <= $__toTime\n\n",
                     "refId": "A",
                     "round": "0s",
                     "skip_comments": true,
@@ -932,8 +1020,7 @@
                         "mode": "percentage",
                         "steps": [
                             {
-                                "color": "dark-red",
-                                "value": null
+                                "color": "dark-red"
                             },
                             {
                                 "color": "semi-dark-orange",
@@ -957,7 +1044,7 @@
                 "h": 12,
                 "w": 6,
                 "x": 18,
-                "y": 29
+                "y": 32
             },
             "id": 11,
             "options": {
@@ -996,7 +1083,7 @@
                     },
                     "pluginVersion": "4.0.8",
                     "queryType": "table",
-                    "rawSql": "with daily_averages as(\n    SELECT\n        date,\n        argMax(avg_temperature, insertion_timestamp) AS daily_avg,\n        max(insertion_timestamp) AS last_insertion_time FROM sensors.temperatures_daily\n    WHERE date > toStartOfYear(now()) and date < toStartOfYear(now() + interval '1' year)\n    AND sensor_name = '$sensor_name'\n    GROUP BY date\n    ORDER BY date\n)\nselect\n    countIf(daily_avg >= 15 AND daily_avg <= 25) as CS_days_in_range,\n    countIf(daily_avg > 35) + countIf(daily_avg < 5) as ETP_days_out_of_range,\n    stddevPop(daily_avg) as VP_std_dev,\n    (avg(daily_avg) - 15) / (25 - 15) * 100 as OATS,\n    count() as total_days,\n    greatest(0, round((2 * CS_days_in_range - ETP_days_out_of_range - VP_std_dev + OATS) / 4)) as comfort_score\nfrom daily_averages;\n",
+                    "rawSql": "with daily_averages as(\n    SELECT\n        date,\n        argMax(avg_temperature, insertion_timestamp) AS daily_avg,\n        max(insertion_timestamp) AS last_insertion_time FROM sensors.temperatures_daily\n    WHERE date > toStartOfYear(now()) and date < toStartOfYear(now() + interval '1' year)\n    AND group_name = '$group_name'\n    GROUP BY date\n    ORDER BY date\n)\nselect\n    countIf(daily_avg >= 15 AND daily_avg <= 25) as CS_days_in_range,\n    countIf(daily_avg > 35) + countIf(daily_avg < 5) as ETP_days_out_of_range,\n    stddevPop(daily_avg) as VP_std_dev,\n    (avg(daily_avg) - 15) / (25 - 15) * 100 as OATS,\n    count() as total_days,\n    greatest(0, round((2 * CS_days_in_range - ETP_days_out_of_range - VP_std_dev + OATS) / 4)) as comfort_score\nfrom daily_averages;\n",
                     "refId": "A"
                 }
             ],
@@ -1017,7 +1104,7 @@
             "type": "gauge"
         }
     ],
-    "refresh": "10s",
+    "refresh": "",
     "schemaVersion": 39,
     "tags": [],
     "templating": {
@@ -1025,25 +1112,26 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "via-pralungo",
-                    "value": "via-pralungo"
+                    "text": "prato-della-valle",
+                    "value": "prato-della-valle"
                 },
                 "datasource": {
                     "type": "grafana-clickhouse-datasource",
                     "uid": "P5CECDC4694398594"
                 },
-                "definition": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
+                "definition": "select distinct group_name\nfrom sensors.temperatures",
+                "description": "",
                 "hide": 0,
                 "includeAll": false,
-                "label": "Sensor name",
+                "label": "Zone",
                 "multi": false,
-                "name": "sensor_name",
+                "name": "group_name",
                 "options": [],
-                "query": "SELECT DISTINCT sensor_name\nFROM sensors.temperatures\nORDER BY sensor_name",
+                "query": "select distinct group_name\nfrom sensors.temperatures",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
-                "sort": 1,
+                "sort": 0,
                 "type": "query"
             }
         ]

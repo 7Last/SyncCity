@@ -507,7 +507,29 @@
           "pluginVersion": "4.0.8",
           "queryType": "table",
           "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'parking'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
-          "refId": "Parking"
+          "refId": "Parking"},
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "hide": false,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.0.8",
+          "queryType": "table",
+          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'humidity'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
+          "refId": "Humidity"
         },
         {
           "datasource": {
@@ -682,7 +704,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"],
+
           "show": false
         },
         "showHeader": true
@@ -781,7 +805,9 @@
         "namePlacement": "left",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "/^count$/",
           "values": true
         },
@@ -822,7 +848,9 @@
             "alias": "total",
             "mode": "reduceRow",
             "reduce": {
-              "include": ["count"],
+              "include": [
+                "count"
+              ],
               "reducer": "sum"
             }
           }
@@ -940,7 +968,9 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"],
+
           "show": false
         },
         "showHeader": true
@@ -1398,7 +1428,9 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"],
+
           "show": false
         },
         "showHeader": true
@@ -1743,7 +1775,9 @@
           "countRows": false,
           "enablePagination": true,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"],
+
           "show": false
         },
         "showHeader": true
@@ -1966,7 +2000,9 @@
         "footer": {
           "countRows": false,
           "fields": "",
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"],
+
           "show": false
         },
         "showHeader": true
@@ -2011,8 +2047,12 @@
         "allValue": ".*",
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",
@@ -2036,8 +2076,12 @@
         "allValue": ".*",
         "current": {
           "selected": true,
-          "text": ["All"],
-          "value": ["$__all"]
+          "text": [
+            "All"],
+
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "type": "grafana-clickhouse-datasource",

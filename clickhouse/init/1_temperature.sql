@@ -14,6 +14,7 @@ CREATE TABLE sensors.temperatures
 CREATE TABLE sensors.temperatures_5m
 (
     sensor_name         String,
+    group_name Nullable(String)       default null,
     date                DateTime64,
     avg_temperature     Float32,
     insertion_timestamp DateTime64(6) default now64()
@@ -21,17 +22,19 @@ CREATE TABLE sensors.temperatures_5m
       ORDER BY (sensor_name, date);
 
 CREATE MATERIALIZED VIEW sensors.temperatures_5m_mv
-            TO sensors.temperatures_5m AS
+    TO sensors.temperatures_5m AS
 SELECT sensor_name,
+       group_name,
        toStartOfFiveMinutes(timestamp) AS date,
        avg(value)                      AS avg_temperature
 FROM sensors.temperatures
-GROUP BY sensor_name, date;
+GROUP BY sensor_name, group_name, date;
 
 -- Weekly temperatures
 CREATE TABLE sensors.temperatures_weekly
 (
     sensor_name         String,
+    group_name Nullable(String)       default null,
     date                DateTime64,
     avg_temperature     Float32,
     insertion_timestamp DateTime64(6) default now64()
@@ -41,15 +44,17 @@ CREATE TABLE sensors.temperatures_weekly
 CREATE MATERIALIZED VIEW sensors.temperatures_weekly_mv
     TO sensors.temperatures_weekly AS
 SELECT sensor_name,
+       group_name,
        toStartOfWeek(timestamp) AS date,
        avg(value)               AS avg_temperature
 FROM sensors.temperatures
-GROUP BY sensor_name, date;
+GROUP BY sensor_name, group_name, date;
 
 -- Daily temperatures
 CREATE TABLE sensors.temperatures_daily
 (
     sensor_name         String,
+    group_name Nullable(String)       default null,
     date                Date,
     avg_temperature     Float32,
     insertion_timestamp DateTime64(6) default now64()
@@ -59,7 +64,8 @@ CREATE TABLE sensors.temperatures_daily
 CREATE MATERIALIZED VIEW sensors.temperatures_daily_mv
     TO sensors.temperatures_daily AS
 SELECT sensor_name,
+       group_name,
        toStartOfDay(timestamp) AS date,
        avg(value)              AS avg_temperature
 FROM sensors.temperatures
-GROUP BY sensor_name, date;
+GROUP BY sensor_name, group_name, date;
