@@ -9,7 +9,7 @@ from simulator.src.serializers.visitor.json_converter_visitor import \
     JsonConverterVisitor
 
 
-class TestSerializerVisitor(unittest.TestCase):
+class TestJsonConverterVisitor(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.datetime = datetime(
