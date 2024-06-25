@@ -83,7 +83,7 @@ class ChargingStationSimulator(Simulator):
     def _initialize_charging_power(self) -> float:
         rand = random.random()
         cumulative_probability = 0.0
-        for station_type, info in self.CHARGING_STATION_TYPES.items():
+        for _, info in self.CHARGING_STATION_TYPES.items():
             cumulative_probability += info["probability"]
             if rand <= cumulative_probability:
                 return info["power"]
@@ -107,11 +107,11 @@ class ChargingStationSimulator(Simulator):
         return "car"  # Default to "car" if something goes wrong
 
     def _initialize_battery_level(self, max_battery: float) -> float:
-        # Initialize battery level with a decreasing probability as the charge level increases
-        return max_battery * (1 - random.random()**2)
+        # Initialize % battery level with a decreasing probability as the charge level increases
+        return (max_battery * (1 - random.random()**2)) / max_battery * 100
 
     def _calculate_remaining_charge_time(self, max_battery: float) -> timedelta:
-        charge_needed = max_battery - self._battery_level
+        charge_needed = max_battery - (self._battery_level * max_battery / 100)
         charge_time_hours = charge_needed / self._charging_station_power
         return timedelta(hours=charge_time_hours)
 
@@ -120,14 +120,12 @@ class ChargingStationSimulator(Simulator):
         if self._remaining_charge_time.total_seconds() <= 0:
             return 0.0
 
-        max_battery = self.VEHICLE_TYPES[self._vehicle_type]["max_battery"]
-        battery_percentage = self._battery_level / max_battery
 
         # Power curve based on battery percentage
-        if battery_percentage < 0.2:
+        if self._battery_level < 20:
             # Higher power at low charge levels (simulate peak power)
             charging_power = self._charging_station_power * (0.8 + 0.4 * random.random())
-        elif battery_percentage < 0.8:
+        elif self._battery_level < 80:
             # Nominal power at mid charge levels
             charging_power = self._charging_station_power * (0.7 + 0.3 * random.random())
         else:
@@ -140,15 +138,19 @@ class ChargingStationSimulator(Simulator):
         max_battery = self.VEHICLE_TYPES[self._vehicle_type]["max_battery"]
         charge_added = kwh_supplied * (self._points_spacing.total_seconds() / 3600.0)  # Convert kW to kWh based on time spacing
 
-        self._battery_level += charge_added
-        if self._battery_level > max_battery:
-            self._battery_level = max_battery
+        battery_kwh = self._battery_level * max_battery / 100
 
-        charge_needed = max_battery - self._battery_level
+        battery_kwh += charge_added
+        if battery_kwh > max_battery:
+            battery_kwh = max_battery
+
+        self._battery_level = (battery_kwh / max_battery) * 100
+
+        charge_needed = max_battery - battery_kwh
         charge_time_hours = charge_needed / self._charging_station_power
         self._remaining_charge_time = timedelta(hours=charge_time_hours)
 
-        if self._battery_level >= max_battery:
+        if battery_kwh >= max_battery:
             self._remaining_charge_time = timedelta(seconds=0)
             # Chance to remain connected after charge completion
             if random.random() < 0.2:  # 20% chance
