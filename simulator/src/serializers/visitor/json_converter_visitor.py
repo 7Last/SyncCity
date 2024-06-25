@@ -82,18 +82,18 @@ class JsonConverterVisitor(ConverterVisitor):
             "kwh_supplied": raw_data.kwh_supplied,
             "remaining_charge_time": raw_data.remaining_charge_time,
             "elapsed_time": raw_data.elapsed_time,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
         }
     @staticmethod
     def visit_precipitation_raw_data(raw_data: PrecipitationRawData) -> Dict:
         return {
             "value": raw_data.value,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
         }
 
     @staticmethod
     def visit_river_level_raw_data(raw_data: RiverLevelRawData) -> Dict:
         return {
             "value": raw_data.value,
-            **(SerializerVisitor._serialize_raw_data(raw_data)),
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
         }
