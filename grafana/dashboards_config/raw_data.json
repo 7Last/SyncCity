@@ -686,29 +686,6 @@
               "table": ""
             }
           },
-          "pluginVersion": "4.0.8",
-          "queryType": "table",
-          "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'humidity'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
-          "refId": "Humidity"
-        },
-        {
-          "datasource": {
-            "type": "grafana-clickhouse-datasource",
-            "uid": "P5CECDC4694398594"
-          },
-          "editorType": "sql",
-          "format": 1,
-          "hide": false,
-          "meta": {
-            "builderOptions": {
-              "columns": [],
-              "database": "",
-              "limit": 1000,
-              "mode": "list",
-              "queryType": "table",
-              "table": ""
-            }
-          },
           "pluginVersion": "4.1.0",
           "queryType": "table",
           "rawSql": "select distinct sensor_name, latitude, longitude\nfrom sensors\nwhere type = 'river_level'\nand match(type, '^(${sensor_type:pipe})$')\nand match(sensor_name, '^(${sensor_name:pipe})$')",
