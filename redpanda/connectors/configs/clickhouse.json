@@ -3,8 +3,9 @@
     "config": {
         "connector.class": "com.clickhouse.kafka.connect.ClickHouseSinkConnector",
         "name": "clickhouse-sink",
-        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
         "topics": "air_quality,parking,recycling_point,temperature,traffic,heat_index,humidity",
+        "key.converter": "org.apache.kafka.connect.converters.StringConverter",
+        "key.converter.schemas.enable": "false",
         "value.converter": "io.confluent.connect.avro.AvroConverter",
         "value.converter.schemas.enable": "true",
         "value.converter.schema.registry.url": "http://redpanda:8081",
