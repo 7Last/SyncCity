@@ -84,6 +84,7 @@ class JsonConverterVisitor(ConverterVisitor):
             "elapsed_time": raw_data.elapsed_time,
             **(JsonConverterVisitor._visit_raw_data(raw_data)),
         }
+
     @staticmethod
     def visit_precipitation_raw_data(raw_data: PrecipitationRawData) -> Dict:
         return {

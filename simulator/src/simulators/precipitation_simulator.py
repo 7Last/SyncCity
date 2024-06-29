@@ -1,5 +1,6 @@
 import random
 from datetime import datetime
+
 from math import pi, sin
 
 from .simulator import Simulator
@@ -59,6 +60,4 @@ def _sinusoidal_value(timestamp: datetime, latitude: float) -> float:
         precipitation_value *= extreme_weather_factor
 
     # Ensure non-negative value
-    precipitation_value = max(precipitation_value, 0)
-
-    return precipitation_value
+    return max(precipitation_value, 0)

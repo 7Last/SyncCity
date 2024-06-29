@@ -10,6 +10,7 @@ from ...models.raw_data.precipitation_raw_data import PrecipitationRawData
 from ...models.raw_data.river_level_raw_data import RiverLevelRawData
 from ...models.raw_data.humidity_raw_data import HumidityRawData
 
+
 class ConverterVisitor(ABC):
     @staticmethod
     @abstractmethod

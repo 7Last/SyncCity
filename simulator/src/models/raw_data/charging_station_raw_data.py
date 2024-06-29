@@ -7,7 +7,7 @@ from .raw_data import RawData
 
 class ChargingStationRawData(RawData):
 
-    def __init__(self, *, vehicle_type: str, battery_level: float, kwh_supplied: float,
+    def __init__(self, *, vehicle_type: str, battery_level: float, kwh_supplied: float,  # noqa: PLR0913
                  remaining_charge_time: int, elapsed_time: int, latitude: float,
                  longitude: float, sensor_uuid: UUID, sensor_name: str,
                  timestamp: datetime = datetime.now(),
