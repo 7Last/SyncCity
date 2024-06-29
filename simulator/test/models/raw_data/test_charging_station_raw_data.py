@@ -2,7 +2,8 @@ import unittest
 from datetime import datetime
 from uuid import UUID
 
-from simulator.src.models.raw_data.charging_station_raw_data import ChargingStationRawData
+from simulator.src.models.raw_data.charging_station_raw_data import \
+    ChargingStationRawData
 
 
 class TestChargingStationRawData(unittest.TestCase):
@@ -17,9 +18,11 @@ class TestChargingStationRawData(unittest.TestCase):
             latitude=0.0,
             longitude=0.0,
             timestamp=self.timestamp,
-            is_being_used=0,
             kwh_supplied=0,
             remaining_charge_time=0,
+            vehicle_type="car",
+            battery_level=0,
+            elapsed_time=0,
         )
 
         self.assertEqual(data.topic, "charging_station")
@@ -31,9 +34,11 @@ class TestChargingStationRawData(unittest.TestCase):
             latitude=0.0,
             longitude=0.0,
             timestamp=self.timestamp,
-            is_being_used=0,
             kwh_supplied=0,
             remaining_charge_time=0,
+            vehicle_type="car",
+            battery_level=0,
+            elapsed_time=0,
         )
 
         self.assertEqual(data.value_subject(), "charging_station-value")

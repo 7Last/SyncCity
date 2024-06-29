@@ -99,8 +99,7 @@ class ChargingStationSimulator(Simulator):
     def _initialize_new_session(self) -> None:
         self._vehicle_type = self._choose_vehicle_type()
         vehicle_info = self.VEHICLE_TYPES[self._vehicle_type]
-        self._battery_level = self._initialize_battery_level(
-            vehicle_info["max_battery"])
+        self._battery_level = _initialize_battery_level(vehicle_info["max_battery"])
         self._remaining_charge_time = self._calculate_remaining_charge_time(
             vehicle_info["max_battery"])
         self._elapsed_time = timedelta(seconds=0)
