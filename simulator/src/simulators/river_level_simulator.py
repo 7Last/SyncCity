@@ -15,6 +15,22 @@ class RiverLevelSimulator(Simulator):
     _BASE_LEVEL = 5.0
     _RANDOM_VARIABILITY = 0.1
 
+    # Seasonal coefficients based on the month
+    _SEASONAL_COEFFICIENTS = {
+        1: 0.8,
+        2: 0.85,
+        3: 1.0,
+        4: 1.2,
+        5: 1.5,
+        6: 1.7,
+        7: 1.6,
+        8: 1.5,
+        9: 1.3,
+        10: 1.1,
+        11: 0.9,
+        12: 0.85,
+    }
+
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:
         super().__init__(sensor_name, config, producer)
@@ -43,11 +59,16 @@ class RiverLevelSimulator(Simulator):
         seasonal_variation = self._SEASONAL_VARIATION * sin(
             2 * pi * day_of_year / 365.25)
 
+        # Coefficiente stagionale basato sul mese
+        month = timestamp.month
+        seasonal_coefficient = self._SEASONAL_COEFFICIENTS.get(month, 1.0)
+
         # Daily variation
-        seconds_in_day = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
-        daily_variation = self._DAILY_VARIATION * sin(2 * pi * seconds_in_day / 86400)
+        seconds = timestamp.hour * 3600 + timestamp.minute * 60 + timestamp.second
+        daily_variation = self._DAILY_VARIATION * sin(2 * pi * seconds / 86400)
 
         random_factor = random.gauss(1, self._RANDOM_VARIABILITY)
 
-        return 500 * (self._BASE_LEVEL + seasonal_variation +
-                      daily_variation * self._latitude_factor) * random_factor
+        return 500 * (
+                self._BASE_LEVEL + seasonal_variation + daily_variation * self._latitude_factor   # noqa: E501
+        ) * seasonal_coefficient * random_factor

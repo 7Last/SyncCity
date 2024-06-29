@@ -1,8 +1,31 @@
 networks:
-  redpanda_network:
+  synccity:
     driver: bridge
 
 services:
+  simulator:
+    container_name: simulator
+    environment:
+      KAFKA_HOST: redpanda
+      KAFKA_PORT: 9092
+      SCHEMA_REGISTRY_URL: http://redpanda:8081
+      KAFKA_MAX_BLOCK_MS: 2000
+      LOG_LEVEL: INFO
+      SCHEMAS_RELATIVE_PATH: ../../../schemas
+    build:
+      context: ./simulator
+    depends_on:
+      redpanda_init:
+        condition: service_completed_successfully
+    volumes:
+      - type: bind
+        source: ./simulator/sensors.toml
+        target: /simulator/sensors.toml
+      - ./redpanda/schemas:/schemas
+    networks:
+      - synccity
+    profiles: [ "release" ]
+
   redpanda:
     container_name: redpanda
     command:
@@ -23,71 +46,104 @@ services:
     volumes:
       - ./volumes/redpanda:/var/lib/redpanda/data
     networks:
-      - redpanda_network
+      - synccity
     ports:
       - 18081:18081
       - 18082:18082
       - 19092:19092
       - 19644:9644
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1",
-        ]
+      test: [ "CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1" ]
       interval: 2s
       timeout: 1m
       retries: 12
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
+
+  redpanda_init: # initializes redpanda with topics and schemas which are used by Flink
+    container_name: redpanda_init
+    build:
+      context: ./redpanda
+      dockerfile: init.Dockerfile
+    networks:
+      - synccity
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    environment:
+      CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
+    command: >
+      "
+      rpk topic create heat_index -X brokers=http://redpanda:9092 2>&1 | {
+        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
+            exit 1
+        fi
+      }
+      
+      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create heat_index-value --schema /schemas/heat_index-value.avsc
+      
+      rpk topic create temperature -X brokers=http://redpanda:9092 2>&1 | {
+        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
+            exit 1
+        fi
+      }
+      
+      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create temperature-value --schema /schemas/temperature-value.avsc
+      
+      rpk topic create humidity -X brokers=http://redpanda:9092 2>&1 | {
+        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
+            exit 1
+        fi
+      }
+      
+      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create humidity-value --schema /schemas/humidity-value.avsc
+      "
+    volumes:
+      - type: bind
+        source: ./redpanda/schemas/
+        target: /schemas
+      - type: bind
+        source: ./redpanda/redpanda-console-config.yaml
+        target: /etc/redpanda/redpanda.yaml
+    profiles: [ "local", "release" ]
 
   redpanda_console:
     container_name: redpanda_console
     image: docker.redpanda.com/redpandadata/console:v2.4.6
     networks:
-      - redpanda_network
-    entrypoint: /bin/sh
-    command: -c 'echo "$$CONSOLE_CONFIG_FILE" > /tmp/config.yml; /app/console'
+      - synccity
     ports:
       - 8080:8080
     depends_on:
-      redpanda:
-        condition: service_healthy
+      redpanda_init:
+        condition: service_completed_successfully
     restart: on-failure
-    profiles: ["local", "release"]
-
+    profiles: [ "local", "release" ]
     environment:
-      CONFIG_FILEPATH: /tmp/config.yml
-      CONSOLE_CONFIG_FILE: |
-        kafka:
-          brokers: ["redpanda:9092"]
-          schemaRegistry:
-            enabled: true
-            urls: ["http://redpanda:8081"]
-        redpanda:
-          adminApi:
-            enabled: true
-            urls: ["http://redpanda:9644"]
-        connect:
-          enabled: true
-          clusters:
-            - name: local-connect-cluster
-              url: http://connect:8083
+      CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
+    volumes:
+      - type: bind
+        source: ./redpanda/redpanda-console-config.yaml
+        target: /etc/redpanda/redpanda.yaml
 
-  connect:
-    container_name: connect
+  redpanda_connect:
+    container_name: redpanda_connect
     image: docker.redpanda.com/redpandadata/connectors:latest
     volumes:
-      - ./connectors/plugins:/opt/kafka/connect-plugins
+      - ./redpanda/connectors/plugins:/opt/kafka/connect-plugins
+      - type: bind
+        source: ./redpanda/redpanda-console-config.yaml
+        target: /etc/redpanda/redpanda.yaml
     hostname: connect
     ports:
       - "8083:8083"
     depends_on:
-      redpanda:
-        condition: service_healthy
+      redpanda_init:
+        condition: service_completed_successfully
     networks:
-      - redpanda_network
-    profiles: ["local", "release"]
+      - synccity
+    profiles: [ "local", "release" ]
     environment:
+      CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
       CONNECT_CONFIGURATION: |
         key.converter=java.lang.String
         value.converter=java.lang.String
@@ -115,7 +171,7 @@ services:
     ports:
       - "8123:8123"
     healthcheck:
-      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      test: [ "CMD", "clickhouse-client", "--query", "SELECT 1" ]
       interval: 5s
       timeout: 1m
       retries: 12
@@ -135,28 +191,8 @@ services:
       redpanda:
         condition: service_healthy
     networks:
-      - redpanda_network
-    profiles: ["local", "release"]
-
-  simulator:
-    container_name: simulator
-    environment:
-      - KAFKA_HOST=redpanda
-      - KAFKA_PORT=9092
-      - SCHEMA_REGISTRY_URL=http://redpanda:8081
-      - KAFKA_MAX_BLOCK_MS=2000
-      - LOG_LEVEL=INFO
-    build:
-      context: ./simulator
-      dockerfile: Dockerfile
-    depends_on:
-      redpanda:
-        condition: service_healthy
-    volumes:
-      - ./simulator/sensors.toml:/simulator/sensors.toml
-    networks:
-      - redpanda_network
-    profiles: ["release"]
+      - synccity
+    profiles: [ "local", "release" ]
 
   grafana:
     image: grafana/grafana-oss:10.3.0
@@ -178,5 +214,65 @@ services:
       clickhouse:
         condition: service_healthy
     networks:
-      - redpanda_network
-    profiles: ["local", "release"]
+      - synccity
+    profiles: [ "local", "release" ]
+
+  jobmanager:
+    image: flink:1.18.1-java17
+    hostname: jobmanager
+    command: jobmanager
+    container_name: jobmanager
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
+      interval: 5s
+      retries: 10
+    ports:
+      - "9001:8081"
+      - "6123:6123"
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+      BOOTSTRAP_SERVERS: http://redpanda:9092
+      SCHEMA_REGISTRY_URL: http://redpanda:8081
+    networks:
+      - synccity
+    profiles: [ "local", "release" ]
+
+  taskmanager:
+    image: flink:1.18.1-java17
+    command: taskmanager
+    container_name: taskmanager
+    hostname: taskmanager
+    ports:
+      - "6121:6121"
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    environment:
+      FLINK_CONF_DIR: /opt/flink/conf
+      JOB_MANAGER_RPC_ADDRESS: jobmanager
+    networks:
+      - synccity
+    profiles: [ "local", "release" ]
+
+  deployer:
+    build:
+      context: ./flink/deployer
+    container_name: deployer
+    depends_on:
+      jobmanager:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./flink/target/flink-jobs-1.0-jar-with-dependencies.jar
+        target: /flink-job.jar
+    command:
+      - "python"
+      - "deployer.py"
+      - "--flink_url=http://jobmanager:8081"
+      - "--jars=/flink-job.jar"
+      - "--class=com.sevenlast.synccity.HeatIndexJob"
+    profiles: [ "local", "release" ]
+    networks:
+      - synccity
+
