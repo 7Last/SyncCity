@@ -85,8 +85,8 @@ class TestChargingStationSimulator(unittest.TestCase):
 
         expected = [
             ChargingStationRawData(
-                remaining_charge_time=3,
                 kwh_supplied=11,
+                remaining_charge_time=3,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
