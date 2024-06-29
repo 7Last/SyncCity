@@ -86,7 +86,8 @@ ignore = [
     "I001", # isort
     "B008",
     "B024",
-    "PLR2004"
+    "PLR2004",
+    "PLR6301",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

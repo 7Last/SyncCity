@@ -21,12 +21,16 @@ class TrafficRawData(RawData):
         self.vehicles = vehicles
         self.avg_speed = avg_speed
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_traffic_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "traffic"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "vehicles": self.vehicles,
+            "avg_speed": self.avg_speed,
+            **(super().to_json()),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, TrafficRawData):

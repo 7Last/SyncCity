@@ -15,12 +15,15 @@ class TemperatureRawData(RawData):
                          sensor_name=sensor_name, group_name=group_name)
         self.value = value
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_temperature_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "temperature"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "value": self.value,
+            **(super().to_json()),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, TemperatureRawData):

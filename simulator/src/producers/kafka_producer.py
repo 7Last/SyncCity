@@ -2,10 +2,10 @@ import logging as log
 
 import kafka
 
+from simulator.src.serializers.record_serialization_strategy import \
+    RecordSerializationStrategy
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
-from ..serializers.strategy.record_serialization_strategy import \
-    RecordSerializationStrategy
 
 
 class KafkaProducerAdapter(ProducerStrategy):
