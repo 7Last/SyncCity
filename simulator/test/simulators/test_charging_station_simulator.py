@@ -85,7 +85,6 @@ class TestChargingStationSimulator(unittest.TestCase):
 
         expected = [
             ChargingStationRawData(
-                is_being_used=True,
                 remaining_charge_time=3,
                 kwh_supplied=11,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
@@ -95,7 +94,6 @@ class TestChargingStationSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
             ChargingStationRawData(
-                is_being_used=True,
                 kwh_supplied=11,
                 remaining_charge_time=3,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
@@ -105,7 +103,6 @@ class TestChargingStationSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             ChargingStationRawData(
-                is_being_used=False,
                 kwh_supplied=5.5,
                 remaining_charge_time=3,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
