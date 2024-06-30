@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Parking",
+  "name": "RiverLevel",
   "fields": [
     {
       "name": "sensor_uuid",
@@ -23,8 +23,8 @@
       "type": "string"
     },
     {
-      "name": "is_occupied",
-      "type": "boolean"
+      "name": "value",
+      "type": "float"
     },
     {
       "name": "group_name",

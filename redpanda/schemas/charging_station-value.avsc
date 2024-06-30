@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "name": "Parking",
+  "name": "Charging_Station",
   "fields": [
     {
       "name": "sensor_uuid",
@@ -23,8 +23,24 @@
       "type": "string"
     },
     {
-      "name": "is_occupied",
-      "type": "boolean"
+      "name": "vehicle_type",
+      "type": "string"
+    },
+    {
+      "name": "battery_level",
+      "type": "float"
+    },
+    {
+      "name": "kwh_supplied",
+      "type": "float"
+    },
+    {
+      "name": "remaining_charge_time",
+      "type": ["int", "null"]
+    },
+    {
+      "name": "elapsed_time",
+      "type": ["int", "null"]
     },
     {
       "name": "group_name",

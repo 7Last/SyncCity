@@ -7,6 +7,9 @@ class SensorType(Enum):
     RECYCLING_POINT = "recycling_point"
     TEMPERATURE = "temperature"
     TRAFFIC = "traffic"
+    CHARGING_STATION = "charging_station"
+    PRECIPITATION = "precipitation"
+    RIVER_LEVEL = "river_level"
     HUMIDITY = "humidity"
 
     @staticmethod
