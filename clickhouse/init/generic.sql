@@ -30,15 +30,15 @@ select sensor_name,
        longitude
 from sensors.parking;
 
-create materialized view recycling_points_sensor_mv to sensors
+create materialized view recycling_point_sensor_mv to sensors
 as
 select sensor_name,
        group_name,
-       'recycling_points' as type,
+       'recycling_point' as type,
        timestamp          as last_message,
        latitude,
        longitude
-from sensors.recycling_points;
+from sensors.recycling_point;
 
 create materialized view humidity_sensor_mv to sensors
 as
@@ -49,7 +49,7 @@ select sensor_name,
        longitude
 from sensors.humidity;
 
-create materialized view temperatures_sensor_mv to sensors
+create materialized view temperature_sensor_mv to sensors
 as
 select sensor_name,
        group_name,
@@ -57,7 +57,7 @@ select sensor_name,
        timestamp     as last_message,
        latitude,
        longitude
-from sensors.temperatures;
+from sensors.temperature;
 
 create materialized view traffic_sensor_mv to sensors
 as
@@ -68,3 +68,33 @@ select sensor_name,
        latitude,
        longitude
 from sensors.traffic;
+
+create materialized view precipitation_sensor_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'precipitation' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.precipitation;
+
+create materialized view river_level_sensor_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'river_level' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.river_level;
+
+create materialized view charging_station_mv to sensors
+as
+select sensor_name,
+       group_name,
+       'charging_station' as type,
+       timestamp as last_message,
+       latitude,
+       longitude
+from sensors.charging_station;

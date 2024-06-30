@@ -19,7 +19,7 @@ chmod -R 777 ./volumes
 
 then **run all containers that are turned off** and then run:
 ```bash
-curl "localhost:8083/connectors/" -H 'Content-Type: application/json' -d @./connectors/configs/clickhouse.json
+curl "localhost:8083/connectors/" -H 'Content-Type: application/json' -d @./redpanda/connectors/configs/clickhouse.json
 ```
 
 Running the simulator:

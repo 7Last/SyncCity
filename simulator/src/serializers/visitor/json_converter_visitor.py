@@ -8,6 +8,9 @@ from ...models.raw_data.raw_data import RawData
 from ...models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from ...models.raw_data.temperature_raw_data import TemperatureRawData
 from ...models.raw_data.traffic_raw_data import TrafficRawData
+from ...models.raw_data.charging_station_raw_data import ChargingStationRawData
+from ...models.raw_data.precipitation_raw_data import PrecipitationRawData
+from ...models.raw_data.river_level_raw_data import RiverLevelRawData
 from ...models.raw_data.humidity_raw_data import HumidityRawData
 
 
@@ -66,6 +69,31 @@ class JsonConverterVisitor(ConverterVisitor):
 
     @staticmethod
     def visit_humidity_raw_data(raw_data: HumidityRawData) -> Dict:
+        return {
+            "value": raw_data.value,
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def visit_charging_station_raw_data(raw_data: ChargingStationRawData) -> Dict:
+        return {
+            "vehicle_type": raw_data.vehicle_type,
+            "battery_level": raw_data.battery_level,
+            "kwh_supplied": raw_data.kwh_supplied,
+            "remaining_charge_time": raw_data.remaining_charge_time,
+            "elapsed_time": raw_data.elapsed_time,
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def visit_precipitation_raw_data(raw_data: PrecipitationRawData) -> Dict:
+        return {
+            "value": raw_data.value,
+            **(JsonConverterVisitor._visit_raw_data(raw_data)),
+        }
+
+    @staticmethod
+    def visit_river_level_raw_data(raw_data: RiverLevelRawData) -> Dict:
         return {
             "value": raw_data.value,
             **(JsonConverterVisitor._visit_raw_data(raw_data)),

@@ -5,3 +5,5 @@
 /redpanda/volumes/
 **/__pycache__/**
 .coverage
+.DS_Store
+/volumes/

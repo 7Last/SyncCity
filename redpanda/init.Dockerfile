@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.20.1
 WORKDIR /app
 
 RUN apk add --no-cache curl unzip

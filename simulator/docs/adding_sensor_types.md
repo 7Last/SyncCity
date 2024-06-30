@@ -64,7 +64,7 @@ In the [src/simulators](../src/simulators) folder implement a new `Simulator`.
 The `NewSensorTypeSimulator` class must extend `Simulator` and implement the `stream()`
 method.
 
-Copy the `stream()` function from either the `TemperatureSimulator` or `TrafficSimulator`
+Copy the `stream()` function from either the `temperatureimulator` or `TrafficSimulator`
 and change the `yield` statement to return a new instance of `NewSensorTypeRawData`.
 
 If any support method is needed to generate the realistic values for the simulated
