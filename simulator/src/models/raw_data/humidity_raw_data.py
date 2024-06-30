@@ -16,12 +16,15 @@ class HumidityRawData(RawData):
                          timestamp=timestamp, group_name=group_name)
         self.value = value
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_humidity_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "humidity"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            **super().to_json(),
+            "value": self.value,
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, HumidityRawData):

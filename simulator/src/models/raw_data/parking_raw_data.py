@@ -16,12 +16,15 @@ class ParkingRawData(RawData):
                          timestamp=timestamp)
         self.is_occupied = is_occupied
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_parking_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "parking"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "is_occupied": self.is_occupied,
+            **(super().to_json()),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, ParkingRawData):

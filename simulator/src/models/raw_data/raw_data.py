@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Dict
 from uuid import UUID
 
@@ -18,10 +18,6 @@ class RawData(ABC):
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
 
-    @abstractmethod
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        pass
-
     @property
     @abstractmethod
     def topic(self) -> str:
@@ -32,6 +28,16 @@ class RawData(ABC):
 
     def key_subject(self) -> str:
         return f'{self.topic}-key'
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "sensor_name": self.sensor_name,
+            "sensor_uuid": str(self.sensor_uuid),
+            "group_name": self.group_name,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "timestamp": self.timestamp.astimezone(tz=UTC).isoformat(),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RawData):

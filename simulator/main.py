@@ -5,7 +5,7 @@ import toml
 
 from src.models.config.env_config import EnvConfig
 from src.producers.kafka_producer import KafkaProducerAdapter
-from src.serializers.strategy.avro_record_serialization_strategy import \
+from src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
 from src.simulator_executor import SimulatorExecutor
 
@@ -23,7 +23,7 @@ def main() -> None:
     sensors_config = toml.load(sensors_path).get('sensors')
     log.debug(f'Loaded sensors configuration {sensors_config}')
 
-    # producer = StdOutProducer(serializer=JsonSerializer())  # noqa: ERA001
+    # producer = StdOutProducer(serializer=JsonRecordSerializationStrategy())  # noqa: ERA001
 
     producer = KafkaProducerAdapter(
         bootstrap_servers=[env_config.bootstrap_server],

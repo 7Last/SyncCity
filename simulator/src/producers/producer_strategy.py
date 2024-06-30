@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 
+from ..serializers.record_serialization_strategy import RecordSerializationStrategy
 from ..models.raw_data.raw_data import RawData
-from ..serializers.strategy.record_serialization_strategy import \
-    RecordSerializationStrategy
 
 
 class ProducerStrategy(ABC):

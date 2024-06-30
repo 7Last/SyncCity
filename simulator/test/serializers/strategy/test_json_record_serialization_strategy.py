@@ -3,7 +3,7 @@ from datetime import datetime, UTC
 from uuid import UUID
 
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.serializers.strategy.json_record_serialization_strategy import \
+from simulator.src.serializers.json_record_serialization_strategy import \
     JsonRecordSerializationStrategy
 from simulator.src.serializers.visitor.converter_visitor import ConverterVisitor
 

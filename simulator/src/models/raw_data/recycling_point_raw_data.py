@@ -19,12 +19,15 @@ class RecyclingPointRawData(RawData):
                          timestamp=timestamp, group_name=group_name)
         self.filling = filling
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_recycling_point_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "recycling_point"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "filling": self.filling,
+            **(super().to_json()),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RecyclingPointRawData):

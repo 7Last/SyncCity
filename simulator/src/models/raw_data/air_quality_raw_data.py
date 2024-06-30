@@ -20,12 +20,19 @@ class AirQualityRawData(RawData):
         self.o3 = o3
         self.so2 = so2
 
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_air_quality_raw_data(self)
-
     @property
     def topic(self) -> str:
         return "air_quality"
+
+    def to_json(self) -> Dict[str, any]:
+        return {
+            "pm25": self.pm25,
+            "pm10": self.pm10,
+            "no2": self.no2,
+            "o3": self.o3,
+            "so2": self.so2,
+            **(super().to_json()),
+        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, AirQualityRawData):
