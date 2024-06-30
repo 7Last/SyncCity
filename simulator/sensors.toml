@@ -7,48 +7,8 @@ group_name = "via-pralungo"
 type = "temperature"
 points_spacing = "PT5M"
 generation_delay = "PT1S"
-begin_date = 2024-06-19T00:00:00Z
 latitude = 45.4018782
 longitude = 11.7769644
-
-[sensors.kioene-arena-temperature]
-uuid = "a7b4c389-8fa9-40eb-9b5c-1deaf2383c99"
-group_name = "kioene-arena"
-type = "temperature"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.4224876
-longitude = 11.9233274
-
-[sensors.prato-della-valle-temperature]
-uuid = "a544c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.3984208
-longitude = 11.8739536
-begin_date = 2024-06-19T00:00:00Z
-
-[sensors.basilica-s-antonio]
-uuid = "716b7836-9666-47cc-91a5-e4c91f7f31d2"
-type = "temperature"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.399656
-longitude = 11.8783219
-begin_date = 2024-06-19T00:00:00Z
-
-[sensors.via-rogati]
-uuid = "516b7836-9666-47cc-91a5-e4c91f7f31d2"
-type = "temperature"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.4025007
-longitude = 11.874894
-begin_date = 2024-06-19T00:00:00Z
 
 [sensors.via-pralungo-humidity]
 uuid = "d45ce7f8-b960-4762-b52b-144414a9369c"
@@ -67,7 +27,45 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.3991219
 longitude = 11.7790499
-begin_date = 2024-06-19T00:00:00Z
+# endregion
+
+# region prato-della-valle
+[sensors.prato-della-valle-temperature]
+uuid = "a544c389-8fa9-40eb-9b5c-1deaf2383c99"
+type = "temperature"
+group_name = "prato-della-valle"
+points_spacing = "PT5M"
+generation_delay = "PT1S"
+latitude = 45.3984208
+longitude = 11.8739536
+
+[sensors.basilica-s-antonio]
+uuid = "716b7836-9666-47cc-91a5-e4c91f7f31d2"
+type = "temperature"
+group_name = "prato-della-valle"
+points_spacing = "PT5M"
+generation_delay = "PT1S"
+latitude = 45.399656
+longitude = 11.8783219
+
+[sensors.via-rogati]
+uuid = "516b7836-9666-47cc-91a5-e4c91f7f31d2"
+type = "temperature"
+group_name = "prato-della-valle"
+points_spacing = "PT5M"
+generation_delay = "PT1S"
+latitude = 45.4025007
+longitude = 11.874894
+
+[sensors.prato-della-valle-humidity]
+uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
+type = "humidity"
+group_name = "prato-della-valle"
+points_spacing = "PT5M"
+generation_delay = "PT1S"
+latitude = 45.3984208
+longitude = 11.8739536
+
 # endregion
 
 # region kioene-arena
@@ -91,45 +89,12 @@ longitude = 11.9233274
 
 # endregion
 
-# region prato-della-valle
-[sensors.prato-della-valle-temperature]
-uuid = "a544c389-8fa9-40eb-9b5c-1deaf2383c99"
-type = "temperature"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.3984208
-longitude = 11.8739536
-begin_date = 2024-06-19T00:00:00Z
-
-[sensors.via-rogati]
-uuid = "516b7836-9666-47cc-91a5-e4c91f7f31d2"
-type = "temperature"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.4025007
-longitude = 11.874894
-begin_date = 2024-06-19T00:00:00Z
-
-[sensors.prato-della-valle-humidity]
-uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
-type = "humidity"
-group_name = "prato-della-valle"
-points_spacing = "PT5M"
-generation_delay = "PT1S"
-latitude = 45.3984208
-longitude = 11.8739536
-
-# endregion
-
 # region precipitation
 [sensors.padova-stazione-precipitation]
 uuid = "a3d15940-a584-456a-86aa-7d34ff98bdb9"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.4224876
 longitude = 11.9233274
 # endregion
@@ -240,14 +205,12 @@ longitude = 11.8756551
 # endregion
 
 # region river-level
-
 [sensors.brenta-river-center]
 group_name = "brenta"
 uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
 type = "river_level"
 points_spacing = "PT1H"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.0078311
 longitude = 11.2643933
 
@@ -257,7 +220,6 @@ uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
 type = "river_level"
 points_spacing = "PT1H"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.8564388
 longitude = 11.6624399
 
@@ -267,7 +229,6 @@ uuid = "ee5b0400-5549-453c-8238-684f6187866d"
 type = "river_level"
 points_spacing = "PT1H"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.1908855
 longitude = 12.2219133
 
@@ -277,7 +238,6 @@ longitude = 12.2219133
 # region piazza-insurrezione
 [sensors.piazza-insurrezione-p1]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
 type = "parking"
 generation_delay = "PT1S"
@@ -286,7 +246,6 @@ longitude = 11.876399
 
 [sensors.piazza-insurrezione-p2]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
 type = "parking"
 generation_delay = "PT1S"
@@ -295,7 +254,6 @@ longitude = 11.876204
 
 [sensors.piazza-insurrezione-p3]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
 type = "parking"
 generation_delay = "PT1S"
@@ -304,7 +262,6 @@ longitude = 11.875999
 
 [sensors.piazza-insurrezione-p4]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "2ecd24cb-6b15-4f96-81bf-75ef23d87797"
 type = "parking"
 generation_delay = "PT1S"
@@ -313,7 +270,6 @@ longitude = 11.875767
 
 [sensors.piazza-insurrezione-p5]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
 type = "parking"
 generation_delay = "PT1S"
@@ -322,7 +278,6 @@ longitude = 11.875758
 
 [sensors.piazza-insurrezione-p6]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
 type = "parking"
 generation_delay = "PT1S"
@@ -331,7 +286,6 @@ longitude = 11.875759
 
 [sensors.piazza-insurrezione-p7]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
 type = "parking"
 generation_delay = "PT1S"
@@ -340,7 +294,6 @@ longitude = 11.875777
 
 [sensors.piazza-insurrezione-p8]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
 type = "parking"
 generation_delay = "PT1S"
@@ -349,7 +302,6 @@ longitude = 11.875976
 
 [sensors.piazza-insurrezione-p9]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
 type = "parking"
 generation_delay = "PT1S"
@@ -358,7 +310,6 @@ longitude = 11.876208
 
 [sensors.piazza-insurrezione-p10]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
 type = "parking"
 generation_delay = "PT1S"
@@ -367,7 +318,6 @@ longitude = 11.876387
 
 [sensors.piazza-insurrezione-p11]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
 type = "parking"
 generation_delay = "PT1S"
@@ -376,7 +326,6 @@ longitude = 11.876408
 
 [sensors.piazza-insurrezione-p12]
 group_name = "piazza-insurrezione"
-begin_date = 2024-06-11T22:00:00
 uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
 type = "parking"
 generation_delay = "PT1S"
@@ -391,7 +340,6 @@ uuid = "429de1de-bda7-442c-b429-baeb745e425c"
 type = "charging_station"
 points_spacing = "PT10M"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.3969133
 longitude = 11.8780366
 
@@ -400,7 +348,6 @@ uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
 type = "charging_station"
 points_spacing = "PT10M"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.4094499
 longitude = 11.8717011
 
@@ -409,7 +356,6 @@ uuid = "1d9a2b77-d964-4894-bd4e-5ab303766a0d"
 type = "charging_station"
 points_spacing = "PT10M"
 generation_delay = "PT0.01S"
-begin_date = 2024-06-01T00:00:00
 latitude = 45.4061577
 longitude = 11.8766844
 # endregion

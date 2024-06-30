@@ -73,29 +73,10 @@ services:
       CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
     command: >
       "
-      rpk topic create heat_index -X brokers=http://redpanda:9092 2>&1 | {
-        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
-            exit 1
-        fi
-      }
-      
-      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create heat_index-value --schema /schemas/heat_index-value.avsc
-      
-      rpk topic create temperature -X brokers=http://redpanda:9092 2>&1 | {
-        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
-            exit 1
-        fi
-      }
-      
-      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create temperature-value --schema /schemas/temperature-value.avsc
-      
-      rpk topic create humidity -X brokers=http://redpanda:9092 2>&1 | {
-        if ! grep -q "TOPIC_ALREADY_EXISTS"; then
-            exit 1
-        fi
-      }
-      
-      rpk registry schema -X brokers=http://redpanda:9092 -X registry.hosts=http://redpanda:8081 create humidity-value --schema /schemas/humidity-value.avsc
+      rpk cluster config -X brokers=http://redpanda:9092 set default_topic_partitions=3;
+      create_topic heat_index;
+      create_topic humidity;
+      create_topic temperature;
       "
     volumes:
       - type: bind

@@ -8,5 +8,9 @@ RUN curl -LO https://github.com/redpanda-data/redpanda/releases/download/v23.3.1
 RUN unzip rpk-linux-amd64.zip -d /usr/local/bin
 RUN chmod +x /usr/local/bin/rpk
 
+COPY create_topic.sh /app/create_topic.sh
+RUN mv /app/create_topic.sh /usr/local/bin/create_topic
+RUN chmod +x /usr/local/bin/create_topic
+
 ENTRYPOINT ["sh", "-c"]
-CMD ["rpk --help"]
+CMD ["create_topic"]
