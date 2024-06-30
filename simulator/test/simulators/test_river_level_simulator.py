@@ -82,7 +82,7 @@ class TestRiverLevelSimulator(unittest.TestCase):
 
         expected = [
             RiverLevelRawData(
-                value=2010.3209452509564,
+                value=1608.2567562007653,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -90,7 +90,7 @@ class TestRiverLevelSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 0, 0, 0),
             ),
             RiverLevelRawData(
-                value=2261.611063407326,
+                value=1809.2888507258608,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
@@ -98,7 +98,7 @@ class TestRiverLevelSimulator(unittest.TestCase):
                 timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             RiverLevelRawData(
-                value=1256.4505907818477,
+                value=1005.1604726254782,
                 sensor_uuid=UUID('00000000-0000-0000-0000-000000000000'),
                 sensor_name='test',
                 latitude=0,
