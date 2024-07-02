@@ -336,6 +336,7 @@ longitude = 11.8783219
 
 # region charging-station
 [sensors.prato-della-valle-charge1]
+#group_name = "piazza-insurrezione"
 uuid = "429de1de-bda7-442c-b429-baeb745e425c"
 type = "charging_station"
 points_spacing = "PT10M"
@@ -344,6 +345,7 @@ latitude = 45.3969133
 longitude = 11.8780366
 
 [sensors.prato-della-valle-charge2]
+#group_name = "piazza-insurrezione"
 uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
 type = "charging_station"
 points_spacing = "PT10M"
@@ -352,6 +354,7 @@ latitude = 45.4094499
 longitude = 11.8717011
 
 [sensors.prato-della-valle-charge3]
+#group_name = "piazza-insurrezione"
 uuid = "1d9a2b77-d964-4894-bd4e-5ab303766a0d"
 type = "charging_station"
 points_spacing = "PT10M"
