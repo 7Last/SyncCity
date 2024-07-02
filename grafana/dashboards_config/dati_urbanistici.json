@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 14,
+  "id": 12,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -91,7 +91,7 @@
             "h": 11,
             "w": 20,
             "x": 0,
-            "y": 113
+            "y": 1
           },
           "id": 43,
           "options": {
@@ -173,9 +173,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.1.0",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT latitude, longitude, sensor_name, argMax(kwh_supplied, timestamp) > 0 as status\nfrom sensors.charging_station\nwhere group_name = '${group_name}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
+              "rawSql": "SELECT latitude, longitude, sensor_name, argMax(kwh_supplied, timestamp) > 0 as status\nfrom sensors.charging_station\nwhere group_name = '${group_name_charging}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
               "refId": "Parking"
             }
           ],
@@ -258,7 +258,7 @@
             "h": 13,
             "w": 4,
             "x": 20,
-            "y": 113
+            "y": 1
           },
           "id": 44,
           "options": {
@@ -300,9 +300,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.1.0",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(kwh_supplied, timestamp) = 0 as occupied\n         FROM sensors.charging_station\n         where group_name = '${group_name}' and timestamp <= now()\n         group by sensor_name\n         );",
+              "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(kwh_supplied, timestamp) = 0 as occupied\n         FROM sensors.charging_station\n         where group_name = '${group_name_charging}' and timestamp <= now()\n         group by sensor_name\n         );",
               "refId": "A"
             }
           ],
@@ -356,7 +356,7 @@
             "h": 12,
             "w": 13,
             "x": 0,
-            "y": 124
+            "y": 12
           },
           "id": 45,
           "options": {
@@ -394,9 +394,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.1.0",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          kwh_supplied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.charging_station)\nselect\n    sumIf(seconds, kwh_supplied > 0) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
+              "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          kwh_supplied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.charging_station)\nselect\n    sumIf(seconds, kwh_supplied > 0) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name_charging}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
               "refId": "A"
             }
           ],
@@ -502,7 +502,7 @@
             "h": 11,
             "w": 20,
             "x": 0,
-            "y": 90
+            "y": 2
           },
           "id": 46,
           "options": {
@@ -584,9 +584,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT latitude, longitude, sensor_name, not argMax(is_occupied, timestamp) as status\nfrom sensors.parking\nwhere group_name = '${group_name}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
+              "rawSql": "SELECT latitude, longitude, sensor_name, not argMax(is_occupied, timestamp) as status\nfrom sensors.parking\nwhere group_name = '${group_name_parking}' and timestamp <= now()\ngroup by latitude, longitude, sensor_name\n",
               "refId": "Parking"
             }
           ],
@@ -669,7 +669,7 @@
             "h": 13,
             "w": 4,
             "x": 20,
-            "y": 90
+            "y": 2
           },
           "id": 47,
           "options": {
@@ -711,9 +711,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(is_occupied, timestamp) as occupied\n         FROM sensors.parking\n         where group_name = '${group_name}' and timestamp <= now()\n         group by sensor_name\n         );",
+              "rawSql": "select countIf(occupied) as occupied, count(*) as total, (total - occupied) as free\nfrom (\n         SELECT sensor_name,\n                argMax(is_occupied, timestamp) as occupied\n         FROM sensors.parking\n         where group_name = '${group_name_parking}' and timestamp <= now()\n         group by sensor_name\n         );",
               "refId": "A"
             }
           ],
@@ -767,7 +767,7 @@
             "h": 12,
             "w": 13,
             "x": 0,
-            "y": 101
+            "y": 13
           },
           "id": 48,
           "options": {
@@ -805,9 +805,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_occupied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.parking)\nselect\n    sumIf(seconds, is_occupied = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
+              "rawSql": "with sequences as (SELECT sensor_name,\n                          group_name,\n                          timestamp,\n                          is_occupied,\n                          if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n                             neighbor(timestamp, 1, NULL))            as next_timestamp,\n                          dateDiff('seconds', timestamp, next_timestamp) as seconds\n                   FROM sensors.parking)\nselect\n    sumIf(seconds, is_occupied = 1) as occupied_seconds,\n    dateDiff('seconds', $__fromTime, $__toTime) as max_time,\n    sensor_name\nfrom sequences\nwhere group_name = '${group_name_parking}'\nand timestamp >= $__fromTime and timestamp <= $__toTime\ngroup by sensor_name\norder by occupied_seconds desc\n",
               "refId": "A"
             }
           ],
@@ -893,7 +893,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 43
+            "y": 3
           },
           "id": 49,
           "options": {
@@ -985,9 +985,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT sensor_name,\n       'Recycling Point' as type,\n       latitude,\n       longitude\nFROM sensors.recycling_point\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude",
+              "rawSql": "SELECT sensor_name,\n       'Recycling Point' as type,\n       latitude,\n       longitude\nFROM sensors.recycling_point\nwhere sensor_name = '${sensor_name_recycling_point}'\nGROUP BY sensor_name, latitude, longitude",
               "refId": "Traffic"
             }
           ],
@@ -1105,7 +1105,7 @@
             "h": 10,
             "w": 19,
             "x": 0,
-            "y": 52
+            "y": 12
           },
           "id": 50,
           "options": {
@@ -1138,9 +1138,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "select timestamp, filling\nfrom sensors.recycling_point\nwhere timestamp >= $__fromTime and timestamp <= $__toTime\nand sensor_name = '${sensor_name}'\norder by timestamp;",
+              "rawSql": "select timestamp, filling\nfrom sensors.recycling_point\nwhere timestamp >= $__fromTime and timestamp <= $__toTime\nand sensor_name = '${sensor_name_recycling_point}'\norder by timestamp;",
               "refId": "A"
             }
           ],
@@ -1197,7 +1197,7 @@
             "h": 10,
             "w": 5,
             "x": 19,
-            "y": 52
+            "y": 12
           },
           "id": 51,
           "options": {
@@ -1233,9 +1233,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT filling\r\nFROM sensors.recycling_point\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
+              "rawSql": "SELECT filling\r\nFROM sensors.recycling_point\r\nWHERE timestamp <= now()\r\nAND sensor_name = '${sensor_name_recycling_point}'\r\nORDER BY timestamp DESC\r\nLIMIT 1",
               "refId": "A"
             }
           ],
@@ -1283,7 +1283,7 @@
             "h": 8,
             "w": 5,
             "x": 0,
-            "y": 62
+            "y": 22
           },
           "id": 52,
           "options": {
@@ -1318,9 +1318,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling, 1, NULL)) as next_filling,\n           if(next_filling == 100 and filling == 100, 1, 0) as saturated\n    FROM sensors.recycling_point\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name}';\n",
+              "rawSql": "with sequences as (\n    SELECT sensor_name,\n           timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(timestamp, 1, NULL))     as next_timestamp,\n           if(neighbor(sensor_uuid, 1, NULL) != sensor_uuid, NULL,\n              neighbor(filling, 1, NULL)) as next_filling,\n           if(next_filling == 100 and filling == 100, 1, 0) as saturated\n    FROM sensors.recycling_point\n    where timestamp > $__fromTime and timestamp < $__toTime\n),\ngrouped as (\n    select sensor_name,\n           sum(if(saturated = 1, dateDiff('seconds', timestamp, next_timestamp), 0)) as total_seconds\n    from sequences\n    group by sensor_name\n)\nselect *\nfrom grouped\nwhere sensor_name = '${sensor_name_recycling_point}';\n",
               "refId": "A"
             }
           ],
@@ -1384,7 +1384,7 @@
             "h": 8,
             "w": 5,
             "x": 5,
-            "y": 62
+            "y": 22
           },
           "id": 53,
           "options": {
@@ -1419,9 +1419,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL, neighbor(filling, -1, NULL)) AS previous_filling) as avg_filling\nFROM sensors.recycling_point\nwhere filling < previous_filling\nand sensor_name = '${sensor_name}'\nand timestamp > $__fromTime and timestamp < $__toTime",
+              "rawSql": "SELECT avg(if(neighbor(sensor_uuid, -1, NULL) != sensor_uuid, NULL, neighbor(filling, -1, NULL)) AS previous_filling) as avg_filling\nFROM sensors.recycling_point\nwhere filling < previous_filling\nand sensor_name = '${sensor_name_recycling_point}'\nand timestamp > $__fromTime and timestamp < $__toTime",
               "refId": "Avg filling on discharge"
             }
           ],
@@ -1550,7 +1550,7 @@
             "h": 8,
             "w": 14,
             "x": 10,
-            "y": 62
+            "y": 22
           },
           "id": 54,
           "options": {
@@ -1594,9 +1594,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling > 50 AND filling <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
+              "rawSql": "SELECT\n    range,\n    (count(*) * 100.0 / total_count) AS percentage,\n    CASE\n        WHEN range = 'High level' THEN 1\n        WHEN range = 'Moderate level' THEN 2\n        WHEN range = 'Low level' THEN 3\n    END AS sort_order\nFROM (\n    SELECT\n        'Low level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name_recycling_point}' AND filling <= 50\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'Moderate level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling > 50 AND filling <= 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n    \n    UNION ALL\n\n    SELECT\n        'High level' AS range,\n        filling\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}' AND filling > 80\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n\n) AS ranges\nCROSS JOIN (\n    SELECT count(*) AS total_count\n    FROM sensors.recycling_point\n    WHERE sensor_name = '${sensor_name}'\n    and timestamp >= $__fromTime and timestamp <= $__toTime\n) AS total\nGROUP BY range, total_count\nORDER BY sort_order;\n",
               "refId": "A"
             }
           ],
@@ -1749,9 +1749,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name}'\nGROUP BY sensor_name, latitude, longitude\n\n",
+              "rawSql": "SELECT sensor_name,\n       'Traffic' as type,\n       latitude,\n       longitude\nFROM sensors.traffic\nwhere sensor_name = '${sensor_name_traffic}'\nGROUP BY sensor_name, latitude, longitude\n\n",
               "refId": "Traffic"
             }
           ],
@@ -1894,9 +1894,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "select date, argMax(vehicles, insertion_timestamp) as vehicles\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name}' and date >= $__fromTime and date <= $__toTime\ngroup by date\norder by date\n",
+              "rawSql": "select date, argMax(vehicles, insertion_timestamp) as vehicles\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name_traffic}' and date >= $__fromTime and date <= $__toTime\ngroup by date\norder by date\n",
               "refId": "A"
             }
           ],
@@ -2020,9 +2020,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.7",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT vehicles, avg_speed as speed\nFROM sensors.traffic\nWHERE sensor_name = '${sensor_name}'\nORDER BY timestamp desc\nLIMIT 1\n",
+              "rawSql": "SELECT vehicles, avg_speed as speed\nFROM sensors.traffic\nWHERE sensor_name = '${sensor_name_traffic}'\nORDER BY timestamp desc\nLIMIT 1\n",
               "refId": "Speed"
             }
           ],
@@ -2148,9 +2148,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "select date, argMax(speed, insertion_timestamp) as speed\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name}' and date >= $__fromTime and date <= $__toTime\ngroup by date\norder by date\n",
+              "rawSql": "select date, argMax(speed, insertion_timestamp) as speed\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name_traffic}' and date >= $__fromTime and date <= $__toTime\ngroup by date\norder by date\n",
               "refId": "A"
             }
           ],
@@ -2342,9 +2342,9 @@
                   "table": "traff1c"
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "timeseries",
-              "rawSql": "select toHour(date) as hour, argMax(vehicles, insertion_timestamp) as vehicles\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name}'\nand date >= $__fromTime and date <= $__toTime\ngroup by hour\norder by hour;\n",
+              "rawSql": "select toHour(date) as hour, argMax(vehicles, insertion_timestamp) as vehicles\nfrom sensors.traffic_1h\nwhere sensor_name = '${sensor_name_traffic}'\nand date >= $__fromTime and date <= $__toTime\ngroup by hour\norder by hour;\n",
               "refId": "A"
             }
           ],
@@ -2377,9 +2377,9 @@
         "definition": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'charging_station'\nand group_name is not null",
         "hide": 0,
         "includeAll": false,
-        "label": "Park name charging",
+        "label": "Charging",
         "multi": false,
-        "name": "group_name",
+        "name": "group_name_charging",
         "options": [],
         "query": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'charging_station'\nand group_name is not null",
         "refresh": 1,
@@ -2390,14 +2390,18 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "piazza-insurrezione",
           "value": "piazza-insurrezione"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "SELECT DISTINCT group_name\nFROM default.sensors\nWHERE type = 'parking'\nand group_name is not null",
         "hide": 0,
         "includeAll": false,
-        "label": "Park name parking",
+        "label": "Parking",
         "multi": false,
         "name": "group_name_parking",
         "options": [],
@@ -2405,12 +2409,12 @@
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "campus-ca-foscari",
           "value": "campus-ca-foscari"
         },
@@ -2421,9 +2425,9 @@
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
         "hide": 0,
         "includeAll": false,
-        "label": "Sensor name recycling_point",
+        "label": "Recycling Points",
         "multi": false,
-        "name": "Sensor_name_recycling_point",
+        "name": "sensor_name_recycling_point",
         "options": [],
         "query": "SELECT DISTINCT sensor_name\nFROM sensors.recycling_point\nORDER BY sensor_name",
         "refresh": 1,
@@ -2445,9 +2449,9 @@
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.traffic\nORDER BY sensor_name",
         "hide": 0,
         "includeAll": false,
-        "label": "Sensor name traffic",
+        "label": "Traffic",
         "multi": false,
-        "name": "Sensor_name_traffic",
+        "name": "sensor_name_traffic",
         "options": [],
         "query": "SELECT DISTINCT sensor_name\nFROM sensors.traffic\nORDER BY sensor_name",
         "refresh": 1,
