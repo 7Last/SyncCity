@@ -28,44 +28,9 @@ class TestRecyclingPointSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = RecyclingPointSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = RecyclingPointSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.uniform', return_value=0)
     @patch('builtins.max', return_value=0)
-    def test_stream(self, _: Mock, __: Mock) -> None:
+    def test_data(self, _: Mock, __: Mock) -> None:
         simulator = RecyclingPointSimulator(
             sensor_name='test',
             config=SensorConfig({

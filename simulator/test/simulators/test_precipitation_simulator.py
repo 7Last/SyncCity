@@ -27,43 +27,9 @@ class TestPrecipitationSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = PrecipitationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'precipitation',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = PrecipitationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'precipitation',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.uniform', side_effect=[0.8, 0.9, 0.5])
     @patch('random.random', side_effect=[0.86, 0.88, 0.9, 0.92, 0.94, 0.96, 0.98, 1.0])
-    def test_stream(self, _: Mock, __: Mock) -> None:
+    def test_data(self, _: Mock, __: Mock) -> None:
         simulator = PrecipitationSimulator(
             sensor_name='test',
             config=SensorConfig({

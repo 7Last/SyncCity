@@ -50,7 +50,7 @@ class TestAirQualitySimulator(unittest.TestCase):
         self.assertEqual(simulator.is_running(), False)
 
     @unittest.mock.patch("random.uniform", return_value=0)
-    def test_stream(self, mock_uniform: MagicMock) -> None:
+    def test_data(self, mock_uniform: MagicMock) -> None:
         simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
             'uuid': '00000000-0000-0000-0000-000000000000',
             'type': 'air_quality',

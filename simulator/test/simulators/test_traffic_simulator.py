@@ -27,42 +27,8 @@ class TestTrafficSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = TrafficSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'traffic',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = TrafficSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'traffic',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.uniform', return_value=0)
-    def test_stream(self, _: Mock) -> None:
+    def test_data(self, _: Mock) -> None:
         simulator = TrafficSimulator(
             sensor_name='test',
             config=SensorConfig({

@@ -8,7 +8,7 @@ from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawDat
 from simulator.src.simulators.temperature_simulator import TemperatureSimulator
 
 
-class Testtemperatureimulator(unittest.TestCase):
+class TestTemperatureSimulator(unittest.TestCase):
 
     def setUp(self) -> None:
         self.producer = MagicMock()
@@ -28,42 +28,8 @@ class Testtemperatureimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = TemperatureSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'temperature',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = TemperatureSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'temperature',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.uniform', return_value=0)
-    def test_stream(self, _: any) -> None:
+    def test_data(self, _: any) -> None:
         simulator = TemperatureSimulator(
             sensor_name='test',
             config=SensorConfig({

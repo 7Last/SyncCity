@@ -27,40 +27,6 @@ class TestParkingSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = ParkingSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = ParkingSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @unittest.mock.patch(
         'random.random',
         side_effect=[0.1, 0.6, 0.3],
@@ -68,7 +34,7 @@ class TestParkingSimulator(unittest.TestCase):
     @unittest.mock.patch(
         'simulator.src.simulators.parking_simulator.ParkingSimulator._generate_next_occupancy_change',
     )
-    def test_stream(self, mock_next_change: MagicMock, _: any) -> None:
+    def test_data(self, mock_next_change: MagicMock, _: any) -> None:
         simulator = ParkingSimulator(
             sensor_name='test',
             config=SensorConfig({

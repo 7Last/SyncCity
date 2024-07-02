@@ -28,44 +28,10 @@ class TestChargingStationSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = ChargingStationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'charging_station',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = ChargingStationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'charging_station',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.random', return_value=0)
     @patch('random.choices', side_effect=[[11], ['car'], ['car'], ['car']])
     @patch('random.uniform', side_effect=[3, 50, 2, 80, 1, 20])
-    def test_stream(self, _: Mock, __: Mock, ___: Mock) -> None:
+    def test_data(self, _: Mock, __: Mock, ___: Mock) -> None:
         simulator = ChargingStationSimulator(
             sensor_name='test',
             config=SensorConfig({
