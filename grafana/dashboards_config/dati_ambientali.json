@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 11,
+  "id": 10,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -50,8 +50,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "dark-blue",
-                    "value": null
+                    "color": "dark-blue"
                   },
                   {
                     "color": "blue",
@@ -336,8 +335,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "dark-red",
-                    "value": null
+                    "color": "dark-red"
                   },
                   {
                     "color": "semi-dark-orange",
@@ -464,8 +462,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -631,8 +628,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -768,8 +764,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -909,8 +904,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1040,8 +1034,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1194,8 +1187,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1387,8 +1379,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1535,8 +1526,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1672,8 +1662,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1813,8 +1802,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -1944,8 +1932,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -2098,8 +2085,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2287,8 +2273,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -2435,8 +2420,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -2572,8 +2556,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -2714,8 +2697,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -2855,8 +2837,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -3006,8 +2987,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -3137,8 +3117,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -3765,8 +3744,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -3907,8 +3885,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -4048,8 +4025,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -4199,8 +4175,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -4330,8 +4305,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "semi-dark-blue",
-                    "value": null
+                    "color": "semi-dark-blue"
                   },
                   {
                     "color": "#ffffff",
@@ -4665,9 +4639,9 @@
                   "table": ""
                 }
               },
-              "pluginVersion": "4.0.8",
+              "pluginVersion": "4.2.0",
               "queryType": "table",
-              "rawSql": "SELECT 1",
+              "rawSql": "SELECT\n    timestamp,\n    sensor_uuid,\n    GREATEST(\n        multiIf(o3 <= 50, 1, o3 <= 100, 2, o3 <= 130, 3, o3 <= 240, 4, 5),\n        multiIf(no2 <= 40, 1, no2 <= 90, 2, no2 <= 120, 3, no2 <= 230, 4, 5),\n        multiIf(so2 <= 100, 1, so2 <= 200, 2, so2 <= 350, 3, so2 <= 500, 4, 5),\n        multiIf(pm10 <= 20, 1, pm10 <= 40, 2, pm10 <= 50, 3, pm10 <= 100, 4, 5),\n        multiIf(pm25 <= 10, 1, pm25 <= 20, 2, pm25 <= 25, 3, pm25 <= 50, 4, 5)\n    ) AS EAQI\nFROM sensors.air_quality\nORDER BY timestamp, sensor_uuid\n",
               "refId": "A"
             }
           ],
@@ -5104,7 +5078,7 @@
                 "includeByName": {},
                 "indexByName": {},
                 "renameByName": {
-                  "avg_no2": "NO3",
+                  "avg_no2": "NO2",
                   "avg_o3": "O3",
                   "avg_pm10": "PM10",
                   "avg_pm25": "PM2.5",
@@ -5129,9 +5103,13 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "via-pralungo",
           "value": "via-pralungo"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "select distinct group_name\nfrom sensors.temperature\n",
         "hide": 0,
@@ -5149,9 +5127,13 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "kioene-arena-humidity",
           "value": "kioene-arena-humidity"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.humidity\nORDER BY sensor_name",
         "hide": 0,
@@ -5169,9 +5151,13 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "padova-stazione-precipitation",
           "value": "padova-stazione-precipitation"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.precipitation\nORDER BY sensor_name",
         "hide": 0,
@@ -5189,9 +5175,13 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "brenta-river-center",
           "value": "brenta-river-center"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.river_level\nORDER BY sensor_name",
         "hide": 0,
@@ -5209,9 +5199,13 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "cadoneghe",
           "value": "cadoneghe"
+        },
+        "datasource": {
+          "type": "grafana-clickhouse-datasource",
+          "uid": "P5CECDC4694398594"
         },
         "definition": "SELECT DISTINCT sensor_name\nFROM sensors.air_quality",
         "hide": 0,
