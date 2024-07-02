@@ -3,7 +3,8 @@ from unittest.mock import MagicMock
 
 from simulator.src.producers.stdout_producer import StdOutProducer
 from simulator.src.simulator_executor import SimulatorExecutor
-from simulator.src.simulators.temperature_simulator import TemperatureSimulator
+from simulator.src.simulators.temperature_simulator_strategy import \
+    TemperatureSimulatorStrategy
 
 
 class TestSimulatorExecutor(unittest.TestCase):
@@ -16,7 +17,7 @@ class TestSimulatorExecutor(unittest.TestCase):
     )
     def test_run(self, _: MagicMock,
                  mock_build_simulators: MagicMock) -> None:
-        simulator_mock = MagicMock(spec=TemperatureSimulator)
+        simulator_mock = MagicMock(spec=TemperatureSimulatorStrategy)
         simulator_mock.start = MagicMock()
         simulator_mock.sensor_name = "test"
 
@@ -35,7 +36,7 @@ class TestSimulatorExecutor(unittest.TestCase):
         "simulator.src.simulator_executor.threading.Event",
     )
     def test_stop_all(self, _: MagicMock, __: MagicMock) -> None:
-        simulator_mock = MagicMock(spec=TemperatureSimulator)
+        simulator_mock = MagicMock(spec=TemperatureSimulatorStrategy)
         simulator_mock.stop = MagicMock()
 
         mock_producer = MagicMock(spec=StdOutProducer)

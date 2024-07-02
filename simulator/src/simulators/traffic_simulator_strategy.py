@@ -2,11 +2,11 @@ import random
 
 from math import e, pi, sqrt
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.raw_data.traffic_raw_data import TrafficRawData
 
 
-class TrafficSimulator(Simulator):
+class TrafficSimulatorStrategy(SimulatorStrategy):
     _SPEED_MULTIPLICATIVE_FACTOR = 100
     _VEHICLES_MULTIPLICATIVE_FACTOR = 200
 

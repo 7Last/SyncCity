@@ -3,11 +3,11 @@ from datetime import datetime
 
 from math import pi, sin
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.raw_data.temperature_raw_data import TemperatureRawData
 
 
-class TemperatureSimulator(Simulator):
+class TemperatureSimulatorStrategy(SimulatorStrategy):
     def data(self) -> TemperatureRawData:
         data = TemperatureRawData(
             value=_sinusoidal_value(self._timestamp),

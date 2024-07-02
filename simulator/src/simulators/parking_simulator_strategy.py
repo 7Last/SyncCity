@@ -1,13 +1,13 @@
 import random
 from datetime import datetime, timedelta
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.parking_raw_data import ParkingRawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class ParkingSimulator(Simulator):
+class ParkingSimulatorStrategy(SimulatorStrategy):
 
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:

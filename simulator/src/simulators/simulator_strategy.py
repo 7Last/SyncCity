@@ -9,7 +9,7 @@ from ..models.raw_data.raw_data import RawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class Simulator(ABC, threading.Thread):
+class SimulatorStrategy(ABC, threading.Thread):
 
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:
@@ -53,7 +53,7 @@ class Simulator(ABC, threading.Thread):
         pass
 
     def __eq__(self, other: any) -> bool:
-        if not isinstance(other, Simulator):
+        if not isinstance(other, SimulatorStrategy):
             return False
 
         return super().__eq__(other) and \

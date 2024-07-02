@@ -3,13 +3,13 @@ from datetime import datetime
 
 from math import pi, sin
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.humidity_raw_data import HumidityRawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class HumiditySimulator(Simulator):
+class HumiditySimulatorStrategy(SimulatorStrategy):
 
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:

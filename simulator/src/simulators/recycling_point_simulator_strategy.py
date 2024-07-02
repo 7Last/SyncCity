@@ -1,13 +1,13 @@
 import random
 from typing import List, Tuple
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class RecyclingPointSimulator(Simulator):
+class RecyclingPointSimulatorStrategy(SimulatorStrategy):
 
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:

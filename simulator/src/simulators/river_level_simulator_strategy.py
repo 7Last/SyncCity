@@ -3,13 +3,13 @@ from datetime import datetime
 
 from math import pi, sin
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.river_level_raw_data import RiverLevelRawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class RiverLevelSimulator(Simulator):
+class RiverLevelSimulatorStrategy(SimulatorStrategy):
     _DAILY_VARIATION = 0.5
     _SEASONAL_VARIATION = 1.5
     _BASE_LEVEL = 5.0

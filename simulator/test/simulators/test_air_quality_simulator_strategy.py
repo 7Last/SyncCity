@@ -5,16 +5,17 @@ from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
-from simulator.src.simulators.air_quality_simulator import AirQualitySimulator
+from simulator.src.simulators.air_quality_simulator_strategy import \
+    AirQualitySimulatorStrategy
 
 
-class TestAirQualitySimulator(unittest.TestCase):
+class TestAirQualitySimulatorStrategy(unittest.TestCase):
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            AirQualitySimulator(sensor_name='', config=SensorConfig({
+            AirQualitySimulatorStrategy(sensor_name='', config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
                 'type': 'air_quality',
                 'points_spacing': 'PT1H',
@@ -24,43 +25,46 @@ class TestAirQualitySimulator(unittest.TestCase):
             }), producer=self.producer)
 
     def test_start(self) -> None:
-        simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
-            'uuid': '00000000-0000-0000-0000-000000000000',
-            'type': 'air_quality',
-            'points_spacing': 'PT1S',
-            'generation_delay': 'PT1S',
-            'latitude': 0,
-            'longitude': 0,
-        }), producer=self.producer)
+        simulator = AirQualitySimulatorStrategy(sensor_name='test',
+                                                config=SensorConfig({
+                                                    'uuid': '00000000-0000-0000-0000-000000000000',
+                                                    'type': 'air_quality',
+                                                    'points_spacing': 'PT1S',
+                                                    'generation_delay': 'PT1S',
+                                                    'latitude': 0,
+                                                    'longitude': 0,
+                                                }), producer=self.producer)
         simulator.start()
         self.assertEqual(simulator.is_running(), True)
         simulator.stop()
 
     def test_stop(self) -> None:
-        simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
-            'uuid': '00000000-0000-0000-0000-000000000000',
-            'type': 'air_quality',
-            'points_spacing': 'PT1S',
-            'generation_delay': 'PT1S',
-            'latitude': 0,
-            'longitude': 0,
-        }), producer=self.producer)
+        simulator = AirQualitySimulatorStrategy(sensor_name='test',
+                                                config=SensorConfig({
+                                                    'uuid': '00000000-0000-0000-0000-000000000000',
+                                                    'type': 'air_quality',
+                                                    'points_spacing': 'PT1S',
+                                                    'generation_delay': 'PT1S',
+                                                    'latitude': 0,
+                                                    'longitude': 0,
+                                                }), producer=self.producer)
         simulator.start()
         simulator.stop()
         self.assertEqual(simulator.is_running(), False)
 
     @unittest.mock.patch("random.uniform", return_value=0)
     def test_data(self, mock_uniform: MagicMock) -> None:
-        simulator = AirQualitySimulator(sensor_name='test', config=SensorConfig({
-            'uuid': '00000000-0000-0000-0000-000000000000',
-            'type': 'air_quality',
-            'begin_date': datetime(2024, 1, 1),
-            'points_spacing': 'PT1H',
-            'generation_delay': 'PT0S',
-            'limit': 3,
-            'latitude': 0,
-            'longitude': 0,
-        }), producer=self.producer)
+        simulator = AirQualitySimulatorStrategy(sensor_name='test',
+                                                config=SensorConfig({
+                                                    'uuid': '00000000-0000-0000-0000-000000000000',
+                                                    'type': 'air_quality',
+                                                    'begin_date': datetime(2024, 1, 1),
+                                                    'points_spacing': 'PT1H',
+                                                    'generation_delay': 'PT0S',
+                                                    'limit': 3,
+                                                    'latitude': 0,
+                                                    'longitude': 0,
+                                                }), producer=self.producer)
 
         mock_uniform.return_value = 0
 

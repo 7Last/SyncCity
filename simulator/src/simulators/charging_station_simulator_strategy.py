@@ -1,13 +1,13 @@
 import random
 from datetime import timedelta
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class ChargingStationSimulator(Simulator):
+class ChargingStationSimulatorStrategy(SimulatorStrategy):
     VEHICLE_TYPES = {
         "bike": {"probability": 0.1, "max_battery": 2, "max_power": 1},
         "car": {"probability": 0.5, "max_battery": 60, "max_power": 22},

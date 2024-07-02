@@ -3,11 +3,11 @@ from datetime import datetime
 
 from math import pi, sin
 
-from .simulator import Simulator
+from .simulator_strategy import SimulatorStrategy
 from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
 
 
-class PrecipitationSimulator(Simulator):
+class PrecipitationSimulatorStrategy(SimulatorStrategy):
     def data(self) -> PrecipitationRawData:
         data = PrecipitationRawData(
             value=_sinusoidal_value(self._timestamp, self._latitude),
