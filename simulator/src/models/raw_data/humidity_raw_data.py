@@ -14,7 +14,7 @@ class HumidityRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp, group_name=group_name)
-        self.value = value
+        self.__value = value
 
     @property
     def topic(self) -> str:
@@ -23,13 +23,13 @@ class HumidityRawData(RawData):
     def to_json(self) -> Dict[str, any]:
         return {
             **super().to_json(),
-            "value": self.value,
+            "value": self.__value,
         }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, HumidityRawData):
             return False
-        return super().__eq__(other) and self.value == other.value
+        return super().__eq__(other) and self.__value == other.__value
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.value))
+        return hash((super().__hash__(), self.__value))

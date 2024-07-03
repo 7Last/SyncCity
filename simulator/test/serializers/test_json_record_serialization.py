@@ -9,7 +9,7 @@ from simulator.src.serializers.json_record_serialization_strategy import \
 
 class TestJsonRecordSerializationStrategy(unittest.TestCase):
     def setUp(self) -> None:
-        self.timestamp = datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=UTC)
+        self._timestamp = datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=UTC)
 
     def test_serialize_key(self) -> None:
         serializer = JsonRecordSerializationStrategy()
@@ -20,7 +20,7 @@ class TestJsonRecordSerializationStrategy(unittest.TestCase):
             sensor_uuid=uuid,
             latitude=0.0,
             longitude=0.0,
-            timestamp=self.timestamp,
+            timestamp=self._timestamp,
             value=0.0,
         )
 

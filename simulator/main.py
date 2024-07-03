@@ -3,10 +3,10 @@ import os
 
 import toml
 
-from src.serializers.avro_record_serialization_strategy import \
-    AvroRecordSerializationStrategy
 from src.models.config.env_config import EnvConfig
 from src.producers.kafka_producer import KafkaProducerAdapter
+from src.serializers.avro_record_serialization_strategy import \
+    AvroRecordSerializationStrategy
 from src.simulator_executor import SimulatorExecutor
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
@@ -15,7 +15,7 @@ sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors
 def main() -> None:
     env_config = EnvConfig()
     log.basicConfig(
-        level=env_config.log_level,
+        level=env_config.log_level(),
         format='%(asctime)s %(levelname)s: %(message)s',
     )
     log.debug(f'Loaded configuration from env {env_config}')
@@ -27,7 +27,7 @@ def main() -> None:
 
     producer = KafkaProducerAdapter(
         bootstrap_servers=[env_config.bootstrap_server],
-        max_block_ms=env_config.max_block_ms,
+        max_block_ms=env_config.max_block_ms(),
         serializer=AvroRecordSerializationStrategy(),
         acks=1,
     )

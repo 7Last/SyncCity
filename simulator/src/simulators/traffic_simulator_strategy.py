@@ -7,11 +7,11 @@ from ..models.raw_data.traffic_raw_data import TrafficRawData
 
 
 class TrafficSimulatorStrategy(SimulatorStrategy):
-    _SPEED_MULTIPLICATIVE_FACTOR = 100
-    _VEHICLES_MULTIPLICATIVE_FACTOR = 200
+    __SPEED_MULTIPLICATIVE_FACTOR = 100
+    __VEHICLES_MULTIPLICATIVE_FACTOR = 200
 
     def data(self) -> TrafficRawData:
-        speed = self._SPEED_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
+        speed = self.__SPEED_MULTIPLICATIVE_FACTOR * self.__multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[
                 (0, 2.1),
@@ -22,7 +22,7 @@ class TrafficSimulatorStrategy(SimulatorStrategy):
             ],
         )
 
-        vehicles = self._VEHICLES_MULTIPLICATIVE_FACTOR * _multimodal_gauss_value(
+        vehicles = self.__VEHICLES_MULTIPLICATIVE_FACTOR * self.__multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[
                 (0, 4),
@@ -40,7 +40,7 @@ class TrafficSimulatorStrategy(SimulatorStrategy):
             longitude=self._longitude,
             timestamp=self._timestamp,
             sensor_uuid=self._sensor_uuid,
-            sensor_name=self.sensor_name,
+            sensor_name=self._sensor_name,
             group_name=self._group_name,
         )
 
@@ -50,19 +50,20 @@ class TrafficSimulatorStrategy(SimulatorStrategy):
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'
 
+    def __multimodal_gauss_value(self, x: float,
+                                 modes: list[tuple[float, float]]) -> float:
+        """Returns generates a random x in a range and calculates its corresponding y
+        from a bimodal Gaussian distribution.
+        :param modes: list of tuples with the mu and sigma values for each mode
+        :param x: Value for x to calculate the probability
+        """
+        random_factor = random.uniform(0, 0.1)
 
-def _multimodal_gauss_value(x: float, modes: list[tuple[float, float]]) -> float:
-    """Returns generates a random x in a range and calculates its corresponding y
-    from a bimodal Gaussian distribution.
-    :param modes: list of tuples with the mu and sigma values for each mode
-    :param x: Value for x to calculate the probability
-    """
-    random_factor = random.uniform(0, 0.1)
+        # add a vertical shift to the distribution
+        shift = 0.1
 
-    # add a vertical shift to the distribution
-    shift = 0.1
+        def density_func(mu: float, sigma: float) -> float:
+            return 1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2))
 
-    def density_func(mu: float, sigma: float) -> float:
-        return 1 / (sigma * sqrt(2 * pi)) * e ** (-(x - mu) ** 2 / (2 * sigma ** 2))
-
-    return sum([density_func(mu, sigma) for mu, sigma in modes], random_factor + shift)
+        return sum([density_func(mu, sigma) for mu, sigma in modes],
+                   random_factor + shift)

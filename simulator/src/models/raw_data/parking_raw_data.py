@@ -14,7 +14,7 @@ class ParkingRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude, group_name=group_name,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp)
-        self.is_occupied = is_occupied
+        self.__is_occupied = is_occupied
 
     @property
     def topic(self) -> str:
@@ -22,14 +22,14 @@ class ParkingRawData(RawData):
 
     def to_json(self) -> Dict[str, any]:
         return {
-            "is_occupied": self.is_occupied,
+            "is_occupied": self.__is_occupied,
             **(super().to_json()),
         }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, ParkingRawData):
             return False
-        return super().__eq__(other) and self.is_occupied == other.is_occupied
+        return super().__eq__(other) and self.__is_occupied == other.__is_occupied
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.is_occupied))
+        return hash((super().__hash__(), self.__is_occupied))

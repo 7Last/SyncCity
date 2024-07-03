@@ -18,8 +18,8 @@ class TrafficRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp, group_name=group_name)
-        self.vehicles = vehicles
-        self.avg_speed = avg_speed
+        self.__vehicles = vehicles
+        self.__avg_speed = avg_speed
 
     @property
     def topic(self) -> str:
@@ -27,8 +27,8 @@ class TrafficRawData(RawData):
 
     def to_json(self) -> Dict[str, any]:
         return {
-            "vehicles": self.vehicles,
-            "avg_speed": self.avg_speed,
+            "vehicles": self.__vehicles,
+            "avg_speed": self.__avg_speed,
             **(super().to_json()),
         }
 
@@ -36,8 +36,8 @@ class TrafficRawData(RawData):
         if not isinstance(other, TrafficRawData):
             return False
         return (super().__eq__(other) and
-                self.vehicles == other.vehicles and
-                self.avg_speed == other.avg_speed)
+                self.__vehicles == other.__vehicles and
+                self.__avg_speed == other.__avg_speed)
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.vehicles, self.avg_speed))
+        return hash((super().__hash__(), self.__vehicles, self.__avg_speed))

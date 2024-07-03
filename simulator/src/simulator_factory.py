@@ -32,7 +32,7 @@ class SimulatorFactory:
 
 def _get_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
                    producer: ProducerStrategy) -> SimulatorStrategy:
-    match config.type:
+    match config.type():
         case SensorType.AIR_QUALITY:
             return AirQualitySimulatorStrategy(name, config, producer)
         case SensorType.RECYCLING_POINT:

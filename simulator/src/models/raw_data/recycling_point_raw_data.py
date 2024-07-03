@@ -17,7 +17,7 @@ class RecyclingPointRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp, group_name=group_name)
-        self.filling = filling
+        self.__filling = filling
 
     @property
     def topic(self) -> str:
@@ -25,14 +25,14 @@ class RecyclingPointRawData(RawData):
 
     def to_json(self) -> Dict[str, any]:
         return {
-            "filling": self.filling,
+            "filling": self.__filling,
             **(super().to_json()),
         }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RecyclingPointRawData):
             return False
-        return super().__eq__(other) and self.filling == other.filling
+        return super().__eq__(other) and self.__filling == other.__filling
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.filling))
+        return hash((super().__hash__(), self.__filling))
