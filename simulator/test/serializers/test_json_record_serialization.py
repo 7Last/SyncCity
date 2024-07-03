@@ -3,8 +3,8 @@ from datetime import datetime, UTC
 from uuid import UUID
 
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.serializers.json_record_serialization import \
-    JsonRecordSerialization
+from simulator.src.serializers.json_record_serialization_strategy import \
+    JsonRecordSerializationStrategy
 
 
 class TestJsonRecordSerializationStrategy(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestJsonRecordSerializationStrategy(unittest.TestCase):
         self.timestamp = datetime(2021, 1, 1, 0, 0, 0, 0, tzinfo=UTC)
 
     def test_serialize_key(self) -> None:
-        serializer = JsonRecordSerialization()
+        serializer = JsonRecordSerializationStrategy()
         uuid = UUID("00000000-0000-0000-0000-000000000000")
 
         data = TemperatureRawData(
@@ -29,7 +29,7 @@ class TestJsonRecordSerializationStrategy(unittest.TestCase):
         self.assertEqual(key, uuid_bytes)
 
     def test_serialize_value(self) -> None:
-        serializer = JsonRecordSerialization()
+        serializer = JsonRecordSerializationStrategy()
         mock_data = unittest.mock.MagicMock(spec=TemperatureRawData)
         mock_data.to_json.return_value = {
             "sensor_name": "temperature",

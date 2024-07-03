@@ -2,7 +2,7 @@ import logging as log
 import threading
 from typing import Dict
 
-from .models.config.simulator_factory import build_simulators
+from .simulator_factory import build_simulators
 from .producers.producer_strategy import ProducerStrategy
 
 

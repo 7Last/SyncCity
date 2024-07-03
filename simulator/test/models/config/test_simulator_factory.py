@@ -3,7 +3,7 @@ from datetime import datetime
 from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
-from simulator.src.models.config.simulator_factory import build_simulators
+from simulator.src.simulator_factory import build_simulators
 from simulator.src.simulators.temperature_simulator_strategy import \
     TemperatureSimulatorStrategy
 from simulator.src.simulators.traffic_simulator_strategy import TrafficSimulatorStrategy

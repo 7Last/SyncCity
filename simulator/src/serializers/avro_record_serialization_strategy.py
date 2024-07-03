@@ -11,7 +11,7 @@ from .record_serialization_template import RecordSerializationTemplate
 SerdeWithSchema = (AvroValueSerde, str)
 
 
-class AvroRecordSerialization(RecordSerializationTemplate):
+class AvroRecordSerializationStrategy(RecordSerializationTemplate):
 
     def __init__(self) -> None:
         super().__init__()

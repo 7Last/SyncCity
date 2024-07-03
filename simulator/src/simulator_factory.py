@@ -1,19 +1,18 @@
-from .sensor_config import SensorConfig
-from ..sensor_type import SensorType
-from ...producers.producer_strategy import ProducerStrategy
-from ...simulators.air_quality_simulator_strategy import AirQualitySimulatorStrategy
-from ...simulators.charging_station_simulator_strategy import \
+from .models.config.sensor_config import SensorConfig
+from .models.sensor_type import SensorType
+from .producers.producer_strategy import ProducerStrategy
+from .simulators.air_quality_simulator_strategy import AirQualitySimulatorStrategy
+from .simulators.charging_station_simulator_strategy import \
     ChargingStationSimulatorStrategy
-from ...simulators.humidity_simulator_strategy import HumiditySimulatorStrategy
-from ...simulators.parking_simulator_strategy import ParkingSimulatorStrategy
-from ...simulators.precipitation_simulator_strategy import \
-    PrecipitationSimulatorStrategy
-from ...simulators.recycling_point_simulator_strategy import \
+from .simulators.humidity_simulator_strategy import HumiditySimulatorStrategy
+from .simulators.parking_simulator_strategy import ParkingSimulatorStrategy
+from .simulators.precipitation_simulator_strategy import PrecipitationSimulatorStrategy
+from .simulators.recycling_point_simulator_strategy import \
     RecyclingPointSimulatorStrategy
-from ...simulators.river_level_simulator_strategy import RiverLevelSimulatorStrategy
-from ...simulators.simulator_strategy import SimulatorStrategy
-from ...simulators.temperature_simulator_strategy import TemperatureSimulatorStrategy
-from ...simulators.traffic_simulator_strategy import TrafficSimulatorStrategy
+from .simulators.river_level_simulator_strategy import RiverLevelSimulatorStrategy
+from .simulators.simulator_strategy import SimulatorStrategy
+from .simulators.temperature_simulator_strategy import TemperatureSimulatorStrategy
+from .simulators.traffic_simulator_strategy import TrafficSimulatorStrategy
 
 
 def build_simulators(sensors_config: dict[str, any], producer: ProducerStrategy) -> \
