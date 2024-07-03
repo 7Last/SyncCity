@@ -20,7 +20,7 @@ public class AverageWindowFunction implements WindowFunction<RawData, AverageRes
         var accumulator = new AverageAccumulator();
         var sensors = new HashSet<SensorLocation>();
         input.forEach(data -> {
-            accumulator.add(data.getValue());
+//            accumulator.add(data.getValue());
             sensors.add(new SensorLocation(data.getSensorName(), data.getLatitude(), data.getLongitude()));
         });
         var timestamp = ZonedDateTime.ofInstant(Instant.ofEpochMilli(window.getStart()), ZoneOffset.UTC);
