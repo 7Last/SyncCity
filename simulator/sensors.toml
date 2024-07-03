@@ -334,28 +334,115 @@ longitude = 11.8783219
 
 # endregion
 
-# region charging-station
-[sensors.prato-della-valle-charge1]
-uuid = "429de1de-bda7-442c-b429-baeb745e425c"
-type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT0.01S"
-latitude = 45.3969133
-longitude = 11.8780366
 
-[sensors.prato-della-valle-charge2]
-uuid = "41f65d15-8f38-4b5d-b500-3cfc7ad36559"
+# !!! Charging sensors do not need points_spacing since they are event driven !!!
+# region piazza-insurrezione
+[sensors.piazza-insurrezione-c1]
+group_name = "piazza-insurrezione"
+uuid = "cd9dcddf-3a70-4b1c-936e-11b2d999e1ab"
 type = "charging_station"
 points_spacing = "PT10M"
-generation_delay = "PT0.01S"
-latitude = 45.4094499
-longitude = 11.8717011
+generation_delay = "PT1S"
+latitude = 45.409753
+longitude = 11.876399
 
-[sensors.prato-della-valle-charge3]
-uuid = "1d9a2b77-d964-4894-bd4e-5ab303766a0d"
+[sensors.piazza-insurrezione-c2]
+group_name = "piazza-insurrezione"
+uuid = "ab13c0b7-0abc-4a25-b93c-5c1d9dec9805"
 type = "charging_station"
 points_spacing = "PT10M"
-generation_delay = "PT0.01S"
-latitude = 45.4061577
-longitude = 11.8766844
+generation_delay = "PT1S"
+latitude = 45.409748
+longitude = 11.876204
+
+[sensors.piazza-insurrezione-c3]
+group_name = "piazza-insurrezione"
+uuid = "b9973a8a-a2c4-4154-b59f-d49c2c56b4a6"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409748
+longitude = 11.875999
+
+[sensors.piazza-insurrezione-c4]
+group_name = "piazza-insurrezione"
+uuid = "aee9ab67-2925-41c0-92c4-4f35554329f3"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409734
+longitude = 11.875767
+
+[sensors.piazza-insurrezione-c5]
+group_name = "piazza-insurrezione"
+uuid = "8aa63be8-0941-4532-9dea-73a32b7561cf"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409619
+longitude = 11.875758
+
+[sensors.piazza-insurrezione-c6]
+group_name = "piazza-insurrezione"
+uuid = "0f7032aa-12b1-44a4-b647-4aa23256edec"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409474
+longitude = 11.875759
+
+[sensors.piazza-insurrezione-c7]
+group_name = "piazza-insurrezione"
+uuid = "5fc449cb-7746-4cc3-83ef-2e163ef5ebc2"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409356
+longitude = 11.875777
+
+[sensors.piazza-insurrezione-c8]
+group_name = "piazza-insurrezione"
+uuid = "502d811f-1ccd-4e05-a816-0d80c9a6c3ec"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409378
+longitude = 11.875976
+
+[sensors.piazza-insurrezione-c9]
+group_name = "piazza-insurrezione"
+uuid = "601b1957-ac7a-4e8b-a5ec-e106318fbfdd"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409382
+longitude = 11.876208
+
+[sensors.piazza-insurrezione-c10]
+group_name = "piazza-insurrezione"
+uuid = "feff9a5e-4093-477d-808c-f89cd181a476"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.409395
+longitude = 11.876387
+
+[sensors.piazza-insurrezione-c11]
+group_name = "piazza-insurrezione"
+uuid = "5b043a04-a872-4277-8543-6875313d6e56"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.40949
+longitude = 11.876408
+
+[sensors.piazza-insurrezione-c12]
+group_name = "piazza-insurrezione"
+uuid = "8988ab7c-e3a7-4c01-b69f-2ceb973cb1cb"
+type = "charging_station"
+points_spacing = "PT10M"
+generation_delay = "PT1S"
+latitude = 45.399656
+longitude = 11.8783219
+
 # endregion
