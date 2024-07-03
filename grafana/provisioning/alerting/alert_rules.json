@@ -52,18 +52,14 @@
                 "conditions": [
                   {
                     "evaluator": {
-                      "params": [
-                        40
-                      ],
+                      "params": [40],
                       "type": "gt"
                     },
                     "operator": {
                       "type": "and"
                     },
                     "query": {
-                      "params": [
-                        "C"
-                      ]
+                      "params": ["C"]
                     },
                     "reducer": {
                       "params": [],
@@ -84,13 +80,13 @@
               }
             }
           ],
-          "dasboardUid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
+          "dasboardUid": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
           "panelId": 7,
           "noDataState": "NoData",
           "execErrState": "Error",
           "for": "30m",
           "annotations": {
-            "__dashboardUid__": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
+            "__dashboardUid__": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
             "__panelId__": "7",
             "description": "",
             "runbook_url": "",
