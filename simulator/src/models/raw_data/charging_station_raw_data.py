@@ -15,14 +15,11 @@ class ChargingStationRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude, group_name=group_name,
                          sensor_uuid=sensor_uuid, sensor_name=sensor_name,
                          timestamp=timestamp)
-        self.vehicle_type = vehicle_type
-        self.battery_level = battery_level
-        self.kwh_supplied = kwh_supplied
-        self.remaining_charge_time = remaining_charge_time
-        self.elapsed_time = elapsed_time
-
-    def accept(self, visitor) -> Dict[str, any]:  # noqa: ANN001
-        return visitor.visit_charging_station_raw_data(self)
+        self.__vehicle_type = vehicle_type
+        self.__battery_level = battery_level
+        self.__kwh_supplied = kwh_supplied
+        self.__remaining_charge_time = remaining_charge_time
+        self.__elapsed_time = elapsed_time
 
     @property
     def topic(self) -> str:
@@ -30,11 +27,11 @@ class ChargingStationRawData(RawData):
 
     def to_json(self) -> Dict[str, any]:
         return {
-            "vehicle_type": self.vehicle_type,
-            "battery_level": self.battery_level,
-            "kwh_supplied": self.kwh_supplied,
-            "remaining_charge_time": self.remaining_charge_time,
-            "elapsed_time": self.elapsed_time,
+            "vehicle_type": self.__vehicle_type,
+            "battery_level": self.__battery_level,
+            "kwh_supplied": self.__kwh_supplied,
+            "remaining_charge_time": self.__remaining_charge_time,
+            "elapsed_time": self.__elapsed_time,
             **(super().to_json()),
         }
 
@@ -42,15 +39,16 @@ class ChargingStationRawData(RawData):
         if not isinstance(other, ChargingStationRawData):
             return False
         return (super().__eq__(other) and
-                self.vehicle_type == other.vehicle_type and
-                self.battery_level == other.battery_level and
-                self.kwh_supplied == other.kwh_supplied and
-                self.remaining_charge_time == other.remaining_charge_time and
-                self.elapsed_time == other.elapsed_time)
+                self.__vehicle_type == other.__vehicle_type and
+                self.__battery_level == other.__battery_level and
+                self.__kwh_supplied == other.__kwh_supplied and
+                self.__remaining_charge_time == other.__remaining_charge_time and
+                self.__elapsed_time == other.__elapsed_time)
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.vehicle_type, self.battery_level,
-                     self.kwh_supplied, self.remaining_charge_time, self.elapsed_time))
+        return hash((super().__hash__(), self.__vehicle_type, self.__battery_level,
+                     self.__kwh_supplied, self.__remaining_charge_time,
+                     self.__elapsed_time))
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

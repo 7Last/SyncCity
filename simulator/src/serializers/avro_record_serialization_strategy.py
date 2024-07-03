@@ -6,12 +6,12 @@ from confluent_avro import SchemaRegistry, AvroValueSerde
 from dotenv import load_dotenv
 
 from ..models.raw_data.raw_data import RawData
-from .record_serialization_strategy import RecordSerializationStrategy
+from .record_serialization_template import RecordSerializationTemplate
 
 SerdeWithSchema = (AvroValueSerde, str)
 
 
-class AvroRecordSerializationStrategy(RecordSerializationStrategy):
+class AvroRecordSerializationStrategy(RecordSerializationTemplate):
 
     def __init__(self) -> None:
         super().__init__()
@@ -32,9 +32,6 @@ class AvroRecordSerializationStrategy(RecordSerializationStrategy):
             headers={"Content-Type": "application/vnd.schemaregistry.v1+json"},
         )
         self._serde_by_subject: Dict[str, SerdeWithSchema] = {}
-
-    def serialize_key(self, raw_data: RawData) -> bytes:
-        return str(raw_data.sensor_uuid).encode('utf-8')
 
     def serialize_value(self, data: RawData) -> bytes:
         value_subject = data.value_subject()

@@ -7,10 +7,16 @@ class EnvConfig:
     def __init__(self) -> None:
         load_dotenv()
 
-        self.kafka_host = self._get_or_throw('KAFKA_HOST')
-        self.kafka_port = self._get_or_throw('KAFKA_PORT')
-        self.log_level = self._get_or_throw('LOG_LEVEL')
-        self.max_block_ms = int(self._get_or_none('KAFKA_MAX_BLOCK_MS') or 1000)
+        self.__kafka_host = self._get_or_throw('KAFKA_HOST')
+        self.__kafka_port = self._get_or_throw('KAFKA_PORT')
+        self.__log_level = self._get_or_throw('LOG_LEVEL')
+        self.__max_block_ms = int(self._get_or_none('KAFKA_MAX_BLOCK_MS') or 1000)
+
+    def log_level(self) -> str:
+        return self.__log_level
+
+    def max_block_ms(self) -> int:
+        return self.__max_block_ms
 
     @staticmethod
     def _get_or_throw(key: str) -> str:
@@ -28,7 +34,7 @@ class EnvConfig:
 
     @property
     def bootstrap_server(self) -> str:
-        return f'{self.kafka_host}:{self.kafka_port}'
+        return f'{self.__kafka_host}:{self.__kafka_port}'
 
     def __str__(self) -> str:
         return f'{self.__dict__}'

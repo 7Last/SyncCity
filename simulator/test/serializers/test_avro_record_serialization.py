@@ -7,7 +7,7 @@ from uuid import UUID
 
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
 from simulator.src.serializers.avro_record_serialization_strategy import \
-    AvroRecordSerializationStrategy
+    AvroRecordSerialization
 
 
 class TestAvroSerializer(unittest.TestCase):
@@ -19,14 +19,30 @@ class TestAvroSerializer(unittest.TestCase):
                 Exception,
                 "SCHEMA_REGISTRY_URL environment variable must be set",
         ):
-            AvroRecordSerializationStrategy()
+            AvroRecordSerialization()
+
+    def test_serialize_key(self) -> None:
+        uuid = UUID("123e4567-e89b-12d3-a456-426614174000")
+        raw_data = TemperatureRawData(
+            sensor_name="sensor_name",
+            sensor_uuid=uuid,
+            latitude=0.0,
+            longitude=0.0,
+            timestamp=datetime(year=2024, month=1, day=1, hour=0, minute=0, second=0,
+                               tzinfo=zoneinfo.ZoneInfo("Europe/Rome")),
+            value=0.0,
+        )
+
+        avro_serializer = AvroRecordSerialization()
+        key = avro_serializer.serialize_key(raw_data)
+        self.assertEqual(key, str(uuid).encode('utf-8'))
 
     @unittest.mock.patch.dict(
         os.environ, {"SCHEMA_REGISTRY_URL": "http://schema-registry.com"}, clear=True,
     )
-    @unittest.mock.patch('simulator.src.serializers.strategy.avro_record_serialization_strategy.SchemaRegistry')
+    @unittest.mock.patch('simulator.src.serializers.avro_record_serialization.SchemaRegistry')
     @unittest.mock.patch('pathlib.Path.read_text')
-    def test_serialize(self, mock_path_read_text: MagicMock,
+    def test_serialize_value(self, mock_path_read_text: MagicMock,
                        registry_mock: MagicMock, ) -> None:
         mock_path_read_text.return_value = """{
                 "type": "record",
@@ -77,7 +93,7 @@ class TestAvroSerializer(unittest.TestCase):
             value=0.0,
         )
 
-        avro_serializer = AvroRecordSerializationStrategy()
+        avro_serializer = AvroRecordSerialization()
         serialized = avro_serializer.serialize_value(temperature_raw_data)
 
         magic_byte = b'\x00'

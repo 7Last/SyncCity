@@ -5,17 +5,17 @@ from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.temperature_raw_data import TemperatureRawData
-from simulator.src.simulators.temperature_simulator import TemperatureSimulator
+from simulator.src.simulators.temperature_simulator_strategy import TemperatureSimulatorStrategy
 
 
-class Testtemperatureimulator(unittest.TestCase):
+class TestTemperatureSimulatorStrategy(unittest.TestCase):
 
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            TemperatureSimulator(
+            TemperatureSimulatorStrategy(
                 sensor_name='',
                 config=SensorConfig({
                     'uuid': '00000000-0000-0000-0000-000000000000',
@@ -28,43 +28,9 @@ class Testtemperatureimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = TemperatureSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'temperature',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = TemperatureSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'temperature',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.uniform', return_value=0)
-    def test_stream(self, _: any) -> None:
-        simulator = TemperatureSimulator(
+    def test_data(self, _: any) -> None:
+        simulator = TemperatureSimulatorStrategy(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
