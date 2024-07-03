@@ -31,10 +31,8 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
         'random.random',
         side_effect=[0.1, 0.6, 0.3],
     )
-    @unittest.mock.patch(
-        'simulator.src.simulators.parking_simulator_strategy.ParkingSimulatorStrategy._generate_next_occupancy_change',
-    )
-    def test_data(self, mock_next_change: MagicMock, _: any) -> None:
+    @unittest.mock.patch('random.randint', return_value=60)
+    def test_data(self, _: MagicMock, __: MagicMock) -> None:
         simulator = ParkingSimulatorStrategy(
             sensor_name='test',
             config=SensorConfig({
@@ -49,12 +47,6 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
             }),
             producer=self.producer,
         )
-
-        mock_next_change.side_effect = [
-            datetime(2024, 1, 1, 4),
-            datetime(2024, 1, 1, 5),
-            datetime(2024, 1, 1, 6),
-        ]
 
         stream = [simulator.data() for _ in range(3)]
 
@@ -73,7 +65,7 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
-                timestamp=datetime(2024, 1, 1, 4, 0, 0),
+                timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             ParkingRawData(
                 is_occupied=True,
@@ -81,7 +73,7 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
-                timestamp=datetime(2024, 1, 1, 5, 0, 0),
+                timestamp=datetime(2024, 1, 1, 2, 0, 0),
             ),
         ]
 

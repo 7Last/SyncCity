@@ -48,7 +48,8 @@ class RawData(ABC):
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RawData):
             return False
-        return self._sensor_name == other.sensor_name and \
+        return self._sensor_name == other._sensor_name and \
+            self._group_name == other._group_name and \
             self._latitude == other._latitude and \
             self._longitude == other._longitude and \
             self._sensor_uuid == other._sensor_uuid and \
@@ -57,6 +58,7 @@ class RawData(ABC):
     def __hash__(self) -> int:
         return hash((
             self._sensor_name,
+            self._group_name,
             self._latitude,
             self._longitude,
             self._sensor_uuid,

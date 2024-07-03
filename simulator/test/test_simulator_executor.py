@@ -19,7 +19,7 @@ class TestSimulatorExecutor(unittest.TestCase):
                  mock_build_simulators: MagicMock) -> None:
         simulator_mock = MagicMock(spec=TemperatureSimulatorStrategy)
         simulator_mock.start = MagicMock()
-        simulator_mock.sensor_name = "test"
+        simulator_mock.sensor_name.return_value = "test"
 
         mock_build_simulators.return_value = [simulator_mock]
 
@@ -35,14 +35,15 @@ class TestSimulatorExecutor(unittest.TestCase):
     @unittest.mock.patch(
         "simulator.src.simulator_executor.threading.Event",
     )
-    def test_stop_all(self, _: MagicMock, __: MagicMock) -> None:
+    def test_stop_all(self, _: MagicMock, build_simulators_mock: MagicMock) -> None:
         simulator_mock = MagicMock(spec=TemperatureSimulatorStrategy)
         simulator_mock.stop = MagicMock()
+        simulator_mock.start = MagicMock()
+
+        build_simulators_mock.return_value = [simulator_mock]
 
         mock_producer = MagicMock(spec=StdOutProducer)
-
         executor = SimulatorExecutor({}, mock_producer)
-        executor._simulators = [simulator_mock]
 
-        executor._stop_all()
+        executor.stop_all()
         simulator_mock.stop.assert_called_once()

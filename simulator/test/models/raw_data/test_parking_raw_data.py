@@ -8,7 +8,7 @@ from simulator.src.models.raw_data.parking_raw_data import ParkingRawData
 class TestParkingRawData(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.timestamp = datetime(2024, 1, 1, 0, 0, 0)
+        cls._timestamp = datetime(2024, 1, 1, 0, 0, 0)
 
     def test_topic(self) -> None:
         data = ParkingRawData(

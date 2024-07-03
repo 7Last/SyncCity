@@ -8,7 +8,7 @@ from simulator.src.models.raw_data.river_level_raw_data import RiverLevelRawData
 class TestRiverLevelRawData(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.timestamp = datetime(2024, 1, 1, 0, 0, 0)
+        cls._timestamp = datetime(2024, 1, 1, 0, 0, 0)
 
     def test_topic(self) -> None:
         data = RiverLevelRawData(

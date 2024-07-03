@@ -8,7 +8,7 @@ from simulator.src.models.raw_data.traffic_raw_data import TrafficRawData
 class TestTrafficRawData(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.timestamp = datetime(2024, 1, 1, 0, 0, 0)
+        cls._timestamp = datetime(2024, 1, 1, 0, 0, 0)
 
     def test_topic(self) -> None:
         data = TrafficRawData(

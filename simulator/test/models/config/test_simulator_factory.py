@@ -35,7 +35,7 @@ class TestSimulatorFactory(unittest.TestCase):
         }
 
         simulators = sorted(build_simulators(config, mock_producer),
-                            key=lambda x: x.sensor_name)
+                            key=lambda x: x.sensor_name())
         expected = [
             TemperatureSimulatorStrategy(
                 sensor_name="sensor1",

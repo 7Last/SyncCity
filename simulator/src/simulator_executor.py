@@ -10,10 +10,10 @@ from .simulators.simulator_strategy import SimulatorStrategy
 class SimulatorExecutor:
     def __init__(self, config: Dict[str, any], producer: ProducerStrategy) -> None:
         self.__simulators: list[SimulatorStrategy] = build_simulators(config, producer)
-        self._stop_event = threading.Event()
+        self.__stop_event = threading.Event()
 
-    def _stop_all(self) -> None:
-        self._stop_event.set()
+    def stop_all(self) -> None:
+        self.__stop_event.set()
         log.debug("Stopping simulator threads")
         for simulator in self.__simulators:
             simulator.stop()
@@ -25,10 +25,10 @@ class SimulatorExecutor:
                 log.debug(f"Starting simulator:{simulator.sensor_name()}")
                 simulator.start()
 
-            self._stop_event.wait()  # Keep the main thread alive
+            self.__stop_event.wait()  # Keep the main thread alive
         except KeyboardInterrupt:
             log.info("KeyboardInterrupt received")
-            self._stop_all()
+            self.stop_all()
         except Exception as e:
             log.error(f"An error occurred: {e}")
-            self._stop_all()
+            self.stop_all()
