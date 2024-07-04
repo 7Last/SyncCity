@@ -1,5 +1,6 @@
-package com.sevenlast.synccity.models;
+package com.sevenlast.synccity.models.results;
 
+import com.sevenlast.synccity.models.SensorLocation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

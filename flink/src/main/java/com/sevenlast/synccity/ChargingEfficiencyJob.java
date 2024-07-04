@@ -1,20 +1,11 @@
 package com.sevenlast.synccity;
 
+import com.sevenlast.synccity.functions.ChargingEfficiencyJoinFunction;
 import com.sevenlast.synccity.functions.TimestampDifferenceAggregateFunction;
 import com.sevenlast.synccity.models.*;
-import com.sevenlast.synccity.serialization.RecordSerializable;
-import com.sevenlast.synccity.serialization.RecordSerializationSchema;
-import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericRecord;
+import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
-import org.apache.flink.connector.kafka.sink.KafkaSink;
-import org.apache.flink.connector.kafka.source.KafkaSource;
-import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
-import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
@@ -99,27 +90,29 @@ public class ChargingEfficiencyJob {
 
 //        var parkingStream = env.fromSource(parkingKafkaSource, watermark, "parking-source")
 //                .map(ParkingRawData::fromGenericRecord)
-        env.fromCollection(parkingData)
+        var parkingStream = env.fromCollection(parkingData)
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<ParkingRawData>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                         .withTimestampAssigner((event, timestamp) -> event.getTimestamp().toInstant().toEpochMilli()))
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(ParkingRawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new TimestampDifferenceAggregateFunction())
-                .print();
+                .apply(new TimestampDifferenceAggregateFunction<>());
 
 //        var chargingStationStream = env.fromSource(chargingStationKafkaSource, watermark, "charging-station-source")
 //                .map(ChargingStationRawData::fromGenericRecord)
-
-
         var chargingStationStream = env.fromCollection(chargingStationData)
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<ChargingStationRawData>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                         .withTimestampAssigner((event, timestamp) -> event.getTimestamp().toInstant().toEpochMilli()))
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(ChargingStationRawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new TimestampDifferenceAggregateFunction())
-                .print();
+                .apply(new TimestampDifferenceAggregateFunction<>());
+
+        var efficiencyStream = parkingStream.join(chargingStationStream)
+                .where(TimestampDifferenceResult::getGroupName)
+                .equalTo(TimestampDifferenceResult::getGroupName)
+                .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
+                .apply(new ChargingEfficiencyJoinFunction());
 
         // Sink
 //        var sink = KafkaSink.<RecordSerializable>builder()

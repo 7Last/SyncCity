@@ -1,8 +1,9 @@
 package com.sevenlast.synccity;
 
 import com.sevenlast.synccity.functions.AverageWindowFunction;
-import com.sevenlast.synccity.models.AverageResult;
-import com.sevenlast.synccity.models.HeatIndexResult;
+import com.sevenlast.synccity.functions.HeatIndexJoinFunction;
+import com.sevenlast.synccity.models.results.AverageResult;
+import com.sevenlast.synccity.models.results.HeatIndexResult;
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.SensorLocation;
 import com.sevenlast.synccity.serialization.RecordSerializable;
@@ -12,6 +13,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
@@ -93,15 +95,6 @@ public class HeatIndexJob {
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
-        final double c1 = -8.78469475556;
-        final double c2 = 1.61139411;
-        final double c3 = 2.33854883889;
-        final double c4 = -0.14611605;
-        final double c5 = -0.012308094;
-        final double c6 = -0.0164248277778;
-        final double c7 = 2.211732e-3;
-        final double c8 = 7.2546e-4;
-        final double c9 = -3.582e-6;
 
         var metadata = client.getLatestSchemaMetadata(HEAT_INDEX_TOPIC + "-value");
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
@@ -110,41 +103,7 @@ public class HeatIndexJob {
                 .where(AverageResult::getGroupName)
                 .equalTo(AverageResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply((averageTemperature, averageHumidity) -> {
-                    double t = averageTemperature.getValue();
-                    double h = averageHumidity.getValue();
-
-                    double heatIndex = c1 + (c2 * t) + (c3 * h) + (c4 * t * h)
-                            + (c5 * t * t) + (c6 * h * h)
-                            + (c7 * t * t * h) + (c8 * t * h * h)
-                            + (c9 * t * t * h * h);
-
-                    var sensors = averageTemperature.getSensors();
-                    sensors.addAll(averageHumidity.getSensors());
-
-                    Tuple2<Double, Double> centerOfMass = sensors.stream()
-                            .map(sensor -> new Tuple2<>(sensor.getLatitude(), sensor.getLongitude()))
-                            .reduce((a, b) -> new Tuple2<>(a.f0 + b.f0, a.f1 + b.f1))
-                            .map(tuple -> new Tuple2<>(tuple.f0 / sensors.size(), tuple.f1 / sensors.size()))
-                            .orElseThrow();
-
-                    double maxRadius = sensors.stream()
-                            .map(sensor -> haversine(sensor.getLatitude(), sensor.getLongitude(), centerOfMass.f0, centerOfMass.f1))
-                            .max(Double::compareTo)
-                            .orElseThrow();
-
-                    return new HeatIndexResult(
-                            sensors.stream().map(SensorLocation::getSensorName).collect(Collectors.toSet()),
-                            averageTemperature.getGroupName(),
-                            heatIndex,
-                            averageTemperature.getValue(),
-                            averageHumidity.getValue(),
-                            centerOfMass.f0,
-                            centerOfMass.f1,
-                            maxRadius,
-                            averageTemperature.getWindowStart()
-                    );
-                });
+                .apply(new HeatIndexJoinFunction());
 
         var sink = KafkaSink.<RecordSerializable>builder()
                 .setBootstrapServers(bootstrapServers)
@@ -163,21 +122,4 @@ public class HeatIndexJob {
         env.execute("Heat Index Job");
     }
 
-    static double haversine(double lat1, double lon1, double lat2, double lon2) {
-        double latitudeDistance = Math.toRadians(lat2 - lat1);
-        double longitudeDistance = Math.toRadians(lon2 - lon1);
-
-        // convert to radians
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-
-        // apply formulae
-        double a = Math.pow(Math.sin(latitudeDistance / 2), 2) +
-                Math.pow(Math.sin(longitudeDistance / 2), 2) *
-                        Math.cos(lat1) *
-                        Math.cos(lat2);
-        double rad = 6371;
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return rad * c; // in kilometers
-    }
 }

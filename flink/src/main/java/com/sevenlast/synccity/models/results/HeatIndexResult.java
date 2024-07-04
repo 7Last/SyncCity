@@ -1,4 +1,4 @@
-package com.sevenlast.synccity.models;
+package com.sevenlast.synccity.models.results;
 
 import com.sevenlast.synccity.serialization.RecordSerializable;
 import lombok.AllArgsConstructor;
