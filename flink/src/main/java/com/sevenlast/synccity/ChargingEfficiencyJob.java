@@ -24,6 +24,8 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer011;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -38,7 +40,7 @@ public class ChargingEfficiencyJob {
 
     private DataStreamSource<GenericRecord> parkingKafkaSource;
     private DataStreamSource<GenericRecord> chargingStationKafkaSource;
-    private Sink<ChargingEfficiencyResult> efficiencySink;
+    private SinkFunction<ChargingEfficiencyResult> efficiencySink;
 
     public static void main(String[] args) throws Exception {
 
@@ -79,17 +81,27 @@ public class ChargingEfficiencyJob {
 
         // Aggregations
         var efficiencyMetadata = client.getLatestSchemaMetadata(CHARGING_EFFICIENCY_TOPIC + "-value");
-        var sink = KafkaSink.<ChargingEfficiencyResult>builder()
-                .setBootstrapServers(bootstrapServers)
-                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-                        .setTopic(CHARGING_EFFICIENCY_TOPIC)
-                        .setValueSerializationSchema(new RecordSerializationSchema<ChargingEfficiencyResult>(
-                                CHARGING_EFFICIENCY_TOPIC,
-                                schemaParser.parse(efficiencyMetadata.getSchema()),
-                                schemaRegistryUrl
-                        ))
-                        .build()
-                ).build();
+//        var sink = KafkaSink.<ChargingEfficiencyResult>builder()
+//                .setBootstrapServers(bootstrapServers)
+//                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
+//                        .setTopic(CHARGING_EFFICIENCY_TOPIC)
+//                        .setValueSerializationSchema(new RecordSerializationSchema<ChargingEfficiencyResult>(
+//                                CHARGING_EFFICIENCY_TOPIC,
+//                                schemaParser.parse(efficiencyMetadata.getSchema()),
+//                                schemaRegistryUrl
+//                        ))
+//                        .build()
+//                ).build();
+
+        var sink = new FlinkKafkaProducer<>(
+                bootstrapServers,
+                CHARGING_EFFICIENCY_TOPIC,
+                new RecordSerializationSchema<ChargingEfficiencyResult>(
+                        CHARGING_EFFICIENCY_TOPIC,
+                        schemaParser.parse(efficiencyMetadata.getSchema()),
+                        schemaRegistryUrl
+                )
+        );
 
         var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> {
@@ -135,7 +147,7 @@ public class ChargingEfficiencyJob {
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new ChargingEfficiencyJoinFunction());
 
-        efficiencyStream.sinkTo(efficiencySink);
+        efficiencyStream.addSink(efficiencySink);
         env.execute("Charging Efficiency Job");
     }
 }

@@ -20,6 +20,7 @@ import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 
@@ -36,8 +37,8 @@ public class HeatIndexJob {
     private static final String HEAT_INDEX_TOPIC = "heat_index";
     private static final String GROUP_ID = "heat-index-job";
 
-    private Source<GenericRecord, ?, ?> temperatureKafkaSource;
-    private Source<GenericRecord, ?, ?> humidityKafkaSource;
+    private DataStreamSource<GenericRecord> temperatureKafkaSource;
+    private DataStreamSource<GenericRecord> humidityKafkaSource;
     private Sink<HeatIndexResult> heatIndexSink;
 
     public static void main(String[] args) throws Exception {
@@ -88,13 +89,23 @@ public class HeatIndexJob {
                 )
                 .build();
 
-        new HeatIndexJob(temperatureKafkaSource, humidityKafkaSource, sink).execute();
-    }
-
-    public void execute() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
         env.getConfig().setAutoWatermarkInterval(1000);
+        var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+                .withTimestampAssigner((event, timestamp) -> {
+                    var eventTimestamp = event.get("timestamp").toString();
+                    return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+                });
+
+        new HeatIndexJob(
+                env.fromSource(temperatureKafkaSource, watermark, "Temperature Kafka Source"),
+                env.fromSource(humidityKafkaSource, watermark, "Humidity Kafka Source"),
+                sink
+        ).execute(env);
+    }
+
+    public void execute(StreamExecutionEnvironment env) throws Exception {
 
         var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> {
@@ -102,14 +113,16 @@ public class HeatIndexJob {
                     return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
                 });
 
-        var avgTemperatureStream = env.fromSource(temperatureKafkaSource, watermark, "temperature-source")
+        var avgTemperatureStream = temperatureKafkaSource
+                .assignTimestampsAndWatermarks(watermark)
                 .map(HumTempRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(HumTempRawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
-        var avgHumidityStream = env.fromSource(humidityKafkaSource, watermark, "humidity-source")
+        var avgHumidityStream = humidityKafkaSource
+                .assignTimestampsAndWatermarks(watermark)
                 .map(HumTempRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(HumTempRawData::getGroupName)

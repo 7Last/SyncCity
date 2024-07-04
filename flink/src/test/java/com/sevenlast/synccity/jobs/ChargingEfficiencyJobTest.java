@@ -4,26 +4,30 @@ import com.sevenlast.synccity.ChargingEfficiencyJob;
 import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
 import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
-import com.sevenlast.synccity.utils.MockCollectSink;
+import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.flink.api.connector.sink2.Sink;
+import org.apache.flink.api.connector.sink2.SinkWriter;
+import org.apache.flink.api.connector.sink2.WriterInitContext;
 import org.apache.flink.runtime.testutils.MiniClusterResourceConfiguration;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.sink.PrintSink;
-import org.apache.flink.streaming.api.functions.sink.v2.DiscardingSink;
+import org.apache.flink.streaming.api.operators.collect.CollectSinkFunction;
 import org.apache.flink.streaming.experimental.CollectSink;
 import org.apache.flink.test.junit5.MiniClusterExtension;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static org.junit.Assert.assertNotEquals;
 
 @ExtendWith(MiniClusterExtension.class)
 public class ChargingEfficiencyJobTest {
@@ -38,25 +42,27 @@ public class ChargingEfficiencyJobTest {
     @Test
     public void testPipeline() throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
         var parkingData = List.of(
-                toRecord(new ParkingRawData(UUID.randomUUID(), "name", "group", 0, 0, ZonedDateTime.now(), false))
+                toRecord(new ParkingRawData(uuid, "name", "group", 0, 0, ZonedDateTime.now(), false))
         );
 
         var chargingData = List.of(
-                toRecord(new ChargingStationRawData(UUID.randomUUID(), "name", "group", 0, 0, ZonedDateTime.now(), "type", 0, 0, Duration.ofSeconds(0), Duration.ofSeconds(0)))
+                toRecord(new ChargingStationRawData(uuid, "name", "group", 0, 0, ZonedDateTime.now(), "type", 0, 0, Duration.ofSeconds(0), Duration.ofSeconds(0)))
         );
 
-        var collectSink = new PrintSink<ChargingEfficiencyResult>();
-//
+        CollectionSink mockSink = new CollectionSink();
+        CollectionSink.values.clear();
+
         var job = new ChargingEfficiencyJob(
                 env.fromData(parkingData),
                 env.fromData(chargingData),
-                collectSink
+                mockSink
         );
 
         job.execute(env);
-
+        assertNotEquals(0, CollectionSink.values.size());
     }
 
     private GenericRecord toRecord(ParkingRawData data) {
