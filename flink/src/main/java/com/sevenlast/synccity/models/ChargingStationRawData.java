@@ -48,6 +48,6 @@ public class ChargingStationRawData extends RawData {
 
     @Override
     public Boolean get() {
-        return batteryLevel > 0;
+        return kwhSupplied > 0;
     }
 }

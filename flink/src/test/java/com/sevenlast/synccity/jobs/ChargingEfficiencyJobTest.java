@@ -7,27 +7,20 @@ import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
 import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.flink.api.connector.sink2.Sink;
-import org.apache.flink.api.connector.sink2.SinkWriter;
-import org.apache.flink.api.connector.sink2.WriterInitContext;
 import org.apache.flink.runtime.testutils.MiniClusterResourceConfiguration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.operators.collect.CollectSinkFunction;
-import org.apache.flink.streaming.experimental.CollectSink;
 import org.apache.flink.test.junit5.MiniClusterExtension;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
-import static org.junit.Assert.assertNotEquals;
+import static junit.framework.TestCase.assertEquals;
 
 @ExtendWith(MiniClusterExtension.class)
 public class ChargingEfficiencyJobTest {
@@ -41,16 +34,36 @@ public class ChargingEfficiencyJobTest {
 
     @Test
     public void testPipeline() throws Exception {
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var env = StreamExecutionEnvironment.getExecutionEnvironment();
+        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var groupName = "group";
+        var parkingSensorName = "parking";
+        String chargingSensorName = "charging";
+        var timestamp = ZonedDateTime.parse("2024-01-01T00:00:00Z");
 
-        var parkingData = List.of(
-                toRecord(new ParkingRawData(uuid, "name", "group", 0, 0, ZonedDateTime.now(), false))
-        );
+        //@formatter:off
+        var parkingData = Stream.of(
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp, true), // occupied 0 free 0
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp.plusHours(1), false), // occupied 1h free 0
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp.plusHours(2), true), // occupied 1h free 1h
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp.plusHours(4), false), // occupied 3h free 1h
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp.plusHours(4).plusMinutes(10), true), // occupied 3h free 1h10m
+                new ParkingRawData(uuid, parkingSensorName, groupName, 0, 0, timestamp.plusHours(4).plusMinutes(20), false) // occupied 3h10m free 1h10m
+        ).map(this::toRecord).toList();
+        //@formatter:on
 
-        var chargingData = List.of(
-                toRecord(new ChargingStationRawData(uuid, "name", "group", 0, 0, ZonedDateTime.now(), "type", 0, 0, Duration.ofSeconds(0), Duration.ofSeconds(0)))
-        );
+        //@formatter:off
+        var chargingData = Stream.of(
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 5, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
+            new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
+        ).map(this::toRecord).toList();
+        //@formatter:on
 
         CollectionSink mockSink = new CollectionSink();
         CollectionSink.values.clear();
@@ -62,7 +75,12 @@ public class ChargingEfficiencyJobTest {
         );
 
         job.execute(env);
-        assertNotEquals(0, CollectionSink.values.size());
+        var expected = new ChargingEfficiencyResult(
+                0.23076923076923078,
+                0.3157894736842105
+        );
+        var actual = CollectionSink.values.get(0);
+        assertEquals(expected, actual);
     }
 
     private GenericRecord toRecord(ParkingRawData data) {

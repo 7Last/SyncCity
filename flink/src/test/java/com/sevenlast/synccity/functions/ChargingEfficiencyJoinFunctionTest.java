@@ -57,14 +57,14 @@ public class ChargingEfficiencyJoinFunctionTest {
     @Test
     public void testEfficiencyRateGreaterThanUtilizationRate() {
         var parkingDiff = new TimestampDifferenceResult(
-                Duration.ofSeconds(10), // occupied for
-                Duration.ofSeconds(10), // free for
+                Duration.ofHours(3).plusMinutes(10), // occupied for
+                Duration.ofHours(1).plusMinutes(10), // free for
                 UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var chargingDiff = new TimestampDifferenceResult(
-                Duration.ofSeconds(10), // used for
-                Duration.ofSeconds(5), // free for
+                Duration.ofHours(1), // used for
+                Duration.ofHours(1).plusMinutes(20), // free for
                 UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 

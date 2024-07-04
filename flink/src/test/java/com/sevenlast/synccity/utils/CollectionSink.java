@@ -11,7 +11,7 @@ public class CollectionSink implements SinkFunction<ChargingEfficiencyResult> {
     public static final List<ChargingEfficiencyResult> values = Collections.synchronizedList(new ArrayList<>());
 
     @Override
-    public void invoke(ChargingEfficiencyResult result, SinkFunction.Context context) throws Exception {
+    public void invoke(ChargingEfficiencyResult result, SinkFunction.Context context) {
         values.add(result);
     }
 }
