@@ -9,27 +9,28 @@ import org.apache.flink.api.java.tuple.Tuple2;
 
 import java.util.stream.Collectors;
 
-public class HeatIndexJoinFunction implements JoinFunction<AverageResult, AverageResult, RecordSerializable> {
+public class HeatIndexJoinFunction implements JoinFunction<AverageResult, AverageResult, HeatIndexResult> {
 
-    private static final double c1 = -8.78469475556;
-    private static final double c2 = 1.61139411;
-    private static final double c3 = 2.33854883889;
-    private static final double c4 = -0.14611605;
-    private static final double c5 = -0.012308094;
-    private static final double c6 = -0.0164248277778;
-    private static final double c7 = 2.211732e-3;
-    private static final double c8 = 7.2546e-4;
-    private static final double c9 = -3.582e-6;
+    // constants for heat index calculation
+    private static final double C1 = -8.78469475556;
+    private static final double C2 = 1.61139411;
+    private static final double C3 = 2.33854883889;
+    private static final double C4 = -0.14611605;
+    private static final double C5 = -0.012308094;
+    private static final double C6 = -0.0164248277778;
+    private static final double C7 = 2.211732e-3;
+    private static final double C8 = 7.2546e-4;
+    private static final double C9 = -3.582e-6;
 
     @Override
-    public RecordSerializable join(AverageResult averageTemperature, AverageResult averageHumidity) throws Exception {
+    public HeatIndexResult join(AverageResult averageTemperature, AverageResult averageHumidity){
         double t = averageTemperature.getValue();
         double h = averageHumidity.getValue();
 
-        double heatIndex = c1 + (c2 * t) + (c3 * h) + (c4 * t * h)
-                + (c5 * t * t) + (c6 * h * h)
-                + (c7 * t * t * h) + (c8 * t * h * h)
-                + (c9 * t * t * h * h);
+        double heatIndex = C1 + (C2 * t) + (C3 * h) + (C4 * t * h)
+                + (C5 * t * t) + (C6 * h * h)
+                + (C7 * t * t * h) + (C8 * t * h * h)
+                + (C9 * t * t * h * h);
 
         var sensors = averageTemperature.getSensors();
         sensors.addAll(averageHumidity.getSensors());

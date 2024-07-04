@@ -2,19 +2,15 @@ package com.sevenlast.synccity;
 
 import com.sevenlast.synccity.functions.AverageWindowFunction;
 import com.sevenlast.synccity.functions.HeatIndexJoinFunction;
+import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
-import com.sevenlast.synccity.models.HumTempRawData;
-import com.sevenlast.synccity.models.SensorLocation;
-import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.serialization.RecordSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.JoinFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.kafka.sink.KafkaRecordSerializationSchema;
 import org.apache.flink.connector.kafka.sink.KafkaSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -27,7 +23,6 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.stream.Collectors;
 
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";
@@ -99,17 +94,17 @@ public class HeatIndexJob {
         var metadata = client.getLatestSchemaMetadata(HEAT_INDEX_TOPIC + "-value");
         var heatIndexSchema = schemaParser.parse(metadata.getSchema());
 
-        DataStream<RecordSerializable> heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
+        DataStream<HeatIndexResult> heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
                 .where(AverageResult::getGroupName)
                 .equalTo(AverageResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new HeatIndexJoinFunction());
 
-        var sink = KafkaSink.<RecordSerializable>builder()
+        var sink = KafkaSink.<HeatIndexResult>builder()
                 .setBootstrapServers(bootstrapServers)
                 .setRecordSerializer(KafkaRecordSerializationSchema.builder()
                         .setTopic(HEAT_INDEX_TOPIC)
-                        .setValueSerializationSchema(new RecordSerializationSchema(
+                        .setValueSerializationSchema(new RecordSerializationSchema<HeatIndexResult>(
                                 HEAT_INDEX_TOPIC,
                                 heatIndexSchema,
                                 schemaRegistryUrl

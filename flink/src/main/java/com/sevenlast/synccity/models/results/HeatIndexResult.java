@@ -26,8 +26,8 @@ public class HeatIndexResult implements RecordSerializable {
 
     public GenericRecord toGenericRecord(Schema schema) {
         GenericRecord record = new GenericData.Record(schema);
-        record.put("group_name", groupName);
         record.put("sensor_names", sensorNames);
+        record.put("group_name", groupName);
         record.put("heat_index", heatIndex);
         record.put("avg_temperature", averageTemperature);
         record.put("avg_humidity", averageHumidity);

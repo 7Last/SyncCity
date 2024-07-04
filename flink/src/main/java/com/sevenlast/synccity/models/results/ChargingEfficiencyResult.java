@@ -9,11 +9,20 @@ import org.apache.avro.generic.GenericRecord;
 @Data
 @AllArgsConstructor
 public class ChargingEfficiencyResult implements RecordSerializable {
-    private long utilizationRate;
-    private long efficiencyRate;
+    // utilization rate is the ratio of the time the charging station
+    // is used by a vehicle to the total time considered
+    private double utilizationRate;
+
+    // efficiency rate is the ratio of the time the charging station is
+    // used by a vehicle to the total time the parking space is occupied
+    private double efficiencyRate;
 
     @Override
     public GenericRecord toGenericRecord(Schema schema) {
         return null;
+    }
+
+    public static ChargingEfficiencyResult zero() {
+        return new ChargingEfficiencyResult(0, 0);
     }
 }
