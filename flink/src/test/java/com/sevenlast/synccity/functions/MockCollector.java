@@ -1,7 +1,9 @@
 package com.sevenlast.synccity.functions;
 
+import lombok.Getter;
 import org.apache.flink.util.Collector;
 
+@Getter
 public class MockCollector<T> implements Collector<T> {
     private T result;
 
@@ -14,7 +16,4 @@ public class MockCollector<T> implements Collector<T> {
     public void close() {
     }
 
-    public T getResult() {
-        return result;
-    }
 }

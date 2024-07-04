@@ -17,33 +17,36 @@ import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
-public class TimestampDifferenceAggregateFunction<T extends RawData> implements WindowFunction<T, TimestampDifferenceResult, String, TimeWindow> {
+public class TimestampDifferenceAggregateFunction<T extends RawData> implements WindowFunction<T, TimestampDifferenceResult, UUID, TimeWindow> {
 
     @Override
-    public void apply(String groupName, TimeWindow window, Iterable<T> input, Collector<TimestampDifferenceResult> out) {
+    public void apply(UUID uuid, TimeWindow window, Iterable<T> input, Collector<TimestampDifferenceResult> out) {
         Duration occupied = Duration.ZERO;
         Duration notOccupied = Duration.ZERO;
-        ZonedDateTime previousTimestamp = null;
 
         var sortedInput = StreamSupport.stream(input.spliterator(), false)
                 .sorted(Comparator.comparing(RawData::getTimestamp))
                 .toList();
 
+        // calculate all the differences for each sensor uuid and then return a unified result
+        ZonedDateTime sensorPreviousTimestamp = null;
         for (RawData data : sortedInput) {
-            if (previousTimestamp != null) {
-                Duration difference = Duration.between(previousTimestamp, data.getTimestamp());
+            if (sensorPreviousTimestamp != null) {
+                Duration difference = Duration.between(sensorPreviousTimestamp, data.getTimestamp());
                 if (data.get()) {
                     notOccupied = notOccupied.plus(difference);
                 } else {
                     occupied = occupied.plus(difference);
                 }
             }
-            previousTimestamp = data.getTimestamp();
+            sensorPreviousTimestamp = data.getTimestamp();
         }
-        out.collect(new TimestampDifferenceResult(occupied, notOccupied, groupName));
+        out.collect(new TimestampDifferenceResult(occupied, notOccupied, uuid));
     }
 }

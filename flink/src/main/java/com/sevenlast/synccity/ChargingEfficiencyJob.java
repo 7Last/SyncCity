@@ -18,7 +18,7 @@ import java.util.UUID;
 public class ChargingEfficiencyJob {
     private static final String PARKING_TOPIC = "parking";
     private static final String CHARGING_STATION_TOPIC = "charging_station";
-    private static final Time WINDOW_SIZE = Time.days(1);
+    private static final Duration WINDOW_SIZE = Duration.ofDays(1);
     private static final String CHARGING_EFFICIENCY_TOPIC = "charging_efficiency";
     private static final String GROUP_ID = "charging-efficiency-job";
 
@@ -94,7 +94,7 @@ public class ChargingEfficiencyJob {
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<ParkingRawData>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                         .withTimestampAssigner((event, timestamp) -> event.getTimestamp().toInstant().toEpochMilli()))
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy(ParkingRawData::getGroupName)
+                .keyBy(ParkingRawData::getSensorUuid)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new TimestampDifferenceAggregateFunction<>());
 
@@ -104,16 +104,16 @@ public class ChargingEfficiencyJob {
                 .assignTimestampsAndWatermarks(WatermarkStrategy.<ChargingStationRawData>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                         .withTimestampAssigner((event, timestamp) -> event.getTimestamp().toInstant().toEpochMilli()))
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy(ChargingStationRawData::getGroupName)
+                .keyBy(ChargingStationRawData::getSensorUuid)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new TimestampDifferenceAggregateFunction<>());
 
         var efficiencyStream = parkingStream.join(chargingStationStream)
-                .where(TimestampDifferenceResult::getGroupName)
-                .equalTo(TimestampDifferenceResult::getGroupName)
+                .where(TimestampDifferenceResult::getSensorUuid)
+                .equalTo(TimestampDifferenceResult::getSensorUuid)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new ChargingEfficiencyJoinFunction())
-                        .print();
+                .print();
 
         // Sink
 //        var sink = KafkaSink.<RecordSerializable>builder()

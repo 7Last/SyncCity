@@ -21,12 +21,12 @@ public class ChargingEfficiencyJoinFunctionTest {
         var parkingDiff = new TimestampDifferenceResult(
                 Duration.ZERO,
                 Duration.ZERO,
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
         var chargingDiff = new TimestampDifferenceResult(
                 Duration.ZERO,
                 Duration.ZERO,
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var function = new ChargingEfficiencyJoinFunction();
@@ -40,13 +40,13 @@ public class ChargingEfficiencyJoinFunctionTest {
         var parkingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(10), // occupied for
                 Duration.ofSeconds(10), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var chargingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(20), // used for
                 Duration.ofSeconds(10), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var function = new ChargingEfficiencyJoinFunction();
@@ -59,13 +59,13 @@ public class ChargingEfficiencyJoinFunctionTest {
         var parkingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(10), // occupied for
                 Duration.ofSeconds(10), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var chargingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(10), // used for
                 Duration.ofSeconds(5), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var function = new ChargingEfficiencyJoinFunction();
@@ -78,13 +78,13 @@ public class ChargingEfficiencyJoinFunctionTest {
         var parkingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(10), // occupied for
                 Duration.ofSeconds(10), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var chargingDiff = new TimestampDifferenceResult(
                 Duration.ofSeconds(5), // used for
                 Duration.ofSeconds(10), // free for
-                "group-name"
+                UUID.fromString("00000000-0000-0000-0000-000000000000")
         );
 
         var function = new ChargingEfficiencyJoinFunction();

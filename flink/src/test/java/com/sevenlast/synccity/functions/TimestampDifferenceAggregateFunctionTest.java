@@ -33,14 +33,16 @@ public class TimestampDifferenceAggregateFunctionTest {
         );
 
         var function = new TimestampDifferenceAggregateFunction<>();
-        function.apply(groupName, null, input, mockCollector);
+        function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();
-        assertEquals(result, new TimestampDifferenceResult(
-                Duration.ofHours(3).plusMinutes(10),
-                Duration.ofHours(1).plusMinutes(10),
-                groupName
-        ));
-
+        assertEquals(
+                result,
+                new TimestampDifferenceResult(
+                        Duration.ofHours(3).plusMinutes(10),
+                        Duration.ofHours(1).plusMinutes(10),
+                        uuid
+                )
+        );
     }
 }
