@@ -11,9 +11,18 @@ public class ChargingEfficiencyJoinFunction implements JoinFunction<TimestampDif
     public RecordSerializable join(TimestampDifferenceResult parkingDiff, TimestampDifferenceResult chargingDiff) throws Exception {
         var parkingOccupied = parkingDiff.getOccupiedDuration();
         var totalSeconds = parkingOccupied.plus(parkingDiff.getNotOccupiedDuration()).toSeconds();
+        if (totalSeconds == 0) {
+            return new ChargingEfficiencyResult(0, 0);
+        }
 
-        var utilizationRate = chargingDiff.getOccupiedDuration().toSeconds() / totalSeconds;
-        var efficiencyRate = chargingDiff.getNotOccupiedDuration().toSeconds() / parkingOccupied.toSeconds();
+        var chargingOccupied = chargingDiff.getOccupiedDuration().toSeconds();
+        var utilizationRate = chargingOccupied / totalSeconds;
+
+        if (chargingOccupied > parkingOccupied.toSeconds()) {
+            chargingOccupied = parkingOccupied.toSeconds();
+        }
+
+        var efficiencyRate = chargingOccupied / parkingOccupied.toSeconds();
         return new ChargingEfficiencyResult(utilizationRate, efficiencyRate);
     }
 }

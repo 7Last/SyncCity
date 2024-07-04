@@ -82,9 +82,9 @@ public class ChargingEfficiencyJob {
         );
 
         var chargingStationData = List.of(
-                new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(1), "car", 0, 20, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(1), "car", 0, 0, Duration.ZERO, Duration.ZERO),
                 new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(2), "car", 0, 20, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(3), "car", 0, 20, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(3), "car", 0, 0, Duration.ZERO, Duration.ZERO),
                 new ChargingStationRawData(uuid, "1", "test", 45.4642, 9.1900, now.plusHours(4), "car", 0, 20, Duration.ZERO, Duration.ZERO)
         );
 
@@ -112,7 +112,8 @@ public class ChargingEfficiencyJob {
                 .where(TimestampDifferenceResult::getGroupName)
                 .equalTo(TimestampDifferenceResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new ChargingEfficiencyJoinFunction());
+                .apply(new ChargingEfficiencyJoinFunction())
+                        .print();
 
         // Sink
 //        var sink = KafkaSink.<RecordSerializable>builder()
