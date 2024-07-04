@@ -14,10 +14,10 @@ import java.util.function.Supplier;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 public abstract class RawData implements Supplier<Boolean> {
-    private final UUID sensorUuid;
-    private final String sensorName;
-    private final String groupName;
-    private final double latitude;
-    private final double longitude;
-    private final ZonedDateTime timestamp;
+    private UUID sensorUuid;
+    private String sensorName;
+    private String groupName;
+    private double latitude;
+    private double longitude;
+    private ZonedDateTime timestamp;
 }

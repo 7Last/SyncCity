@@ -14,17 +14,17 @@ import java.util.function.Supplier;
 @Data
 @AllArgsConstructor
 public class ChargingStationRawData extends RawData {
-    private final UUID sensorUuid;
-    private final String sensorName;
-    private final String groupName;
-    private final double latitude;
-    private final double longitude;
-    private final ZonedDateTime timestamp;
-    private final String vehicleType;
-    private final double batteryLevel;
-    private final double kwhSupplied;
-    private final Duration remainingChargeTime;
-    private final Duration elapsedTime;
+    private UUID sensorUuid;
+    private String sensorName;
+    private String groupName;
+    private double latitude;
+    private double longitude;
+    private ZonedDateTime timestamp;
+    private String vehicleType;
+    private double batteryLevel;
+    private double kwhSupplied;
+    private Duration remainingChargeTime;
+    private Duration elapsedTime;
 
     public static ChargingStationRawData fromGenericRecord(GenericRecord record) {
         return new ChargingStationRawData(

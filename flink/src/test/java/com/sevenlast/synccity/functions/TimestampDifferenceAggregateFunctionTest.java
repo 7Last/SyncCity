@@ -3,6 +3,7 @@ package com.sevenlast.synccity.functions;
 import com.sevenlast.synccity.models.ParkingRawData;
 import com.sevenlast.synccity.models.RawData;
 import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
+import com.sevenlast.synccity.utils.MockCollector;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

@@ -26,6 +26,8 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
+import static org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroSerializationSchema.forSpecific;
+
 @AllArgsConstructor
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";

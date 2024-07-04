@@ -2,16 +2,14 @@ package com.sevenlast.synccity.functions;
 
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.results.AverageResult;
-import org.apache.flink.runtime.operators.chaining.ChainedDriver;
+import com.sevenlast.synccity.utils.MockCollector;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
-import org.apache.flink.util.Collector;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static org.apache.flink.runtime.metrics.groups.InternalSourceReaderMetricGroup.mock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AverageWindowFunctionTest {

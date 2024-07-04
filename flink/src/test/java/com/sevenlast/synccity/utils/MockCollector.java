@@ -1,4 +1,4 @@
-package com.sevenlast.synccity.functions;
+package com.sevenlast.synccity.utils;
 
 import lombok.Getter;
 import org.apache.flink.util.Collector;
