@@ -31,20 +31,9 @@ public class AverageWindowFunctionTest {
                 new HumTempRawData(guid, sensorName, groupName, 0, 0, timestamp.plusMinutes(3), 25)
         );
 
-        var mockCollector = new Collector<AverageResult>() {
-            private AverageResult result;
-            @Override
-            public void collect(AverageResult averageResult) {
-                result = averageResult;
-            }
-
-            @Override
-            public void close() {}
-        };
-
+        var mockCollector = new MockCollector<AverageResult>();
         var timeWindow = new TimeWindow(timestamp.toEpochSecond(), timestamp.plusHours(1).toEpochSecond());
-
         function.apply(groupName, timeWindow, data, mockCollector);
-        assertEquals(21.25, mockCollector.result.getValue());
+        assertEquals(21.25, mockCollector.getResult().getValue());
     }
 }
