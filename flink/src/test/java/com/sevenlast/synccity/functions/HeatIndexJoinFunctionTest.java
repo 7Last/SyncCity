@@ -3,14 +3,10 @@ package com.sevenlast.synccity.functions;
 import com.google.common.collect.Sets;
 import com.sevenlast.synccity.models.SensorLocation;
 import com.sevenlast.synccity.models.results.AverageResult;
-import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
-import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

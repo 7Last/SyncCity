@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.generic.GenericRecord;
 
-import javax.annotation.Nullable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 @Data
 @AllArgsConstructor
@@ -48,6 +46,6 @@ public class ChargingStationRawData extends RawData {
 
     @Override
     public Boolean get() {
-        return kwhSupplied > 0;
+        return kwhSupplied <= 0; // kwhSupplied should always be >= 0 (check for safety)
     }
 }

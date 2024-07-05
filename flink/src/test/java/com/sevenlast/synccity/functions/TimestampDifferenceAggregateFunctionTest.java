@@ -59,11 +59,11 @@ public class TimestampDifferenceAggregateFunctionTest {
 
         List<RawData> input = List.of(
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate, false), // 0 occupied 0 free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(1), true), // 0 occupied 1h free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(1), true), // 1h occupied 0 free
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2), false), // 1h occupied 1h free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(10), true), // 1h10m occupied 1h free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(30), false), // 1h10m occupied 1h20m free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(8), true) // 6h40m occupied 1h20m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(10), true), // 1h occupied 1h10m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(30), false), // 1h20m occupied 1h10m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(8), true) // 1h20m occupied 6h40m free
         );
 
         var function = new TimestampDifferenceAggregateFunction<>();
@@ -73,15 +73,15 @@ public class TimestampDifferenceAggregateFunctionTest {
         assertEquals(
                 result,
                 new TimestampDifferenceResult(
-                        Duration.ofHours(6).plusMinutes(40),
                         Duration.ofHours(1).plusMinutes(20),
+                        Duration.ofHours(6).plusMinutes(40),
                         uuid
                 )
         );
     }
 
     @Test
-    public void chargingStation1() {
+    public void testChargingStation1() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
         var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
@@ -90,24 +90,14 @@ public class TimestampDifferenceAggregateFunctionTest {
         var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
         List<RawData> input = List.of(
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 5, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
-//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
-
-
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp, "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusMinutes(20), "type", 5, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 10, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 10, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 0, Duration.ZERO, Duration.ZERO)
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 5, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
         );
 
         var function = new TimestampDifferenceAggregateFunction<>();
@@ -117,12 +107,65 @@ public class TimestampDifferenceAggregateFunctionTest {
         assertEquals(
                 result,
                 new TimestampDifferenceResult(
-                        Duration.ofHours(1),
                         Duration.ofHours(1).plusMinutes(20),
+                        Duration.ofHours(1),
                         uuid
                 )
         );
+    }
 
+    @Test
+    public void testChargingStationNeverOccupied() {
+        var mockCollector = new MockCollector<TimestampDifferenceResult>();
+
+        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var groupName = "group-name";
+        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+
+        List<RawData> input = List.of(
+                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO)
+        );
+
+        var function = new TimestampDifferenceAggregateFunction<>();
+        function.apply(uuid, null, input, mockCollector);
+
+        var result = mockCollector.getResult();
+        assertEquals(
+                result,
+                new TimestampDifferenceResult(
+                        Duration.ZERO,
+                        Duration.ofHours(2),
+                        uuid
+                )
+        );
+    }
+
+    @Test
+    public void parkingNeverOccupied() {
+        var mockCollector = new MockCollector<TimestampDifferenceResult>();
+
+        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var groupName = "group-name";
+        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+
+        List<RawData> input = List.of(
+                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate, false),
+                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate.plusHours(2), true)
+        );
+
+        var function = new TimestampDifferenceAggregateFunction<>();
+        function.apply(uuid, null, input, mockCollector);
+
+        var result = mockCollector.getResult();
+        assertEquals(
+                result,
+                new TimestampDifferenceResult(
+                        Duration.ZERO,
+                        Duration.ofHours(2),
+                        uuid
+                )
+        );
     }
 
 }

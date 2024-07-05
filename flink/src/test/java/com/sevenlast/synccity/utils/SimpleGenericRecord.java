@@ -1,7 +1,5 @@
 package com.sevenlast.synccity.utils;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.avro.generic.GenericRecord;
 
 import java.io.Serializable;

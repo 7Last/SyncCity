@@ -1,17 +1,16 @@
 package com.sevenlast.synccity.utils;
 
-import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CollectionSink implements SinkFunction<ChargingEfficiencyResult> {
-    public static final List<ChargingEfficiencyResult> values = Collections.synchronizedList(new ArrayList<>());
+public class CollectionSink<T> implements SinkFunction<T> {
+    public static final List<Object> values = Collections.synchronizedList(new ArrayList<>());
 
     @Override
-    public void invoke(ChargingEfficiencyResult result, SinkFunction.Context context) {
+    public void invoke(T result, SinkFunction.Context context) {
         values.add(result);
     }
 }

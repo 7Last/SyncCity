@@ -1,16 +1,12 @@
 package com.sevenlast.synccity.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
-import org.checkerframework.checker.units.qual.A;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

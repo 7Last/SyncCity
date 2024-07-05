@@ -1,8 +1,8 @@
 package com.sevenlast.synccity.functions;
 
-import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.SensorLocation;
+import com.sevenlast.synccity.models.results.AverageResult;
 import org.apache.flink.api.common.accumulators.AverageAccumulator;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;

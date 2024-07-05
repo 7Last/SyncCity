@@ -3,7 +3,6 @@ package com.sevenlast.synccity.functions;
 import com.sevenlast.synccity.models.SensorLocation;
 import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
-import com.sevenlast.synccity.serialization.RecordSerializable;
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 
@@ -23,7 +22,7 @@ public class HeatIndexJoinFunction implements JoinFunction<AverageResult, Averag
     private static final double C9 = -3.582e-6;
 
     @Override
-    public HeatIndexResult join(AverageResult averageTemperature, AverageResult averageHumidity){
+    public HeatIndexResult join(AverageResult averageTemperature, AverageResult averageHumidity) {
         double t = averageTemperature.getValue();
         double h = averageHumidity.getValue();
 

@@ -1,9 +1,8 @@
 import argparse
 import os
-import sys
-
 import requests
 import requests.exceptions
+import sys
 
 
 class FlinkRestClient:

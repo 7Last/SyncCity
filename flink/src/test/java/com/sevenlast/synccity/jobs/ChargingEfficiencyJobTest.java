@@ -8,6 +8,7 @@ import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -22,6 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ChargingEfficiencyJobTest {
+    @BeforeEach
+    public void before() {
+        CollectionSink.values.clear();
+    }
+
     @Test
     public void testSingleSensor() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -55,8 +61,7 @@ public class ChargingEfficiencyJobTest {
         ).map(this::toRecord).toList();
         //@formatter:on
 
-        CollectionSink mockSink = new CollectionSink();
-        CollectionSink.values.clear();
+        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromData(parkingData),
@@ -66,8 +71,8 @@ public class ChargingEfficiencyJobTest {
 
         job.execute(env);
         var expected = new ChargingEfficiencyResult(
-                0.23076923076923078,
-                0.3157894736842105,
+                0.3076923076923077,
+                0.42105263157894735,
                 uuid
         );
         var actual = CollectionSink.values.get(0);
@@ -94,15 +99,16 @@ public class ChargingEfficiencyJobTest {
         );
 
         var chargingData = List.of(
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate, "type", 0, 1, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                // occupied 2h free 0
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 1, Duration.ZERO, Duration.ZERO),
 
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate, "type", 0, 1, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO)
+                // occupied 1h free 0
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate.plusHours(1), "type", 0, 1, Duration.ZERO, Duration.ZERO)
         );
 
-        CollectionSink mockSink = new CollectionSink();
-        CollectionSink.values.clear();
+        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromData(parkingData.stream().map(this::toRecord).toList()),
@@ -120,7 +126,7 @@ public class ChargingEfficiencyJobTest {
     }
 
     @Test
-    public void minimumEfficiencyAndUtilizationTest() throws Exception {
+    public void zeroEfficiencyAndUtilizationTest() throws Exception {
         // Efficiency is 0.0 when the charging station is never in use when the park is occupied
         // Utilization is 0.0 when the charging station is never in use in respect to the total time
 
@@ -147,8 +153,7 @@ public class ChargingEfficiencyJobTest {
         );
 
 
-        CollectionSink mockSink = new CollectionSink();
-        CollectionSink.values.clear();
+        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromData(parkingData.stream().map(this::toRecord).toList()),
@@ -163,7 +168,12 @@ public class ChargingEfficiencyJobTest {
                 ChargingEfficiencyResult.zero(uuid2)
         );
 
-        assertEquals(minEfficiency, CollectionSink.values);
+        // Assert that the values are the same, regardless of the order
+        assertTrue(
+                CollectionSink.values.size() == 2 &&
+                        CollectionSink.values.containsAll(minEfficiency) &&
+                        minEfficiency.containsAll(CollectionSink.values)
+        );
     }
 
     @Test
@@ -194,7 +204,7 @@ public class ChargingEfficiencyJobTest {
 
         //@formatter:off
         var chargingData = Stream.of(
-            // occupied 1h free 1h20
+            // occupied 1h20m free 1h
             new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp, "type", 0, 0, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
@@ -204,7 +214,7 @@ public class ChargingEfficiencyJobTest {
             new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO),
 
-            // occupied 1h40m free 40m
+            // occupied 40m free 1h40m
             new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp, "type", 0, 0, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp.plusMinutes(20), "type", 5, 0, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 10, Duration.ZERO, Duration.ZERO),
@@ -216,8 +226,7 @@ public class ChargingEfficiencyJobTest {
         ).map(this::toRecord).toList();
         //@formatter:on
 
-        CollectionSink mockSink = new CollectionSink();
-        CollectionSink.values.clear();
+        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromData(parkingData),
@@ -228,13 +237,13 @@ public class ChargingEfficiencyJobTest {
         job.execute(env);
         var expected = List.of(
                 new ChargingEfficiencyResult(
-                        0.23076923076923078,
-                        0.4,
+                        0.3076923076923077,
+                        0.5333333333333333,
                         uuid1
                 ),
                 new ChargingEfficiencyResult(
-                        0.38461538461538464,
-                        0.425531914893617,
+                        0.15384615384615385,
+                        0.1702127659574468,
                         uuid2
                 )
         );
