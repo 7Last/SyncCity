@@ -6,10 +6,12 @@ import com.sevenlast.synccity.models.results.HeatIndexResult;
 import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -19,6 +21,13 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HeatIndexJobTest {
+
+    private final WatermarkStrategy<GenericRecord> watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+            .withTimestampAssigner((event, timestamp) -> {
+                var eventTimestamp = event.get("timestamp").toString();
+                return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+            });
+
     @BeforeEach
     public void before() {
         CollectionSink.values.clear();
@@ -48,13 +57,14 @@ public class HeatIndexJobTest {
 
         var mockSink = new CollectionSink<HeatIndexResult>();
 
-//        var job = new HeatIndexJob(
-//                env.fromCollection(temperatureData),
-//                env.fromCollection(humidityData),
-//                mockSink
-//        );
-//
-//        job.execute(env);
+        var job = new HeatIndexJob(
+                env.fromCollection(temperatureData),
+                env.fromCollection(humidityData),
+                mockSink,
+                watermark
+        );
+
+        job.execute(env);
 
         var expected = new HeatIndexResult(
                 Set.of(temperatureName, humidityName),
@@ -104,15 +114,16 @@ public class HeatIndexJobTest {
                 new HumTempRawData(humidity2Uuid, "humidity-2", groupName, 12.15, 45.1, beginDate.plusMinutes(10), 81.0f)
         ).map(this::toRecord).toList();
 
-//        var mockSink = new CollectionSink<HeatIndexResult>();
-//
-//        var job = new HeatIndexJob(
-//                env.fromCollection(temperatureData),
-//                env.fromCollection(humidityData),
-//                mockSink
-//        );
+        var mockSink = new CollectionSink<HeatIndexResult>();
 
-//        job.execute(env);
+        var job = new HeatIndexJob(
+                env.fromCollection(temperatureData),
+                env.fromCollection(humidityData),
+                mockSink,
+                watermark
+        );
+
+        job.execute(env);
 
         var expected = new HeatIndexResult(
                 Set.of("temperature-1", "temperature-2", "humidity-1", "humidity-2"),

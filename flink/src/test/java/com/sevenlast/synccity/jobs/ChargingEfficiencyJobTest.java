@@ -7,6 +7,7 @@ import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
 import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
+import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ChargingEfficiencyJobTest {
+    private final WatermarkStrategy<GenericRecord> watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
+            .withTimestampAssigner((event, timestamp) -> {
+                var eventTimestamp = event.get("timestamp").toString();
+                return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+            });
+
     @BeforeEach
     public void before() {
         CollectionSink.values.clear();
@@ -66,7 +73,8 @@ public class ChargingEfficiencyJobTest {
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData),
                 env.fromCollection(chargingData),
-                mockSink
+                mockSink,
+                watermark
         );
 
         job.execute(env);
@@ -113,7 +121,8 @@ public class ChargingEfficiencyJobTest {
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
                 env.fromCollection(chargingData.stream().map(this::toRecord).toList()),
-                mockSink
+                mockSink,
+                watermark
         );
         job.execute(env);
 
@@ -122,7 +131,11 @@ public class ChargingEfficiencyJobTest {
                 new ChargingEfficiencyResult(1.0, 1.0, uuid2)
         );
 
-        assertEquals(maxEfficiency, CollectionSink.values);
+        assertTrue(
+                CollectionSink.values.size() == 2 &&
+                        maxEfficiency.containsAll(CollectionSink.values) &&
+                        CollectionSink.values.containsAll(maxEfficiency)
+        );
     }
 
     @Test
@@ -158,7 +171,8 @@ public class ChargingEfficiencyJobTest {
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
                 env.fromCollection(chargingData.stream().map(this::toRecord).toList()),
-                mockSink
+                mockSink,
+                watermark
         );
 
         job.execute(env);
@@ -231,7 +245,8 @@ public class ChargingEfficiencyJobTest {
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData),
                 env.fromCollection(chargingData),
-                mockSink
+                mockSink,
+                watermark
         );
 
         job.execute(env);

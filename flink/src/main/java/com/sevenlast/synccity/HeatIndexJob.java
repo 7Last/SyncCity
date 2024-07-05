@@ -41,6 +41,7 @@ public class HeatIndexJob {
     private DataStreamSource<GenericRecord> temperatureKafkaSource;
     private DataStreamSource<GenericRecord> humidityKafkaSource;
     private SinkFunction<HeatIndexResult> heatIndexSink;
+    private WatermarkStrategy<GenericRecord> watermark;
 
     public static void main(String[] args) throws Exception {
         var bootstrapServers = System.getenv("BOOTSTRAP_SERVERS");
@@ -102,18 +103,12 @@ public class HeatIndexJob {
         new HeatIndexJob(
                 env.fromSource(temperatureKafkaSource, watermark, "Temperature Kafka Source"),
                 env.fromSource(humidityKafkaSource, watermark, "Humidity Kafka Source"),
-                sink
+                sink,
+                watermark
         ).execute(env);
     }
 
     public void execute(StreamExecutionEnvironment env) throws Exception {
-
-        var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
-                .withTimestampAssigner((event, timestamp) -> {
-                    var eventTimestamp = event.get("timestamp").toString();
-                    return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
-                });
-
         var avgTemperatureStream = temperatureKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
                 .map(HumTempRawData::fromGenericRecord)

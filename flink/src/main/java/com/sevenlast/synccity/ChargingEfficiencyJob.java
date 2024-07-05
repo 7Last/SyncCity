@@ -38,6 +38,7 @@ public class ChargingEfficiencyJob {
     private DataStreamSource<GenericRecord> parkingKafkaSource;
     private DataStreamSource<GenericRecord> chargingStationKafkaSource;
     private SinkFunction<ChargingEfficiencyResult> efficiencySink;
+    private WatermarkStrategy<GenericRecord> watermark;
 
     public static void main(String[] args) throws Exception {
 
@@ -78,18 +79,6 @@ public class ChargingEfficiencyJob {
 
         // Aggregations
         var efficiencyMetadata = client.getLatestSchemaMetadata(CHARGING_EFFICIENCY_TOPIC + "-value");
-//        var sink = KafkaSink.<ChargingEfficiencyResult>builder()
-//                .setBootstrapServers(bootstrapServers)
-//                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-//                        .setTopic(CHARGING_EFFICIENCY_TOPIC)
-//                        .setValueSerializationSchema(new RecordSerializationSchema<ChargingEfficiencyResult>(
-//                                CHARGING_EFFICIENCY_TOPIC,
-//                                schemaParser.parse(efficiencyMetadata.getSchema()),
-//                                schemaRegistryUrl
-//                        ))
-//                        .build()
-//                ).build();
-
         var sink = new FlinkKafkaProducer<>(
                 bootstrapServers,
                 CHARGING_EFFICIENCY_TOPIC,
@@ -109,17 +98,14 @@ public class ChargingEfficiencyJob {
         new ChargingEfficiencyJob(
                 env.fromSource(parkingKafkaSource, watermark, "Parking Kafka Source"),
                 env.fromSource(chargingStationKafkaSource, watermark, "Charging Station Kafka Source"),
-                sink
+                sink,
+                watermark
         ).execute(env);
     }
 
     public void execute(StreamExecutionEnvironment env) throws Exception {
         var parkingStream = parkingKafkaSource
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
-                        .withTimestampAssigner((event, timestamp) -> {
-                            var eventTimestamp = event.get("timestamp").toString();
-                            return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
-                        }))
+                .assignTimestampsAndWatermarks(watermark)
                 .map(ParkingRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(ParkingRawData::getSensorUuid)
@@ -127,11 +113,7 @@ public class ChargingEfficiencyJob {
                 .apply(new TimestampDifferenceAggregateFunction<>());
 
         var chargingStationStream = chargingStationKafkaSource
-                .assignTimestampsAndWatermarks(WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
-                        .withTimestampAssigner((event, timestamp) -> {
-                            var eventTimestamp = event.get("timestamp").toString();
-                            return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
-                        }))
+                .assignTimestampsAndWatermarks(watermark)
                 .map(ChargingStationRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(ChargingStationRawData::getSensorUuid)
