@@ -32,9 +32,9 @@ under the License.
 
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <flink.version>1.19.0</flink.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <flink.version>1.18.0</flink.version>
     </properties>
 
     <dependencies>

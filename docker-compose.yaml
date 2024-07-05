@@ -213,7 +213,7 @@ services:
     environment:
       FLINK_CONF_DIR: /opt/flink/conf
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      BOOTSTRAP_SERVERS: http://redpanda:9092
+      BOOTSTRAP_SERVERS: redpanda:9092
       SCHEMA_REGISTRY_URL: http://redpanda:8081
     networks:
       - synccity

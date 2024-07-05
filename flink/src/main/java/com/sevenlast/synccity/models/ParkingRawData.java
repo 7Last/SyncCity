@@ -2,6 +2,7 @@ package com.sevenlast.synccity.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 
 import java.time.ZonedDateTime;
@@ -9,9 +10,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class ParkingRawData extends RawData {
-    private final boolean isOccupied;
+    private boolean isOccupied;
 
     public ParkingRawData(UUID sensorUuid, String sensorName, String groupName, double latitude, double longitude, ZonedDateTime timestamp, boolean isOccupied) {
         super(sensorUuid, sensorName, groupName, latitude, longitude, timestamp);

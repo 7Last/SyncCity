@@ -12,6 +12,8 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.configuration.PipelineOptions;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
@@ -20,17 +22,19 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
 
+@SuppressWarnings("ALL")
 @AllArgsConstructor
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";
     private static final String HUMIDITY_TOPIC = "humidity";
-    private static final Duration WINDOW_SIZE = Duration.ofHours(1);
+    private static final Time WINDOW_SIZE = Time.hours(1);
     private static final String HEAT_INDEX_TOPIC = "heat_index";
     private static final String GROUP_ID = "heat-index-job";
 
@@ -72,19 +76,6 @@ public class HeatIndexJob {
 
         var metadata = client.getLatestSchemaMetadata(HEAT_INDEX_TOPIC + "-value");
 
-//        var sink = KafkaSink.<HeatIndexResult>builder()
-//                .setBootstrapServers(bootstrapServers)
-//                .setRecordSerializer(KafkaRecordSerializationSchema.builder()
-//                        .setTopic(HEAT_INDEX_TOPIC)
-//                        .setValueSerializationSchema(new RecordSerializationSchema<HeatIndexResult>(
-//                                HEAT_INDEX_TOPIC,
-//                                heatIndexSchema,
-//                                schemaRegistryUrl
-//                        ))
-//                        .build()
-//                )
-//                .build();
-
         var sink = new FlinkKafkaProducer<>(
                 bootstrapServers,
                 HEAT_INDEX_TOPIC,
@@ -95,9 +86,13 @@ public class HeatIndexJob {
                 )
         );
 
-        var env = StreamExecutionEnvironment.getExecutionEnvironment();
+        Configuration config = new Configuration();
+        config.set(PipelineOptions.GENERIC_TYPES, true);
+
+        var env = StreamExecutionEnvironment.getExecutionEnvironment(config);
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
         env.getConfig().setAutoWatermarkInterval(1000);
+
         var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> {
                     var eventTimestamp = event.get("timestamp").toString();

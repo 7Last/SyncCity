@@ -20,16 +20,18 @@ import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
+@SuppressWarnings("ALL")
 @AllArgsConstructor
 public class ChargingEfficiencyJob {
     private static final String PARKING_TOPIC = "parking";
     private static final String CHARGING_STATION_TOPIC = "charging_station";
-    private static final Duration WINDOW_SIZE = Duration.ofDays(1);
+    private static final Time WINDOW_SIZE = Time.days(1);
     private static final String CHARGING_EFFICIENCY_TOPIC = "charging_efficiency";
     private static final String GROUP_ID = "charging-efficiency-job";
 

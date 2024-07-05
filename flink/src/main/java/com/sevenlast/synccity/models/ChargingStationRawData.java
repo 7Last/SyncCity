@@ -2,6 +2,7 @@ package com.sevenlast.synccity.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 
 import java.time.Duration;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class ChargingStationRawData extends RawData {
     private UUID sensorUuid;

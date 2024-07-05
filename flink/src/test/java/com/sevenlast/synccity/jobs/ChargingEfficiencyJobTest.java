@@ -64,8 +64,8 @@ public class ChargingEfficiencyJobTest {
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
-                env.fromData(parkingData),
-                env.fromData(chargingData),
+                env.fromCollection(parkingData),
+                env.fromCollection(chargingData),
                 mockSink
         );
 
@@ -111,8 +111,8 @@ public class ChargingEfficiencyJobTest {
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
-                env.fromData(parkingData.stream().map(this::toRecord).toList()),
-                env.fromData(chargingData.stream().map(this::toRecord).toList()),
+                env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
+                env.fromCollection(chargingData.stream().map(this::toRecord).toList()),
                 mockSink
         );
         job.execute(env);
@@ -156,8 +156,8 @@ public class ChargingEfficiencyJobTest {
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
-                env.fromData(parkingData.stream().map(this::toRecord).toList()),
-                env.fromData(chargingData.stream().map(this::toRecord).toList()),
+                env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
+                env.fromCollection(chargingData.stream().map(this::toRecord).toList()),
                 mockSink
         );
 
@@ -229,8 +229,8 @@ public class ChargingEfficiencyJobTest {
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
 
         var job = new ChargingEfficiencyJob(
-                env.fromData(parkingData),
-                env.fromData(chargingData),
+                env.fromCollection(parkingData),
+                env.fromCollection(chargingData),
                 mockSink
         );
 
