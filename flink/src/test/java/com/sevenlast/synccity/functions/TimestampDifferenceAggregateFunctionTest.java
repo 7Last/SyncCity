@@ -90,14 +90,24 @@ public class TimestampDifferenceAggregateFunctionTest {
         var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
         List<RawData> input = List.of(
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 5, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 5, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), "type", 0, 8, Duration.ZERO, Duration.ZERO),
+//                new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
+
+
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp, "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusMinutes(20), "type", 5, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 10, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1).plusMinutes(20), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(1).plusMinutes(40), "type", 0, 10, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-2", groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 0, Duration.ZERO, Duration.ZERO)
         );
 
         var function = new TimestampDifferenceAggregateFunction<>();

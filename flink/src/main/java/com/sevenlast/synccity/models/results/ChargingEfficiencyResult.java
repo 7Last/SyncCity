@@ -6,6 +6,8 @@ import lombok.Data;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 public class ChargingEfficiencyResult implements RecordSerializable {
@@ -17,12 +19,14 @@ public class ChargingEfficiencyResult implements RecordSerializable {
     // used by a vehicle to the total time the parking space is occupied
     private double efficiencyRate;
 
+    private UUID sensorUuid;
+
     @Override
     public GenericRecord toGenericRecord(Schema schema) {
         return null;
     }
 
-    public static ChargingEfficiencyResult zero() {
-        return new ChargingEfficiencyResult(0, 0);
+    public static ChargingEfficiencyResult zero(UUID sensorUuid) {
+        return new ChargingEfficiencyResult(0, 0, sensorUuid);
     }
 }
