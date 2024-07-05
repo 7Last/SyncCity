@@ -1,11 +1,13 @@
 package com.sevenlast.synccity.utils;
 
+import lombok.Data;
 import org.apache.avro.generic.GenericRecord;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@Data
 public class SimpleGenericRecord implements GenericRecord, Serializable {
     private final Map<String, Object> values = new HashMap<>();
 

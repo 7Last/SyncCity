@@ -29,7 +29,6 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 
 
-@SuppressWarnings("ALL")
 @AllArgsConstructor
 public class HeatIndexJob {
     private static final String TEMPERATURE_TOPIC = "temperature";

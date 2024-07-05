@@ -4,6 +4,7 @@ import com.sevenlast.synccity.serialization.RecordSerializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 
 import java.util.UUID;
@@ -19,14 +20,23 @@ public class ChargingEfficiencyResult implements RecordSerializable {
     // used by a vehicle to the total time the parking space is occupied
     private double efficiencyRate;
 
-    private UUID sensorUuid;
+    private String sensorUuid;
 
-    @Override
-    public GenericRecord toGenericRecord(Schema schema) {
-        return null;
+    public ChargingEfficiencyResult(double utilizationRate, double efficiencyRate, UUID sensorUuid) {
+        this.utilizationRate = utilizationRate;
+        this.efficiencyRate = efficiencyRate;
+        this.sensorUuid = sensorUuid.toString();
     }
 
-    public static ChargingEfficiencyResult zero(UUID sensorUuid) {
+    public GenericRecord toGenericRecord(Schema schema) {
+        GenericRecord record = new GenericData.Record(schema);
+        record.put("utilization_rate", utilizationRate);
+        record.put("efficiency_rate", efficiencyRate);
+        record.put("sensor_uuid", sensorUuid);
+        return record;
+    }
+
+    public static ChargingEfficiencyResult zero(String sensorUuid) {
         return new ChargingEfficiencyResult(0, 0, sensorUuid);
     }
 }

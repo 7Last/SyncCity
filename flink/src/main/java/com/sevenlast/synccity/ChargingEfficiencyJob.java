@@ -1,7 +1,8 @@
 package com.sevenlast.synccity;
 
 import com.sevenlast.synccity.functions.ChargingEfficiencyJoinFunction;
-import com.sevenlast.synccity.functions.TimestampDifferenceAggregateFunction;
+import com.sevenlast.synccity.functions.ChargingStationTimeDifferenceWindowFunction;
+import com.sevenlast.synccity.functions.ParkingTimeDifferenceWindowFunction;
 import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
 import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
@@ -55,26 +56,30 @@ public class ChargingEfficiencyJob {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setRuntimeMode(RuntimeExecutionMode.STREAMING);
         env.getConfig().setAutoWatermarkInterval(1000);
+        env.setParallelism(1);
 
         // Source
         var parkingMetadata = client.getLatestSchemaMetadata(PARKING_TOPIC + "-value");
+        var deserializer = ConfluentRegistryAvroDeserializationSchema.forGeneric(
+                schemaParser.parse(parkingMetadata.getSchema()), schemaRegistryUrl);
+
         var parkingKafkaSource = KafkaSource.<GenericRecord>builder()
                 .setStartingOffsets(OffsetsInitializer.latest())
                 .setBootstrapServers(bootstrapServers)
                 .setTopics(PARKING_TOPIC)
                 .setGroupId(GROUP_ID)
-                .setValueOnlyDeserializer(ConfluentRegistryAvroDeserializationSchema.forGeneric(
-                        schemaParser.parse(parkingMetadata.getSchema()), schemaRegistryUrl))
+                .setValueOnlyDeserializer(deserializer)
                 .build();
 
         var chargingStationMetadata = client.getLatestSchemaMetadata(CHARGING_STATION_TOPIC + "-value");
+        deserializer = ConfluentRegistryAvroDeserializationSchema.forGeneric(
+                schemaParser.parse(chargingStationMetadata.getSchema()), schemaRegistryUrl);
         var chargingStationKafkaSource = KafkaSource.<GenericRecord>builder()
                 .setStartingOffsets(OffsetsInitializer.latest())
                 .setBootstrapServers(bootstrapServers)
                 .setTopics(CHARGING_STATION_TOPIC)
                 .setGroupId(GROUP_ID)
-                .setValueOnlyDeserializer(ConfluentRegistryAvroDeserializationSchema.forGeneric(
-                        schemaParser.parse(chargingStationMetadata.getSchema()), schemaRegistryUrl))
+                .setValueOnlyDeserializer(deserializer)
                 .build();
 
         // Aggregations
@@ -108,17 +113,27 @@ public class ChargingEfficiencyJob {
                 .assignTimestampsAndWatermarks(watermark)
                 .map(ParkingRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy(ParkingRawData::getSensorUuid)
+                .keyBy((data) -> {
+                    if (data.getTimestamp().getZone() == null) {
+                        throw new IllegalArgumentException("Timestamp must have a zone");
+                    }
+                    return data.getSensorUuid().toString();
+                })
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new TimestampDifferenceAggregateFunction<>());
+                .apply(new ParkingTimeDifferenceWindowFunction());
 
         var chargingStationStream = chargingStationKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
                 .map(ChargingStationRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy(ChargingStationRawData::getSensorUuid)
+                .keyBy((data) -> {
+                    if (data.getTimestamp().getZone() == null) {
+                        throw new IllegalArgumentException("Timestamp must have a zone");
+                    }
+                    return data.getSensorUuid().toString();
+                })
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new TimestampDifferenceAggregateFunction<>());
+                .apply(new ChargingStationTimeDifferenceWindowFunction());
 
         var efficiencyStream = parkingStream.join(chargingStationStream)
                 .where(TimestampDifferenceResult::getSensorUuid)

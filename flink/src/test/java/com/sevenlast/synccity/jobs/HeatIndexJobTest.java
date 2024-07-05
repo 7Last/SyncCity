@@ -36,7 +36,7 @@ public class HeatIndexJobTest {
     @Test
     public void testSingleSensor() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var temperatureUuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var temperatureUuid = "00000000-0000-0000-0000-000000000000";
         var temperatureName = "Temperature";
         var groupName = "Group";
         var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
@@ -47,7 +47,7 @@ public class HeatIndexJobTest {
                 new HumTempRawData(temperatureUuid, temperatureName, groupName, 0.0, 0.0, beginDate.plusMinutes(10), 27.5f)
         ).map(this::toRecord).toList();
 
-        var humidityUuid = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var humidityUuid = "00000000-0000-0000-0000-000000000001";
         var humidityName = "Humidity";
         var humidityData = Stream.of(
                 new HumTempRawData(humidityUuid, humidityName, groupName, 0.0, 0.0, beginDate, 50.0f),
@@ -86,8 +86,8 @@ public class HeatIndexJobTest {
     @Test
     public void testMultipleSensors() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var temperature1Uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        var temperature2Uuid = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var temperature1Uuid = "00000000-0000-0000-0000-000000000000";
+        var temperature2Uuid = "00000000-0000-0000-0000-000000000001";
         var groupName = "Group";
         var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
@@ -101,8 +101,8 @@ public class HeatIndexJobTest {
                 new HumTempRawData(temperature2Uuid, "temperature-2", groupName, 12.5, 45.5, beginDate.plusMinutes(10), 27.5f)
         ).map(this::toRecord).toList();
 
-        var humidity1Uuid = UUID.fromString("00000000-0000-0000-0000-000000000002");
-        var humidity2Uuid = UUID.fromString("00000000-0000-0000-0000-000000000003");
+        var humidity1Uuid = "00000000-0000-0000-0000-000000000002";
+        var humidity2Uuid = "00000000-0000-0000-0000-000000000003";
 
         var humidityData = Stream.of(
                 new HumTempRawData(humidity1Uuid, "humidity-1", groupName, 12.25, 45.20, beginDate, 77.0f),

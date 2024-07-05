@@ -20,12 +20,12 @@ public class TimestampDifferenceAggregateFunctionTest {
     public void testParking1() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
         var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
-        List<RawData> input = List.of(
+        var input = List.of(
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp, true), // occupied 0 free 0
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), false), // occupied 1h free 0
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), true), // occupied 1h free 1h
@@ -34,7 +34,7 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(4).plusMinutes(20), false) // occupied 3h10m free 1h10m
         );
 
-        var function = new TimestampDifferenceAggregateFunction<>();
+        var function = new ParkingTimeDifferenceWindowFunction();
         function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();
@@ -52,12 +52,12 @@ public class TimestampDifferenceAggregateFunctionTest {
     public void testParking2() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
         var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
-        List<RawData> input = List.of(
+        var input = List.of(
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate, false), // 0 occupied 0 free
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(1), true), // 1h occupied 0 free
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2), false), // 1h occupied 1h free
@@ -66,7 +66,7 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(8), true) // 1h20m occupied 6h40m free
         );
 
-        var function = new TimestampDifferenceAggregateFunction<>();
+        var function = new ParkingTimeDifferenceWindowFunction();
         function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();
@@ -84,12 +84,12 @@ public class TimestampDifferenceAggregateFunctionTest {
     public void testChargingStation1() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
         var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
-        List<RawData> input = List.of(
+        var input = List.of(
                 new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
                 new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
                 new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
@@ -100,7 +100,7 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(20), "type", 0, 3, Duration.ZERO, Duration.ZERO)
         );
 
-        var function = new TimestampDifferenceAggregateFunction<>();
+        var function = new ChargingStationTimeDifferenceWindowFunction();
         function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();
@@ -118,16 +118,16 @@ public class TimestampDifferenceAggregateFunctionTest {
     public void testChargingStationNeverOccupied() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
-        List<RawData> input = List.of(
+        var input = List.of(
                 new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
                 new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO)
         );
 
-        var function = new TimestampDifferenceAggregateFunction<>();
+        var function = new ChargingStationTimeDifferenceWindowFunction();
         function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();
@@ -145,16 +145,16 @@ public class TimestampDifferenceAggregateFunctionTest {
     public void parkingNeverOccupied() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
 
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
-        List<RawData> input = List.of(
+        var input = List.of(
                 new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate, false),
                 new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate.plusHours(2), true)
         );
 
-        var function = new TimestampDifferenceAggregateFunction<>();
+        var function = new ParkingTimeDifferenceWindowFunction();
         function.apply(uuid, null, input, mockCollector);
 
         var result = mockCollector.getResult();

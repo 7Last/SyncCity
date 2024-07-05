@@ -80,7 +80,8 @@ if __name__ == "__main__":
     jar_files = args.jars.split(',')
     entry_classes = args.classes.split(',')
 
-    for jar_file, entry_class in zip(jar_files, entry_classes, strict=False):
+    for jar_file in jar_files:
         response = client.upload_jar(jar_file)
         jar_id = client.extract_jar_id(response)
-        client.run_jar(jar_id, entry_class)
+        for entry_class in entry_classes:
+            client.run_jar(jar_id, entry_class)

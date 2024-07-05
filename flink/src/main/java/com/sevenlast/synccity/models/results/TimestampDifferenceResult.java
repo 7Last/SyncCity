@@ -11,5 +11,5 @@ import java.util.UUID;
 public class TimestampDifferenceResult {
     private Duration occupiedDuration;
     private Duration notOccupiedDuration;
-    private UUID sensorUuid;
+    private String sensorUuid;
 }

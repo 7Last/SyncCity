@@ -38,7 +38,7 @@ public class ChargingEfficiencyJobTest {
     @Test
     public void testSingleSensor() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group";
         var parkingSensorName = "parking";
         String chargingSensorName = "charging";
@@ -93,8 +93,8 @@ public class ChargingEfficiencyJobTest {
         // Utilization is 1.0 when the charging station is always in use in respect to the total time
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var uuid1 = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        var uuid2 = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var uuid1 = "00000000-0000-0000-0000-000000000000";
+        var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
         var beginDate = ZonedDateTime.parse("2024-01-01T00:00:00Z");
 
@@ -108,12 +108,12 @@ public class ChargingEfficiencyJobTest {
 
         var chargingData = List.of(
                 // occupied 2h free 0
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 1, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0f, 1f, Duration.ZERO, Duration.ZERO),
 
                 // occupied 1h free 0
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate.plusHours(1), "type", 0, 1, Duration.ZERO, Duration.ZERO)
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate.plusHours(1), "type", 0f, 1f, Duration.ZERO, Duration.ZERO)
         );
 
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
@@ -144,8 +144,8 @@ public class ChargingEfficiencyJobTest {
         // Utilization is 0.0 when the charging station is never in use in respect to the total time
 
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var uuid1 = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        var uuid2 = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var uuid1 = "00000000-0000-0000-0000-000000000000";
+        var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
         var beginDate = ZonedDateTime.parse("2024-01-01T00:00:00Z");
 
@@ -193,8 +193,8 @@ public class ChargingEfficiencyJobTest {
     @Test
     public void multipleSensors() throws Exception {
         var env = StreamExecutionEnvironment.getExecutionEnvironment();
-        var uuid1 = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        var uuid2 = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        var uuid1 = "00000000-0000-0000-0000-000000000000";
+        var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
         var timestamp = ZonedDateTime.parse("2024-01-01T00:00:00Z");
 
@@ -254,12 +254,12 @@ public class ChargingEfficiencyJobTest {
                 new ChargingEfficiencyResult(
                         0.3076923076923077,
                         0.5333333333333333,
-                        uuid1
+                        uuid1.toString()
                 ),
                 new ChargingEfficiencyResult(
                         0.15384615384615385,
                         0.1702127659574468,
-                        uuid2
+                        uuid2.toString()
                 )
         );
         assertEquals(expected, CollectionSink.values);

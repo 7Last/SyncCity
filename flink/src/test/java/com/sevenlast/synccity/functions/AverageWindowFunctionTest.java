@@ -17,16 +17,16 @@ public class AverageWindowFunctionTest {
     public void testAverageCalculation() {
         var function = new AverageWindowFunction();
 
-        var guid = UUID.fromString("00000000-0000-0000-0000-000000000000");
+        var uuid = "00000000-0000-0000-0000-000000000000";
         var sensorName = "sensor-name";
         var groupName = "group-name";
         var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
 
         var data = List.of(
-                new HumTempRawData(guid, sensorName, groupName, 0, 0, timestamp, 10),
-                new HumTempRawData(guid, sensorName, groupName, 0, 0, timestamp.plusMinutes(1), 20),
-                new HumTempRawData(guid, sensorName, groupName, 0, 0, timestamp.plusMinutes(2), 30),
-                new HumTempRawData(guid, sensorName, groupName, 0, 0, timestamp.plusMinutes(3), 25)
+                new HumTempRawData(uuid, sensorName, groupName, 0, 0, timestamp, 10),
+                new HumTempRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(1), 20),
+                new HumTempRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(2), 30),
+                new HumTempRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusMinutes(3), 25)
         );
 
         var mockCollector = new MockCollector<AverageResult>();

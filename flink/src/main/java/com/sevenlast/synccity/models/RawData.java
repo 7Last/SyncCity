@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-public abstract class RawData implements Supplier<Boolean> {
-    private UUID sensorUuid;
+public abstract class RawData {
+    private String sensorUuid;
     private String sensorName;
     private String groupName;
     private double latitude;
