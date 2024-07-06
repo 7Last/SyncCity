@@ -185,13 +185,13 @@ public class ChargingEfficiencyJoinFunctionTest {
         var function = new ChargingEfficiencyJoinFunction();
         var result = function.join(parkingDiff, chargingDiff);
         assertEquals(
-                result,
                 ChargingEfficiencyResult.zero(
                         uuid,
                         timestamp,
                         groupName,
                         Set.of("sensor-name-1", "sensor-name-2")
-                )
+                ),
+                result
         );
     }
 

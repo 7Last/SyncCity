@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -48,7 +49,9 @@ public class TimestampDifferenceAggregateFunctionTest {
                         Duration.ofHours(3).plusMinutes(10),
                         Duration.ofHours(1).plusMinutes(10),
                         uuid,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of(sensorName)
                 )
         );
     }
@@ -85,7 +88,9 @@ public class TimestampDifferenceAggregateFunctionTest {
                         Duration.ofHours(1).plusMinutes(20),
                         Duration.ofHours(6).plusMinutes(40),
                         uuid,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of(sensorName)
                 )
         );
     }
@@ -125,7 +130,9 @@ public class TimestampDifferenceAggregateFunctionTest {
                         Duration.ofHours(1).plusMinutes(20),
                         Duration.ofHours(1),
                         uuid,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of(sensorName)
                 )
         );
     }
@@ -157,7 +164,9 @@ public class TimestampDifferenceAggregateFunctionTest {
                         Duration.ZERO,
                         Duration.ofHours(2),
                         uuid,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of("charging-1")
                 )
         );
     }
@@ -190,7 +199,9 @@ public class TimestampDifferenceAggregateFunctionTest {
                         Duration.ZERO,
                         Duration.ofHours(2),
                         uuid,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of("parking-1")
                 )
         );
     }
