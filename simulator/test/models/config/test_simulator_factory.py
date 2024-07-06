@@ -3,9 +3,10 @@ from datetime import datetime
 from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
-from simulator.src.models.config.simulator_factory import build_simulators
-from simulator.src.simulators.temperature_simulator import TemperatureSimulator
-from simulator.src.simulators.traffic_simulator import TrafficSimulator
+from simulator.src.simulator_factory import build_simulators
+from simulator.src.simulators.temperature_simulator_strategy import \
+    TemperatureSimulatorStrategy
+from simulator.src.simulators.traffic_simulator_strategy import TrafficSimulatorStrategy
 
 
 class TestSimulatorFactory(unittest.TestCase):
@@ -34,9 +35,9 @@ class TestSimulatorFactory(unittest.TestCase):
         }
 
         simulators = sorted(build_simulators(config, mock_producer),
-                            key=lambda x: x.sensor_name)
+                            key=lambda x: x.sensor_name())
         expected = [
-            TemperatureSimulator(
+            TemperatureSimulatorStrategy(
                 sensor_name="sensor1",
                 config=SensorConfig(
                     {
@@ -51,7 +52,7 @@ class TestSimulatorFactory(unittest.TestCase):
                 ),
                 producer=mock_producer,
             ),
-            TrafficSimulator(
+            TrafficSimulatorStrategy(
                 sensor_name="sensor2",
                 config=SensorConfig(
                     {

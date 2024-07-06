@@ -14,11 +14,11 @@ class AirQualityRawData(RawData):
         super().__init__(latitude=latitude, longitude=longitude,
                          sensor_name=sensor_name, sensor_uuid=sensor_uuid,
                          timestamp=timestamp, group_name=group_name)
-        self.pm25 = pm25
-        self.pm10 = pm10
-        self.no2 = no2
-        self.o3 = o3
-        self.so2 = so2
+        self.__pm25 = pm25
+        self.__pm10 = pm10
+        self.__no2 = no2
+        self.__o3 = o3
+        self.__so2 = so2
 
     @property
     def topic(self) -> str:
@@ -26,11 +26,11 @@ class AirQualityRawData(RawData):
 
     def to_json(self) -> Dict[str, any]:
         return {
-            "pm25": self.pm25,
-            "pm10": self.pm10,
-            "no2": self.no2,
-            "o3": self.o3,
-            "so2": self.so2,
+            "pm25": self.__pm25,
+            "pm10": self.__pm10,
+            "no2": self.__no2,
+            "o3": self.__o3,
+            "so2": self.__so2,
             **(super().to_json()),
         }
 
@@ -38,15 +38,15 @@ class AirQualityRawData(RawData):
         if not isinstance(other, AirQualityRawData):
             return False
         return (super().__eq__(other) and
-                self.pm25 == other.pm25 and
-                self.pm10 == other.pm10 and
-                self.no2 == other.no2 and
-                self.o3 == other.o3 and
-                self.so2 == other.so2)
+                self.__pm25 == other.__pm25 and
+                self.__pm10 == other.__pm10 and
+                self.__no2 == other.__no2 and
+                self.__o3 == other.__o3 and
+                self.__so2 == other.__so2)
 
     def __hash__(self) -> int:
-        return hash((super().__hash__(), self.pm25, self.pm10, self.no2,
-                     self.o3, self.so2))
+        return hash((super().__hash__(), self.__pm25, self.__pm10, self.__no2,
+                     self.__o3, self.__so2))
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

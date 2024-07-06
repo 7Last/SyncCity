@@ -5,16 +5,16 @@ from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.river_level_raw_data import RiverLevelRawData
-from simulator.src.simulators.river_level_simulator import RiverLevelSimulator
+from simulator.src.simulators.river_level_simulator_strategy import RiverLevelSimulatorStrategy
 
 
-class TestRiverLevelSimulator(unittest.TestCase):
+class TestRiverLevelSimulatorStrategy(unittest.TestCase):
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            RiverLevelSimulator(
+            RiverLevelSimulatorStrategy(
                 sensor_name='',
                 config=SensorConfig({
                     'uuid': '00000000-0000-0000-0000-000000000000',
@@ -27,43 +27,9 @@ class TestRiverLevelSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = RiverLevelSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'river_level',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = RiverLevelSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'river_level',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.gauss', side_effect=[0.8, 0.9, 0.5])
-    def test_stream(self, _: Mock) -> None:
-        simulator = RiverLevelSimulator(
+    def test_data(self, _: Mock) -> None:
+        simulator = RiverLevelSimulatorStrategy(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',

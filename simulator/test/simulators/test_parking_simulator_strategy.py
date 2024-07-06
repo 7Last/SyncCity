@@ -5,16 +5,16 @@ from uuid import UUID
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.parking_raw_data import ParkingRawData
-from simulator.src.simulators.parking_simulator import ParkingSimulator
+from simulator.src.simulators.parking_simulator_strategy import ParkingSimulatorStrategy
 
 
-class TestParkingSimulator(unittest.TestCase):
+class TestParkingSimulatorStrategy(unittest.TestCase):
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            ParkingSimulator(
+            ParkingSimulatorStrategy(
                 sensor_name='',
                 config=SensorConfig({
                     'uuid': '00000000-0000-0000-0000-000000000000',
@@ -27,49 +27,13 @@ class TestParkingSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = ParkingSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = ParkingSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'recycling_point',
-                'points_spacing': 'PT1S',
-                'generation_delay': 'PT1S',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @unittest.mock.patch(
         'random.random',
         side_effect=[0.1, 0.6, 0.3],
     )
-    @unittest.mock.patch(
-        'simulator.src.simulators.parking_simulator.ParkingSimulator._generate_next_occupancy_change',
-    )
-    def test_stream(self, mock_next_change: MagicMock, _: any) -> None:
-        simulator = ParkingSimulator(
+    @unittest.mock.patch('random.randint', return_value=60)
+    def test_data(self, _: MagicMock, __: MagicMock) -> None:
+        simulator = ParkingSimulatorStrategy(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
@@ -83,12 +47,6 @@ class TestParkingSimulator(unittest.TestCase):
             }),
             producer=self.producer,
         )
-
-        mock_next_change.side_effect = [
-            datetime(2024, 1, 1, 4),
-            datetime(2024, 1, 1, 5),
-            datetime(2024, 1, 1, 6),
-        ]
 
         stream = [simulator.data() for _ in range(3)]
 
@@ -107,7 +65,7 @@ class TestParkingSimulator(unittest.TestCase):
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
-                timestamp=datetime(2024, 1, 1, 4, 0, 0),
+                timestamp=datetime(2024, 1, 1, 1, 0, 0),
             ),
             ParkingRawData(
                 is_occupied=True,
@@ -115,7 +73,7 @@ class TestParkingSimulator(unittest.TestCase):
                 sensor_name='test',
                 latitude=0,
                 longitude=0,
-                timestamp=datetime(2024, 1, 1, 5, 0, 0),
+                timestamp=datetime(2024, 1, 1, 2, 0, 0),
             ),
         ]
 

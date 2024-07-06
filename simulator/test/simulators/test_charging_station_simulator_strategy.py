@@ -6,16 +6,16 @@ from uuid import UUID
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.charging_station_raw_data import \
     ChargingStationRawData
-from simulator.src.simulators.charging_station_simulator import ChargingStationSimulator
+from simulator.src.simulators.charging_station_simulator_strategy import ChargingStationSimulatorStrategy
 
 
-class TestChargingStationSimulator(unittest.TestCase):
+class TestChargingStationSimulatorStrategy(unittest.TestCase):
     def setUp(self) -> None:
         self.producer = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
-            ChargingStationSimulator(
+            ChargingStationSimulatorStrategy(
                 sensor_name='',
                 config=SensorConfig({
                     'uuid': '00000000-0000-0000-0000-000000000000',
@@ -28,45 +28,11 @@ class TestChargingStationSimulator(unittest.TestCase):
                 producer=self.producer,
             )
 
-    def test_start(self) -> None:
-        simulator = ChargingStationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'charging_station',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        self.assertEqual(simulator.is_running(), True)
-        simulator.stop()
-
-    def test_stop(self) -> None:
-        simulator = ChargingStationSimulator(
-            sensor_name='test',
-            config=SensorConfig({
-                'uuid': '00000000-0000-0000-0000-000000000000',
-                'type': 'charging_station',
-                'points_spacing': 'PT1H',
-                'generation_delay': 'PT1H',
-                'latitude': 0,
-                'longitude': 0,
-            }),
-            producer=self.producer,
-        )
-        simulator.start()
-        simulator.stop()
-        self.assertEqual(simulator.is_running(), False)
-
     @patch('random.random', return_value=0)
     @patch('random.choices', side_effect=[[11], ['car'], ['car'], ['car']])
     @patch('random.uniform', side_effect=[3, 50, 2, 80, 1, 20])
-    def test_stream(self, _: Mock, __: Mock, ___: Mock) -> None:
-        simulator = ChargingStationSimulator(
+    def test_data(self, _: Mock, __: Mock, ___: Mock) -> None:
+        simulator = ChargingStationSimulatorStrategy(
             sensor_name='test',
             config=SensorConfig({
                 'uuid': '00000000-0000-0000-0000-000000000000',
