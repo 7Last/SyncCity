@@ -25,7 +25,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @SuppressWarnings("ALL")
 @AllArgsConstructor
@@ -97,7 +98,7 @@ public class ChargingEfficiencyJob {
         var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> {
                     var eventTimestamp = event.get("timestamp").toString();
-                    return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+                    return LocalDateTime.parse(eventTimestamp).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
                 });
 
         new ChargingEfficiencyJob(
@@ -113,12 +114,7 @@ public class ChargingEfficiencyJob {
                 .assignTimestampsAndWatermarks(watermark)
                 .map(ParkingRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy((data) -> {
-                    if (data.getTimestamp().getZone() == null) {
-                        throw new IllegalArgumentException("Timestamp must have a zone");
-                    }
-                    return data.getSensorUuid().toString();
-                })
+                .keyBy((data) -> data.getSensorUuid().toString())
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new ParkingTimeDifferenceWindowFunction());
 
@@ -126,12 +122,7 @@ public class ChargingEfficiencyJob {
                 .assignTimestampsAndWatermarks(watermark)
                 .map(ChargingStationRawData::fromGenericRecord)
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
-                .keyBy((data) -> {
-                    if (data.getTimestamp().getZone() == null) {
-                        throw new IllegalArgumentException("Timestamp must have a zone");
-                    }
-                    return data.getSensorUuid().toString();
-                })
+                .keyBy((data) -> data.getSensorUuid().toString())
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new ChargingStationTimeDifferenceWindowFunction());
 

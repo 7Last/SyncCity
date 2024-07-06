@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,7 +22,7 @@ public class ChargingStationRawData extends RawData {
     private Duration remainingChargeTime;
     private Duration elapsedTime;
 
-    public ChargingStationRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, ZonedDateTime timestamp, String vehicleType, double batteryLevel, double kwhSupplied, Duration remainingChargeTime, Duration elapsedTime) {
+    public ChargingStationRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, LocalDateTime timestamp, String vehicleType, double batteryLevel, double kwhSupplied, Duration remainingChargeTime, Duration elapsedTime) {
         super(sensorUuid, sensorName, groupName, latitude, longitude, timestamp);
         this.vehicleType = vehicleType;
         this.batteryLevel = batteryLevel;
@@ -39,7 +38,7 @@ public class ChargingStationRawData extends RawData {
                 Optional.ofNullable(record.get("group_name")).map(Object::toString).orElse(null),
                 (double) record.get("latitude"),
                 (double) record.get("longitude"),
-                ZonedDateTime.parse(record.get("timestamp").toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                LocalDateTime.parse(record.get("timestamp").toString()),
                 record.get("vehicle_type").toString(),
                 Double.parseDouble(record.get("battery_level").toString()),
                 Double.parseDouble(record.get("kwh_supplied").toString()),

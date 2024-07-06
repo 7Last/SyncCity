@@ -12,10 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,9 @@ public class HeatIndexJobTest {
     private final WatermarkStrategy<GenericRecord> watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
             .withTimestampAssigner((event, timestamp) -> {
                 var eventTimestamp = event.get("timestamp").toString();
-                return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+                return LocalDateTime.parse(eventTimestamp).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+
+
             });
 
     @BeforeEach
@@ -39,7 +41,7 @@ public class HeatIndexJobTest {
         var temperatureUuid = "00000000-0000-0000-0000-000000000000";
         var temperatureName = "Temperature";
         var groupName = "Group";
-        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var temperatureData = Stream.of(
                 new HumTempRawData(temperatureUuid, temperatureName, groupName, 0.0, 0.0, beginDate, 25.0f),
@@ -89,7 +91,7 @@ public class HeatIndexJobTest {
         var temperature1Uuid = "00000000-0000-0000-0000-000000000000";
         var temperature2Uuid = "00000000-0000-0000-0000-000000000001";
         var groupName = "Group";
-        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var temperatureData = Stream.of(
                 new HumTempRawData(temperature1Uuid, "temperature-1", groupName, 12.0, 45.0, beginDate, 25.0f),
@@ -149,7 +151,7 @@ public class HeatIndexJobTest {
         simpleRecord.put("group_name", data.getGroupName());
         simpleRecord.put("latitude", data.getLatitude());
         simpleRecord.put("longitude", data.getLongitude());
-        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         simpleRecord.put("value", data.getValue());
         return simpleRecord;
     }

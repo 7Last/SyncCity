@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.Duration;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor

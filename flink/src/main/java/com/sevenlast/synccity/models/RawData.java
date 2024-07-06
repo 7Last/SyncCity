@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
-import java.util.function.Supplier;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +15,5 @@ public abstract class RawData {
     private String groupName;
     private double latitude;
     private double longitude;
-    private ZonedDateTime timestamp;
+    private LocalDateTime timestamp;
 }

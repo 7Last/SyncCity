@@ -2,15 +2,13 @@ package com.sevenlast.synccity.functions;
 
 import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
-import com.sevenlast.synccity.models.RawData;
 import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import com.sevenlast.synccity.utils.MockCollector;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,7 +21,7 @@ public class TimestampDifferenceAggregateFunctionTest {
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
-        var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp, true), // occupied 0 free 0
@@ -55,7 +53,7 @@ public class TimestampDifferenceAggregateFunctionTest {
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
-        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
                 new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate, false), // 0 occupied 0 free
@@ -80,6 +78,7 @@ public class TimestampDifferenceAggregateFunctionTest {
         );
     }
 
+
     @Test
     public void testChargingStation1() {
         var mockCollector = new MockCollector<TimestampDifferenceResult>();
@@ -87,7 +86,7 @@ public class TimestampDifferenceAggregateFunctionTest {
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
-        var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
                 new ChargingStationRawData(uuid, sensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
@@ -120,7 +119,7 @@ public class TimestampDifferenceAggregateFunctionTest {
 
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
-        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
                 new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
@@ -147,7 +146,7 @@ public class TimestampDifferenceAggregateFunctionTest {
 
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
-        var beginDate = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
                 new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate, false),

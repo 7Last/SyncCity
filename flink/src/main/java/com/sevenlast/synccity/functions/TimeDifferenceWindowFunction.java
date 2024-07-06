@@ -6,7 +6,7 @@ import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.stream.StreamSupport;
 
@@ -25,7 +25,7 @@ public abstract class TimeDifferenceWindowFunction<T extends RawData>
                 .toList();
 
         // calculate all the differences for each sensor uuid and then return a unified result
-        ZonedDateTime sensorPreviousTimestamp = null;
+        LocalDateTime sensorPreviousTimestamp = null;
         for (T data : sortedInput) {
             if (sensorPreviousTimestamp != null) {
                 Duration difference = Duration.between(sensorPreviousTimestamp, data.getTimestamp());

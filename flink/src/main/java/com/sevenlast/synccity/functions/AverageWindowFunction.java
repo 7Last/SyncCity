@@ -9,8 +9,8 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 
 public class AverageWindowFunction implements WindowFunction<HumTempRawData, AverageResult, String, TimeWindow> {
@@ -23,7 +23,7 @@ public class AverageWindowFunction implements WindowFunction<HumTempRawData, Ave
             accumulator.add(data.getValue());
             sensors.add(new SensorLocation(data.getSensorName(), data.getLatitude(), data.getLongitude()));
         });
-        var timestamp = ZonedDateTime.ofInstant(Instant.ofEpochMilli(window.getStart()), ZoneOffset.UTC);
+        var timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(window.getEnd()), ZoneId.systemDefault());
         out.collect(new AverageResult(groupName, sensors, accumulator.getLocalValue(), timestamp));
     }
 }

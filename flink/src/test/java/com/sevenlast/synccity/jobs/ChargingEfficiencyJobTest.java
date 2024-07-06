@@ -13,10 +13,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +27,8 @@ public class ChargingEfficiencyJobTest {
     private final WatermarkStrategy<GenericRecord> watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
             .withTimestampAssigner((event, timestamp) -> {
                 var eventTimestamp = event.get("timestamp").toString();
-                return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+                return LocalDateTime.parse(eventTimestamp).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+
             });
 
     @BeforeEach
@@ -42,7 +43,7 @@ public class ChargingEfficiencyJobTest {
         var groupName = "group";
         var parkingSensorName = "parking";
         String chargingSensorName = "charging";
-        var timestamp = ZonedDateTime.parse("2024-01-01T00:00:00Z");
+        var timestamp = LocalDateTime.parse("2024-01-01T00:00:00");
 
         //@formatter:off
         var parkingData = Stream.of(
@@ -57,6 +58,7 @@ public class ChargingEfficiencyJobTest {
 
         //@formatter:off
         var chargingData = Stream.of(
+            // 4 * 20m = used for 1h20m
             new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp, "type", 0, 20, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusMinutes(20), "type", 0, 11, Duration.ZERO, Duration.ZERO),
             new ChargingStationRawData(uuid, chargingSensorName, groupName, 0, 0, timestamp.plusMinutes(40), "type", 0, 0, Duration.ZERO, Duration.ZERO),
@@ -96,7 +98,7 @@ public class ChargingEfficiencyJobTest {
         var uuid1 = "00000000-0000-0000-0000-000000000000";
         var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
-        var beginDate = ZonedDateTime.parse("2024-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2024-01-01T00:00:00");
 
         var parkingData = List.of(
                 new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, beginDate, true), // occupied 0 free 0
@@ -147,7 +149,7 @@ public class ChargingEfficiencyJobTest {
         var uuid1 = "00000000-0000-0000-0000-000000000000";
         var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
-        var beginDate = ZonedDateTime.parse("2024-01-01T00:00:00Z");
+        var beginDate = LocalDateTime.parse("2024-01-01T00:00:00");
 
         var parkingData = List.of(
                 new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, beginDate, true), // occupied 0 free 0
@@ -196,7 +198,7 @@ public class ChargingEfficiencyJobTest {
         var uuid1 = "00000000-0000-0000-0000-000000000000";
         var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
-        var timestamp = ZonedDateTime.parse("2024-01-01T00:00:00Z");
+        var timestamp = LocalDateTime.parse("2024-01-01T00:00:00");
 
         //@formatter:off
         var parkingData = Stream.of(
@@ -254,37 +256,41 @@ public class ChargingEfficiencyJobTest {
                 new ChargingEfficiencyResult(
                         0.3076923076923077,
                         0.5333333333333333,
-                        uuid1.toString()
+                        uuid1
                 ),
                 new ChargingEfficiencyResult(
                         0.15384615384615385,
                         0.1702127659574468,
-                        uuid2.toString()
+                        uuid2
                 )
         );
-        assertEquals(expected, CollectionSink.values);
+        assertTrue(
+                CollectionSink.values.size() == 2 &&
+                        expected.containsAll(CollectionSink.values) &&
+                        CollectionSink.values.containsAll(expected)
+        );
     }
 
     private GenericRecord toRecord(ParkingRawData data) {
         var simpleRecord = new SimpleGenericRecord();
-        simpleRecord.put("sensor_uuid", data.getSensorUuid().toString());
+        simpleRecord.put("sensor_uuid", data.getSensorUuid());
         simpleRecord.put("sensor_name", data.getSensorName());
         simpleRecord.put("group_name", data.getGroupName());
         simpleRecord.put("latitude", data.getLatitude());
         simpleRecord.put("longitude", data.getLongitude());
-        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         simpleRecord.put("is_occupied", data.isOccupied());
         return simpleRecord;
     }
 
     private GenericRecord toRecord(ChargingStationRawData data) {
         var simpleRecord = new SimpleGenericRecord();
-        simpleRecord.put("sensor_uuid", data.getSensorUuid().toString());
+        simpleRecord.put("sensor_uuid", data.getSensorUuid());
         simpleRecord.put("sensor_name", data.getSensorName());
         simpleRecord.put("group_name", data.getGroupName());
         simpleRecord.put("latitude", data.getLatitude());
         simpleRecord.put("longitude", data.getLongitude());
-        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        simpleRecord.put("timestamp", data.getTimestamp().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         simpleRecord.put("kwh_supplied", data.getKwhSupplied());
         simpleRecord.put("battery_level", data.getBatteryLevel());
         simpleRecord.put("remaining_charge_time", data.getRemainingChargeTime().getSeconds());

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from datetime import datetime, UTC
+from datetime import datetime
 from typing import Dict
 from uuid import UUID
 
@@ -36,7 +36,7 @@ class RawData(ABC):
             "group_name": self.group_name,
             "latitude": self.latitude,
             "longitude": self.longitude,
-            "timestamp": self.timestamp.astimezone(tz=UTC).isoformat(),
+            "timestamp": self.timestamp.replace(tzinfo=None).isoformat(),
         }
 
     def __eq__(self, other: any) -> bool:

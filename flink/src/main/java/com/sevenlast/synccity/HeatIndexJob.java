@@ -26,7 +26,8 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @AllArgsConstructor
@@ -96,7 +97,8 @@ public class HeatIndexJob {
         var watermark = WatermarkStrategy.<GenericRecord>forBoundedOutOfOrderness(Duration.ofSeconds(10))
                 .withTimestampAssigner((event, timestamp) -> {
                     var eventTimestamp = event.get("timestamp").toString();
-                    return ZonedDateTime.parse(eventTimestamp).toInstant().toEpochMilli();
+                    return LocalDateTime.parse(eventTimestamp).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli();
+
                 });
 
         new HeatIndexJob(

@@ -6,9 +6,8 @@ import com.sevenlast.synccity.utils.MockCollector;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,7 +19,7 @@ public class AverageWindowFunctionTest {
         var uuid = "00000000-0000-0000-0000-000000000000";
         var sensorName = "sensor-name";
         var groupName = "group-name";
-        var timestamp = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var data = List.of(
                 new HumTempRawData(uuid, sensorName, groupName, 0, 0, timestamp, 10),
@@ -30,7 +29,7 @@ public class AverageWindowFunctionTest {
         );
 
         var mockCollector = new MockCollector<AverageResult>();
-        var timeWindow = new TimeWindow(timestamp.toEpochSecond(), timestamp.plusHours(1).toEpochSecond());
+        var timeWindow = new TimeWindow(0, 0);
         function.apply(groupName, timeWindow, data, mockCollector);
         assertEquals(21.25, mockCollector.getResult().getValue());
     }

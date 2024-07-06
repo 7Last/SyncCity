@@ -5,8 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +15,7 @@ import java.util.UUID;
 public class ParkingRawData extends RawData {
     private boolean isOccupied;
 
-    public ParkingRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, ZonedDateTime timestamp, boolean isOccupied) {
+    public ParkingRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, LocalDateTime timestamp, boolean isOccupied) {
         super(sensorUuid, sensorName, groupName, latitude, longitude, timestamp);
         this.isOccupied = isOccupied;
     }
@@ -28,7 +27,7 @@ public class ParkingRawData extends RawData {
                 Optional.ofNullable(record.get("group_name")).map(Object::toString).orElse(null),
                 (double) record.get("latitude"),
                 (double) record.get("longitude"),
-                ZonedDateTime.parse(record.get("timestamp").toString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                LocalDateTime.parse(record.get("timestamp").toString()),
                 (boolean) record.get("is_occupied")
         );
     }

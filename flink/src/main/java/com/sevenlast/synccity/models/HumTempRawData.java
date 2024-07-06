@@ -3,11 +3,9 @@ package com.sevenlast.synccity.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.flink.api.common.typeinfo.TypeInfo;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,7 +15,7 @@ import java.util.UUID;
 public class HumTempRawData extends RawData {
     private final float value;
 
-    public HumTempRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, ZonedDateTime timestamp, float value) {
+    public HumTempRawData(String sensorUuid, String sensorName, String groupName, double latitude, double longitude, LocalDateTime timestamp, float value) {
         super(sensorUuid, sensorName, groupName, latitude, longitude, timestamp);
         this.value = value;
     }
@@ -29,7 +27,7 @@ public class HumTempRawData extends RawData {
                 Optional.ofNullable(record.get("group_name")).map(Object::toString).orElse(null),
                 (double) record.get("latitude"),
                 (double) record.get("longitude"),
-                ZonedDateTime.parse(record.get("timestamp").toString()),
+                LocalDateTime.parse(record.get("timestamp").toString()),
                 (float) record.get("value")
         );
     }

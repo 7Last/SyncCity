@@ -6,7 +6,7 @@ import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +15,7 @@ public class HeatIndexJoinFunctionTest {
     @Test
     public void testHeatIndexCalculation() {
         var groupName = "group-name";
-        var dateTime = ZonedDateTime.parse("2021-01-01T00:00:00Z");
+        var dateTime = LocalDateTime.parse("2021-01-01T00:00:00");
         var averageTemperature = new AverageResult(
                 groupName,
                 Sets.newHashSet(

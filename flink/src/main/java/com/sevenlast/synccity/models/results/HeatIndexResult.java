@@ -7,7 +7,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class HeatIndexResult implements RecordSerializable {
     private double centerOfMassLatitude;
     private double centerOfMassLongitude;
     private double radius;
-    private ZonedDateTime windowStart;
+    private LocalDateTime windowStart;
 
     public GenericRecord toGenericRecord(Schema schema) {
         GenericRecord record = new GenericData.Record(schema);
@@ -34,7 +34,7 @@ public class HeatIndexResult implements RecordSerializable {
         record.put("center_of_mass_latitude", centerOfMassLatitude);
         record.put("center_of_mass_longitude", centerOfMassLongitude);
         record.put("radius_in_km", radius);
-        record.put("timestamp", windowStart.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        record.put("timestamp", windowStart.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         return record;
     }
 }

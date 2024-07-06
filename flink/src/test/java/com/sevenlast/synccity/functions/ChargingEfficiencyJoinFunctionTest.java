@@ -5,7 +5,6 @@ import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
