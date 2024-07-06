@@ -4,10 +4,12 @@ import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
 import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import com.sevenlast.synccity.utils.MockCollector;
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +35,11 @@ public class TimestampDifferenceAggregateFunctionTest {
         );
 
         var function = new ParkingTimeDifferenceWindowFunction();
-        function.apply(uuid, null, input, mockCollector);
+        var window = new TimeWindow(
+                timestamp.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+                timestamp.plusDays(1).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        );
+        function.apply(uuid, window, input, mockCollector);
 
         var result = mockCollector.getResult();
         assertEquals(
@@ -41,7 +47,8 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new TimestampDifferenceResult(
                         Duration.ofHours(3).plusMinutes(10),
                         Duration.ofHours(1).plusMinutes(10),
-                        uuid
+                        uuid,
+                        timestamp
                 )
         );
     }
@@ -53,19 +60,23 @@ public class TimestampDifferenceAggregateFunctionTest {
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
         var sensorName = "sensor-name-1";
-        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate, false), // 0 occupied 0 free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(1), true), // 1h occupied 0 free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2), false), // 1h occupied 1h free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(10), true), // 1h occupied 1h10m free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(2).plusMinutes(30), false), // 1h20m occupied 1h10m free
-                new ParkingRawData(uuid, sensorName, groupName, 0, 0, beginDate.plusHours(8), true) // 1h20m occupied 6h40m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp, false), // 0 occupied 0 free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(1), true), // 1h occupied 0 free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2), false), // 1h occupied 1h free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(10), true), // 1h occupied 1h10m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(2).plusMinutes(30), false), // 1h20m occupied 1h10m free
+                new ParkingRawData(uuid, sensorName, groupName, 0, 0, timestamp.plusHours(8), true) // 1h20m occupied 6h40m free
         );
 
         var function = new ParkingTimeDifferenceWindowFunction();
-        function.apply(uuid, null, input, mockCollector);
+        var window = new TimeWindow(
+                timestamp.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+                timestamp.plusDays(1).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        );
+        function.apply(uuid, window, input, mockCollector);
 
         var result = mockCollector.getResult();
         assertEquals(
@@ -73,7 +84,8 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new TimestampDifferenceResult(
                         Duration.ofHours(1).plusMinutes(20),
                         Duration.ofHours(6).plusMinutes(40),
-                        uuid
+                        uuid,
+                        timestamp
                 )
         );
     }
@@ -100,7 +112,11 @@ public class TimestampDifferenceAggregateFunctionTest {
         );
 
         var function = new ChargingStationTimeDifferenceWindowFunction();
-        function.apply(uuid, null, input, mockCollector);
+        var window = new TimeWindow(
+                timestamp.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+                timestamp.plusDays(1).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        );
+        function.apply(uuid, window, input, mockCollector);
 
         var result = mockCollector.getResult();
         assertEquals(
@@ -108,7 +124,8 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new TimestampDifferenceResult(
                         Duration.ofHours(1).plusMinutes(20),
                         Duration.ofHours(1),
-                        uuid
+                        uuid,
+                        timestamp
                 )
         );
     }
@@ -119,15 +136,19 @@ public class TimestampDifferenceAggregateFunctionTest {
 
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
-        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
-                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate, "type", 0, 0, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO)
+                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, timestamp, "type", 0, 0, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid, "charging-1", groupName, 0, 0, timestamp.plusHours(2), "type", 0, 0, Duration.ZERO, Duration.ZERO)
         );
 
         var function = new ChargingStationTimeDifferenceWindowFunction();
-        function.apply(uuid, null, input, mockCollector);
+        var window = new TimeWindow(
+                timestamp.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+                timestamp.plusDays(1).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        );
+        function.apply(uuid, window, input, mockCollector);
 
         var result = mockCollector.getResult();
         assertEquals(
@@ -135,7 +156,8 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new TimestampDifferenceResult(
                         Duration.ZERO,
                         Duration.ofHours(2),
-                        uuid
+                        uuid,
+                        timestamp
                 )
         );
     }
@@ -146,15 +168,20 @@ public class TimestampDifferenceAggregateFunctionTest {
 
         var uuid = "00000000-0000-0000-0000-000000000000";
         var groupName = "group-name";
-        var beginDate = LocalDateTime.parse("2021-01-01T00:00:00");
+        var timestamp = LocalDateTime.parse("2021-01-01T00:00:00");
 
         var input = List.of(
-                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate, false),
-                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, beginDate.plusHours(2), true)
+                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, timestamp, false),
+                new ParkingRawData(uuid, "parking-1", groupName, 0, 0, timestamp.plusHours(2), true)
         );
 
         var function = new ParkingTimeDifferenceWindowFunction();
-        function.apply(uuid, null, input, mockCollector);
+        var window = new TimeWindow(
+                timestamp.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli(),
+                timestamp.plusDays(1).atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()
+        );
+
+        function.apply(uuid, window, input, mockCollector);
 
         var result = mockCollector.getResult();
         assertEquals(
@@ -162,7 +189,8 @@ public class TimestampDifferenceAggregateFunctionTest {
                 new TimestampDifferenceResult(
                         Duration.ZERO,
                         Duration.ofHours(2),
-                        uuid
+                        uuid,
+                        timestamp
                 )
         );
     }

@@ -6,7 +6,9 @@ import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.stream.StreamSupport;
 
@@ -37,7 +39,7 @@ public abstract class TimeDifferenceWindowFunction<T extends RawData>
             }
             sensorPreviousTimestamp = data.getTimestamp();
         }
-        out.collect(new TimestampDifferenceResult(occupied, notOccupied, uuid));
-
+        var timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(window.getStart()), ZoneId.of("UTC"));
+        out.collect(new TimestampDifferenceResult(occupied, notOccupied, uuid, timestamp));
     }
 }

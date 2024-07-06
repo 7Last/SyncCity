@@ -83,7 +83,8 @@ public class ChargingEfficiencyJobTest {
         var expected = new ChargingEfficiencyResult(
                 0.3076923076923077,
                 0.42105263157894735,
-                uuid
+                uuid,
+                timestamp
         );
         var actual = CollectionSink.values.get(0);
         assertEquals(expected, actual);
@@ -98,24 +99,24 @@ public class ChargingEfficiencyJobTest {
         var uuid1 = "00000000-0000-0000-0000-000000000000";
         var uuid2 = "00000000-0000-0000-0000-000000000001";
         var groupName = "group";
-        var beginDate = LocalDateTime.parse("2024-01-01T00:00:00");
+        var timestamp = LocalDateTime.parse("2024-01-01T00:00:00");
 
         var parkingData = List.of(
-                new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, beginDate, true), // occupied 0 free 0
-                new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, beginDate.plusHours(2), false), // occupied 2h free 0
+                new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, timestamp, true), // occupied 0 free 0
+                new ParkingRawData(uuid1, "parking-1", groupName, 0, 0, timestamp.plusHours(2), false), // occupied 2h free 0
 
-                new ParkingRawData(uuid2, "parking-2", groupName, 0, 0, beginDate, true), // occupied 0 free 0
-                new ParkingRawData(uuid2, "parking-2", groupName, 0, 0, beginDate.plusHours(1), false) // occupied 1h free 0
+                new ParkingRawData(uuid2, "parking-2", groupName, 0, 0, timestamp, true), // occupied 0 free 0
+                new ParkingRawData(uuid2, "parking-2", groupName, 0, 0, timestamp.plusHours(1), false) // occupied 1h free 0
         );
 
         var chargingData = List.of(
                 // occupied 2h free 0
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, beginDate.plusHours(2), "type", 0f, 1f, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid1, "charging-1", groupName, 0, 0, timestamp.plusHours(2), "type", 0f, 1f, Duration.ZERO, Duration.ZERO),
 
                 // occupied 1h free 0
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
-                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, beginDate.plusHours(1), "type", 0f, 1f, Duration.ZERO, Duration.ZERO)
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp, "type", 0f, 0f, Duration.ZERO, Duration.ZERO),
+                new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp.plusHours(1), "type", 0f, 1f, Duration.ZERO, Duration.ZERO)
         );
 
         var mockSink = new CollectionSink<ChargingEfficiencyResult>();
@@ -129,8 +130,8 @@ public class ChargingEfficiencyJobTest {
         job.execute(env);
 
         var maxEfficiency = List.of(
-                new ChargingEfficiencyResult(1.0, 1.0, uuid1),
-                new ChargingEfficiencyResult(1.0, 1.0, uuid2)
+                new ChargingEfficiencyResult(1.0, 1.0, uuid1, timestamp),
+                new ChargingEfficiencyResult(1.0, 1.0, uuid2, timestamp)
         );
 
         assertTrue(
@@ -180,8 +181,8 @@ public class ChargingEfficiencyJobTest {
         job.execute(env);
 
         var minEfficiency = List.of(
-                ChargingEfficiencyResult.zero(uuid1),
-                ChargingEfficiencyResult.zero(uuid2)
+                ChargingEfficiencyResult.zero(uuid1, beginDate),
+                ChargingEfficiencyResult.zero(uuid2, beginDate)
         );
 
         // Assert that the values are the same, regardless of the order
@@ -256,12 +257,14 @@ public class ChargingEfficiencyJobTest {
                 new ChargingEfficiencyResult(
                         0.3076923076923077,
                         0.5333333333333333,
-                        uuid1
+                        uuid1,
+                        timestamp
                 ),
                 new ChargingEfficiencyResult(
                         0.15384615384615385,
                         0.1702127659574468,
-                        uuid2
+                        uuid2,
+                        timestamp
                 )
         );
         assertTrue(

@@ -23,7 +23,7 @@ public class AverageWindowFunction implements WindowFunction<HumTempRawData, Ave
             accumulator.add(data.getValue());
             sensors.add(new SensorLocation(data.getSensorName(), data.getLatitude(), data.getLongitude()));
         });
-        var timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(window.getEnd()), ZoneId.systemDefault());
+        var timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(window.getStart()), ZoneId.of("UTC"));
         out.collect(new AverageResult(groupName, sensors, accumulator.getLocalValue(), timestamp));
     }
 }

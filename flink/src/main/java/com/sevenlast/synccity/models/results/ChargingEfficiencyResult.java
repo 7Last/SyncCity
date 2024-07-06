@@ -7,7 +7,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -22,11 +22,7 @@ public class ChargingEfficiencyResult implements RecordSerializable {
 
     private String sensorUuid;
 
-    public ChargingEfficiencyResult(double utilizationRate, double efficiencyRate, UUID sensorUuid) {
-        this.utilizationRate = utilizationRate;
-        this.efficiencyRate = efficiencyRate;
-        this.sensorUuid = sensorUuid.toString();
-    }
+    private LocalDateTime timestamp;
 
     public GenericRecord toGenericRecord(Schema schema) {
         GenericRecord record = new GenericData.Record(schema);
@@ -36,7 +32,7 @@ public class ChargingEfficiencyResult implements RecordSerializable {
         return record;
     }
 
-    public static ChargingEfficiencyResult zero(String sensorUuid) {
-        return new ChargingEfficiencyResult(0, 0, sensorUuid);
+    public static ChargingEfficiencyResult zero(String sensorUuid, LocalDateTime timestamp) {
+        return new ChargingEfficiencyResult(0, 0, sensorUuid, timestamp);
     }
 }
