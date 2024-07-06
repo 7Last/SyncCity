@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -84,7 +85,9 @@ public class ChargingEfficiencyJobTest {
                 0.3076923076923077,
                 0.42105263157894735,
                 uuid,
-                timestamp
+                timestamp,
+                groupName,
+                Set.of(parkingSensorName, chargingSensorName)
         );
         var actual = CollectionSink.values.get(0);
         assertEquals(expected, actual);
@@ -130,8 +133,22 @@ public class ChargingEfficiencyJobTest {
         job.execute(env);
 
         var maxEfficiency = List.of(
-                new ChargingEfficiencyResult(1.0, 1.0, uuid1, timestamp),
-                new ChargingEfficiencyResult(1.0, 1.0, uuid2, timestamp)
+                new ChargingEfficiencyResult(
+                        1.0,
+                        1.0,
+                        uuid1,
+                        timestamp,
+                        groupName,
+                        Set.of("parking-1", "charging-1")
+                ),
+                new ChargingEfficiencyResult(
+                        1.0,
+                        1.0,
+                        uuid2,
+                        timestamp,
+                        groupName,
+                        Set.of("parking-2", "charging-2")
+                )
         );
 
         assertTrue(
@@ -181,8 +198,8 @@ public class ChargingEfficiencyJobTest {
         job.execute(env);
 
         var minEfficiency = List.of(
-                ChargingEfficiencyResult.zero(uuid1, beginDate),
-                ChargingEfficiencyResult.zero(uuid2, beginDate)
+                ChargingEfficiencyResult.zero(uuid1, beginDate, groupName, Set.of("parking-1", "charging-1")),
+                ChargingEfficiencyResult.zero(uuid2, beginDate, groupName, Set.of("parking-2", "charging-2"))
         );
 
         // Assert that the values are the same, regardless of the order
@@ -258,13 +275,17 @@ public class ChargingEfficiencyJobTest {
                         0.3076923076923077,
                         0.5333333333333333,
                         uuid1,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of("parking-1", "charging-1")
                 ),
                 new ChargingEfficiencyResult(
                         0.15384615384615385,
                         0.1702127659574468,
                         uuid2,
-                        timestamp
+                        timestamp,
+                        groupName,
+                        Set.of("parking-2", "charging-2")
                 )
         );
         assertTrue(
