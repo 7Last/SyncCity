@@ -6,6 +6,8 @@ import org.apache.flink.api.common.functions.JoinFunction;
 
 import java.util.HashSet;
 
+import static java.lang.Math.min;
+
 public class ChargingEfficiencyJoinFunction implements JoinFunction<TimestampDifferenceResult, TimestampDifferenceResult, ChargingEfficiencyResult> {
 
     @Override
@@ -34,8 +36,8 @@ public class ChargingEfficiencyJoinFunction implements JoinFunction<TimestampDif
 
         var efficiencyRate = (double) chargingOccupied / parkingOccupied.toSeconds();
         return new ChargingEfficiencyResult(
-                utilizationRate,
-                efficiencyRate,
+                min(1, utilizationRate),
+                min(1, efficiencyRate),
                 parkingDiff.getSensorUuid(),
                 parkingDiff.getTimestamp(),
                 parkingDiff.getGroupName(),
