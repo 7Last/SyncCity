@@ -9,7 +9,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 
@@ -26,6 +29,7 @@ public abstract class TimeDifferenceWindowFunction<T extends RawData>
                 .sorted(Comparator.comparing(RawData::getTimestamp))
                 .toList();
 
+        var sensorNames = new HashSet<String>();
         // calculate all the differences for each sensor uuid and then return a unified result
         LocalDateTime sensorPreviousTimestamp = null;
         for (T data : sortedInput) {
@@ -38,8 +42,20 @@ public abstract class TimeDifferenceWindowFunction<T extends RawData>
                 }
             }
             sensorPreviousTimestamp = data.getTimestamp();
+            sensorNames.add(data.getSensorName());
         }
+
         var timestamp = LocalDateTime.ofInstant(Instant.ofEpochMilli(window.getStart()), ZoneId.of("UTC"));
-        out.collect(new TimestampDifferenceResult(occupied, notOccupied, uuid, timestamp));
+        var groupName = sortedInput.get(0).getGroupName();
+
+        out.collect(
+                new TimestampDifferenceResult(
+                occupied,
+                notOccupied,
+                uuid,
+                timestamp,
+                groupName,
+                sensorNames
+        ));
     }
 }

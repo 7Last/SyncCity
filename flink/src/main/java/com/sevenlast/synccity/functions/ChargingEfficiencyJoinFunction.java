@@ -12,7 +12,12 @@ public class ChargingEfficiencyJoinFunction implements JoinFunction<TimestampDif
         var totalSeconds = parkingOccupied.plus(parkingDiff.getNotOccupiedDuration()).toSeconds();
         if (totalSeconds == 0 || parkingOccupied.isZero()) {
             // The stream is keyed by sensor UUID, taking parkingDiff sensor UUID
-            return ChargingEfficiencyResult.zero(parkingDiff.getSensorUuid(), parkingDiff.getTimestamp());
+            return ChargingEfficiencyResult.zero(
+                    parkingDiff.getSensorUuid(),
+                    parkingDiff.getTimestamp(),
+                    parkingDiff.getGroupName(),
+                    parkingDiff.getSensorNames()
+            );
         }
 
         var chargingOccupied = chargingDiff.getOccupiedDuration().toSeconds();
@@ -23,6 +28,15 @@ public class ChargingEfficiencyJoinFunction implements JoinFunction<TimestampDif
         }
 
         var efficiencyRate = (double) chargingOccupied / parkingOccupied.toSeconds();
-        return new ChargingEfficiencyResult(utilizationRate, efficiencyRate, parkingDiff.getSensorUuid(), parkingDiff.getTimestamp());
+        var sensorNames = parkingDiff.getSensorNames();
+        sensorNames.addAll(chargingDiff.getSensorNames());
+        return new ChargingEfficiencyResult(
+                utilizationRate,
+                efficiencyRate,
+                parkingDiff.getSensorUuid(),
+                parkingDiff.getTimestamp(),
+                parkingDiff.getGroupName(),
+                sensorNames
+        );
     }
 }
