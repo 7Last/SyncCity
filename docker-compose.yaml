@@ -235,6 +235,7 @@ services:
     environment:
       FLINK_CONF_DIR: /opt/flink/conf
       JOB_MANAGER_RPC_ADDRESS: jobmanager
+      TASK_MANAGER_NUMBER_OF_TASK_SLOTS: 2
     networks:
       - synccity
     profiles: [ "local", "release" ]
@@ -255,8 +256,7 @@ services:
       - "deployer.py"
       - "--flink_url=http://jobmanager:8081"
       - "--jars=/flink-job.jar"
-      # - "--class=com.sevenlast.synccity.HeatIndexJob"
-      - "--class=com.sevenlast.synccity.ChargingEfficiencyJob"
+      - "--class=com.sevenlast.synccity.HeatIndexJob,com.sevenlast.synccity.ChargingEfficiencyJob"
     profiles: [ "local", "release" ]
     networks:
       - synccity

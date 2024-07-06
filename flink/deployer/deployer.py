@@ -81,7 +81,9 @@ if __name__ == "__main__":
     entry_classes = args.classes.split(',')
 
     for jar_file in jar_files:
+        print(f"Uploading jar file: {jar_file}")
         response = client.upload_jar(jar_file)
         jar_id = client.extract_jar_id(response)
         for entry_class in entry_classes:
+            print(f"Running jar with entry class: {entry_class}")
             client.run_jar(jar_id, entry_class)
