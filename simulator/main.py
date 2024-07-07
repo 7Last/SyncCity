@@ -7,7 +7,7 @@ from src.models.config.env_config import EnvConfig
 from src.producers.kafka_producer import KafkaProducerAdapter
 from src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
-from src.simulator_executor import SimulatorExecutor
+from src.simulators.simulator_executor import SimulatorExecutor
 
 sensors_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sensors.toml')
 

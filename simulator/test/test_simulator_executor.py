@@ -2,7 +2,7 @@ import unittest.mock
 from unittest.mock import MagicMock
 
 from simulator.src.producers.stdout_producer import StdOutProducer
-from simulator.src.simulator_executor import SimulatorExecutor
+from simulator.src.simulators.simulator_executor import SimulatorExecutor
 from simulator.src.simulators.temperature_simulator_strategy import \
     TemperatureSimulatorStrategy
 

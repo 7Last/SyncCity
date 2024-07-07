@@ -2,9 +2,9 @@ import logging as log
 import threading
 from typing import Dict
 
-from .producers.producer_strategy import ProducerStrategy
+from ..producers.producer_strategy import ProducerStrategy
 from .simulator_factory import build_simulators
-from .simulators.simulator_strategy import SimulatorStrategy
+from ..simulators.simulator_strategy import SimulatorStrategy
 
 
 class SimulatorExecutor:

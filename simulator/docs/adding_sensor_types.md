@@ -81,7 +81,7 @@ The table should be called `<new_sensor_type>`.
 In this file define also the materialized views for `<new_sensor_type>`.
 
 ## Step 9: Add the new sensor type to the simulator factory
-In the [src/models/config/simulator_factory.py](../src/simulator_factory.py) file,
+In the [src/models/config/simulator_factory.py](../src/simulators/simulator_factory.py) file,
 add a new `match` case for the new sensor type in the `_simulator_factory` method.
 
 ## Step 10: Create sensors in the configuration
