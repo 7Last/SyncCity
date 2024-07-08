@@ -257,21 +257,15 @@ services:
     networks:
       - synccity
 
-#  test:
-#    build:
-#      context: ./simulator/test
-#    container_name: test
-#    depends_on:
-#      redpanda:
-#        condition: service_healthy
-#      clickhouse:
-#        condition: service_healthy
-#      redpanda_connect:
-#        condition: service_healthy
-#      redpanda_init:
-#        condition: service_completed_successfully
-#      simulator:
-#        condition: service_completed_successfully
-#    networks:
-#      - synccity
-#    profiles: [ "test" ]
+  tests:
+    build:
+      context: ./simulator/test
+      dockerfile: Dockerfile.test
+    container_name: tests
+    networks:
+        - synccity
+    depends_on:
+      - redpanda_init
+      - redpanda_connect
+      - redpanda
+      - clickhouse

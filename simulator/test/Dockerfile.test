@@ -1,0 +1,9 @@
+FROM python:3.11.9-slim
+WORKDIR /simulator
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY . .
+
+# ? Ho provato in vari modi ma non mi trova i test
+CMD ["python3","-m","unittest","discover","-s","test"]
