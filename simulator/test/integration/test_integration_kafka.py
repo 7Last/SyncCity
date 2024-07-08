@@ -3,6 +3,7 @@ from testcontainers.compose import DockerCompose
 from kafka import KafkaProducer, KafkaConsumer
 import time
 
+
 class TestIntegrationKafka(unittest.TestCase):
 
     @classmethod
@@ -30,6 +31,7 @@ class TestIntegrationKafka(unittest.TestCase):
         received_messages = [msg.value for msg in consumer]
 
         self.assertIn(message, received_messages)
+
 
 if __name__ == "__main__":
     unittest.main()

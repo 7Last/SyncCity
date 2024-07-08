@@ -4,6 +4,7 @@ from clickhouse_driver import Client
 from kafka import KafkaProducer, KafkaConsumer
 import time
 
+
 class TestIntegrationClickhouse(unittest.TestCase):
 
     @classmethod
@@ -34,6 +35,7 @@ class TestIntegrationClickhouse(unittest.TestCase):
         query_result = client.execute(query)
 
         self.assertTrue(len(query_result) > 0)
+
 
 if __name__ == "__main__":
     unittest.main()
