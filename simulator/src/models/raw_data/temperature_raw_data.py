@@ -19,12 +19,6 @@ class TemperatureRawData(RawData):
     def topic(self) -> str:
         return "temperature"
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "value": self.__value,
-            **(super().to_json()),
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, TemperatureRawData):
             return False

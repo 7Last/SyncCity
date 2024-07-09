@@ -19,12 +19,6 @@ class RiverLevelRawData(RawData):
     def topic(self) -> str:
         return "river_level"
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            **super().to_json(),
-            "value": self.__value,
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RiverLevelRawData):
             return False

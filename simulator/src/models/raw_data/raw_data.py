@@ -35,16 +35,6 @@ class RawData(ABC):
     def key_subject(self) -> str:
         return f'{self.topic}-key'
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "sensor_name": self._sensor_name,
-            "sensor_uuid": str(self._sensor_uuid),
-            "group_name": self._group_name,
-            "latitude": self._latitude,
-            "longitude": self._longitude,
-            "timestamp": self._timestamp.replace(tzinfo=None).isoformat(),
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RawData):
             return False

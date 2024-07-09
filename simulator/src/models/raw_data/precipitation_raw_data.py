@@ -19,12 +19,6 @@ class PrecipitationRawData(RawData):
     def topic(self) -> str:
         return "precipitation"
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            **super().to_json(),
-            "value": self.__value,
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, PrecipitationRawData):
             return False

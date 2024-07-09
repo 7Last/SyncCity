@@ -25,16 +25,6 @@ class ChargingStationRawData(RawData):
     def topic(self) -> str:
         return "charging_station"
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "vehicle_type": self.__vehicle_type,
-            "battery_level": self.__battery_level,
-            "kwh_supplied": self.__kwh_supplied,
-            "remaining_charge_time": self.__remaining_charge_time,
-            "elapsed_time": self.__elapsed_time,
-            **(super().to_json()),
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, ChargingStationRawData):
             return False

@@ -23,12 +23,6 @@ class RecyclingPointRawData(RawData):
     def topic(self) -> str:
         return "recycling_point"
 
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "filling": self.__filling,
-            **(super().to_json()),
-        }
-
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RecyclingPointRawData):
             return False

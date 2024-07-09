@@ -4,14 +4,15 @@ import kafka
 
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
-from ..serializers.record_serialization_template import RecordSerializationTemplate
+from ..serializers.serialization_strategy import SerializationStrategy
 
 
 class KafkaProducerAdapter(ProducerStrategy):
 
-    def __init__(self, *, serializer: RecordSerializationTemplate,
-                 bootstrap_servers: list[str], max_block_ms: int, acks: int) -> None:
-        super().__init__(serializer)
+    def __init__(self, serialization_strategy: SerializationStrategy,
+                 bootstrap_servers: list[str], max_block_ms: int,
+                 acks: int) -> None:
+        super().__init__(serialization_strategy)
         self.__adaptee = kafka.KafkaProducer(
             bootstrap_servers=bootstrap_servers,
             max_block_ms=max_block_ms,
@@ -20,7 +21,8 @@ class KafkaProducerAdapter(ProducerStrategy):
 
     def produce(self, data: RawData) -> bool:
         try:
-            key, value = self._serializer.serialize(data)
+            key = str(data.sensor_uuid())
+            value = self._serialization_strategy.serialize(data)
             log.info(f'Producing data to topic {data.topic}: {data}')
             self.__adaptee.send(data.topic, key=key, value=value)
             self.__adaptee.flush()

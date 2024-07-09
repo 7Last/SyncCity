@@ -1,3 +1,4 @@
+import dataclasses
 from datetime import datetime
 from typing import Dict
 from uuid import UUID
@@ -23,16 +24,6 @@ class AirQualityRawData(RawData):
     @property
     def topic(self) -> str:
         return "air_quality"
-
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "pm25": self.__pm25,
-            "pm10": self.__pm10,
-            "no2": self.__no2,
-            "o3": self.__o3,
-            "so2": self.__so2,
-            **(super().to_json()),
-        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, AirQualityRawData):
