@@ -5,7 +5,9 @@ import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
 import org.apache.flink.api.common.functions.JoinFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.api.java.tuple.Tuple3;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class HeatIndexJoinFunction implements JoinFunction<AverageResult, AverageResult, HeatIndexResult> {
@@ -34,14 +36,9 @@ public class HeatIndexJoinFunction implements JoinFunction<AverageResult, Averag
         var sensors = averageTemperature.getSensors();
         sensors.addAll(averageHumidity.getSensors());
 
-        Tuple2<Double, Double> centerOfMass = sensors.stream()
-                .map(sensor -> new Tuple2<>(sensor.getLatitude(), sensor.getLongitude()))
-                .reduce((a, b) -> new Tuple2<>(a.f0 + b.f0, a.f1 + b.f1))
-                .map(tuple -> new Tuple2<>(tuple.f0 / sensors.size(), tuple.f1 / sensors.size()))
-                .orElseThrow();
-
+        var centroid = centroid(sensors);
         double maxRadius = sensors.stream()
-                .map(sensor -> haversine(sensor.getLatitude(), sensor.getLongitude(), centerOfMass.f0, centerOfMass.f1))
+                .map(sensor -> haversine(sensor.getLatitude(), sensor.getLongitude(), centroid.f0, centroid.f1))
                 .max(Double::compareTo)
                 .orElseThrow();
 
@@ -51,14 +48,14 @@ public class HeatIndexJoinFunction implements JoinFunction<AverageResult, Averag
                 heatIndex,
                 averageTemperature.getValue(),
                 averageHumidity.getValue(),
-                centerOfMass.f0,
-                centerOfMass.f1,
+                centroid.f0,
+                centroid.f1,
                 maxRadius,
                 averageTemperature.getWindowStart()
         );
     }
 
-    static double haversine(double lat1, double lon1, double lat2, double lon2) {
+    private static double haversine(double lat1, double lon1, double lat2, double lon2) {
         double latitudeDistance = Math.toRadians(lat2 - lat1);
         double longitudeDistance = Math.toRadians(lon2 - lon1);
 
@@ -74,5 +71,39 @@ public class HeatIndexJoinFunction implements JoinFunction<AverageResult, Averag
         double rad = 6371;
         double c = 2 * Math.asin(Math.sqrt(a));
         return rad * c; // in kilometers
+    }
+
+    private static Tuple2<Double, Double> centroid(Set<SensorLocation> sensors) {
+        if (sensors.isEmpty()) {
+            return new Tuple2<>(0.0, 0.0);
+        }
+
+        if (sensors.size() == 1) {
+            var sensor = sensors.stream().findFirst().get();
+            return new Tuple2<>(sensor.getLatitude(), sensor.getLongitude());
+        }
+
+        // Convert to radians and calculate the sum of x, y, z coordinates
+        var sum = sensors.stream()
+                .map(sensor -> {
+                    var lat = Math.toRadians(sensor.getLatitude());
+                    var lng = Math.toRadians(sensor.getLongitude());
+                    return Tuple3.of(Math.cos(lat) * Math.cos(lng), Math.cos(lat) * Math.sin(lng), Math.sin(lat));
+                })
+                .reduce(
+                        Tuple3.of(0.0, 0.0, 0.0),
+                        (acc, tuple) -> Tuple3.of(acc.f0 + tuple.f0, acc.f1 + tuple.f1, acc.f2 + tuple.f2)
+                );
+
+        var avgX = sum.f0 / sensors.size();
+        var avgY = sum.f1 / sensors.size();
+        var avgZ = sum.f2 / sensors.size();
+
+        // Convert average x, y, z coordinate to latitude and longitude
+        var lng = Math.atan2(avgY, avgX);
+        var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
+        var lat = Math.atan2(avgZ, hyp);
+
+        return Tuple2.of(Math.toDegrees(lat), Math.toDegrees(lng));
     }
 }

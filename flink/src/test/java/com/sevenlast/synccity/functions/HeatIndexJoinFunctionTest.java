@@ -66,6 +66,5 @@ public class HeatIndexJoinFunctionTest {
         assertEquals(expected.getCenterOfMassLongitude(), result.getCenterOfMassLongitude());
         assertEquals(expected.getRadius(), result.getRadius());
         assertEquals(expected.getWindowStart(), result.getWindowStart());
-
     }
 }
