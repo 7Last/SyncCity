@@ -21,7 +21,7 @@ class KafkaProducerAdapter(ProducerStrategy):
 
     def produce(self, data: RawData) -> bool:
         try:
-            key = str(data.sensor_uuid())
+            key = str(data.sensor_uuid()).encode('utf-8')
             value = self._serialization_strategy.serialize(data)
             log.info(f'Producing data to topic {data.topic}: {data}')
             self.__adaptee.send(data.topic, key=key, value=value)

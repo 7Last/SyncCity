@@ -2,6 +2,7 @@ import logging as log
 import threading
 from typing import Dict
 
+from .simulator_thread import SimulatorThread
 from ..producers.producer_strategy import ProducerStrategy
 from .simulator_factory import build_simulators
 from ..simulators.simulator_strategy import SimulatorStrategy
@@ -9,20 +10,23 @@ from ..simulators.simulator_strategy import SimulatorStrategy
 
 class SimulatorExecutor:
     def __init__(self, config: Dict[str, any], producer: ProducerStrategy) -> None:
-        self.__simulators: list[SimulatorStrategy] = build_simulators(config, producer)
+        self.__simulator_threads: list[SimulatorThread] = [
+            SimulatorThread(simulator, producer)
+            for simulator in build_simulators(config, producer)
+        ]
         self.__stop_event = threading.Event()
 
     def stop_all(self) -> None:
         self.__stop_event.set()
         log.debug("Stopping simulator threads")
-        for simulator in self.__simulators:
+        for simulator in self.__simulator_threads:
             simulator.stop()
         log.info("Simulators stopped.")
 
     def run(self) -> None:
         try:
-            for simulator in self.__simulators:
-                log.debug(f"Starting simulator:{simulator.sensor_name()}")
+            for simulator in self.__simulator_threads:
+                log.debug(f"Starting simulator:{simulator.name}")
                 simulator.start()
 
             self.__stop_event.wait()  # Keep the main thread alive

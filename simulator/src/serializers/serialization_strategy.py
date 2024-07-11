@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from simulator.src.models.raw_data.raw_data import RawData
+from ..models.raw_data.raw_data import RawData
 
 
 class SerializationStrategy(ABC):

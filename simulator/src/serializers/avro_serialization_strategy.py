@@ -5,9 +5,9 @@ from typing import Dict
 from confluent_avro import SchemaRegistry, AvroValueSerde
 from dotenv import load_dotenv
 
-from simulator.src.models.raw_data.raw_data import RawData
-from simulator.src.serializers.dict_raw_data_adapter import DictRawDataAdapter
-from simulator.src.serializers.serialization_strategy import SerializationStrategy
+from ..models.raw_data.raw_data import RawData
+from .dict_raw_data_adapter import DictRawDataAdapter
+from .serialization_strategy import SerializationStrategy
 
 SerdeWithSchema = (AvroValueSerde, str)
 

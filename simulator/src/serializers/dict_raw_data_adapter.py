@@ -2,8 +2,7 @@ import re
 from datetime import datetime
 from uuid import UUID
 
-from simulator.src.models.raw_data.raw_data import RawData
-
+from ..models.raw_data.raw_data import RawData
 
 class DictRawDataAdapter(dict):
     def __init__(self, raw_data: RawData):

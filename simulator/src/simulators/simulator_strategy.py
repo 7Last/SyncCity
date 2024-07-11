@@ -2,14 +2,14 @@ import logging as log
 import threading
 import zoneinfo
 from abc import ABC, abstractmethod
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.raw_data import RawData
 from ..producers.producer_strategy import ProducerStrategy
 
 
-class SimulatorStrategy(ABC, threading.Thread):
+class SimulatorStrategy(ABC):
 
     def __init__(self, sensor_name: str, config: SensorConfig,
                  producer: ProducerStrategy) -> None:
@@ -29,27 +29,21 @@ class SimulatorStrategy(ABC, threading.Thread):
         rome = zoneinfo.ZoneInfo('Europe/Rome')
         self._timestamp = config.begin_date() or datetime.now(tz=rome)
         self._producer = producer
-        self._event = threading.Event()
-        super().__init__(name=sensor_name)
 
     def sensor_name(self) -> str:
         return self._sensor_name
 
-    def run(self) -> None:
-        while not self._event.is_set() and (self._limit is None or self._limit > 0):
-            data = self.data()
-            self._producer.produce(data)
-            log.debug(f'Produced data for {self._sensor_name}')
-            if self._limit is not None:
-                self._limit -= 1
-            self._event.wait(self._generation_delay.total_seconds())
+    @property
+    def limit(self) -> int:
+        return self._limit
 
-    def is_running(self) -> bool:
-        return not self._event.is_set()
+    @limit.setter
+    def limit(self, limit: int) -> None:
+        self._limit = limit
 
-    def stop(self) -> None:
-        self._event.set()
-        log.debug(f'Stopped simulator {self._sensor_name}')
+    @property
+    def generation_delay(self) -> timedelta:
+        return self._generation_delay
 
     @abstractmethod
     def data(self) -> RawData:
