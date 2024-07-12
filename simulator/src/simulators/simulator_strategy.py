@@ -46,7 +46,7 @@ class SimulatorStrategy(ABC):
         return self._generation_delay
 
     @abstractmethod
-    def data(self) -> RawData:
+    def simulate(self) -> RawData:
         pass
 
     def __eq__(self, other: any) -> bool:

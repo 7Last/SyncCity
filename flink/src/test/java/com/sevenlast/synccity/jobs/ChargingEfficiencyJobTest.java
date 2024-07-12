@@ -4,6 +4,8 @@ import com.sevenlast.synccity.ChargingEfficiencyJob;
 import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
 import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
+import com.sevenlast.synccity.serialization.ChargingEfficiencyRecordSerializableAdapter;
+import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
@@ -71,7 +73,7 @@ public class ChargingEfficiencyJobTest {
         ).map(this::toRecord).toList();
         //@formatter:on
 
-        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData),
@@ -89,7 +91,7 @@ public class ChargingEfficiencyJobTest {
                 groupName,
                 Set.of(parkingSensorName, chargingSensorName)
         );
-        var actual = CollectionSink.values.get(0);
+        var actual = ((ChargingEfficiencyRecordSerializableAdapter) CollectionSink.values.get(0)).getAdaptee();
         assertEquals(expected, actual);
     }
 
@@ -122,7 +124,7 @@ public class ChargingEfficiencyJobTest {
                 new ChargingStationRawData(uuid2, "charging-2", groupName, 0, 0, timestamp.plusHours(1), "type", 0f, 1f, Duration.ZERO, Duration.ZERO)
         );
 
-        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
@@ -151,10 +153,14 @@ public class ChargingEfficiencyJobTest {
                 )
         );
 
+        var actual = CollectionSink.values
+                .stream().map(ChargingEfficiencyRecordSerializableAdapter.class::cast)
+                .map(ChargingEfficiencyRecordSerializableAdapter::getAdaptee).toList();
+
         assertTrue(
-                CollectionSink.values.size() == 2 &&
-                        maxEfficiency.containsAll(CollectionSink.values) &&
-                        CollectionSink.values.containsAll(maxEfficiency)
+                actual.size() == 2 &&
+                        maxEfficiency.containsAll(actual) &&
+                        actual.containsAll(maxEfficiency)
         );
     }
 
@@ -186,7 +192,7 @@ public class ChargingEfficiencyJobTest {
         );
 
 
-        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData.stream().map(this::toRecord).toList()),
@@ -202,11 +208,14 @@ public class ChargingEfficiencyJobTest {
                 ChargingEfficiencyResult.zero(uuid2, beginDate, groupName, Set.of("parking-2", "charging-2"))
         );
 
-        // Assert that the values are the same, regardless of the order
+        var actual = CollectionSink.values
+                .stream().map(ChargingEfficiencyRecordSerializableAdapter.class::cast)
+                .map(ChargingEfficiencyRecordSerializableAdapter::getAdaptee).toList();
+
         assertTrue(
-                CollectionSink.values.size() == 2 &&
-                        CollectionSink.values.containsAll(minEfficiency) &&
-                        minEfficiency.containsAll(CollectionSink.values)
+                actual.size() == 2 &&
+                        minEfficiency.containsAll(actual) &&
+                        actual.containsAll(minEfficiency)
         );
     }
 
@@ -260,7 +269,7 @@ public class ChargingEfficiencyJobTest {
         ).map(this::toRecord).toList();
         //@formatter:on
 
-        var mockSink = new CollectionSink<ChargingEfficiencyResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new ChargingEfficiencyJob(
                 env.fromCollection(parkingData),
@@ -288,10 +297,15 @@ public class ChargingEfficiencyJobTest {
                         Set.of("parking-2", "charging-2")
                 )
         );
+
+        var actual = CollectionSink.values
+                .stream().map(ChargingEfficiencyRecordSerializableAdapter.class::cast)
+                .map(ChargingEfficiencyRecordSerializableAdapter::getAdaptee).toList();
+
         assertTrue(
-                CollectionSink.values.size() == 2 &&
-                        expected.containsAll(CollectionSink.values) &&
-                        CollectionSink.values.containsAll(expected)
+                actual.size() == 2 &&
+                        expected.containsAll(actual) &&
+                        actual.containsAll(expected)
         );
     }
 

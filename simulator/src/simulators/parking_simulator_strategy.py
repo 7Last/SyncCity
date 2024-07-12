@@ -14,7 +14,7 @@ class ParkingSimulatorStrategy(SimulatorStrategy):
         super().__init__(sensor_name, config, producer)
         self.__is_occupied = self.__generate_occupancy()
 
-    def data(self) -> ParkingRawData:
+    def simulate(self) -> ParkingRawData:
         data = ParkingRawData(
             is_occupied=self.__is_occupied,
             latitude=self._latitude,

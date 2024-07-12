@@ -36,7 +36,7 @@ class RiverLevelSimulatorStrategy(SimulatorStrategy):
         super().__init__(sensor_name, config, producer)
         self._latitude_factor = (sin(config.latitude() / 90.0 * pi / 2)) ** 2
 
-    def data(self) -> RiverLevelRawData:
+    def simulate(self) -> RiverLevelRawData:
         data = RiverLevelRawData(
             value=self.__sinusoidal_value(self._timestamp),
             sensor_uuid=self._sensor_uuid,

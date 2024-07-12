@@ -20,7 +20,7 @@ class AirQualitySimulatorStrategy(SimulatorStrategy):
         self.__no2_coefficient = random.uniform(-50, 50)
         self.__so2_coefficient = random.uniform(-50, 50)
 
-    def data(self) -> AirQualityRawData:
+    def simulate(self) -> AirQualityRawData:
         data = AirQualityRawData(
             o3=self.__sinusoidal_value(self._timestamp, self.__o3_coefficient) / 2,
             pm25=self.__sinusoidal_value(self._timestamp, self.__pm25_coefficient) / 3,

@@ -8,7 +8,7 @@ from ..models.raw_data.temperature_raw_data import TemperatureRawData
 
 
 class TemperatureSimulatorStrategy(SimulatorStrategy):
-    def data(self) -> TemperatureRawData:
+    def simulate(self) -> TemperatureRawData:
         data = TemperatureRawData(
             value=self.__sinusoidal_value(self._timestamp),
             sensor_uuid=self._sensor_uuid,

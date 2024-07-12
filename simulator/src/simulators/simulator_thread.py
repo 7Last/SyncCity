@@ -19,7 +19,7 @@ class SimulatorThread(threading.Thread):
 
     def run(self) -> None:
         while not self.__event.is_set() and (self.__simulator.limit is None or self.__simulator.limit > 0):
-            self.__producer.produce(self.__simulator.data())
+            self.__producer.produce(self.__simulator.simulate())
             log.debug(f'Produced data for {self.__simulator.sensor_name()}')
             if self.__simulator.limit is not None:
                 self.__simulator.limit -= 1

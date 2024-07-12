@@ -8,7 +8,7 @@ from ..models.raw_data.precipitation_raw_data import PrecipitationRawData
 
 
 class PrecipitationSimulatorStrategy(SimulatorStrategy):
-    def data(self) -> PrecipitationRawData:
+    def simulate(self) -> PrecipitationRawData:
         data = PrecipitationRawData(
             value=self.__sinusoidal_value(self._timestamp, self._latitude),
             sensor_uuid=self._sensor_uuid,

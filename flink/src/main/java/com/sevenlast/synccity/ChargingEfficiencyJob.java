@@ -5,8 +5,9 @@ import com.sevenlast.synccity.functions.ChargingStationTimeDifferenceWindowFunct
 import com.sevenlast.synccity.functions.ParkingTimeDifferenceWindowFunction;
 import com.sevenlast.synccity.models.ChargingStationRawData;
 import com.sevenlast.synccity.models.ParkingRawData;
-import com.sevenlast.synccity.models.results.ChargingEfficiencyResult;
 import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
+import com.sevenlast.synccity.serialization.ChargingEfficiencyRecordSerializableAdapter;
+import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.serialization.RecordSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
@@ -39,7 +41,7 @@ public class ChargingEfficiencyJob {
 
     private DataStreamSource<GenericRecord> parkingKafkaSource;
     private DataStreamSource<GenericRecord> chargingStationKafkaSource;
-    private SinkFunction<ChargingEfficiencyResult> efficiencySink;
+    private SinkFunction<RecordSerializable> efficiencySink;
     private WatermarkStrategy<GenericRecord> watermark;
 
     public static void main(String[] args) throws Exception {
@@ -88,7 +90,7 @@ public class ChargingEfficiencyJob {
         var sink = new FlinkKafkaProducer<>(
                 bootstrapServers,
                 CHARGING_EFFICIENCY_TOPIC,
-                new RecordSerializationSchema<ChargingEfficiencyResult>(
+                new RecordSerializationSchema<>(
                         CHARGING_EFFICIENCY_TOPIC,
                         schemaParser.parse(efficiencyMetadata.getSchema()),
                         schemaRegistryUrl
@@ -126,11 +128,12 @@ public class ChargingEfficiencyJob {
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new ChargingStationTimeDifferenceWindowFunction());
 
-        var efficiencyStream = parkingStream.join(chargingStationStream)
+        DataStream<RecordSerializable> efficiencyStream = parkingStream.join(chargingStationStream)
                 .where(TimestampDifferenceResult::getSensorUuid)
                 .equalTo(TimestampDifferenceResult::getSensorUuid)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new ChargingEfficiencyJoinFunction());
+                .apply(new ChargingEfficiencyJoinFunction())
+                .map(ChargingEfficiencyRecordSerializableAdapter::new);
 
         efficiencyStream.addSink(efficiencySink);
         env.execute("Charging Efficiency Job");

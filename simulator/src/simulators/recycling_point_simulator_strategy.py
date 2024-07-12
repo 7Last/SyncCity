@@ -22,7 +22,7 @@ class RecyclingPointSimulatorStrategy(SimulatorStrategy):
         # max percentage of value to leave after partial emptying
         self.__partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
-    def data(self) -> RecyclingPointRawData:
+    def simulate(self) -> RecyclingPointRawData:
         data = RecyclingPointRawData(
             filling=self.__filling(),
             latitude=self._latitude,

@@ -45,7 +45,7 @@ class TestPrecipitationSimulatorStrategy(unittest.TestCase):
             producer=self.producer,
         )
 
-        stream = [simulator.data() for _ in range(3)]
+        stream = [simulator.simulate() for _ in range(3)]
 
         expected = [
             PrecipitationRawData(

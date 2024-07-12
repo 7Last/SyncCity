@@ -5,6 +5,8 @@ import com.sevenlast.synccity.functions.HeatIndexJoinFunction;
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.results.AverageResult;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
+import com.sevenlast.synccity.serialization.HeatIndexRecordSerializableAdapter;
+import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.serialization.RecordSerializationSchema;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,7 @@ public class HeatIndexJob {
 
     private DataStreamSource<GenericRecord> temperatureKafkaSource;
     private DataStreamSource<GenericRecord> humidityKafkaSource;
-    private SinkFunction<HeatIndexResult> heatIndexSink;
+    private SinkFunction<RecordSerializable> heatIndexSink;
     private WatermarkStrategy<GenericRecord> watermark;
 
     public static void main(String[] args) throws Exception {
@@ -80,7 +82,7 @@ public class HeatIndexJob {
         var sink = new FlinkKafkaProducer<>(
                 bootstrapServers,
                 HEAT_INDEX_TOPIC,
-                new RecordSerializationSchema<HeatIndexResult>(
+                new RecordSerializationSchema<>(
                         HEAT_INDEX_TOPIC,
                         schemaParser.parse(metadata.getSchema()),
                         schemaRegistryUrl
@@ -126,11 +128,12 @@ public class HeatIndexJob {
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
                 .apply(new AverageWindowFunction());
 
-        DataStream<HeatIndexResult> heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
+        DataStream<RecordSerializable> heatIndexStream = avgTemperatureStream.join(avgHumidityStream)
                 .where(AverageResult::getGroupName)
                 .equalTo(AverageResult::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
-                .apply(new HeatIndexJoinFunction());
+                .apply(new HeatIndexJoinFunction())
+                .map(HeatIndexRecordSerializableAdapter::new);
 
         heatIndexStream.addSink(heatIndexSink);
         env.execute("Heat Index Job");

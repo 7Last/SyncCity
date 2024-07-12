@@ -40,7 +40,7 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         # Randomize usage frequency factor
         self._usage_frequency_factor = random.randint(1, 10)
 
-    def data(self) -> ChargingStationRawData:
+    def simulate(self) -> ChargingStationRawData:
         if self._idle_time > timedelta(seconds=0):
             self._timestamp += self._points_spacing
             self._idle_time -= self._points_spacing

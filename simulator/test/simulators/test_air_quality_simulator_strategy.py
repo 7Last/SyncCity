@@ -68,7 +68,7 @@ class TestAirQualitySimulatorStrategy(unittest.TestCase):
 
         mock_uniform.return_value = 0
 
-        stream = [simulator.data() for _ in range(3)]
+        stream = [simulator.simulate() for _ in range(3)]
 
         expected = [
             AirQualityRawData(

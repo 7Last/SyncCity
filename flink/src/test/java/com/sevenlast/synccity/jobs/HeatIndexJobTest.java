@@ -3,6 +3,8 @@ package com.sevenlast.synccity.jobs;
 import com.sevenlast.synccity.HeatIndexJob;
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.results.HeatIndexResult;
+import com.sevenlast.synccity.serialization.HeatIndexRecordSerializableAdapter;
+import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.utils.CollectionSink;
 import com.sevenlast.synccity.utils.SimpleGenericRecord;
 import org.apache.avro.generic.GenericRecord;
@@ -57,7 +59,7 @@ public class HeatIndexJobTest {
                 new HumTempRawData(humidityUuid, humidityName, groupName, 0.0, 0.0, beginDate.plusMinutes(10), 55.0f)
         ).map(this::toRecord).toList();
 
-        var mockSink = new CollectionSink<HeatIndexResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new HeatIndexJob(
                 env.fromCollection(temperatureData),
@@ -81,7 +83,7 @@ public class HeatIndexJobTest {
         );
 
         assertEquals(1, CollectionSink.values.size());
-        var actual = CollectionSink.values.get(0);
+        var actual = ((HeatIndexRecordSerializableAdapter) CollectionSink.values.get(0)).getAdaptee();
         assertEquals(expected, actual);
     }
 
@@ -116,7 +118,7 @@ public class HeatIndexJobTest {
                 new HumTempRawData(humidity2Uuid, "humidity-2", groupName, 12.15, 45.1, beginDate.plusMinutes(10), 81.0f)
         ).map(this::toRecord).toList();
 
-        var mockSink = new CollectionSink<HeatIndexResult>();
+        var mockSink = new CollectionSink<RecordSerializable>();
 
         var job = new HeatIndexJob(
                 env.fromCollection(temperatureData),
@@ -128,19 +130,19 @@ public class HeatIndexJobTest {
         job.execute(env);
 
         var expected = new HeatIndexResult(
-                Set.of("temperature-1", "temperature-2", "humidity-1", "humidity-2"),
+                Set.of("humidity-2", "temperature-2", "temperature-1", "humidity-1"),
                 groupName,
                 28.97965137355458,
                 26.666666666666668,
                 79.5,
-                12.225,
-                45.2,
-                44.68590029932461,
+                12.225063069171808,
+                45.19987168826055,
+                44.69126354786348,
                 beginDate
         );
 
         assertEquals(1, CollectionSink.values.size());
-        var actual = CollectionSink.values.get(0);
+        var actual = ((HeatIndexRecordSerializableAdapter) CollectionSink.values.get(0)).getAdaptee();
         assertEquals(expected, actual);
     }
 

@@ -10,7 +10,7 @@ class TrafficSimulatorStrategy(SimulatorStrategy):
     __SPEED_MULTIPLICATIVE_FACTOR = 100
     __VEHICLES_MULTIPLICATIVE_FACTOR = 200
 
-    def data(self) -> TrafficRawData:
+    def simulate(self) -> TrafficRawData:
         speed = self.__SPEED_MULTIPLICATIVE_FACTOR * self.__multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[
