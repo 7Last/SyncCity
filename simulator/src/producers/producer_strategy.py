@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from ..models.raw_data.raw_data import RawData
+from ..serializers.dict_raw_data_adapter import DictSerializable
 from ..serializers.serialization_strategy import SerializationStrategy
 
 
@@ -9,7 +10,7 @@ class ProducerStrategy(ABC):
         self._serialization_strategy = serialization_strategy
 
     @abstractmethod
-    def produce(self, data: RawData) -> bool:
+    def produce(self, data: DictSerializable) -> bool:
         pass
 
     @abstractmethod

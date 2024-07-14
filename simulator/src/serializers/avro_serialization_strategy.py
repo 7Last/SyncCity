@@ -5,8 +5,7 @@ from typing import Dict
 from confluent_avro import SchemaRegistry, AvroValueSerde
 from dotenv import load_dotenv
 
-from ..models.raw_data.raw_data import RawData
-from .dict_raw_data_adapter import DictRawDataAdapter
+from .dict_raw_data_adapter import DictSerializable
 from .serialization_strategy import SerializationStrategy
 
 SerdeWithSchema = (AvroValueSerde, str)
@@ -32,14 +31,15 @@ class AvroSerializationStrategy(SerializationStrategy):
         )
         self._serde_by_subject: Dict[str, SerdeWithSchema] = {}
 
-    def serialize(self, raw_data: RawData) -> bytes:
-        value_subject = raw_data.value_subject()
+    def serialize(self, data: DictSerializable) -> bytes:
+        topic = data.topic()
+        value_subject = f'{topic}-value'
 
         if value_subject not in self._serde_by_subject:
-            avro_serde = AvroValueSerde(self._registry_client, raw_data.topic)
+            avro_serde = AvroValueSerde(self._registry_client, topic)
             value_schema = (self._schema_path / f"{value_subject}.avsc").read_text()
             self._serde_by_subject[value_subject] = (avro_serde, value_schema)
         else:
             avro_serde, value_schema = self._serde_by_subject[value_subject]
 
-        return avro_serde.serialize(DictRawDataAdapter(raw_data), value_schema)
+        return avro_serde.serialize(data.to_dict(), value_schema)

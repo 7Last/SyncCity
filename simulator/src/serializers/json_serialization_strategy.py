@@ -1,10 +1,10 @@
 import json
 
-from ..models.raw_data.raw_data import RawData
-from .dict_raw_data_adapter import DictRawDataAdapter
+from .dict_raw_data_adapter import DictSerializable
 from .serialization_strategy import SerializationStrategy
+from ..models.raw_data.raw_data import RawData
 
 
 class JsonSerializationStrategy(SerializationStrategy):
-    def serialize(self, raw_data: RawData) -> bytes:
-        return json.dumps(DictRawDataAdapter(raw_data)).encode('utf-8')
+    def serialize(self, data: DictSerializable) -> bytes:
+        return json.dumps(data.to_dict()).encode('utf-8')

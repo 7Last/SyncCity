@@ -4,6 +4,7 @@ import kafka
 
 from .producer_strategy import ProducerStrategy
 from ..models.raw_data.raw_data import RawData
+from ..serializers.dict_raw_data_adapter import DictRawDataAdapter
 from ..serializers.serialization_strategy import SerializationStrategy
 
 
@@ -22,7 +23,7 @@ class KafkaProducerAdapter(ProducerStrategy):
     def produce(self, data: RawData) -> bool:
         try:
             key = str(data.sensor_uuid()).encode('utf-8')
-            value = self._serialization_strategy.serialize(data)
+            value = self._serialization_strategy.serialize(DictRawDataAdapter(data))
             log.info(f'Producing data to topic {data.topic}: {data}')
             self.__adaptee.send(data.topic, key=key, value=value)
             self.__adaptee.flush()

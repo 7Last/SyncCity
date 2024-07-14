@@ -18,20 +18,20 @@ from ..simulators.traffic_simulator_strategy import TrafficSimulatorStrategy
 def build_simulators(sensors_config: dict[str, any], producer: ProducerStrategy) -> \
         list[SimulatorStrategy]:
     return [
-        SimulatorFactory.generate(name, SensorConfig(config), producer) for name, config
+        SimulatorFactory.build(name, SensorConfig(config), producer) for name, config
         in sensors_config.items()
     ]
 
 
 class SimulatorFactory:
     @staticmethod
-    def generate(name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> SimulatorStrategy:
-        return _get_simulator(name, config, producer)
+    def build(name: str, config: SensorConfig,
+              producer: ProducerStrategy) -> SimulatorStrategy:
+        return _build_simulator(name, config, producer)
 
 
-def _get_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
-                   producer: ProducerStrategy) -> SimulatorStrategy:
+def _build_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
+                     producer: ProducerStrategy) -> SimulatorStrategy:
     match config.type():
         case SensorType.AIR_QUALITY:
             return AirQualitySimulatorStrategy(name, config, producer)
