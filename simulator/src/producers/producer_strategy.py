@@ -10,7 +10,7 @@ class ProducerStrategy(ABC):
         self._serialization_strategy = serialization_strategy
 
     @abstractmethod
-    def produce(self, data: DictSerializable) -> bool:
+    def produce(self, data: RawData) -> bool:
         pass
 
     @abstractmethod

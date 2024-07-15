@@ -2,9 +2,9 @@ package com.sevenlast.synccity;
 
 import com.sevenlast.synccity.functions.AverageWindowFunction;
 import com.sevenlast.synccity.functions.HeatIndexJoinFunction;
+import com.sevenlast.synccity.functions.HumTempRawDataMapFunction;
 import com.sevenlast.synccity.models.HumTempRawData;
 import com.sevenlast.synccity.models.results.AverageResult;
-import com.sevenlast.synccity.models.results.HeatIndexResult;
 import com.sevenlast.synccity.serialization.HeatIndexRecordSerializableAdapter;
 import com.sevenlast.synccity.serialization.RecordSerializable;
 import com.sevenlast.synccity.serialization.RecordSerializationSchema;
@@ -114,7 +114,7 @@ public class HeatIndexJob {
     public void execute(StreamExecutionEnvironment env) throws Exception {
         var avgTemperatureStream = temperatureKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
-                .map(HumTempRawData::fromGenericRecord)
+                .map(new HumTempRawDataMapFunction())
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(HumTempRawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
@@ -122,7 +122,7 @@ public class HeatIndexJob {
 
         var avgHumidityStream = humidityKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
-                .map(HumTempRawData::fromGenericRecord)
+                .map(new HumTempRawDataMapFunction())
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy(HumTempRawData::getGroupName)
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))

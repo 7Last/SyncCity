@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HeatIndexJobTest {
 
@@ -130,7 +131,12 @@ public class HeatIndexJobTest {
         job.execute(env);
 
         var expected = new HeatIndexResult(
-                Set.of("humidity-2", "temperature-2", "temperature-1", "humidity-1"),
+                Set.of(
+                        "temperature-1",
+                        "humidity-1",
+                        "humidity-2",
+                        "temperature-2"
+                ),
                 groupName,
                 28.97965137355458,
                 26.666666666666668,
@@ -143,7 +149,20 @@ public class HeatIndexJobTest {
 
         assertEquals(1, CollectionSink.values.size());
         var actual = ((HeatIndexRecordSerializableAdapter) CollectionSink.values.get(0)).getAdaptee();
-        assertEquals(expected, actual);
+
+        assertEquals(expected.getGroupName(), actual.getGroupName());
+        assertTrue(
+            expected.getSensorNames().containsAll(actual.getSensorNames()) &&
+            actual.getSensorNames().containsAll(expected.getSensorNames())
+        );
+        assertEquals(expected.getHeatIndex(), actual.getHeatIndex());
+        assertEquals(expected.getAverageTemperature(), actual.getAverageTemperature());
+        assertEquals(expected.getAverageHumidity(), actual.getAverageHumidity());
+        assertEquals(expected.getCenterOfMassLatitude(), actual.getCenterOfMassLatitude());
+        assertEquals(expected.getCenterOfMassLongitude(), actual.getCenterOfMassLongitude());
+        assertEquals(expected.getGroupName(), actual.getGroupName());
+        assertEquals(expected.getRadius(), actual.getRadius());
+        assertEquals(expected.getWindowStart(), actual.getWindowStart());
     }
 
     private GenericRecord toRecord(HumTempRawData data) {

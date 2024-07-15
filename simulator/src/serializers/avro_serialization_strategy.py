@@ -23,23 +23,23 @@ class AvroSerializationStrategy(SerializationStrategy):
             raise Exception("SCHEMAS_RELATIVE_PATH environment variable must be set")
 
         # <project_root>/redpanda/schemas directory
-        self._schema_path = Path(__file__).parent.joinpath(schemas_path)
+        self.__schema_path = Path(__file__).parent.joinpath(schemas_path)
 
-        self._registry_client = SchemaRegistry(
+        self.__registry_client = SchemaRegistry(
             url=schema_registry_url,
             headers={"Content-Type": "application/vnd.schemaregistry.v1+json"},
         )
-        self._serde_by_subject: Dict[str, SerdeWithSchema] = {}
+        self.__serde_by_subject: Dict[str, SerdeWithSchema] = {}
 
     def serialize(self, data: DictSerializable) -> bytes:
         topic = data.topic()
         value_subject = f'{topic}-value'
 
-        if value_subject not in self._serde_by_subject:
-            avro_serde = AvroValueSerde(self._registry_client, topic)
-            value_schema = (self._schema_path / f"{value_subject}.avsc").read_text()
-            self._serde_by_subject[value_subject] = (avro_serde, value_schema)
+        if value_subject not in self.__serde_by_subject:
+            avro_serde = AvroValueSerde(self.__registry_client, topic)
+            value_schema = (self.__schema_path / f"{value_subject}.avsc").read_text()
+            self.__serde_by_subject[value_subject] = (avro_serde, value_schema)
         else:
-            avro_serde, value_schema = self._serde_by_subject[value_subject]
+            avro_serde, value_schema = self.__serde_by_subject[value_subject]
 
         return avro_serde.serialize(data.to_dict(), value_schema)

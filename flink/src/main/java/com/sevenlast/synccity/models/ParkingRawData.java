@@ -20,15 +20,4 @@ public class ParkingRawData extends RawData {
         this.isOccupied = isOccupied;
     }
 
-    public static ParkingRawData fromGenericRecord(GenericRecord record) {
-        return new ParkingRawData(
-                UUID.fromString(record.get("sensor_uuid").toString()).toString(),
-                record.get("sensor_name").toString(),
-                Optional.ofNullable(record.get("group_name")).map(Object::toString).orElse(null),
-                (double) record.get("latitude"),
-                (double) record.get("longitude"),
-                LocalDateTime.parse(record.get("timestamp").toString()),
-                (boolean) record.get("is_occupied")
-        );
-    }
 }

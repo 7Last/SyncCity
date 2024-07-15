@@ -1,10 +1,6 @@
 package com.sevenlast.synccity;
 
-import com.sevenlast.synccity.functions.ChargingEfficiencyJoinFunction;
-import com.sevenlast.synccity.functions.ChargingStationTimeDifferenceWindowFunction;
-import com.sevenlast.synccity.functions.ParkingTimeDifferenceWindowFunction;
-import com.sevenlast.synccity.models.ChargingStationRawData;
-import com.sevenlast.synccity.models.ParkingRawData;
+import com.sevenlast.synccity.functions.*;
 import com.sevenlast.synccity.models.results.TimestampDifferenceResult;
 import com.sevenlast.synccity.serialization.ChargingEfficiencyRecordSerializableAdapter;
 import com.sevenlast.synccity.serialization.RecordSerializable;
@@ -114,7 +110,7 @@ public class ChargingEfficiencyJob {
     public void execute(StreamExecutionEnvironment env) throws Exception {
         var parkingStream = parkingKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
-                .map(ParkingRawData::fromGenericRecord)
+                .map(new ParkingRawDataMapFunction())
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy((data) -> data.getSensorUuid().toString())
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))
@@ -122,7 +118,7 @@ public class ChargingEfficiencyJob {
 
         var chargingStationStream = chargingStationKafkaSource
                 .assignTimestampsAndWatermarks(watermark)
-                .map(ChargingStationRawData::fromGenericRecord)
+                .map(new ChargingStationRawDataMapFunction())
                 .filter(data -> data.getGroupName() != null && !data.getGroupName().isEmpty())
                 .keyBy((data) -> data.getSensorUuid().toString())
                 .window(TumblingEventTimeWindows.of(WINDOW_SIZE))

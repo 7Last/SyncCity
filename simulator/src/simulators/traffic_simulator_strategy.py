@@ -7,11 +7,11 @@ from ..models.raw_data.traffic_raw_data import TrafficRawData
 
 
 class TrafficSimulatorStrategy(SimulatorStrategy):
-    __SPEED_MULTIPLICATIVE_FACTOR = 100
-    __VEHICLES_MULTIPLICATIVE_FACTOR = 200
+    __SPEED_FACTOR = 100
+    __VEHICLES_FACTOR = 200
 
     def simulate(self) -> TrafficRawData:
-        speed = self.__SPEED_MULTIPLICATIVE_FACTOR * self.__multimodal_gauss_value(
+        speed = self.__SPEED_FACTOR * self.__multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[
                 (0, 2.1),
@@ -22,7 +22,7 @@ class TrafficSimulatorStrategy(SimulatorStrategy):
             ],
         )
 
-        vehicles = self.__VEHICLES_MULTIPLICATIVE_FACTOR * self.__multimodal_gauss_value(
+        vehicles = self.__VEHICLES_FACTOR * self.__multimodal_gauss_value(
             x=self._timestamp.hour + self._timestamp.minute / 60,
             modes=[
                 (0, 4),
