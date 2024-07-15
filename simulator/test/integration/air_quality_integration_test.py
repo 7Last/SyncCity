@@ -33,7 +33,7 @@ def test() -> None:
         assert UUID(str(row[0][0])) == UUID(str(rawdata._sensor_uuid))
         assert row[0][1] == rawdata._sensor_name
         assert row[0][2] == rawdata._group_name
-        # assert row[0][3] == rawdata._timestamp
+        assert row[0][3] == rawdata._timestamp
         assert row[0][4] == rawdata._latitude
         assert row[0][5] == rawdata._longitude
         assert row[0][6] == rawdata._AirQualityRawData__pm25
