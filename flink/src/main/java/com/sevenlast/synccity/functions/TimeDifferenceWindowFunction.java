@@ -20,7 +20,7 @@ public abstract class TimeDifferenceWindowFunction<T extends RawData>
         implements WindowFunction<T, TimestampDifferenceResult, String, TimeWindow> {
     protected abstract boolean isOccupied(T data);
 
-    public void apply(String uuid, TimeWindow window, Iterable<T> input, org.apache.flink.util.Collector<TimestampDifferenceResult> out) {
+    public final void apply(String uuid, TimeWindow window, Iterable<T> input, org.apache.flink.util.Collector<TimestampDifferenceResult> out) {
 
         Duration occupied = Duration.ZERO;
         Duration notOccupied = Duration.ZERO;

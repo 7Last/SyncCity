@@ -313,7 +313,7 @@
       "transparent": true,
       "type": "bargauge"
     },
-    {
+   {
       "datasource": {
         "type": "grafana-clickhouse-datasource",
         "uid": "P5CECDC4694398594"
@@ -568,7 +568,7 @@
           "refId": "A"
         }
       ],
-      "title": "Average charging station efficiency and utilization rates",
+      "title": "Whole park average charging station efficiency and utilization rates",
       "transparent": true,
       "type": "timeseries"
     },
@@ -682,9 +682,592 @@
           "refId": "A"
         }
       ],
-      "title": "Average efficiency and utilization",
+      "title": "Whole park average efficiency and utilization",
       "transparent": true,
       "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-clickhouse-datasource",
+        "uid": "P5CECDC4694398594"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#ffffff",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 1e-7
+              },
+              {
+                "color": "red",
+                "value": 0.05
+              },
+              {
+                "color": "orange",
+                "value": 0.2
+              },
+              {
+                "color": "yellow",
+                "value": 0.4
+              },
+              {
+                "color": "green",
+                "value": 0.5
+              },
+              {
+                "color": "dark-green",
+                "value": 0.7
+              }
+            ]
+          },
+          "unitScale": true
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "number"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 19,
+        "x": 2,
+        "y": 41
+      },
+      "id": 64,
+      "options": {
+        "inlineEditing": true,
+        "panZoom": false,
+        "root": {
+          "background": {
+            "color": {
+              "fixed": "transparent"
+            },
+            "image": {
+              "field": "",
+              "fixed": "",
+              "mode": "fixed"
+            }
+          },
+          "border": {
+            "color": {
+              "fixed": "dark-green"
+            }
+          },
+          "constraint": {
+            "horizontal": "left",
+            "vertical": "top"
+          },
+          "elements": [
+            {
+              "background": {
+                "color": {
+                  "field": "max_efficiency_sensor",
+                  "fixed": "#D9D9D9"
+                },
+                "image": {
+                  "mode": "fixed"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "max_efficiency_sensor",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max eff sensor",
+              "placement": {
+                "height": 50,
+                "left": 130,
+                "top": 86,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "min_efficiency",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "min_efficiency",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min eff",
+              "placement": {
+                "height": 50,
+                "left": 448,
+                "top": 193,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "min_efficiency_sensor",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "min_efficiency_sensor",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min eff sensor",
+              "placement": {
+                "height": 50,
+                "left": 130,
+                "top": 195,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "max_efficiency",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "max_utilization",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max util",
+              "placement": {
+                "height": 50,
+                "left": 1178,
+                "top": 86,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "max_utilization_sensor",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "max_utilization_sensor",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max util sensor",
+              "placement": {
+                "height": 50,
+                "left": 860,
+                "top": 86,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "min_efficiency",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "min_utilization",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "connections": [],
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min util",
+              "placement": {
+                "height": 50,
+                "left": 1178,
+                "top": 193,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "min_utilization_sensor",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "min_utilization_sensor",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min util sensor",
+              "placement": {
+                "height": 50,
+                "left": 860,
+                "top": 193,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Most efficient station"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max eff txt",
+              "placement": {
+                "height": 50,
+                "left": 291,
+                "top": 30,
+                "width": 237
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Least efficient station"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min eff txt",
+              "placement": {
+                "height": 50,
+                "left": 294,
+                "top": 142,
+                "width": 237
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Least used station"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Min util txt",
+              "placement": {
+                "height": 50,
+                "left": 1024,
+                "top": 146,
+                "width": 237
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Most used station"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max util txt",
+              "placement": {
+                "height": 50,
+                "left": 1022,
+                "top": 36,
+                "width": 237
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "max_efficiency",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "max_efficiency",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Max eff",
+              "placement": {
+                "height": 50,
+                "left": 448,
+                "top": 86,
+                "width": 260
+              },
+              "type": "metric-value"
+            }
+          ],
+          "name": "Element 1721149866065",
+          "placement": {
+            "height": 100,
+            "left": 0,
+            "top": 0,
+            "width": 100
+          },
+          "type": "frame"
+        },
+        "showAdvancedTypes": true
+      },
+      "pluginVersion": "10.3.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-clickhouse-datasource",
+            "uid": "P5CECDC4694398594"
+          },
+          "editorType": "sql",
+          "format": 1,
+          "meta": {
+            "builderOptions": {
+              "columns": [],
+              "database": "",
+              "limit": 1000,
+              "mode": "list",
+              "queryType": "table",
+              "table": ""
+            }
+          },
+          "pluginVersion": "4.3.0",
+          "queryType": "table",
+          "rawSql": "with max_efficiency as (\n    select arrayJoin(sensor_names) as name,\n           avg(efficiency_rate) efficiency\n    from sensors.charging_efficiency\n    where group_name = '${group_name_charging}' and timestamp >= $__fromTime and timestamp <= $__toTime\n    group by name\n    order by efficiency desc\n    limit 1\n),\nmin_efficiency as (\n    select arrayJoin(sensor_names) as name,\n           avg(efficiency_rate) efficiency\n    from sensors.charging_efficiency\n    where group_name = '${group_name_charging}' and timestamp >= $__fromTime and timestamp <= $__toTime\n    group by name\n    order by efficiency\n    limit 1\n),\nmax_utilization as (\n    select arrayJoin(sensor_names) as name,\n           avg(utilization_rate) utilization\n    from sensors.charging_efficiency\n    where group_name = '${group_name_charging}' and timestamp >= $__fromTime and timestamp <= $__toTime\n    group by name\n    order by utilization desc\n    limit 1\n),\nmin_utilization as (\n    select arrayJoin(sensor_names) as name,\n           avg(utilization_rate) utilization\n    from sensors.charging_efficiency\n    where group_name = '${group_name_charging}' and timestamp >= $__fromTime and timestamp <= $__toTime\n    group by name\n    order by utilization\n    limit 1\n)\nselect max_efficiency.name as max_efficiency_sensor,\n       max_efficiency.efficiency as max_efficiency,\n       min_efficiency.name as min_efficiency_sensor,\n       min_efficiency.efficiency as min_efficiency,\n       max_utilization.name as max_utilization_sensor,\n       max_utilization.utilization as max_utilization,\n       min_utilization.name as min_utilization_sensor,\n       min_utilization.utilization as min_utilization\nfrom  max_efficiency, min_efficiency, max_utilization, min_utilization;\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Most/least used/efficienct charging station in the park",
+      "transformations": [],
+      "transparent": true,
+      "type": "canvas"
     },
     {
       "collapsed": true,
@@ -692,7 +1275,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 52
       },
       "id": 12,
       "panels": [
@@ -754,7 +1337,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 61
+            "y": 69
           },
           "id": 46,
           "options": {
@@ -899,7 +1482,7 @@
             "h": 13,
             "w": 17,
             "x": 0,
-            "y": 74
+            "y": 82
           },
           "id": 48,
           "options": {
@@ -1029,7 +1612,7 @@
             "h": 13,
             "w": 7,
             "x": 17,
-            "y": 74
+            "y": 82
           },
           "id": 47,
           "options": {
@@ -1107,7 +1690,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 53
       },
       "id": 10,
       "panels": [
@@ -1149,7 +1732,7 @@
             "h": 12,
             "w": 24,
             "x": 0,
-            "y": 19
+            "y": 27
           },
           "id": 55,
           "options": {
@@ -1367,7 +1950,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 31
+            "y": 39
           },
           "id": 59,
           "options": {
@@ -1521,7 +2104,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 31
+            "y": 39
           },
           "id": 60,
           "options": {
@@ -1627,7 +2210,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 54
       },
       "id": 11,
       "panels": [
@@ -1669,7 +2252,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 28
           },
           "id": 49,
           "options": {
@@ -1880,7 +2463,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 29
+            "y": 37
           },
           "id": 50,
           "options": {
@@ -1962,7 +2545,7 @@
             "h": 10,
             "w": 7,
             "x": 0,
-            "y": 39
+            "y": 47
           },
           "id": 52,
           "options": {
@@ -2062,7 +2645,7 @@
             "h": 9,
             "w": 7,
             "x": 8,
-            "y": 39
+            "y": 47
           },
           "id": 53,
           "options": {
@@ -2227,7 +2810,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 39
+            "y": 47
           },
           "id": 54,
           "options": {
@@ -2390,13 +2973,13 @@
     ]
   },
   "time": {
-    "from": "2024-06-19T19:44:05.367Z",
-    "to": "2024-12-31T22:59:59.999Z"
+    "from": "2024-06-30T22:00:00.000Z",
+    "to": "2024-07-03T21:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Urban data",
   "uid": "b83497ec-c16c-4fd9-99f5-919c90ae19c9",
-  "version": 1,
+  "version": 9,
   "weekStart": ""
 }
