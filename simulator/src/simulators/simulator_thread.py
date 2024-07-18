@@ -19,6 +19,7 @@ class SimulatorThread(threading.Thread):
             if self.__simulator.limit is not None:
                 self.__simulator.limit -= 1
             self.__event.wait(self.__simulator.generation_delay.total_seconds())
+        self.stop()
 
     def is_running(self) -> bool:
         return not self.__event.is_set()
