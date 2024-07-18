@@ -3,14 +3,12 @@ from datetime import datetime
 from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
-from simulator.src.producers.stdout_producer import StdOutProducer
-from simulator.src.simulators.simulator_executor import SimulatorExecutor
 from simulator.src.simulators.temperature_simulator_strategy import \
     TemperatureSimulatorStrategy
 
 
 class TestSimulatorThread(unittest.TestCase):
-    def test_produce(self):
+    def test_produce(self) -> None:
         mock_producer = MagicMock()
         mock_producer.produce = MagicMock()
 

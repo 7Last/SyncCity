@@ -1,12 +1,7 @@
 import logging as log
 import threading
-import zoneinfo
-from abc import ABC, abstractmethod
-from datetime import datetime
 
 from .simulator_strategy import SimulatorStrategy
-from ..models.config.sensor_config import SensorConfig
-from ..models.raw_data.raw_data import RawData
 from ..producers.producer_strategy import ProducerStrategy
 
 

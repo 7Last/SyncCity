@@ -10,7 +10,7 @@ from ..serializers.serialization_strategy import SerializationStrategy
 
 class KafkaProducerAdapter(ProducerStrategy):
 
-    def __init__(self, serialization_strategy: SerializationStrategy,
+    def __init__(self, *, serialization_strategy: SerializationStrategy,
                  bootstrap_servers: list[str], max_block_ms: int,
                  acks: int) -> None:
         super().__init__(serialization_strategy)

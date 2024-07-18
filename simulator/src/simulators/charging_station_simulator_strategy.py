@@ -4,7 +4,6 @@ from datetime import timedelta
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class ChargingStationSimulatorStrategy(SimulatorStrategy):
@@ -148,8 +147,7 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         battery_kwh = self._battery_level * max_battery / 100
 
         battery_kwh += charge_added
-        if battery_kwh > max_battery:
-            battery_kwh = max_battery
+        battery_kwh = min(battery_kwh, max_battery)
 
         self._battery_level = (battery_kwh / max_battery) * 100
 

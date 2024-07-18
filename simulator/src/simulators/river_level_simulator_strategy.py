@@ -6,7 +6,6 @@ from math import pi, sin
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.river_level_raw_data import RiverLevelRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class RiverLevelSimulatorStrategy(SimulatorStrategy):

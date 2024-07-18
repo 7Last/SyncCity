@@ -20,10 +20,9 @@ class DictRawDataAdapter(DictSerializable):
     def __beautify_key(self, key: str) -> str:
         classname = self.__raw_data.__class__.__name__
         key = re.sub("^_+", "", key)
-        key = re.sub(f"{classname}_+", "", key)
-        return key
+        return re.sub(f"{classname}_+", "", key)
 
-    def __beautify_value(self, value) -> any:
+    def __beautify_value(self, value) -> any:  # noqa: ANN001
         if isinstance(value, UUID):
             return str(value)
         if isinstance(value, datetime):

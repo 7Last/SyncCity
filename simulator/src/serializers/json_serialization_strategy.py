@@ -2,7 +2,6 @@ import json
 
 from .dict_raw_data_adapter import DictSerializable
 from .serialization_strategy import SerializationStrategy
-from ..models.raw_data.raw_data import RawData
 
 
 class JsonSerializationStrategy(SerializationStrategy):

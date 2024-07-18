@@ -6,7 +6,6 @@ from math import pi, sin
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.air_quality_raw_data import AirQualityRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class AirQualitySimulatorStrategy(SimulatorStrategy):

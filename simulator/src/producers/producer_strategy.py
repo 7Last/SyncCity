@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
 from ..models.raw_data.raw_data import RawData
-from ..serializers.dict_raw_data_adapter import DictSerializable
 from ..serializers.serialization_strategy import SerializationStrategy
 
 

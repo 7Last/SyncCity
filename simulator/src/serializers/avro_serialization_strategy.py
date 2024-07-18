@@ -12,7 +12,7 @@ SerdeWithSchema = (AvroValueSerde, str)
 
 
 class AvroSerializationStrategy(SerializationStrategy):
-    def __init__(self):
+    def __init__(self) -> None:
         load_dotenv()
         schema_registry_url = os.getenv('SCHEMA_REGISTRY_URL')
         if schema_registry_url is None or schema_registry_url == "":

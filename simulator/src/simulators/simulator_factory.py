@@ -27,7 +27,7 @@ class SimulatorFactory:
         return _build_simulator(name, config)
 
 
-def _build_simulator(name: str, config: SensorConfig) -> SimulatorStrategy:
+def _build_simulator(name: str, config: SensorConfig) -> SimulatorStrategy:  # noqa PLR0911
     match config.type():
         case SensorType.AIR_QUALITY:
             return AirQualitySimulatorStrategy(name, config)

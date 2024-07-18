@@ -1,6 +1,5 @@
 import unittest
 from datetime import datetime
-from unittest.mock import MagicMock
 
 from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.simulators.simulator_factory import build_simulators

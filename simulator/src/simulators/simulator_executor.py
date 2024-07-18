@@ -5,7 +5,6 @@ from typing import Dict
 from .simulator_thread import SimulatorThread
 from ..producers.producer_strategy import ProducerStrategy
 from .simulator_factory import build_simulators
-from ..simulators.simulator_strategy import SimulatorStrategy
 
 
 class SimulatorExecutor:
