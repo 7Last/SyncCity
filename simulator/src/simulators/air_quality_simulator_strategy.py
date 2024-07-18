@@ -6,21 +6,19 @@ from math import pi, sin
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.air_quality_raw_data import AirQualityRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class AirQualitySimulatorStrategy(SimulatorStrategy):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self.__o3_coefficient = random.uniform(-50, 50)
         self.__pm25_coefficient = random.uniform(-50, 50)
         self.__pm10_coefficient = random.uniform(-50, 50)
         self.__no2_coefficient = random.uniform(-50, 50)
         self.__so2_coefficient = random.uniform(-50, 50)
 
-    def data(self) -> AirQualityRawData:
+    def simulate(self) -> AirQualityRawData:
         data = AirQualityRawData(
             o3=self.__sinusoidal_value(self._timestamp, self.__o3_coefficient) / 2,
             pm25=self.__sinusoidal_value(self._timestamp, self.__pm25_coefficient) / 3,

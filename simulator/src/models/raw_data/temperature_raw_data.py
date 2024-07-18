@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
@@ -18,12 +17,6 @@ class TemperatureRawData(RawData):
     @property
     def topic(self) -> str:
         return "temperature"
-
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "value": self.__value,
-            **(super().to_json()),
-        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, TemperatureRawData):

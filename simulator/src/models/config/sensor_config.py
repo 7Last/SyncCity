@@ -36,24 +36,24 @@ class SensorConfig:
 
         try:
             if points_spacing is None:
-                self._points_spacing = None
+                self.__points_spacing = None
             else:
-                self._points_spacing: timedelta = isodate.parse_duration(points_spacing)
+                self.__points_spacing: timedelta = isodate.parse_duration(points_spacing)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid _points_spacing value. Must be specified following ISO8601',
+                'Invalid __points_spacing value. Must be specified following ISO8601',
             )
             raise
 
         try:
             if generation_delay is None:
-                self._generation_delay = None
+                self.__generation_delay = None
             else:
-                self._generation_delay: timedelta = isodate.parse_duration(
+                self.__generation_delay: timedelta = isodate.parse_duration(
                     generation_delay)
         except isodate.isoerror.ISO8601Error:
             log.exception(
-                'Invalid _generation_delay value. Must be specified following ISO8601',
+                'Invalid __generation_delay value. Must be specified following ISO8601',
             )
             raise
 
@@ -79,10 +79,10 @@ class SensorConfig:
         return self.__group_name
 
     def points_spacing(self) -> timedelta | None:
-        return self._points_spacing
+        return self.__points_spacing
 
     def generation_delay(self) -> timedelta | None:
-        return self._generation_delay
+        return self.__generation_delay
 
     def __str__(self) -> str:
         return f'{self.__class__.__name__} {self.__dict__}'

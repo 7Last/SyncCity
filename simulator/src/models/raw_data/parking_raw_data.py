@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
@@ -19,12 +18,6 @@ class ParkingRawData(RawData):
     @property
     def topic(self) -> str:
         return "parking"
-
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "is_occupied": self.__is_occupied,
-            **(super().to_json()),
-        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, ParkingRawData):

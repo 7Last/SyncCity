@@ -24,7 +24,7 @@ class TestRiverLevelSimulatorStrategy(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
-                producer=self.producer,
+
             )
 
     @patch('random.gauss', side_effect=[0.8, 0.9, 0.5])
@@ -41,10 +41,10 @@ class TestRiverLevelSimulatorStrategy(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
-            producer=self.producer,
+
         )
 
-        stream = [simulator.data() for _ in range(3)]
+        stream = [simulator.simulate() for _ in range(3)]
 
         expected = [
             RiverLevelRawData(
