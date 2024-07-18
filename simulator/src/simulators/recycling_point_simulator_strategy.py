@@ -9,9 +9,8 @@ from ..producers.producer_strategy import ProducerStrategy
 
 class RecyclingPointSimulatorStrategy(SimulatorStrategy):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
 
         self.__last_value = random.uniform(0, 30)
         self.__prev_timestamp = self._timestamp

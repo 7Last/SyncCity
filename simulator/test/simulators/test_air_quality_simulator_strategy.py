@@ -7,11 +7,12 @@ from simulator.src.models.config.sensor_config import SensorConfig
 from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
 from simulator.src.simulators.air_quality_simulator_strategy import \
     AirQualitySimulatorStrategy
+from simulator.src.simulators.simulator_thread import SimulatorThread
 
 
 class TestAirQualitySimulatorStrategy(unittest.TestCase):
     def setUp(self) -> None:
-        self.producer = MagicMock()
+        self.simulator = MagicMock()
 
     def test_empty_sensor_name(self) -> None:
         with self.assertRaises(ValueError):
@@ -22,32 +23,16 @@ class TestAirQualitySimulatorStrategy(unittest.TestCase):
                 'generation_delay': 'PT1H',
                 'latitude': 0,
                 'longitude': 0,
-            }), producer=self.producer)
+            }))
 
     def test_start(self) -> None:
-        simulator = AirQualitySimulatorStrategy(sensor_name='test',
-                                                config=SensorConfig({
-                                                    'uuid': '00000000-0000-0000-0000-000000000000',
-                                                    'type': 'air_quality',
-                                                    'points_spacing': 'PT1S',
-                                                    'generation_delay': 'PT1S',
-                                                    'latitude': 0,
-                                                    'longitude': 0,
-                                                }), producer=self.producer)
+        simulator = SimulatorThread(simulator=self.simulator, producer=MagicMock())
         simulator.start()
         self.assertEqual(simulator.is_running(), True)
         simulator.stop()
 
     def test_stop(self) -> None:
-        simulator = AirQualitySimulatorStrategy(sensor_name='test',
-                                                config=SensorConfig({
-                                                    'uuid': '00000000-0000-0000-0000-000000000000',
-                                                    'type': 'air_quality',
-                                                    'points_spacing': 'PT1S',
-                                                    'generation_delay': 'PT1S',
-                                                    'latitude': 0,
-                                                    'longitude': 0,
-                                                }), producer=self.producer)
+        simulator = SimulatorThread(simulator=self.simulator, producer=MagicMock())
         simulator.start()
         simulator.stop()
         self.assertEqual(simulator.is_running(), False)
@@ -64,7 +49,7 @@ class TestAirQualitySimulatorStrategy(unittest.TestCase):
                                                     'limit': 3,
                                                     'latitude': 0,
                                                     'longitude': 0,
-                                                }), producer=self.producer)
+                                                }))
 
         mock_uniform.return_value = 0
 

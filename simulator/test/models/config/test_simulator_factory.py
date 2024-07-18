@@ -11,7 +11,6 @@ from simulator.src.simulators.traffic_simulator_strategy import TrafficSimulator
 
 class TestSimulatorFactory(unittest.TestCase):
     def test_simulator_generator(self) -> None:
-        mock_producer = MagicMock()
 
         config = {
             "sensor1": {
@@ -34,7 +33,7 @@ class TestSimulatorFactory(unittest.TestCase):
             },
         }
 
-        simulators = sorted(build_simulators(config, mock_producer),
+        simulators = sorted(build_simulators(config),
                             key=lambda x: x.sensor_name())
         expected = [
             TemperatureSimulatorStrategy(
@@ -50,7 +49,6 @@ class TestSimulatorFactory(unittest.TestCase):
                         "points_spacing": "PT2S",
                     },
                 ),
-                producer=mock_producer,
             ),
             TrafficSimulatorStrategy(
                 sensor_name="sensor2",
@@ -65,14 +63,12 @@ class TestSimulatorFactory(unittest.TestCase):
                         "points_spacing": "PT7S",
                     },
                 ),
-                producer=mock_producer,
             ),
         ]
 
         self.assertEqual(simulators, expected)
 
     def test_not_implemented_error(self) -> None:
-        mock_producer = MagicMock()
         sensors = {
             "sensor1": {
                 "type": "not_implemented",
@@ -86,4 +82,4 @@ class TestSimulatorFactory(unittest.TestCase):
         }
 
         with self.assertRaises(KeyError):
-            list(build_simulators(sensors, mock_producer))
+            list(build_simulators(sensors))

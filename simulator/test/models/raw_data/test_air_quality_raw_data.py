@@ -10,21 +10,6 @@ class TestAirQualityRawData(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls._timestamp = datetime(2024, 1, 1, 0, 0, 0)
 
-    def test(self):
-        data = AirQualityRawData(
-            sensor_name="air_quality",
-            sensor_uuid=UUID("00000000-0000-0000-0000-000000000000"),
-            latitude=0.0,
-            longitude=0.0,
-            timestamp=self._timestamp,
-            pm25=0,
-            pm10=0,
-            so2=0,
-            no2=0,
-            o3=0,
-        )
-        print(encode(data))
-
     def test_topic(self) -> None:
         data = AirQualityRawData(
             sensor_name="air_quality",

@@ -11,9 +11,8 @@ from ..producers.producer_strategy import ProducerStrategy
 
 class AirQualitySimulatorStrategy(SimulatorStrategy):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self.__o3_coefficient = random.uniform(-50, 50)
         self.__pm25_coefficient = random.uniform(-50, 50)
         self.__pm10_coefficient = random.uniform(-50, 50)

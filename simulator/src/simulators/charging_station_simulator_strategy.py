@@ -27,9 +27,8 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         "ultra_rapid": {"probability": 0.05, "power": 150.0},
     }
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self._charging_station_power = self.__initialize_charging_power()
         self._vehicle_type = ''
         self._battery_level = 0

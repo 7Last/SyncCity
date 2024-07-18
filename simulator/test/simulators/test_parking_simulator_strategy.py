@@ -24,7 +24,7 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
-                producer=self.producer,
+
             )
 
     @unittest.mock.patch(
@@ -45,7 +45,7 @@ class TestParkingSimulatorStrategy(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
-            producer=self.producer,
+
         )
 
         stream = [simulator.simulate() for _ in range(3)]

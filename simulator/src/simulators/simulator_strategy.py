@@ -11,8 +11,7 @@ from ..producers.producer_strategy import ProducerStrategy
 
 class SimulatorStrategy(ABC):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
         log.info(f'Creating simulator for {sensor_name}')
 
         if not sensor_name or sensor_name == '':
@@ -28,7 +27,6 @@ class SimulatorStrategy(ABC):
         self._generation_delay = config.generation_delay()
         rome = zoneinfo.ZoneInfo('Europe/Rome')
         self._timestamp = config.begin_date() or datetime.now(tz=rome)
-        self._producer = producer
 
     def sensor_name(self) -> str:
         return self._sensor_name

@@ -12,7 +12,7 @@ class SimulatorExecutor:
     def __init__(self, config: Dict[str, any], producer: ProducerStrategy) -> None:
         self.__simulator_threads: list[SimulatorThread] = [
             SimulatorThread(simulator, producer)
-            for simulator in build_simulators(config, producer)
+            for simulator in build_simulators(config)
         ]
         self.__stop_event = threading.Event()
 

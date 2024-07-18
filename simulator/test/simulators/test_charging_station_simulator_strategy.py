@@ -25,7 +25,7 @@ class TestChargingStationSimulatorStrategy(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
-                producer=self.producer,
+
             )
 
     @patch('random.random', return_value=0)
@@ -44,7 +44,7 @@ class TestChargingStationSimulatorStrategy(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
-            producer=self.producer,
+
         )
 
         stream = [simulator.simulate() for _ in range(3)]

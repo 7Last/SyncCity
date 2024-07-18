@@ -4,14 +4,12 @@ from datetime import datetime, timedelta
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.parking_raw_data import ParkingRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class ParkingSimulatorStrategy(SimulatorStrategy):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self.__is_occupied = self.__generate_occupancy()
 
     def simulate(self) -> ParkingRawData:

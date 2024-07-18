@@ -1,6 +1,5 @@
 from ..models.config.sensor_config import SensorConfig
 from ..models.sensor_type import SensorType
-from ..producers.producer_strategy import ProducerStrategy
 from ..simulators.air_quality_simulator_strategy import AirQualitySimulatorStrategy
 from ..simulators.charging_station_simulator_strategy import \
     ChargingStationSimulatorStrategy
@@ -15,39 +14,36 @@ from ..simulators.temperature_simulator_strategy import TemperatureSimulatorStra
 from ..simulators.traffic_simulator_strategy import TrafficSimulatorStrategy
 
 
-def build_simulators(sensors_config: dict[str, any], producer: ProducerStrategy) -> \
-        list[SimulatorStrategy]:
+def build_simulators(sensors_config: dict[str, any]) -> list[SimulatorStrategy]:
     return [
-        SimulatorFactory.build(name, SensorConfig(config), producer) for name, config
+        SimulatorFactory.build(name, SensorConfig(config)) for name, config
         in sensors_config.items()
     ]
 
 
 class SimulatorFactory:
     @staticmethod
-    def build(name: str, config: SensorConfig,
-              producer: ProducerStrategy) -> SimulatorStrategy:
-        return _build_simulator(name, config, producer)
+    def build(name: str, config: SensorConfig) -> SimulatorStrategy:
+        return _build_simulator(name, config)
 
 
-def _build_simulator(name: str, config: SensorConfig,  # noqa: PLR0911
-                     producer: ProducerStrategy) -> SimulatorStrategy:
+def _build_simulator(name: str, config: SensorConfig) -> SimulatorStrategy:
     match config.type():
         case SensorType.AIR_QUALITY:
-            return AirQualitySimulatorStrategy(name, config, producer)
+            return AirQualitySimulatorStrategy(name, config)
         case SensorType.RECYCLING_POINT:
-            return RecyclingPointSimulatorStrategy(name, config, producer)
+            return RecyclingPointSimulatorStrategy(name, config)
         case SensorType.PARKING:
-            return ParkingSimulatorStrategy(name, config, producer)
+            return ParkingSimulatorStrategy(name, config)
         case SensorType.TEMPERATURE:
-            return TemperatureSimulatorStrategy(name, config, producer)
+            return TemperatureSimulatorStrategy(name, config)
         case SensorType.TRAFFIC:
-            return TrafficSimulatorStrategy(name, config, producer)
+            return TrafficSimulatorStrategy(name, config)
         case SensorType.HUMIDITY:
-            return HumiditySimulatorStrategy(name, config, producer)
+            return HumiditySimulatorStrategy(name, config)
         case SensorType.RIVER_LEVEL:
-            return RiverLevelSimulatorStrategy(name, config, producer)
+            return RiverLevelSimulatorStrategy(name, config)
         case SensorType.PRECIPITATION:
-            return PrecipitationSimulatorStrategy(name, config, producer)
+            return PrecipitationSimulatorStrategy(name, config)
         case SensorType.CHARGING_STATION:
-            return ChargingStationSimulatorStrategy(name, config, producer)
+            return ChargingStationSimulatorStrategy(name, config)
