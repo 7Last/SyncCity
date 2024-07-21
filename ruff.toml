@@ -86,7 +86,10 @@ ignore = [
     "I001", # isort
     "B008",
     "B024",
-    "PLR2004"
+    "E501",
+    "ERA001",
+    "PLR2004",
+    "PLR6301",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
@@ -111,6 +114,6 @@ docstring-code-format = true
 docstring-code-line-length = "dynamic"
 
 [lint.pylint]
-max-args = 10
+max-args = 11
 max-positional-args = 3
 max-returns = 4

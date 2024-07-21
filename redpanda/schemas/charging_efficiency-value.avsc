@@ -1,0 +1,33 @@
+{
+  "type": "record",
+  "name": "Charging_Efficiency",
+  "fields": [
+    {
+      "name": "sensor_uuid",
+      "type": "string"
+    },
+    {
+      "name": "utilization_rate",
+      "type": "double"
+    },
+    {
+      "name": "efficiency_rate",
+      "type": "double"
+    },
+    {
+      "name": "timestamp",
+      "type": "string"
+    },
+    {
+      "name": "group_name",
+      "type": "string"
+    },
+    {
+      "name":"sensor_names",
+      "type": {
+          "type": "array",  
+          "items": "string"
+      }
+    }
+  ]
+}

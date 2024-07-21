@@ -8,12 +8,81 @@
       "interval": "10m",
       "rules": [
         {
-          "uid": "f4282dac-ba68-4598-9304-ff1276b4658a",
-          "title": "temperature",
+          "uid": "c8a662aa-3181-453f-97d9-0e26d2c5388e",
+          "title": "Temperature",
           "condition": "Threshold",
           "data": [
             {
               "refId": "Temperature",
+              "queryType": "table",
+              "relativeTimeRange": { "from": 600, "to": 0 },
+              "datasourceUid": "P5CECDC4694398594",
+              "model": {
+                "editorType": "sql",
+                "format": 1,
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "meta": {
+                  "builderOptions": {
+                    "columns": [],
+                    "database": "",
+                    "limit": 1000,
+                    "mode": "list",
+                    "queryType": "table",
+                    "table": ""
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "queryType": "table",
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperature\nwhere timestamp \u003e= subtractMinutes(now(), 45) and timestamp \u003c= now()\ngroup by sensor_name",
+                "refId": "Temperature"
+              }
+            },
+            {
+              "refId": "Threshold",
+              "relativeTimeRange": { "from": 600, "to": 0 },
+              "datasourceUid": "__expr__",
+              "model": {
+                "conditions": [
+                  {
+                    "evaluator": { "params": [40], "type": "gt" },
+                    "operator": { "type": "and" },
+                    "query": { "params": ["C"] },
+                    "reducer": { "params": [], "type": "last" },
+                    "type": "query"
+                  }
+                ],
+                "datasource": { "type": "__expr__", "uid": "__expr__" },
+                "expression": "Temperature",
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "refId": "Threshold",
+                "type": "threshold"
+              }
+            }
+          ],
+          "dasboardUid": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
+          "panelId": 10,
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "for": "30m",
+          "annotations": {
+            "__dashboardUid__": "cb13f63f-8582-4be2-be14-1d1d2046e36b",
+            "__panelId__": "10",
+            "description": "",
+            "runbook_url": "",
+            "summary": "Temperature threshold exceeded"
+          },
+          "labels": { "": "" },
+          "isPaused": false
+        },
+        {
+          "uid": "ec6b1d81-7abf-44b8-a2c1-ad026d39ca79",
+          "title": "Recycling_point",
+          "condition": "Threshold",
+          "data": [
+            {
+              "refId": "Recycling_point",
               "queryType": "table",
               "relativeTimeRange": {
                 "from": 600,
@@ -35,10 +104,10 @@
                     "table": ""
                   }
                 },
-                "pluginVersion": "4.0.7",
+                "pluginVersion": "4.2.0",
                 "queryType": "table",
-                "rawSql": "select avg(value), sensor_name\nfrom sensors.temperatures\nwhere timestamp >= subtractMinutes(now(), 45) and timestamp <= now()\ngroup by sensor_name",
-                "refId": "Temperature"
+                "rawSql": "select avg(filling), sensor_name\nfrom sensors.recycling_point\nwhere timestamp >= subtractDays(now(), 1) and timestamp <= now()\ngroup by sensor_name",
+                "refId": "Recycling_point"
               }
             },
             {
@@ -52,18 +121,14 @@
                 "conditions": [
                   {
                     "evaluator": {
-                      "params": [
-                        40
-                      ],
+                      "params": [99],
                       "type": "gt"
                     },
                     "operator": {
                       "type": "and"
                     },
                     "query": {
-                      "params": [
-                        "C"
-                      ]
+                      "params": ["C"]
                     },
                     "reducer": {
                       "params": [],
@@ -76,7 +141,7 @@
                   "type": "__expr__",
                   "uid": "__expr__"
                 },
-                "expression": "Temperature",
+                "expression": "Recycling_point",
                 "intervalMs": 1000,
                 "maxDataPoints": 43200,
                 "refId": "Threshold",
@@ -84,17 +149,197 @@
               }
             }
           ],
-          "dasboardUid": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-          "panelId": 7,
+          "dasboardUid": "b83497ec-c16c-4fd9-99f5-919c90ae19c9",
+          "panelId": 52,
           "noDataState": "NoData",
           "execErrState": "Error",
           "for": "30m",
           "annotations": {
-            "__dashboardUid__": "b9aab6fa-ad0a-4a7d-8d7d-7a158181454e",
-            "__panelId__": "7",
+            "__dashboardUid__": "b83497ec-c16c-4fd9-99f5-919c90ae19c9",
+            "__panelId__": "52",
             "description": "",
             "runbook_url": "",
-            "summary": "Temperature threshold exceeded"
+            "summary": "Recycling_point threshold exceeded"
+          },
+          "labels": {
+            "": ""
+          },
+          "isPaused": false
+        },
+        {
+          "uid": "d6c48603-800f-49e5-8aad-18b691d68605",
+          "title": "Precipitation",
+          "condition": "Threshold",
+          "data": [
+            {
+              "refId": "Precipitation",
+              "queryType": "table",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "P5CECDC4694398594",
+              "model": {
+                "editorType": "sql",
+                "format": 1,
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "meta": {
+                  "builderOptions": {
+                    "columns": [],
+                    "database": "",
+                    "limit": 1000,
+                    "mode": "list",
+                    "queryType": "table",
+                    "table": ""
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "queryType": "table",
+                "rawSql": "select avg(value), sensor_name\nfrom sensors.precipitation\nwhere timestamp >= subtractMinutes(now(), 45) and timestamp <= now()\ngroup by sensor_name",
+                "refId": "Precipitation"
+              }
+            },
+            {
+              "refId": "Threshold",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [10],
+                      "type": "gt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": ["C"]
+                    },
+                    "reducer": {
+                      "params": [],
+                      "type": "last"
+                    },
+                    "type": "query"
+                  }
+                ],
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "Precipitation",
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "refId": "Threshold",
+                "type": "threshold"
+              }
+            }
+          ],
+          "dasboardUid": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
+          "panelId": 33,
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "for": "30m",
+          "annotations": {
+            "__dashboardUid__": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
+            "__panelId__": "33",
+            "description": "",
+            "runbook_url": "",
+            "summary": "Precipitation threshold exceeded"
+          },
+          "labels": {
+            "": ""
+          },
+          "isPaused": false
+        },
+        {
+          "uid": "de1ec831-8907-40bf-b856-525c75bf5c60",
+          "title": "Air Quality",
+          "condition": "air_quality",
+          "data": [
+            {
+              "refId": "air_quality",
+              "queryType": "table",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "P5CECDC4694398594",
+              "model": {
+                "editorType": "sql",
+                "format": 1,
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "meta": {
+                  "builderOptions": {
+                    "columns": [],
+                    "database": "",
+                    "limit": 1000,
+                    "mode": "list",
+                    "queryType": "table",
+                    "table": ""
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "queryType": "table",
+                "rawSql": "SELECT\n    timestamp,\n    GREATEST(\n        multiIf(o3 <= 50, 1, o3 <= 100, 2, o3 <= 130, 3, o3 <= 240, 4, 5),\n        multiIf(no2 <= 40, 1, no2 <= 90, 2, no2 <= 120, 3, no2 <= 230, 4, 5),\n        multiIf(so2 <= 100, 1, so2 <= 200, 2, so2 <= 350, 3, so2 <= 500, 4, 5),\n        multiIf(pm10 <= 20, 1, pm10 <= 40, 2, pm10 <= 50, 3, pm10 <= 100, 4, 5),\n        multiIf(pm25 <= 10, 1, pm25 <= 20, 2, pm25 <= 25, 3, pm25 <= 50, 4, 5)\n    ) AS EAQI\nFROM sensors.air_quality\nORDER BY timestamp;\n",
+                "refId": "air_quality"
+              }
+            },
+            {
+              "refId": "C",
+              "relativeTimeRange": {
+                "from": 600,
+                "to": 0
+              },
+              "datasourceUid": "__expr__",
+              "model": {
+                "conditions": [
+                  {
+                    "evaluator": {
+                      "params": [3],
+                      "type": "gt"
+                    },
+                    "operator": {
+                      "type": "and"
+                    },
+                    "query": {
+                      "params": ["C"]
+                    },
+                    "reducer": {
+                      "params": [],
+                      "type": "last"
+                    },
+                    "type": "query"
+                  }
+                ],
+                "datasource": {
+                  "type": "__expr__",
+                  "uid": "__expr__"
+                },
+                "expression": "air_quality",
+                "intervalMs": 1000,
+                "maxDataPoints": 43200,
+                "refId": "C",
+                "type": "threshold"
+              }
+            }
+          ],
+          "dasboardUid": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
+          "panelId": 43,
+          "noDataState": "NoData",
+          "execErrState": "Error",
+          "for": "5m",
+          "annotations": {
+            "__dashboardUid__": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
+            "__panelId__": "43",
+            "description": "",
+            "runbook_url": "",
+            "summary": "Air quality threshold exceeded"
           },
           "labels": {
             "": ""

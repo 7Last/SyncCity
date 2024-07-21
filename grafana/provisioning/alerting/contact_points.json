@@ -9,9 +9,9 @@
           "uid": "c2f5983c-b8ed-4f50-a607-b66d1cb02586",
           "type": "discord",
           "settings": {
-            "url": "https://discord.com/api/webhooks/1241974189733445682/yFlAMhAZb3FH5f4ywoFSpU5wb-LMvP1kcKW6tqHRrsMsbaWHbv0u5VBtaC-LQqzYkE5a",
-            "title": "Threshold exceeded - {{ .CommonLabels.alertname }} - {{ .CommonLabels.sensor_name }}",
             "message": "Value: {{ .CommonAnnotations.summary }}",
+            "title": "Threshold exceeded - {{ .CommonLabels.alertname }} - {{ .CommonLabels.sensor_name }}",
+            "url": "https://discord.com/api/webhooks/1241974189733445682/yFlAMhAZb3FH5f4ywoFSpU5wb-LMvP1kcKW6tqHRrsMsbaWHbv0u5VBtaC-LQqzYkE5a",
             "use_discord_username": false
           },
           "disableResolveMessage": false

@@ -1,0 +1,8 @@
+jobmanager.rpc.address: localhost
+jobmanager.rpc.port: 6123
+jobmanager.heap.size: 1024m
+taskmanager.heap.size: 1024m
+taskmanager.numberOfTaskSlots: 2
+parallelism.default: 2
+blob.server.port: 6124
+query.server.port: 6125

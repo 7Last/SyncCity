@@ -26,7 +26,7 @@ Add the new type to the `SensorType` enum in the [src/models/sensor_type.py](../
 file.
 
 ## Step 3: Write the Avro schema definition for the new sensor type
-Create a new file in [src/schemas](../src/schemas). The file should be named as follows:
+Create a new file in [src/schemas](../../redpanda/schemas). The file should be named as follows:
 `<new_sensor_type>-value.avsc`, where `<new_sensor_type>` must be replaced with the sensor type
 which is being created.
 
@@ -42,7 +42,7 @@ the `.avsc` files which are already defined.
 > stored in ClickHouse
 
 ## Step 4: Implement the method in the `SerializerVisitor` class
-In the file [src/serializers/serializer_visitor.py](../src/json_serializer.py)
+In the file [src/serializers/serializer_visitor.py](../src/serializers/visitor/json_converter_visitor.py)
 implement a new public method to serialize the new sensor type.
 
 > The method should be called `serialize_<new_sensor_type>`.
@@ -64,14 +64,14 @@ In the [src/simulators](../src/simulators) folder implement a new `Simulator`.
 The `NewSensorTypeSimulator` class must extend `Simulator` and implement the `stream()`
 method.
 
-Copy the `stream()` function from either the `TemperatureSimulator` or `TrafficSimulator`
+Copy the `stream()` function from either the `temperatureimulator` or `TrafficSimulator`
 and change the `yield` statement to return a new instance of `NewSensorTypeRawData`.
 
 If any support method is needed to generate the realistic values for the simulated
 measurement, create a **private** function on the bottom of the file.
 
 ## Step 7: Edit ClickHouse connector config
-In the [connectors/configs/clickhouse.json](../../connectors/configs/clickhouse.json)
+In the [connectors/configs/clickhouse.json](../../redpanda/connectors/configs/clickhouse.json)
 file add `<new_sensor_type>` to the list of `topics` in `config` and in the `topics2TableMap`.
 
 ## Step 8: Create ClickHouse Table
@@ -81,7 +81,7 @@ The table should be called `<new_sensor_type>`.
 In this file define also the materialized views for `<new_sensor_type>`.
 
 ## Step 9: Add the new sensor type to the simulator factory
-In the [src/models/config/simulator_factory.py](../src/models/config/simulator_factory.py) file,
+In the [src/models/config/simulator_factory.py](../src/simulators/simulator_factory.py) file,
 add a new `match` case for the new sensor type in the `_simulator_factory` method.
 
 ## Step 10: Create sensors in the configuration
