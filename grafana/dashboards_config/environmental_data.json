@@ -314,7 +314,7 @@
                     },
                     "pluginVersion": "4.3.0",
                     "queryType": "table",
-                    "rawSql": "SELECT avg(center_of_mass_latitude),\n       avg(center_of_mass_longitude),\n       sensor_name,\n       latitude,\n       longitude,\n       (20 * max(radius_in_km) + 10) as radius,\n       avg(heat_index)          as avg_heat_index,\n       avg(avg_humidity)        as avg_humidity,\n       argMax(value, timestamp) as actual_temperature\nFROM sensors.heat_index hi\n         join sensors.temperature t on t.group_name = hi.group_name\nWHERE group_name = '${group_name}' and timestamp <= now() \nGROUP BY sensor_name, latitude, longitude",
+                    "rawSql": "SELECT avg(center_of_mass_latitude) as center_of_mass_latitude,\n       avg(center_of_mass_longitude) as center_of_mass_longitude,\n       sensor_name,\n       latitude,\n       longitude,\n       (20 * max(radius_in_km) + 10) as radius,\n       avg(heat_index)          as avg_heat_index,\n       avg(avg_humidity)        as avg_humidity,\n       argMax(value, timestamp) as actual_temperature\nFROM sensors.heat_index hi\n         join sensors.temperature t on t.group_name = hi.group_name\nWHERE group_name = '${group_name}' and timestamp <= now() \nGROUP BY sensor_name, latitude, longitude",
                     "refId": "Sensors"
                 }
             ],
@@ -4199,7 +4199,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "prato-della-valle",
                     "value": "prato-della-valle"
                 },
@@ -4223,7 +4223,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "via-pralungo-humidity",
                     "value": "via-pralungo-humidity"
                 },
@@ -4327,6 +4327,6 @@
     "timezone": "",
     "title": "Environmental Data",
     "uid": "e800cc5f-cf94-410f-a1a5-769408ac3fc9",
-    "version": 4,
+    "version": 2,
     "weekStart": ""
 }
