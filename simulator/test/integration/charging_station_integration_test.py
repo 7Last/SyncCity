@@ -4,23 +4,30 @@ import sys
 import pytest
 from uuid import UUID
 from clickhouse_driver import Client
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from src.producers.kafka_producer import KafkaProducerAdapter
-from src.serializers.avro_record_serialization_strategy import \
+from simulator.src.producers.kafka_producer import KafkaProducerAdapter
+from simulator.src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
-from src.models.raw_data.charging_station_raw_data import ChargingStationRawData
+from simulator.src.models.raw_data.charging_station_raw_data import ChargingStationRawData
+
 
 def test() -> None:
-
     producer = KafkaProducerAdapter(
-        bootstrap_servers="localhost:19092",
+        bootstrap_servers=["localhost:19092"],
         max_block_ms=1000,
         serializer=AvroRecordSerializationStrategy(),
         acks=1,
     )
 
-    rawdata = ChargingStationRawData(vehicle_type="car", battery_level=50.0, kwh_supplied=25.0, remaining_charge_time=50, elapsed_time=25, latitude=1.0, longitude=1.0, sensor_uuid=UUID("12345678-1234-5678-1234-567812345678"), sensor_name="sensor1", group_name="tullio-levi-civita")
+    rawdata = ChargingStationRawData(vehicle_type="car", battery_level=50.0,
+                                     kwh_supplied=25.0, remaining_charge_time=50,
+                                     elapsed_time=25, latitude=1.0, longitude=1.0,
+                                     sensor_uuid=UUID(
+                                         "12345678-1234-5678-1234-567812345678"),
+                                     sensor_name="sensor1",
+                                     group_name="tullio-levi-civita")
 
     producer.produce(rawdata)
 

@@ -6,15 +6,15 @@ from uuid import UUID
 from clickhouse_driver import Client
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from src.producers.kafka_producer import KafkaProducerAdapter
-from src.serializers.avro_record_serialization_strategy import \
+from simulator.src.producers.kafka_producer import KafkaProducerAdapter
+from simulator.src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
-from src.models.raw_data.air_quality_raw_data import AirQualityRawData
+from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
 
 def test() -> None:
 
     producer = KafkaProducerAdapter(
-        bootstrap_servers="localhost:19092",
+        bootstrap_servers=["localhost:19092"],
         max_block_ms=1000,
         serializer=AvroRecordSerializationStrategy(),
         acks=1,
