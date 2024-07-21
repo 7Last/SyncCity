@@ -4,14 +4,12 @@ from typing import List, Tuple
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.recycling_point_raw_data import RecyclingPointRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class RecyclingPointSimulatorStrategy(SimulatorStrategy):
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
 
         self.__last_value = random.uniform(0, 30)
         self.__prev_timestamp = self._timestamp
@@ -22,7 +20,7 @@ class RecyclingPointSimulatorStrategy(SimulatorStrategy):
         # max percentage of value to leave after partial emptying
         self.__partial_emptying_max_percentage = random.uniform(0.05, 0.3)
 
-    def data(self) -> RecyclingPointRawData:
+    def simulate(self) -> RecyclingPointRawData:
         data = RecyclingPointRawData(
             filling=self.__filling(),
             latitude=self._latitude,

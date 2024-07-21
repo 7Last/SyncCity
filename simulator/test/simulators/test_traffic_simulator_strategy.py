@@ -24,7 +24,7 @@ class TestTrafficSimulatorStrategy(unittest.TestCase):
                     'latitude': 0,
                     'longitude': 0,
                 }),
-                producer=self.producer,
+
             )
 
     @patch('random.uniform', return_value=0)
@@ -41,10 +41,10 @@ class TestTrafficSimulatorStrategy(unittest.TestCase):
                 'latitude': 0,
                 'longitude': 0,
             }),
-            producer=self.producer,
+
         )
 
-        stream = [simulator.data() for _ in range(3)]
+        stream = [simulator.simulate() for _ in range(3)]
 
         expected = [
             TrafficRawData(

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict
 from uuid import UUID
 
 from .raw_data import RawData
@@ -22,12 +21,6 @@ class RecyclingPointRawData(RawData):
     @property
     def topic(self) -> str:
         return "recycling_point"
-
-    def to_json(self) -> Dict[str, any]:
-        return {
-            "filling": self.__filling,
-            **(super().to_json()),
-        }
 
     def __eq__(self, other: any) -> bool:
         if not isinstance(other, RecyclingPointRawData):

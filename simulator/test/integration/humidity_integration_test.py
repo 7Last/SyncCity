@@ -11,6 +11,7 @@ from simulator.src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
 from simulator.src.models.raw_data.humidity_raw_data import HumidityRawData
 
+
 def test() -> None:
 
     producer = KafkaProducerAdapter(

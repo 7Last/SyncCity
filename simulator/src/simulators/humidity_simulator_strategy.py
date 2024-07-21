@@ -8,7 +8,7 @@ from ..models.raw_data.humidity_raw_data import HumidityRawData
 
 
 class HumiditySimulatorStrategy(SimulatorStrategy):
-    def data(self) -> HumidityRawData:
+    def simulate(self) -> HumidityRawData:
         data = HumidityRawData(
             value=self.__humidity_value(self._timestamp, self._latitude),
             sensor_uuid=self._sensor_uuid,

@@ -4,7 +4,6 @@ from datetime import timedelta
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.charging_station_raw_data import ChargingStationRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class ChargingStationSimulatorStrategy(SimulatorStrategy):
@@ -27,9 +26,8 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         "ultra_rapid": {"probability": 0.05, "power": 150.0},
     }
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self._charging_station_power = self.__initialize_charging_power()
         self._vehicle_type = ''
         self._battery_level = 0
@@ -40,7 +38,7 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         # Randomize usage frequency factor
         self._usage_frequency_factor = random.randint(1, 10)
 
-    def data(self) -> ChargingStationRawData:
+    def simulate(self) -> ChargingStationRawData:
         if self._idle_time > timedelta(seconds=0):
             self._timestamp += self._points_spacing
             self._idle_time -= self._points_spacing
@@ -149,8 +147,7 @@ class ChargingStationSimulatorStrategy(SimulatorStrategy):
         battery_kwh = self._battery_level * max_battery / 100
 
         battery_kwh += charge_added
-        if battery_kwh > max_battery:
-            battery_kwh = max_battery
+        battery_kwh = min(battery_kwh, max_battery)
 
         self._battery_level = (battery_kwh / max_battery) * 100
 

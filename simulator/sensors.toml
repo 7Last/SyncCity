@@ -9,6 +9,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.4018782
 longitude = 11.7769644
+begin_date = 2024-07-01T00:00:00
 
 [sensors.via-pralungo-humidity]
 uuid = "d45ce7f8-b960-4762-b52b-144414a9369c"
@@ -18,6 +19,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.4003174
 longitude = 11.7797217
+begin_date = 2024-07-01T00:00:00
 
 [sensors.via-vittorio-emmanuele-iii]
 uuid = "4ebfe920-384f-41cb-9039-20a33f147b1d"
@@ -27,6 +29,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.3991219
 longitude = 11.7790499
+begin_date = 2024-07-01T00:00:00
 # endregion
 
 # region prato-della-valle
@@ -38,6 +41,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.3984208
 longitude = 11.8739536
+begin_date = 2024-07-01T00:00:00
 
 [sensors.basilica-s-antonio]
 uuid = "716b7836-9666-47cc-91a5-e4c91f7f31d2"
@@ -47,6 +51,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.399656
 longitude = 11.8783219
+begin_date = 2024-07-01T00:00:00
 
 [sensors.via-rogati]
 uuid = "516b7836-9666-47cc-91a5-e4c91f7f31d2"
@@ -56,6 +61,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.4025007
 longitude = 11.874894
+begin_date = 2024-07-01T00:00:00
 
 [sensors.prato-della-valle-humidity]
 uuid = "b1bf6a61-1444-455d-bbc4-c3d9577f85d2"
@@ -65,6 +71,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.3984208
 longitude = 11.8739536
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -77,6 +84,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.4224876
 longitude = 11.9233274
+begin_date = 2024-07-01T00:00:00
 
 [sensors.kioene-arena-humidity]
 uuid = "d9a07cea-7db1-4580-ab58-cc24731141ed"
@@ -86,6 +94,7 @@ points_spacing = "PT5M"
 generation_delay = "PT1S"
 latitude = 45.4224876
 longitude = 11.9233274
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -94,9 +103,10 @@ longitude = 11.9233274
 uuid = "a3d15940-a584-456a-86aa-7d34ff98bdb9"
 type = "precipitation"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4224876
 longitude = 11.9233274
+begin_date = 2024-07-01T00:00:00
 # endregion
 
 # region traffic
@@ -104,17 +114,19 @@ longitude = 11.9233274
 uuid = "27d1ec68-79f3-440a-854d-8e0d70e50430"
 type = "traffic"
 points_spacing = "PT5M"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4145567
 longitude = 12.1581
+begin_date = 2024-07-01T00:00:00
 
 [sensors.tangenziale-fornase-sud]
 uuid = "9f560327-58d4-4639-80fe-571f076c0c2f"
 type = "traffic"
 points_spacing = "PT5M"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4675237
 longitude = 12.1736561
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -123,41 +135,46 @@ longitude = 12.1736561
 uuid = "16f7c82c-f5cf-4d54-9f67-f6968a291195"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4113102
 longitude = 11.88880725672
+begin_date = 2024-07-01T00:00:00
 
 [sensors.campus-ca-foscari]
 uuid = "f4fe9836-5c6b-4695-ae13-0adf30d4af12"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4344957
 longitude = 12.3264484
+begin_date = 2024-07-01T00:00:00
 
 [sensors.unipd-via-s-francesco]
 uuid = "2840db93-4a93-448b-8e6e-49c0ef0b92a7"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4067383
 longitude = 11.87739398715
+begin_date = 2024-07-01T00:00:00
 
 [sensors.unipd-beato-pellegrino]
 uuid = "d1413ef0-8e83-4c79-b9f7-d0188fb4c63c"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.4137767
 longitude = 11.8669841
+begin_date = 2024-07-01T00:00:00
 
 [sensors.unipd-ponte-s-michele]
 uuid = "185894a6-b4ab-4111-aed4-e55c29aac4c9"
 type = "recycling_point"
 points_spacing = "PT1H" # 1 hour
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.5458673
 longitude = 11.5484712
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -169,6 +186,7 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.4490747
 longitude = 11.9038461
+begin_date = 2024-07-01T00:00:00
 
 [sensors.abano-terme-centro]
 uuid = "4fd1ec68-79f3-440a-854d-8e0d70e50430"
@@ -177,6 +195,7 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.3591562
 longitude = 11.7510624
+begin_date = 2024-07-01T00:00:00
 
 [sensors.legnaro]
 uuid = "5ed1ec68-79f3-440a-854d-8e0d70e50430"
@@ -185,6 +204,7 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.3378992
 longitude = 11.9248366
+begin_date = 2024-07-01T00:00:00
 
 [sensors.rubano]
 uuid = "6fd1ec68-79f3-440a-854d-8e0d70e50430"
@@ -193,6 +213,7 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.4249376
 longitude = 11.7714498
+begin_date = 2024-07-01T00:00:00
 
 [sensors.unipd-tito-livio]
 uuid = "7fd1ec68-79f3-440a-854d-8e0d70e50430"
@@ -201,6 +222,7 @@ points_spacing = "PT1H"
 generation_delay = "PT1S"
 latitude = 45.4034159
 longitude = 11.8756551
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -210,27 +232,30 @@ group_name = "brenta"
 uuid = "d574fe30-e250-4111-97ab-81cbd3eb097f"
 type = "river_level"
 points_spacing = "PT1H"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.0078311
 longitude = 11.2643933
+begin_date = 2024-07-01T00:00:00
 
 [sensors.brenta-river-upstream]
 group_name = "brenta"
 uuid = "f27d64d3-3cb4-462a-ba17-6f3d6e03b1c6"
 type = "river_level"
 points_spacing = "PT1H"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.8564388
 longitude = 11.6624399
+begin_date = 2024-07-01T00:00:00
 
 [sensors.brenta-river-downstream]
 group_name = "brenta"
 uuid = "ee5b0400-5549-453c-8238-684f6187866d"
 type = "river_level"
 points_spacing = "PT1H"
-generation_delay = "PT0.01S"
+generation_delay = "PT1S"
 latitude = 45.1908855
 longitude = 12.2219133
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
@@ -240,209 +265,230 @@ longitude = 12.2219133
 group_name = "piazza-insurrezione"
 uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409753
 longitude = 11.876399
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p2]
 group_name = "piazza-insurrezione"
 uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409748
 longitude = 11.876204
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p3]
 group_name = "piazza-insurrezione"
 uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409748
 longitude = 11.875999
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p4]
 group_name = "piazza-insurrezione"
 uuid = "2ecd24cb-6b15-4f96-81bf-75ef23d87797"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409734
 longitude = 11.875767
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p5]
 group_name = "piazza-insurrezione"
 uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409619
 longitude = 11.875758
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p6]
 group_name = "piazza-insurrezione"
 uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409474
 longitude = 11.875759
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p7]
 group_name = "piazza-insurrezione"
 uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409356
 longitude = 11.875777
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p8]
 group_name = "piazza-insurrezione"
 uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409378
 longitude = 11.875976
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p9]
 group_name = "piazza-insurrezione"
 uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409382
 longitude = 11.876208
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p10]
 group_name = "piazza-insurrezione"
 uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.409395
 longitude = 11.876387
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p11]
 group_name = "piazza-insurrezione"
 uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.40949
 longitude = 11.876408
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-p12]
 group_name = "piazza-insurrezione"
 uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
 type = "parking"
-generation_delay = "PT1S"
+generation_delay = "PT0.01S"
 latitude = 45.399656
 longitude = 11.8783219
+begin_date = 2024-07-01T00:00:00
 
 # endregion
 
-
-# !!! Charging sensors do not need points_spacing since they are event driven !!!
 # region piazza-insurrezione
 [sensors.piazza-insurrezione-c1]
 group_name = "piazza-insurrezione"
-uuid = "cd9dcddf-3a70-4b1c-936e-11b2d999e1ab"
+uuid = "60c70d71-8d67-47ef-b857-fbadb18d6bf6"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409753
 longitude = 11.876399
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c2]
 group_name = "piazza-insurrezione"
-uuid = "ab13c0b7-0abc-4a25-b93c-5c1d9dec9805"
+uuid = "4a36cfff-05f7-4723-a570-2dfb0114a93e"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409748
 longitude = 11.876204
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c3]
 group_name = "piazza-insurrezione"
-uuid = "b9973a8a-a2c4-4154-b59f-d49c2c56b4a6"
+uuid = "8ad66dbc-3f71-4e90-8657-9b11cb2fca91"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409748
 longitude = 11.875999
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c4]
 group_name = "piazza-insurrezione"
-uuid = "aee9ab67-2925-41c0-92c4-4f35554329f3"
+uuid = "b9973a8a-a2c4-4154-b59f-d49c2c56b4a6"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409734
 longitude = 11.875767
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c5]
 group_name = "piazza-insurrezione"
-uuid = "8aa63be8-0941-4532-9dea-73a32b7561cf"
+uuid = "afe0f23b-f559-4efb-833c-5404a9c6726a"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409619
 longitude = 11.875758
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c6]
 group_name = "piazza-insurrezione"
-uuid = "0f7032aa-12b1-44a4-b647-4aa23256edec"
+uuid = "601da2ba-9b12-4c16-9f80-d80c63f7cff7"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409474
 longitude = 11.875759
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c7]
 group_name = "piazza-insurrezione"
-uuid = "5fc449cb-7746-4cc3-83ef-2e163ef5ebc2"
+uuid = "a67a4021-470f-4808-a561-8414ab3fdeb8"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409356
 longitude = 11.875777
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c8]
 group_name = "piazza-insurrezione"
-uuid = "502d811f-1ccd-4e05-a816-0d80c9a6c3ec"
+uuid = "5464c30f-2af2-4c6b-ac4c-f21d4db64f9b"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409378
 longitude = 11.875976
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c9]
 group_name = "piazza-insurrezione"
-uuid = "601b1957-ac7a-4e8b-a5ec-e106318fbfdd"
+uuid = "22a1a513-3fd1-4d12-b85d-e28132e62083"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409382
 longitude = 11.876208
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c10]
 group_name = "piazza-insurrezione"
-uuid = "feff9a5e-4093-477d-808c-f89cd181a476"
+uuid = "ff482347-be5c-43d5-bff2-895d66befd53"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.409395
 longitude = 11.876387
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c11]
 group_name = "piazza-insurrezione"
-uuid = "5b043a04-a872-4277-8543-6875313d6e56"
+uuid = "b80e3b79-75e6-4e08-a7c3-e9648c6fc27c"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.40949
 longitude = 11.876408
+begin_date = 2024-07-01T00:00:00
 
 [sensors.piazza-insurrezione-c12]
 group_name = "piazza-insurrezione"
-uuid = "8988ab7c-e3a7-4c01-b69f-2ceb973cb1cb"
+uuid = "0c78c62a-864c-4e8f-8c3f-d905381dd54c"
 type = "charging_station"
-points_spacing = "PT10M"
-generation_delay = "PT1S"
+points_spacing = "PT1H"
+generation_delay = "PT0.01S"
 latitude = 45.399656
 longitude = 11.8783219
-
+begin_date = 2024-07-01T00:00:00
 # endregion

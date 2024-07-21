@@ -6,7 +6,6 @@ from math import pi, sin
 from .simulator_strategy import SimulatorStrategy
 from ..models.config.sensor_config import SensorConfig
 from ..models.raw_data.river_level_raw_data import RiverLevelRawData
-from ..producers.producer_strategy import ProducerStrategy
 
 
 class RiverLevelSimulatorStrategy(SimulatorStrategy):
@@ -31,12 +30,11 @@ class RiverLevelSimulatorStrategy(SimulatorStrategy):
         12: 0.85,
     }
 
-    def __init__(self, sensor_name: str, config: SensorConfig,
-                 producer: ProducerStrategy) -> None:
-        super().__init__(sensor_name, config, producer)
+    def __init__(self, sensor_name: str, config: SensorConfig) -> None:
+        super().__init__(sensor_name, config)
         self._latitude_factor = (sin(config.latitude() / 90.0 * pi / 2)) ** 2
 
-    def data(self) -> RiverLevelRawData:
+    def simulate(self) -> RiverLevelRawData:
         data = RiverLevelRawData(
             value=self.__sinusoidal_value(self._timestamp),
             sensor_uuid=self._sensor_uuid,

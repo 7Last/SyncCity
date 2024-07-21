@@ -11,6 +11,7 @@ from simulator.src.serializers.avro_record_serialization_strategy import \
     AvroRecordSerializationStrategy
 from simulator.src.models.raw_data.air_quality_raw_data import AirQualityRawData
 
+
 def test() -> None:
 
     producer = KafkaProducerAdapter(
@@ -20,7 +21,7 @@ def test() -> None:
         acks=1,
     )
 
-    rawdata = AirQualityRawData(pm25= -8.635952949523926, pm10=10.820761680603027, no2=31.258577346801758, o3=37.09177780151367, so2=33.268592834472656, latitude=45.4034159, longitude=11.8756551, sensor_name="unipd-tito-livio", sensor_uuid=UUID('7fd1ec68-79f3-440a-854d-8e0d70e50430'), group_name="")
+    rawdata = AirQualityRawData(pm25=-8.635952949523926, pm10=10.820761680603027, no2=31.258577346801758, o3=37.09177780151367, so2=33.268592834472656, latitude=45.4034159, longitude=11.8756551, sensor_name="unipd-tito-livio", sensor_uuid=UUID('7fd1ec68-79f3-440a-854d-8e0d70e50430'), group_name="")
 
     producer.produce(rawdata)
 

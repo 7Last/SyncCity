@@ -24,7 +24,7 @@ services:
       - ./redpanda/schemas:/schemas
     networks:
       - synccity
-    profiles: ["release"]
+    profiles: [ "release" ]
 
   redpanda:
     container_name: redpanda
@@ -53,15 +53,11 @@ services:
       - 19092:19092
       - 19644:9644
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1",
-        ]
+      test: [ "CMD-SHELL", "rpk cluster health | awk '/Healthy.*/ {print $2}' | grep -q 'true' || exit 1" ]
       interval: 2s
       timeout: 1m
       retries: 12
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   redpanda_init: # initializes redpanda with topics and schemas which are used by Flink
     container_name: redpanda_init
@@ -81,6 +77,9 @@ services:
       create_topic heat_index;
       create_topic humidity;
       create_topic temperature;
+      create_topic parking;
+      create_topic charging_station;
+      create_topic charging_efficiency;
       "
     volumes:
       - type: bind
@@ -89,7 +88,7 @@ services:
       - type: bind
         source: ./redpanda/redpanda-console-config.yaml
         target: /etc/redpanda/redpanda.yaml
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   redpanda_console:
     container_name: redpanda_console
@@ -102,7 +101,7 @@ services:
       redpanda_init:
         condition: service_completed_successfully
     restart: on-failure
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
     environment:
       CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
     volumes:
@@ -126,7 +125,7 @@ services:
         condition: service_completed_successfully
     networks:
       - synccity
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
     environment:
       CONFIG_FILEPATH: /etc/redpanda/redpanda.yaml
       CONNECT_CONFIGURATION: |
@@ -156,7 +155,7 @@ services:
     ports:
       - "8123:8123"
     healthcheck:
-      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      test: [ "CMD", "clickhouse-client", "--query", "SELECT 1" ]
       interval: 5s
       timeout: 1m
       retries: 12
@@ -177,7 +176,7 @@ services:
         condition: service_healthy
     networks:
       - synccity
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   grafana:
     image: grafana/grafana-oss:10.3.0
@@ -200,7 +199,7 @@ services:
         condition: service_healthy
     networks:
       - synccity
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   jobmanager:
     image: flink:1.18.1-java17
@@ -208,7 +207,7 @@ services:
     command: jobmanager
     container_name: jobmanager
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/" ]
       interval: 5s
       retries: 10
     ports:
@@ -217,11 +216,11 @@ services:
     environment:
       FLINK_CONF_DIR: /opt/flink/conf
       JOB_MANAGER_RPC_ADDRESS: jobmanager
-      BOOTSTRAP_SERVERS: http://redpanda:9092
+      BOOTSTRAP_SERVERS: redpanda:9092
       SCHEMA_REGISTRY_URL: http://redpanda:8081
     networks:
       - synccity
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   taskmanager:
     image: flink:1.18.1-java17
@@ -236,9 +235,10 @@ services:
     environment:
       FLINK_CONF_DIR: /opt/flink/conf
       JOB_MANAGER_RPC_ADDRESS: jobmanager
+      TASK_MANAGER_NUMBER_OF_TASK_SLOTS: 2
     networks:
       - synccity
-    profiles: ["local", "release"]
+    profiles: [ "local", "release" ]
 
   deployer:
     build:
@@ -256,7 +256,7 @@ services:
       - "deployer.py"
       - "--flink_url=http://jobmanager:8081"
       - "--jars=/flink-job.jar"
-      - "--class=com.sevenlast.synccity.HeatIndexJob"
-    profiles: ["local", "release"]
+      - "--class=com.sevenlast.synccity.HeatIndexJob,com.sevenlast.synccity.ChargingEfficiencyJob"
+    profiles: [ "local", "release" ]
     networks:
       - synccity
